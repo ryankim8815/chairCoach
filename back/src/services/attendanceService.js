@@ -98,7 +98,7 @@ var attendanceService = /** @class */ (function () {
                             result_success = {
                                 result: true,
                                 cause: "success",
-                                message: "\uCD9C\uAC00\uCCB4\uD06C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                message: "\uCD9C\uC11D\uCCB4\uD06C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             };
                             return [2 /*return*/, result_success];
                         }

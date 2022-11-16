@@ -44,7 +44,7 @@ class attendanceService {
         const result_success = {
           result: true,
           cause: "success",
-          message: `출가체크가 성공적으로 이뤄졌습니다.`,
+          message: `출석체크가 성공적으로 이뤄졌습니다.`,
         };
         return result_success;
       } else {
