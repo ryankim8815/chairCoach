@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userRouter from "./routers/userRouter";
+import swagger from "./utils/swagger";
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 // express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 
 app.use(userRouter);
+app.use(swagger);
 
 // 기본 페이지
 app.get("/", (req, res) => {
