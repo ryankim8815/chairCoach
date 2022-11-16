@@ -51,6 +51,7 @@ class User {
     });
     return rows;
   }
+
   static async updateFilename({ email, new_filename }) {
     const [rows, fields] = await promisePool.query({
       sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
