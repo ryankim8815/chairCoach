@@ -68,7 +68,7 @@ const swaggerDefinition = {
           },
         },
       },
-      attendance: {
+      attendances: {
         type: "object",
         properties: {
           atnd_id: {
