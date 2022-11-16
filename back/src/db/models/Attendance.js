@@ -79,7 +79,7 @@ var Attendance = /** @class */ (function () {
         });
     };
     // atnd_id와 user_id로 검색
-    Attendance.findByLikeIdUserId = function (_a) {
+    Attendance.findByAtndIdUserId = function (_a) {
         var atnd_id = _a.atnd_id, user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
             var _b, rows, fields;

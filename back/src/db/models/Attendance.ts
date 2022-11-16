@@ -19,7 +19,7 @@ class Attendance {
   }
 
   // atnd_id와 user_id로 검색
-  static async findByLikeIdUserId({ atnd_id, user_id }) {
+  static async findByAtndIdUserId({ atnd_id, user_id }) {
     const [rows, fields] = await promisePool.query({
       sql: "SELECT * FROM attendances WHERE `atnd_id` = ? AND `user_id` = ?",
       values: [atnd_id, user_id],
