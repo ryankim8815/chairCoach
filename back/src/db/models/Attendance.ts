@@ -35,6 +35,14 @@ class Attendance {
     });
     return rows;
   }
+  // 등록일로 user_id로 검색
+  static async findByCreatedAtDateUserId({ created_at_date, user_id }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "SELECT * FROM attendances WHERE DATE_FORMAT(`created_at`, `$Y-%m-%d`) = DATE_FORMAT(?, `%Y-$m-$d`)AND `user_id` = ?",
+      values: [created_at_date, user_id],
+    });
+    return rows;
+  }
   // 등록기간으로 검색
   static async findByCreatedAtDuration({ created_at_from, created_at_to }) {
     const [rows, fields] = await promisePool.query({

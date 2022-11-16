@@ -114,6 +114,24 @@ var Attendance = /** @class */ (function () {
             });
         });
     };
+    // 등록일로 user_id로 검색
+    Attendance.findByCreatedAtDateUserId = function (_a) {
+        var created_at_date = _a.created_at_date, user_id = _a.user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT * FROM attendances WHERE DATE_FORMAT(`created_at`, `$Y-%m-%d`) = DATE_FORMAT(?, `%Y-$m-$d`)AND `user_id` = ?",
+                            values: [created_at_date, user_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
     // 등록기간으로 검색
     Attendance.findByCreatedAtDuration = function (_a) {
         var created_at_from = _a.created_at_from, created_at_to = _a.created_at_to;
