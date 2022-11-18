@@ -73,9 +73,11 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
+                console.log("before service");
                 return [4 /*yield*/, userService_1.default.getAllUsers()];
             case 1:
                 allUsers = _a.sent();
+                console.log("after service");
                 console.log(allUsers);
                 res.status(200).json(allUsers);
                 return [3 /*break*/, 3];
@@ -132,11 +134,11 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
  *                     created_at:
  *                       type: timstamp
  *                   example:
- *                     - email: user1@vm주소.com
+ *                     - email: user1@gmail.com
  *                       nickname: user1
  *                       provider: kakao
  *                       created_at: 2022-11-03T04:52:32.000Z
- *                     - email: user2@vm주소.com
+ *                     - email: user2@gmail.com
  *                       nickname: user2
  *                       provider: naver
  *                       created_at: 2022-11-01T01:01:01.000Z
@@ -204,7 +206,7 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
  *                 created_at:
  *                   type: timstamp
  *                   example:
- *                     email: user1@vm주소.com
+ *                     email: user1@gmail.com
  *                     nickname: user1
  *                     provider: kakao
  *                     created_at: 2022-11-03T04:52:32.000Z
@@ -254,7 +256,7 @@ var userRegister = function (req, res, next) { return __awaiter(void 0, void 0, 
  *             properties:
  *               email:
  *                 type: string
- *                 example: user1@vm주소.com
+ *                 example: user1@gmail.com
  *               password:
  *                 type: string
  *                 example: password1234
@@ -323,7 +325,7 @@ var userLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
  *             properties:
  *               email:
  *                 type: string
- *                 example: user1@vm주소.com
+ *                 example: user1@gmail.com
  *               password:
  *                 type: string
  *                 example: password1234
@@ -349,7 +351,7 @@ var userLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
  *                   example: awj32ew86tgcvwstudggaiqa98yiqgdiqyas238ewyufdhjv29qiaedz87iyhvd
  *                 email:
  *                   type: string
- *                   example: user1@vm주소.com
+ *                   example: user1@gmail.com
  *                 nickname:
  *                   type: string
  *                   example: bowwow

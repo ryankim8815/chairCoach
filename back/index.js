@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = __importDefault(require("./src/app"));
 require("dotenv/config");
 require("dotenv").config();
-console.log(process.env.SERVER_PORT);
-console.log(typeof process.env.SERVER_PORT);
 var PORT = process.env.SERVER_PORT;
 app_1.default
     .listen(PORT, function () {

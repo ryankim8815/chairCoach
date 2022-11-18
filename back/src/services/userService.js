@@ -207,7 +207,7 @@ var userService = /** @class */ (function () {
                     case 3:
                         // 비밀번호 해쉬화
                         password = _b.sent();
-                        provider = "dogfoot";
+                        provider = "chairCoach";
                         created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
                         return [4 /*yield*/, User_1.default.create({
                                 user_id: user_id,

@@ -144,7 +144,7 @@ class userService {
     // 비밀번호 해쉬화
     password = await bcrypt.hash(password, 10);
     // provider
-    const provider = "dogfoot";
+    const provider = "chairCoach";
     // created_time
     const created_at = moment().format("YYYY-MM-DD HH:mm:ss");
     // 사용자 추가

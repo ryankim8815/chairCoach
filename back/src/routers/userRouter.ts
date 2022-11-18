@@ -13,7 +13,9 @@ const userList = async (
   next: express.NextFunction
 ) => {
   try {
+    console.log("before service");
     const allUsers = await userService.getAllUsers();
+    console.log("after service");
     console.log(allUsers);
     res.status(200).json(allUsers);
   } catch (err) {
@@ -65,11 +67,11 @@ const userList = async (
  *                     created_at:
  *                       type: timstamp
  *                   example:
- *                     - email: user1@vm주소.com
+ *                     - email: user1@gmail.com
  *                       nickname: user1
  *                       provider: kakao
  *                       created_at: 2022-11-03T04:52:32.000Z
- *                     - email: user2@vm주소.com
+ *                     - email: user2@gmail.com
  *                       nickname: user2
  *                       provider: naver
  *                       created_at: 2022-11-01T01:01:01.000Z
@@ -132,7 +134,7 @@ const userCurrent = async (
  *                 created_at:
  *                   type: timstamp
  *                   example:
- *                     email: user1@vm주소.com
+ *                     email: user1@gmail.com
  *                     nickname: user1
  *                     provider: kakao
  *                     created_at: 2022-11-03T04:52:32.000Z
@@ -176,7 +178,7 @@ const userRegister = async (
  *             properties:
  *               email:
  *                 type: string
- *                 example: user1@vm주소.com
+ *                 example: user1@gmail.com
  *               password:
  *                 type: string
  *                 example: password1234
@@ -239,7 +241,7 @@ const userLogin = async (
  *             properties:
  *               email:
  *                 type: string
- *                 example: user1@vm주소.com
+ *                 example: user1@gmail.com
  *               password:
  *                 type: string
  *                 example: password1234
@@ -265,7 +267,7 @@ const userLogin = async (
  *                   example: awj32ew86tgcvwstudggaiqa98yiqgdiqyas238ewyufdhjv29qiaedz87iyhvd
  *                 email:
  *                   type: string
- *                   example: user1@vm주소.com
+ *                   example: user1@gmail.com
  *                 nickname:
  *                   type: string
  *                   example: bowwow

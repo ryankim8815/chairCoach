@@ -2,8 +2,6 @@ import app from "./src/app";
 import "dotenv/config";
 require("dotenv").config();
 
-console.log(process.env.SERVER_PORT);
-console.log(typeof process.env.SERVER_PORT);
 const PORT: string = process.env.SERVER_PORT;
 
 app
