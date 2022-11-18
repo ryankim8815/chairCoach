@@ -30,7 +30,7 @@ const userList = async (
 };
 /**
  * @swagger
- * /u/list:
+ * /users:
  *   get:
  *     summary: 전체 사용자 조회
  *     description: 전체 사용자 조회
@@ -101,7 +101,7 @@ const userCurrent = async (
 };
 /**
  * @swagger
- * /u/current:
+ * /user:
  *   get:
  *     summary: 현재 사용자 조회
  *     description: 현재 로그인된 사용자 정보를 조회합니다.
@@ -165,7 +165,7 @@ const userRegister = async (
 };
 /**
  * @swagger
- * /u/register:
+ * /user/register:
  *   post:
  *     summary: 회원가입
  *     description: email과 nickname은 중복 검사가 필요합니다.
@@ -228,7 +228,7 @@ const userLogin = async (
 };
 /**
  * @swagger
- * /u/login:
+ * /user/login:
  *   post:
  *     summary: 로그인
  *     description: email과 password가 필요합니다.
@@ -310,7 +310,7 @@ const userUpdate = async (
 };
 /**
  * @swagger
- * /u/update:
+ * /user:
  *   put:
  *     summary: 회원정보 수정
  *     description: 회원정보 수정 시에도 nickname은 중복 검사가 필요합니다.
@@ -378,7 +378,7 @@ const userDelete = async (
 };
 /**
  * @swagger
- * /u/delete:
+ * /user:
  *   delete:
  *     summary: 회원정보 삭제
  *     description: 한번 삭제한 사용자는 복구할 수 없습니다.
@@ -479,12 +479,12 @@ const userDelete = async (
 //  */
 
 // api index
-userRouter.get("/u/list", userList); // 전체 사용자 검섹
-userRouter.get("/u/current", authMiddleware, userCurrent); // 현재 사용자 정보 조회
-userRouter.post("/u/register", userRegister); // 자체 회원가입
-userRouter.post("/u/login", userLogin); // 로그인
-userRouter.put("/u/update", authMiddleware, userUpdate); // 유저 정보 업데이트(pw & nickname)
-userRouter.delete("/u/delete", authMiddleware, userDelete); // 유저 삭제
+userRouter.get("/users", userList); // 전체 사용자 검섹
+userRouter.get("/user", authMiddleware, userCurrent); // 현재 사용자 정보 조회
+userRouter.post("/user/register", userRegister); // 자체 회원가입
+userRouter.post("/user/login", userLogin); // 로그인
+userRouter.put("/user", authMiddleware, userUpdate); // 유저 정보 업데이트(pw & nickname)
+userRouter.delete("/user", authMiddleware, userDelete); // 유저 삭제
 // (FE요청) 삭제
 // userRouter.post(
 //   "/u/upload_image",
