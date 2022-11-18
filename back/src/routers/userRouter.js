@@ -65,6 +65,8 @@ var express = __importStar(require("express"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 // import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
 var userService_1 = __importDefault(require("../services/userService"));
+// import asyncHandler from "../utils/asyncHandler";
+// import type { MulterFile } from "../customType/multer.d";  // (FE요청) 삭제
 var userRouter = express.Router();
 // GET: 사용자 리스트 조회 기능
 var userList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {

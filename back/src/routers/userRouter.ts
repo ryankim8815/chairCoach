@@ -3,7 +3,7 @@ import authMiddleware from "../middlewares/authMiddleware";
 // import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
 import userService from "../services/userService";
 // import asyncHandler from "../utils/asyncHandler";
-import type { MulterFile } from "../customType/multer.d";
+// import type { MulterFile } from "../customType/multer.d";  // (FE요청) 삭제
 const userRouter = express.Router();
 
 // GET: 사용자 리스트 조회 기능
