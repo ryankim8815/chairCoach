@@ -57,9 +57,10 @@ const swaggerDefinition = {
           nickname: {
             type: "string",
           },
-          profile_image: {
-            type: "string",
-          },
+          // (FE요청) 삭제
+          // profile_image: {
+          //   type: "string",
+          // },
           provider: {
             type: "string",
           },
@@ -68,21 +69,22 @@ const swaggerDefinition = {
           },
         },
       },
-      attendances: {
-        type: "object",
-        properties: {
-          atnd_id: {
-            type: "string",
-            description: "PK, UUID",
-          },
-          user_id: {
-            type: "string",
-          },
-          created_at: {
-            type: "timstamp",
-          },
-        },
-      },
+      // (FE요청) 삭제
+      // attendances: {
+      //   type: "object",
+      //   properties: {
+      //     atnd_id: {
+      //       type: "string",
+      //       description: "PK, UUID",
+      //     },
+      //     user_id: {
+      //       type: "string",
+      //     },
+      //     created_at: {
+      //       type: "timstamp",
+      //     },
+      //   },
+      // },
       body: {
         type: "object",
         properties: {
@@ -96,7 +98,10 @@ const swaggerDefinition = {
           tag: {
             type: "string",
           },
-          created_at: {
+          start_time: {
+            type: "timstamp",
+          },
+          end_time: {
             type: "timstamp",
           },
         },
@@ -122,27 +127,28 @@ const swaggerDefinition = {
           },
         },
       },
-      self: {
-        type: "object",
-        properties: {
-          self_id: {
-            type: "string",
-            description: "PK, UUID",
-          },
-          user_id: {
-            type: "string",
-          },
-          filename: {
-            type: "string",
-          },
-          result: {
-            type: "string",
-          },
-          created_at: {
-            type: "timstamp",
-          },
-        },
-      },
+      // (FE요청) 삭제
+      // self: {
+      //   type: "object",
+      //   properties: {
+      //     self_id: {
+      //       type: "string",
+      //       description: "PK, UUID",
+      //     },
+      //     user_id: {
+      //       type: "string",
+      //     },
+      //     filename: {
+      //       type: "string",
+      //     },
+      //     result: {
+      //       type: "string",
+      //     },
+      //     created_at: {
+      //       type: "timstamp",
+      //     },
+      //   },
+      // },
     },
   },
 };
