@@ -50,7 +50,7 @@ var User = /** @class */ (function () {
                     case 0:
                         console.log("User: before query");
                         return [4 /*yield*/, database_1.default.query({
-                                sql: "SELECT email,nickname,profile_image,created_at  FROM users",
+                                sql: "SELECT email,nickname,created_at  FROM users",
                             })];
                     case 1:
                         _a = _b.sent(), rows = _a[0], fields = _a[1];
@@ -143,23 +143,14 @@ var User = /** @class */ (function () {
             });
         });
     };
-    User.updateFilename = function (_a) {
-        var email = _a.email, new_filename = _a.new_filename;
-        return __awaiter(this, void 0, void 0, function () {
-            var _b, rows, fields;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
-                            values: [new_filename, email],
-                        })];
-                    case 1:
-                        _b = _c.sent(), rows = _b[0], fields = _b[1];
-                        return [2 /*return*/, rows];
-                }
-            });
-        });
-    };
+    // (FE요청) 삭제
+    // static async updateFilename({ email, new_filename }) {
+    //   const [rows, fields] = await promisePool.query({
+    //     sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
+    //     values: [new_filename, email],
+    //   });
+    //   return rows;
+    // }
     User.delete = function (_a) {
         var email = _a.email;
         return __awaiter(this, void 0, void 0, function () {

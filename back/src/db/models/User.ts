@@ -3,7 +3,7 @@ class User {
   static async findAll() {
     console.log("User: before query");
     const [rows, fields] = await promisePool.query({
-      sql: "SELECT email,nickname,profile_image,created_at  FROM users",
+      sql: "SELECT email,nickname,created_at  FROM users",
     });
     console.log("row: ", rows);
     return rows;
@@ -53,14 +53,14 @@ class User {
     });
     return rows;
   }
-
-  static async updateFilename({ email, new_filename }) {
-    const [rows, fields] = await promisePool.query({
-      sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
-      values: [new_filename, email],
-    });
-    return rows;
-  }
+  // (FE요청) 삭제
+  // static async updateFilename({ email, new_filename }) {
+  //   const [rows, fields] = await promisePool.query({
+  //     sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
+  //     values: [new_filename, email],
+  //   });
+  //   return rows;
+  // }
 
   static async delete({ email }) {
     const [rows, fields] = await promisePool.query({

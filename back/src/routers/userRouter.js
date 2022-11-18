@@ -63,7 +63,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var express = __importStar(require("express"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
-var uploadMiddleware_1 = __importDefault(require("../middlewares/uploadMiddleware"));
+// import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
 var userService_1 = __importDefault(require("../services/userService"));
 var userRouter = express.Router();
 // GET: 사용자 리스트 조회 기능
@@ -355,9 +355,6 @@ var userLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
  *                 nickname:
  *                   type: string
  *                   example: bowwow
- *                 profile_image:
- *                   type: string
- *                   example: file-1234405177970-416354969.png
  *                 provider:
  *                   type: string
  *                   example: google
@@ -511,75 +508,70 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: string
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
-//// POST: 프로필 사진 업로드
-var userUploadImage = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, new_filename, uploadUserImage, err_7, result_err;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                email = req.email;
-                new_filename = req.file.filename;
-                console.log("new_filename: ", new_filename);
-                return [4 /*yield*/, userService_1.default.uploadUserImage({
-                        email: email,
-                        new_filename: new_filename,
-                    })];
-            case 1:
-                uploadUserImage = _a.sent();
-                console.log(uploadUserImage);
-                res.status(200).json(uploadUserImage);
-                return [3 /*break*/, 3];
-            case 2:
-                err_7 = _a.sent();
-                result_err = {
-                    result: false,
-                    cause: "api",
-                    message: "uploadUserImage api에서 오류가 발생했습니다.",
-                };
-                console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-/**
- * @swagger
- * /u/upload_image:
- *   post:
- *     summary: 프로필 사진 업로드
- *     description: 확장자, 사이즈, 용량 제한에 대한 사항은 아직 미정입니다.
- *     tags: ["userRouter"]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       content:
- *        multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               file:
- *                type: string
- *                format: binary
- *     responses:
- *       200:
- *         description: successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 result:
- *                   type: boolean
- *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
- *                 message:
- *                   type: string
- *                   example: ${nickname}님의 프로필 사진 업데이트가 성공적으로 이뤄졌습니다.
- */
+// (FE요청) 삭제
+// //// POST: 프로필 사진 업로드
+// const userUploadImage = async (
+//   req: express.Request & { files: MulterFile[] },
+//   res: express.Response,
+//   next: express.NextFunction
+// ) => {
+//   try {
+//     const email = req.email;
+//     // const old_filename = req.filename;
+//     const new_filename = req.file.filename;
+//     console.log("new_filename: ", new_filename);
+//     const uploadUserImage = await userService.uploadUserImage({
+//       email,
+//       new_filename,
+//     });
+//     console.log(uploadUserImage);
+//     res.status(200).json(uploadUserImage);
+//   } catch (err) {
+//     const result_err = {
+//       result: false,
+//       cause: "api",
+//       message: "uploadUserImage api에서 오류가 발생했습니다.",
+//     };
+//     console.log(result_err);
+//     res.status(200).json(result_err);
+//   }
+// };
+// /**
+//  * @swagger
+//  * /u/upload_image:
+//  *   post:
+//  *     summary: 프로필 사진 업로드
+//  *     description: 확장자, 사이즈, 용량 제한에 대한 사항은 아직 미정입니다.
+//  *     tags: ["userRouter"]
+//  *     security:
+//  *       - bearerAuth: []
+//  *     requestBody:
+//  *       content:
+//  *        multipart/form-data:
+//  *           schema:
+//  *             type: object
+//  *             properties:
+//  *               file:
+//  *                type: string
+//  *                format: binary
+//  *     responses:
+//  *       200:
+//  *         description: successful operation
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 result:
+//  *                   type: boolean
+//  *                   example: true
+//  *                 cause:
+//  *                   type: string
+//  *                   example: success
+//  *                 message:
+//  *                   type: string
+//  *                   example: ${nickname}님의 프로필 사진 업데이트가 성공적으로 이뤄졌습니다.
+//  */
 // api index
 userRouter.get("/u/list", userList); // 전체 사용자 검섹
 userRouter.get("/u/current", authMiddleware_1.default, userCurrent); // 현재 사용자 정보 조회
@@ -587,5 +579,4 @@ userRouter.post("/u/register", userRegister); // 자체 회원가입
 userRouter.post("/u/login", userLogin); // 로그인
 userRouter.put("/u/update", authMiddleware_1.default, userUpdate); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete("/u/delete", authMiddleware_1.default, userDelete); // 유저 삭제
-userRouter.post("/u/upload_image", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), userUploadImage); // 프로필 사진 업로드(기존 사진 자동 삭제)
 module.exports = userRouter;
