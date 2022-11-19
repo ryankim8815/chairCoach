@@ -42,7 +42,7 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var authMiddleware = function (req, res, next) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var userToken, result_errNoToken, secretKey, jwtDecoded, email, result_errInvalidToken;
+        var userToken, result_errNoToken, secretKey, jwtDecoded, user_id, result_errInvalidToken;
         return __generator(this, function (_c) {
             userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
             // 이 토큰은 jwt 토큰 문자열이거나, 혹은 "null" 문자열임.
@@ -61,9 +61,9 @@ var authMiddleware = function (req, res, next) {
             try {
                 secretKey = process.env.JWT_SECRET_KEY || "secret-key";
                 jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
-                email = jwtDecoded.email;
+                user_id = jwtDecoded.user_id;
                 // console.log("미들웨어에서 토큰 확인: ", email);
-                req.email = email;
+                req.user_id = user_id;
                 next();
             }
             catch (error) {

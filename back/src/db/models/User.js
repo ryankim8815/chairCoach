@@ -75,6 +75,23 @@ var User = /** @class */ (function () {
             });
         });
     };
+    User.findByUserId = function (_a) {
+        var user_id = _a.user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT * FROM users WHERE `user_id` = ?",
+                            values: [user_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
     User.findByEmail = function (_a) {
         var email = _a.email;
         return __awaiter(this, void 0, void 0, function () {
@@ -127,14 +144,14 @@ var User = /** @class */ (function () {
         });
     };
     User.update = function (_a) {
-        var email = _a.email, password = _a.password, nickname = _a.nickname;
+        var user_id = _a.user_id, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
             var _b, rows, fields;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "UPDATE users SET `password` = ?, `nickname` = ? WHERE `email` = ?",
-                            values: [password, nickname, email],
+                            sql: "UPDATE users SET `password` = ?, `nickname` = ? WHERE `user_id` = ?",
+                            values: [password, nickname, user_id],
                         })];
                     case 1:
                         _b = _c.sent(), rows = _b[0], fields = _b[1];
@@ -152,14 +169,14 @@ var User = /** @class */ (function () {
     //   return rows;
     // }
     User.delete = function (_a) {
-        var email = _a.email;
+        var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
             var _b, rows, fields;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "DELETE FROM users WHERE `email` = ?",
-                            values: [email],
+                            sql: "DELETE FROM users WHERE `user_id` = ?",
+                            values: [user_id],
                         })];
                     case 1:
                         _b = _c.sent(), rows = _b[0], fields = _b[1];

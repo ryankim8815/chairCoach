@@ -25,9 +25,10 @@ class userService {
     );
     return result_success;
   }
+
   //// 현재 사용자 조회
-  static async getCurrentUser({ email }) {
-    const currentUser = await User.findByEmail({ email });
+  static async getCurrentUser({ user_id }) {
+    const currentUser = await User.findByUserId({ user_id });
     const currentUserString = JSON.stringify(currentUser);
     const currentUserObject = JSON.parse(currentUserString);
     // 쿼리문의 SELECT로 대체
@@ -39,21 +40,21 @@ class userService {
     // const countUsersString = JSON.stringify(countUsers);
     // const countUsersObject = JSON.parse(countUsersString);
     if (currentUserObject.length === 0) {
-      const result_errEmail = {
+      const result_errUserId = {
         result: false,
-        cause: "email",
+        cause: "user_id",
         message:
-          "입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
+          "입력하신 user_id로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
       };
-      return result_errEmail;
+      return result_errUserId;
     } else if (currentUserObject.length > 1) {
-      const result_errEmail = {
+      const result_errUserId = {
         result: false,
-        cause: "email",
+        cause: "user_id",
         message:
-          "[확인요망]: 해당 email로 가입된 계정이 DB상 두개 이상입니다. 확인해 주세요.",
+          "[확인요망]: 해당 user_id로 조회된 계정이 DB상 두개 이상입니다. 확인해 주세요.",
       };
-      return result_errEmail;
+      return result_errUserId;
     }
     const thisUser = currentUserObject[0];
     const result_success = Object.assign(
@@ -97,7 +98,7 @@ class userService {
       return result_errPassword;
     }
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
-    const token = jwt.sign({ email: email }, secretKey);
+    const token = jwt.sign({ user_id: thisUser.user_id }, secretKey);
     delete thisUser.password;
     delete thisUser.user_id;
     const result_success = Object.assign(
@@ -172,22 +173,22 @@ class userService {
   }
 
   //// 회원 정보 수정
-  static async updateUser({ email, currentPassword, password, nickname }) {
-    // email 확인
-    const checkEmail = await User.findByEmail({ email });
-    const checkEmailString = JSON.stringify(checkEmail);
-    const checkEmailObject = JSON.parse(checkEmailString);
-    if (checkEmailObject.length === 0) {
-      const result_errEmail = {
+  static async updateUser({ user_id, currentPassword, password, nickname }) {
+    // user_id 확인
+    const checkUserId = await User.findByUserId({ user_id });
+    const checkUserIdString = JSON.stringify(checkUserId);
+    const checkUserIdObject = JSON.parse(checkUserIdString);
+    if (checkUserIdObject.length === 0) {
+      const result_errUserId = {
         result: false,
-        cause: "email",
+        cause: "user_id",
         message:
-          "입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
+          "입력하신 user_id로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
       };
-      return result_errEmail;
+      return result_errUserId;
     }
     // 기존 비밀번호 확인
-    const thisUser = checkEmailObject[0];
+    const thisUser = checkUserIdObject[0];
     const hashedCorrectPassword = thisUser.password;
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -209,7 +210,7 @@ class userService {
     const checkNicknameObject = JSON.parse(checkNicknameString);
     if (
       checkNicknameObject.length == 1 &&
-      checkNicknameObject[0].email == email
+      checkNicknameObject[0].user_id == user_id
     ) {
       console.log(
         "안내: 입력된 nickname은 기존 nickname과 동일하며, 회원정보 수정이 계속 진행됩니다."
@@ -227,19 +228,13 @@ class userService {
     password = await bcrypt.hash(password, 10);
     // 사용자 수정
     const updatedUser = await User.update({
-      email,
+      user_id,
       password,
       nickname,
     });
     const updatedUserString = JSON.stringify(updatedUser);
     const updatedUserObject = JSON.parse(updatedUserString);
-    const checkUpdatedUser = await User.findByEmail({ email });
-    const checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
-    const checkUpdatedUserObject = JSON.parse(checkUpdatedUserString);
-    if (
-      updatedUserObject.affectedRows == 1 &&
-      checkUpdatedUserObject.length == 1
-    ) {
+    if (updatedUserObject.affectedRows == 1) {
       const result_success = {
         result: true,
         cause: "success",
@@ -302,22 +297,22 @@ class userService {
   // }
 
   //// 회원정보 삭제
-  static async deleteUser({ email, password }) {
+  static async deleteUser({ user_id, password }) {
     // email 확인
-    const checkEmail = await User.findByEmail({ email });
-    const checkEmailString = JSON.stringify(checkEmail);
-    const checkEmailObject = JSON.parse(checkEmailString);
-    if (checkEmailObject.length === 0) {
-      const result_errEmail = {
+    const checkUserId = await User.findByUserId({ user_id });
+    const checkUserIdString = JSON.stringify(checkUserId);
+    const checkUserIdObject = JSON.parse(checkUserIdString);
+    if (checkUserIdObject.length === 0) {
+      const result_errUserId = {
         result: false,
-        cause: "email",
+        cause: "user_id",
         message:
-          "요청하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
+          "요청하신 user_id로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
       };
-      return result_errEmail;
+      return result_errUserId;
     }
     // 기존 비밀번호 확인
-    const thisUser = checkEmailObject[0];
+    const thisUser = checkUserIdObject[0];
     const hashedCorrectPassword = thisUser.password;
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -335,11 +330,11 @@ class userService {
     }
     // 사용자 삭제
     const updatedUser = await User.delete({
-      email,
+      user_id,
     });
     const updatedUserString = JSON.stringify(updatedUser);
     const updatedUserObject = JSON.parse(updatedUserString);
-    const checkUpdatedUser = await User.findByEmail({ email });
+    const checkUpdatedUser = await User.findByUserId({ user_id });
     const checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
     const checkUpdatedUserObject = JSON.parse(checkUpdatedUserString);
     if (
@@ -349,7 +344,7 @@ class userService {
       const result_errDelete = {
         result: true,
         cause: "delete",
-        message: `${checkEmailObject[0].nickname}님의 회원정보 삭제를 실패했습니다.`,
+        message: `${checkUserIdObject[0].nickname}님의 회원정보 삭제를 실패했습니다.`,
       };
       return result_errDelete;
     } else if (
@@ -359,7 +354,7 @@ class userService {
       const result_success = {
         result: true,
         cause: "success",
-        message: `${checkEmailObject[0].nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.`,
+        message: `${checkUserIdObject[0].nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.`,
       };
       return result_success;
     }

@@ -147,13 +147,13 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
  */
 // GET: 현재 사용자 정보 조회 기능
 var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, currentUser, err_2, result_err;
+    var user_id, currentUser, err_2, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                email = req.email;
-                return [4 /*yield*/, userService_1.default.getCurrentUser({ email: email })];
+                user_id = req.user_id;
+                return [4 /*yield*/, userService_1.default.getCurrentUser({ user_id: user_id })];
             case 1:
                 currentUser = _a.sent();
                 console.log(currentUser);
@@ -245,7 +245,7 @@ var userRegister = function (req, res, next) { return __awaiter(void 0, void 0, 
 }); };
 /**
  * @swagger
- * /user/register:
+ * /signup:
  *   post:
  *     summary: 회원가입
  *     description: email과 nickname은 중복 검사가 필요합니다.
@@ -284,8 +284,8 @@ var userRegister = function (req, res, next) { return __awaiter(void 0, void 0, 
  *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
  */
 // POST: 로그인
-var userLogin = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, password, logedinUser, err_4, result_err;
+var userSignin = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var email, password, signinUser, err_4, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -294,9 +294,9 @@ var userLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
                 password = req.body.password;
                 return [4 /*yield*/, userService_1.default.getUser({ email: email, password: password })];
             case 1:
-                logedinUser = _a.sent();
-                console.log(logedinUser);
-                res.status(200).json(logedinUser);
+                signinUser = _a.sent();
+                console.log(signinUser);
+                res.status(200).json(signinUser);
                 return [3 /*break*/, 3];
             case 2:
                 err_4 = _a.sent();
@@ -314,7 +314,7 @@ var userLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
 }); };
 /**
  * @swagger
- * /user/login:
+ * /signin:
  *   post:
  *     summary: 로그인
  *     description: email과 password가 필요합니다.
@@ -366,17 +366,17 @@ var userLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
  */
 // POST: 회원정보 수정
 var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, currentPassword, password, nickname, updateUser, err_5, result_err;
+    var user_id, currentPassword, password, nickname, updateUser, err_5, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                email = req.email;
+                user_id = req.user_id;
                 currentPassword = req.body.currentPassword;
                 password = req.body.password;
                 nickname = req.body.nickname;
                 return [4 /*yield*/, userService_1.default.updateUser({
-                        email: email,
+                        user_id: user_id,
                         currentPassword: currentPassword,
                         password: password,
                         nickname: nickname,
@@ -444,15 +444,15 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  */
 // DELETE: 회원정보 삭제
 var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, password, deleteUser, err_6, result_err;
+    var user_id, password, deleteUser, err_6, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                email = req.email;
+                user_id = req.user_id;
                 password = req.body.password;
                 return [4 /*yield*/, userService_1.default.deleteUser({
-                        email: email,
+                        user_id: user_id,
                         password: password,
                     })];
             case 1:
@@ -577,8 +577,8 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검섹
 userRouter.get("/user", authMiddleware_1.default, userCurrent); // 현재 사용자 정보 조회
-userRouter.post("/user/register", userRegister); // 자체 회원가입
-userRouter.post("/user/login", userLogin); // 로그인
+userRouter.post("/signup", userRegister); // 자체 회원가입
+userRouter.post("/signin", userSignin); // 로그인
 userRouter.put("/user", authMiddleware_1.default, userUpdate); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete("/user", authMiddleware_1.default, userDelete); // 유저 삭제
 module.exports = userRouter;

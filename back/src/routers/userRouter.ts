@@ -84,9 +84,10 @@ const userCurrent = async (
   next: express.NextFunction
 ) => {
   try {
-    const email = req.email;
+    // const email = req.email;  // user_id로 변경
+    const user_id = req.user_id;
     // console.log("라우터에서 토큰 확인: ", email);
-    const currentUser = await userService.getCurrentUser({ email });
+    const currentUser = await userService.getCurrentUser({ user_id });
     console.log(currentUser);
     res.status(200).json(currentUser);
   } catch (err) {
@@ -165,7 +166,7 @@ const userRegister = async (
 };
 /**
  * @swagger
- * /user/register:
+ * /signup:
  *   post:
  *     summary: 회원가입
  *     description: email과 nickname은 중복 검사가 필요합니다.
@@ -205,7 +206,7 @@ const userRegister = async (
  */
 
 // POST: 로그인
-const userLogin = async (
+const userSignin = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -213,9 +214,9 @@ const userLogin = async (
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const logedinUser = await userService.getUser({ email, password });
-    console.log(logedinUser);
-    res.status(200).json(logedinUser);
+    const signinUser = await userService.getUser({ email, password });
+    console.log(signinUser);
+    res.status(200).json(signinUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -228,7 +229,7 @@ const userLogin = async (
 };
 /**
  * @swagger
- * /user/login:
+ * /signin:
  *   post:
  *     summary: 로그인
  *     description: email과 password가 필요합니다.
@@ -286,12 +287,13 @@ const userUpdate = async (
   next: express.NextFunction
 ) => {
   try {
-    const email = req.email;
+    // const email = req.email;  // user_id로 변경
+    const user_id = req.user_id;
     const currentPassword = req.body.currentPassword;
     const password = req.body.password;
     const nickname = req.body.nickname;
     const updateUser = await userService.updateUser({
-      email,
+      user_id,
       currentPassword,
       password,
       nickname,
@@ -358,10 +360,11 @@ const userDelete = async (
   next: express.NextFunction
 ) => {
   try {
-    const email = req.email;
+    // const email = req.email;  // user_id로 변경
+    const user_id = req.user_id;
     const password = req.body.password;
     const deleteUser = await userService.deleteUser({
-      email,
+      user_id,
       password,
     });
     console.log(deleteUser);
@@ -481,8 +484,8 @@ const userDelete = async (
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검섹
 userRouter.get("/user", authMiddleware, userCurrent); // 현재 사용자 정보 조회
-userRouter.post("/user/register", userRegister); // 자체 회원가입
-userRouter.post("/user/login", userLogin); // 로그인
+userRouter.post("/signup", userRegister); // 자체 회원가입
+userRouter.post("/signin", userSignin); // 로그인
 userRouter.put("/user", authMiddleware, userUpdate); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete("/user", authMiddleware, userDelete); // 유저 삭제
 // (FE요청) 삭제

@@ -76,12 +76,12 @@ var userService = /** @class */ (function () {
     };
     //// 현재 사용자 조회
     userService.getCurrentUser = function (_a) {
-        var email = _a.email;
+        var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var currentUser, currentUserString, currentUserObject, i, result_errEmail, result_errEmail, thisUser, result_success;
+            var currentUser, currentUserString, currentUserObject, i, result_errUserId, result_errUserId, thisUser, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    case 0: return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
                     case 1:
                         currentUser = _b.sent();
                         currentUserString = JSON.stringify(currentUser);
@@ -95,20 +95,20 @@ var userService = /** @class */ (function () {
                         // const countUsersString = JSON.stringify(countUsers);
                         // const countUsersObject = JSON.parse(countUsersString);
                         if (currentUserObject.length === 0) {
-                            result_errEmail = {
+                            result_errUserId = {
                                 result: false,
-                                cause: "email",
-                                message: "입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
+                                cause: "user_id",
+                                message: "입력하신 user_id로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
                             };
-                            return [2 /*return*/, result_errEmail];
+                            return [2 /*return*/, result_errUserId];
                         }
                         else if (currentUserObject.length > 1) {
-                            result_errEmail = {
+                            result_errUserId = {
                                 result: false,
-                                cause: "email",
-                                message: "[확인요망]: 해당 email로 가입된 계정이 DB상 두개 이상입니다. 확인해 주세요.",
+                                cause: "user_id",
+                                message: "[확인요망]: 해당 user_id로 조회된 계정이 DB상 두개 이상입니다. 확인해 주세요.",
                             };
-                            return [2 /*return*/, result_errEmail];
+                            return [2 /*return*/, result_errUserId];
                         }
                         thisUser = currentUserObject[0];
                         result_success = Object.assign({
@@ -155,7 +155,7 @@ var userService = /** @class */ (function () {
                             return [2 /*return*/, result_errPassword];
                         }
                         secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
-                        token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                        token = jsonwebtoken_1.default.sign({ user_id: thisUser.user_id }, secretKey);
                         delete thisUser.password;
                         delete thisUser.user_id;
                         result_success = Object.assign({
@@ -241,25 +241,25 @@ var userService = /** @class */ (function () {
     };
     //// 회원 정보 수정
     userService.updateUser = function (_a) {
-        var email = _a.email, currentPassword = _a.currentPassword, password = _a.password, nickname = _a.nickname;
+        var user_id = _a.user_id, currentPassword = _a.currentPassword, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, updatedUser, updatedUserString, updatedUserObject, checkUpdatedUser, checkUpdatedUserString, checkUpdatedUserObject, result_success;
+            var checkUserId, checkUserIdString, checkUserIdObject, result_errUserId, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, updatedUser, updatedUserString, updatedUserObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    case 0: return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
                     case 1:
-                        checkEmail = _b.sent();
-                        checkEmailString = JSON.stringify(checkEmail);
-                        checkEmailObject = JSON.parse(checkEmailString);
-                        if (checkEmailObject.length === 0) {
-                            result_errEmail = {
+                        checkUserId = _b.sent();
+                        checkUserIdString = JSON.stringify(checkUserId);
+                        checkUserIdObject = JSON.parse(checkUserIdString);
+                        if (checkUserIdObject.length === 0) {
+                            result_errUserId = {
                                 result: false,
-                                cause: "email",
-                                message: "입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
+                                cause: "user_id",
+                                message: "입력하신 user_id로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
                             };
-                            return [2 /*return*/, result_errEmail];
+                            return [2 /*return*/, result_errUserId];
                         }
-                        thisUser = checkEmailObject[0];
+                        thisUser = checkUserIdObject[0];
                         hashedCorrectPassword = thisUser.password;
                         return [4 /*yield*/, bcrypt_1.default.compare(currentPassword, hashedCorrectPassword)];
                     case 2:
@@ -278,7 +278,7 @@ var userService = /** @class */ (function () {
                         checkNicknameString = JSON.stringify(checkNickname);
                         checkNicknameObject = JSON.parse(checkNicknameString);
                         if (checkNicknameObject.length == 1 &&
-                            checkNicknameObject[0].email == email) {
+                            checkNicknameObject[0].user_id == user_id) {
                             console.log("안내: 입력된 nickname은 기존 nickname과 동일하며, 회원정보 수정이 계속 진행됩니다.");
                         }
                         else if (checkNicknameObject.length !== 0) {
@@ -294,7 +294,7 @@ var userService = /** @class */ (function () {
                         // 비밀번호 해쉬화
                         password = _b.sent();
                         return [4 /*yield*/, User_1.default.update({
-                                email: email,
+                                user_id: user_id,
                                 password: password,
                                 nickname: nickname,
                             })];
@@ -302,13 +302,7 @@ var userService = /** @class */ (function () {
                         updatedUser = _b.sent();
                         updatedUserString = JSON.stringify(updatedUser);
                         updatedUserObject = JSON.parse(updatedUserString);
-                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
-                    case 6:
-                        checkUpdatedUser = _b.sent();
-                        checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
-                        checkUpdatedUserObject = JSON.parse(checkUpdatedUserString);
-                        if (updatedUserObject.affectedRows == 1 &&
-                            checkUpdatedUserObject.length == 1) {
+                        if (updatedUserObject.affectedRows == 1) {
                             result_success = {
                                 result: true,
                                 cause: "success",
@@ -375,25 +369,25 @@ var userService = /** @class */ (function () {
     // }
     //// 회원정보 삭제
     userService.deleteUser = function (_a) {
-        var email = _a.email, password = _a.password;
+        var user_id = _a.user_id, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, updatedUser, updatedUserString, updatedUserObject, checkUpdatedUser, checkUpdatedUserString, checkUpdatedUserObject, result_errDelete, result_success;
+            var checkUserId, checkUserIdString, checkUserIdObject, result_errUserId, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, updatedUser, updatedUserString, updatedUserObject, checkUpdatedUser, checkUpdatedUserString, checkUpdatedUserObject, result_errDelete, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    case 0: return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
                     case 1:
-                        checkEmail = _b.sent();
-                        checkEmailString = JSON.stringify(checkEmail);
-                        checkEmailObject = JSON.parse(checkEmailString);
-                        if (checkEmailObject.length === 0) {
-                            result_errEmail = {
+                        checkUserId = _b.sent();
+                        checkUserIdString = JSON.stringify(checkUserId);
+                        checkUserIdObject = JSON.parse(checkUserIdString);
+                        if (checkUserIdObject.length === 0) {
+                            result_errUserId = {
                                 result: false,
-                                cause: "email",
-                                message: "요청하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
+                                cause: "user_id",
+                                message: "요청하신 user_id로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
                             };
-                            return [2 /*return*/, result_errEmail];
+                            return [2 /*return*/, result_errUserId];
                         }
-                        thisUser = checkEmailObject[0];
+                        thisUser = checkUserIdObject[0];
                         hashedCorrectPassword = thisUser.password;
                         return [4 /*yield*/, bcrypt_1.default.compare(password, hashedCorrectPassword)];
                     case 2:
@@ -407,13 +401,13 @@ var userService = /** @class */ (function () {
                             return [2 /*return*/, result_errPassword];
                         }
                         return [4 /*yield*/, User_1.default.delete({
-                                email: email,
+                                user_id: user_id,
                             })];
                     case 3:
                         updatedUser = _b.sent();
                         updatedUserString = JSON.stringify(updatedUser);
                         updatedUserObject = JSON.parse(updatedUserString);
-                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
                     case 4:
                         checkUpdatedUser = _b.sent();
                         checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
@@ -423,7 +417,7 @@ var userService = /** @class */ (function () {
                             result_errDelete = {
                                 result: true,
                                 cause: "delete",
-                                message: "".concat(checkEmailObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uB97C \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."),
+                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uB97C \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."),
                             };
                             return [2 /*return*/, result_errDelete];
                         }
@@ -432,7 +426,7 @@ var userService = /** @class */ (function () {
                             result_success = {
                                 result: true,
                                 cause: "success",
-                                message: "".concat(checkEmailObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
+                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
                             };
                             return [2 /*return*/, result_success];
                         }
