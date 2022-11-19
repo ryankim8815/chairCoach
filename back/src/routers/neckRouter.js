@@ -68,16 +68,16 @@ var uploadMiddleware_1 = __importDefault(require("../middlewares/uploadMiddlewar
 var neckRouter = express.Router();
 // GET: 전체 거북목 테스트 결과 조회 기능
 var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var allUsers, err_1, result_err;
+    var allNecks, err_1, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, neckService_1.default.getAllNecks()];
             case 1:
-                allUsers = _a.sent();
-                console.log(allUsers);
-                res.status(200).json(allUsers);
+                allNecks = _a.sent();
+                console.log(allNecks);
+                res.status(200).json(allNecks);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
@@ -145,9 +145,97 @@ var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0
  *                       score: 50
  *                       created_at: 2022-11-01T01:01:01.000Z
  */
+// GET: 특정 유저의 거북목 테스트 결과 조회
+var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, Necks, err_2, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                user_id = req.params.user_id;
+                return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
+            case 1:
+                Necks = _a.sent();
+                console.log(Necks);
+                res.status(200).json(Necks);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "neckResults api에서 오류가 발생했습니다.",
+                };
+                console.log(result_err);
+                res.status(200).json(result_err);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /user/{user_id}/neck:
+ *   get:
+ *     summary: 특정 유저의 거북목 테스트 결과 조회
+ *     description: 로그인한 사용자만 이용 가능합니다.
+ *     tags: ["neckRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: 해당 유저의 거북목 결과 조회가 성공적으로 이뤄졌습니다.
+ *                 count:
+ *                   type: int
+ *                   example: 100
+ *                 list:
+ *                   type: object
+ *                   properties:
+ *                     neck_id:
+ *                       type: string
+ *                     filename:
+ *                       type: strin
+ *                     result:
+ *                       type: stringg
+ *                     score:
+ *                       type: int
+ *                     created_at:
+ *                       type: timstamp
+ *                   example:
+ *                     - neck_id: fawa524tweryht3w
+ *                       filename: etg634eftg3re.jpg
+ *                       result: 1.23
+ *                       score: 70
+ *                       created_at: 2022-11-03T04:52:32.000Z
+ *                     - neck_id: sdyg5346yw34er35
+ *                       filename: ert35ertg3w5tger.jpg
+ *                       result: 2.03
+ *                       score: 50
+ *                       created_at: 2022-11-01T01:01:01.000Z
+ */
 // POST: 거북목 테스트 결과 기록
 var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, filename, result, score, allUsers, err_2, result_err;
+    var user_id, filename, result, score, allUsers, err_3, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -168,7 +256,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 res.status(200).json(allUsers);
                 return [3 /*break*/, 3];
             case 2:
-                err_2 = _a.sent();
+                err_3 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
@@ -221,6 +309,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
  */
-neckRouter.get("/necks", neckResultList);
-neckRouter.post("/neck", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), neckCreate);
+neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
+neckRouter.get("/user/:user_id/neck", neckResults); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.post("/neck", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), neckCreate); // 거북목 테스트 결과 기록
 module.exports = neckRouter;

@@ -124,7 +124,10 @@ const swaggerDefinition = {
             type: "string",
           },
           result: {
-            type: "string",
+            type: "flost",
+          },
+          score: {
+            type: "int",
           },
           created_at: {
             type: "timstamp",

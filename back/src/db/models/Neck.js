@@ -42,6 +42,7 @@ var database_1 = __importDefault(require("../database"));
 var Neck = /** @class */ (function () {
     function Neck() {
     }
+    // 전체 기록 조회
     Neck.findAll = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, rows, fields;
@@ -58,6 +59,7 @@ var Neck = /** @class */ (function () {
             });
         });
     };
+    // 전체 기록 개수 조회
     Neck.countAll = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, rows, fields;
@@ -73,6 +75,44 @@ var Neck = /** @class */ (function () {
             });
         });
     };
+    // 특정 유저의 기록 조회
+    Neck.findByUserId = function (_a) {
+        var user_id = _a.user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT * FROM necks WHERE `user_id` = ?",
+                            values: [user_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        console.log("row: ", rows);
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    // 특정 유저의 기록 개수 조회
+    Neck.countByUserId = function (_a) {
+        var user_id = _a.user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT count(neck_id) AS cnt FROM necks WHERE `user_id` = ?",
+                            values: [user_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    // 기록 등록
     Neck.create = function (_a) {
         var neck_id = _a.neck_id, user_id = _a.user_id, result = _a.result, score = _a.score, filename = _a.filename, created_at = _a.created_at;
         return __awaiter(this, void 0, void 0, function () {

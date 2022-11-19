@@ -45,7 +45,7 @@ moment_timezone_1.default.tz.setDefault("Asia/Seoul");
 var neckService = /** @class */ (function () {
     function neckService() {
     }
-    //// 모든 사용자 조회
+    //// 모든 거북목 테스트 결과 조회
     neckService.getAllNecks = function () {
         return __awaiter(this, void 0, void 0, function () {
             var allNecks, allNecksString, allNecksObject, i, countNecks, countNecksString, countNecksObject, result_success;
@@ -69,6 +69,36 @@ var neckService = /** @class */ (function () {
                             cause: "success",
                             message: "\uBAA8\uB4E0 \uAC70\uBD81\uBAA9 \uACB0\uACFC \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                         }, { count: countNecksObject[0].cnt, list: allNecksObject });
+                        return [2 /*return*/, result_success];
+                }
+            });
+        });
+    };
+    //// 특정 유저의 거북목 테스트 결과 조회
+    neckService.getNecks = function (_a) {
+        var user_id = _a.user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var Necks, NecksString, NecksObject, i, countNecks, countNecksString, countNecksObject, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Neck_1.default.findByUserId({ user_id: user_id })];
+                    case 1:
+                        Necks = _b.sent();
+                        NecksString = JSON.stringify(Necks);
+                        NecksObject = JSON.parse(NecksString);
+                        for (i = 0; i < NecksObject.length; i++) {
+                            delete NecksObject[i].user_id;
+                        }
+                        return [4 /*yield*/, Neck_1.default.countByUserId({ user_id: user_id })];
+                    case 2:
+                        countNecks = _b.sent();
+                        countNecksString = JSON.stringify(countNecks);
+                        countNecksObject = JSON.parse(countNecksString);
+                        result_success = Object.assign({
+                            result: true,
+                            cause: "success",
+                            message: "\uBAA8\uB4E0 \uAC70\uBD81\uBAA9 \uACB0\uACFC \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                        }, { count: countNecksObject[0].cnt, list: NecksObject });
                         return [2 /*return*/, result_success];
                 }
             });
