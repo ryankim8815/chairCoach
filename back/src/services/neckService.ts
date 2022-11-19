@@ -43,7 +43,7 @@ class neckService {
       {
         result: true,
         cause: "success",
-        message: `모든 거북목 결과 조회가 성공적으로 이뤄졌습니다.`,
+        message: `해당 유저의 거북목 결과 조회가 성공적으로 이뤄졌습니다.`,
       },
       { count: countNecksObject[0].cnt, list: NecksObject }
     );

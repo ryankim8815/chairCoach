@@ -97,7 +97,7 @@ var neckService = /** @class */ (function () {
                         result_success = Object.assign({
                             result: true,
                             cause: "success",
-                            message: "\uBAA8\uB4E0 \uAC70\uBD81\uBAA9 \uACB0\uACFC \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                            message: "\uD574\uB2F9 \uC720\uC800\uC758 \uAC70\uBD81\uBAA9 \uACB0\uACFC \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                         }, { count: countNecksObject[0].cnt, list: NecksObject });
                         return [2 /*return*/, result_success];
                 }
