@@ -62,29 +62,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var express = __importStar(require("express"));
-var neckService_1 = __importDefault(require("../services/neckService"));
+var bodyService_1 = __importDefault(require("../services/bodyService"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
-var uploadMiddleware_1 = __importDefault(require("../middlewares/uploadMiddleware"));
-var neckRouter = express.Router();
-// GET: 전체 거북목 테스트 결과 조회 기능
-var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var allNecks, err_1, result_err;
+var bodyRouter = express.Router();
+// GET: 전체 운동 기록 조회 기능
+var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var allBodies, err_1, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, neckService_1.default.getAllNecks()];
+                return [4 /*yield*/, bodyService_1.default.getAllBodies()];
             case 1:
-                allNecks = _a.sent();
-                console.log(allNecks);
-                res.status(200).json(allNecks);
+                allBodies = _a.sent();
+                console.log(allBodies);
+                res.status(200).json(allBodies);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
-                    message: "neckResultList api에서 오류가 발생했습니다.",
+                    message: "bodyRecordlist api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
                 res.status(200).json(result_err);
@@ -95,11 +94,11 @@ var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0
 }); };
 /**
  * @swagger
- * /necks:
+ * /bodies:
  *   get:
- *     summary: 전체 거북목 테스트 결과 조회
- *     description: 전체 거북목 테스트 결과 조회
- *     tags: ["neckRouter"]
+ *     summary: 전체 운동 기록 조회 기능
+ *     description: 전체 운동 기록 조회 기능
+ *     tags: ["bodyRouter"]
  *     responses:
  *       200:
  *         description: successful operation
@@ -116,55 +115,51 @@ var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: 모든 거북목 결과 조회가 성공적으로 이뤄졌습니다.
+ *                   example: 전체 운동 기록 조회가 성공적으로 이뤄졌습니다.
  *                 count:
  *                   type: int
  *                   example: 10000
  *                 list:
  *                   type: object
  *                   properties:
- *                     neck_id:
+ *                     body_id:
  *                       type: string
- *                     filename:
- *                       type: strin
- *                     result:
- *                       type: stringg
- *                     score:
- *                       type: int
- *                     created_at:
+ *                     tag:
+ *                       type: string
+ *                     start_time:
+ *                       type: timstamp
+ *                     end_time:
  *                       type: timstamp
  *                   example:
- *                     - neck_id: fawa524tweryht3w
- *                       filename: etg634eftg3re.jpg
- *                       result: 1.23
- *                       score: 70
- *                       created_at: 2022-11-03T04:52:32.000Z
- *                     - neck_id: sdyg5346yw34er35
- *                       filename: ert35ertg3w5tger.jpg
- *                       result: 2.03
- *                       score: 50
- *                       created_at: 2022-11-01T01:01:01.000Z
+ *                     - body_id: fawa524tweryht3w
+ *                       tag: neck
+ *                       start_time: 2022-11-03T04:52:32.000Z
+ *                       end_time: 2022-11-03T04:52:32.000Z
+ *                     - body_id: fawa524tweryht3w
+ *                       tag: neck
+ *                       start_time: 2022-11-03T04:52:32.000Z
+ *                       end_time: 2022-11-01T01:01:01.000Z
  */
-// GET: 특정 유저의 거북목 테스트 결과 조회
-var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, Necks, err_2, result_err;
+// GET: 특정 유저의 운동 기록 조회
+var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, Bodies, err_2, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user_id = req.user_id;
-                return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
+                return [4 /*yield*/, bodyService_1.default.getBodies({ user_id: user_id })];
             case 1:
-                Necks = _a.sent();
-                console.log(Necks);
-                res.status(200).json(Necks);
+                Bodies = _a.sent();
+                console.log(Bodies);
+                res.status(200).json(Bodies);
                 return [3 /*break*/, 3];
             case 2:
                 err_2 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
-                    message: "neckResults api에서 오류가 발생했습니다.",
+                    message: "bodyRecords api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
                 res.status(200).json(result_err);
@@ -175,11 +170,11 @@ var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, v
 }); };
 /**
  * @swagger
- * /neck:
+ * /body:
  *   get:
- *     summary: 특정 유저의 거북목 테스트 결과 조회
+ *     summary: 특정 유저의 운동 기록 조회
  *     description: 로그인한 사용자만 이용 가능합니다.
- *     tags: ["neckRouter"]
+ *     tags: ["bodyRouter"]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -198,63 +193,55 @@ var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, v
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: 해당 유저의 거북목 결과 조회가 성공적으로 이뤄졌습니다.
+ *                   example: 해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.
  *                 count:
  *                   type: int
  *                   example: 100
  *                 list:
  *                   type: object
  *                   properties:
- *                     neck_id:
+ *                     body_id:
  *                       type: string
- *                     filename:
- *                       type: strin
- *                     result:
- *                       type: stringg
- *                     score:
- *                       type: int
- *                     created_at:
+ *                     tag:
+ *                       type: string
+ *                     start_time:
+ *                       type: intimstampt
+ *                     end_time:
  *                       type: timstamp
  *                   example:
- *                     - neck_id: fawa524tweryht3w
- *                       filename: etg634eftg3re.jpg
- *                       result: 1.23
- *                       score: 70
- *                       created_at: 2022-11-03T04:52:32.000Z
- *                     - neck_id: sdyg5346yw34er35
- *                       filename: ert35ertg3w5tger.jpg
- *                       result: 2.03
- *                       score: 50
- *                       created_at: 2022-11-01T01:01:01.000Z
+ *                     - body_id: fawa524tweryht3w
+ *                       tag: neck
+ *                       start_time: 2022-11-03T04:52:32.000Z
+ *                       end_time: 2022-11-03T04:52:32.000Z
+ *                     - body_id: fawa524tweryht3w
+ *                       tag: neck
+ *                       start_time: 2022-11-03T04:52:32.000Z
+ *                       end_time: 2022-11-01T01:01:01.000Z
  */
-// POST: 거북목 테스트 결과 기록
-var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, filename, result, score, allUsers, err_3, result_err;
+// POST: 특정 유저의 운동 기록 시작
+var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, tag, body, err_3, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user_id = req.user_id;
-                filename = req.file.filename;
-                result = req.body.result;
-                score = req.body.score;
-                return [4 /*yield*/, neckService_1.default.addNeck({
+                tag = req.body.tag;
+                return [4 /*yield*/, bodyService_1.default.addBody({
                         user_id: user_id,
-                        result: result,
-                        score: score,
-                        filename: filename,
+                        tag: tag,
                     })];
             case 1:
-                allUsers = _a.sent();
-                console.log(allUsers);
-                res.status(200).json(allUsers);
+                body = _a.sent();
+                console.log(body);
+                res.status(200).json(body);
                 return [3 /*break*/, 3];
             case 2:
                 err_3 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
-                    message: "neckCreate api에서 오류가 발생했습니다.",
+                    message: "bodyCreate api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
                 res.status(200).json(result_err);
@@ -265,26 +252,22 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
 }); };
 /**
  * @swagger
- * /neck:
+ * /body:
  *   post:
- *     summary: 거북목 테스트 결과 기록
+ *     summary: 특정 유저의 운동 기록 시작
  *     description: AI 모델이 완성되면 수정이 필요합니다.
- *     tags: ["neckRouter"]
+ *     tags: ["bodyRouter"]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       content:
- *        multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               file:
- *                type: string
- *                format: binary
- *               result:
- *                type: float
- *               score:
- *                type: int
+ *               tag:
+ *                 type: string
+ *                 example: neck
  *     responses:
  *       200:
  *         description: successful operation
@@ -301,9 +284,80 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
+ *                   example: 해당 유저의 운동 기록 시작이 성공적으로 이뤄졌습니다.
+ *                 body_id:
+ *                   type: string
+ *                   example: fawa524tweryht3w
  */
-neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
-neckRouter.get("/neck", authMiddleware_1.default, neckResults); // 특정 유저의 거북목 테스트 결과 조회
-neckRouter.post("/neck", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), neckCreate); // 거북목 테스트 결과 기록
-module.exports = neckRouter;
+// PATCH: 특정 유저의 운동 기록 종료
+var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, body_id, body, err_4, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                user_id = req.user_id;
+                body_id = req.body.body_id;
+                return [4 /*yield*/, bodyService_1.default.updateBody({
+                        body_id: body_id,
+                    })];
+            case 1:
+                body = _a.sent();
+                console.log(body);
+                res.status(200).json(body);
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "bodyUpdate api에서 오류가 발생했습니다.",
+                };
+                console.log(result_err);
+                res.status(200).json(result_err);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /body:
+ *   patch:
+ *     summary: 특정 유저의 운동 기록 종료
+ *     description: AI 모델이 완성되면 수정이 필요합니다.
+ *     tags: ["bodyRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               body_id:
+ *                 type: string
+ *                 example: fawa524tweryht3w
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: 해당 유저의 운동 기록 종료가 성공적으로 이뤄졌습니다.
+ */
+bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능
+bodyRouter.get("/body", authMiddleware_1.default, bodyRecords); // 특정 유저의 운동 기록 조회
+bodyRouter.post("/body", authMiddleware_1.default, bodyCreate); // 특정 유저의 운동 기록 시작
+bodyRouter.patch("/body", authMiddleware_1.default, bodyUpdate); // 특정 유저의 운동 기록 종료
+module.exports = bodyRouter;

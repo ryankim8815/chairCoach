@@ -56,11 +56,7 @@ var socialLoginService = /** @class */ (function () {
             var checkEmail, checkEmailString, checkEmailObject, result_errEmail, thisUser, secretKey, token, result_success, result_errDB, user_id, password, nickname, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, thisUser, secretKey, token, result_success, result_errDB;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        // email 확인
-                        console.log("서비스로 넘어왔나 확인email: ", email);
-                        console.log("서비스로 넘어왔나 확인access_token: ", access_token);
-                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
                     case 1:
                         checkEmail = _b.sent();
                         checkEmailString = JSON.stringify(checkEmail);

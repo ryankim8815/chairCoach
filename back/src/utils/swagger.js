@@ -39,6 +39,10 @@ var swaggerDefinition = {
             name: "neckRouter",
             description: "neckRouter.ts",
         },
+        {
+            name: "bodyRouter",
+            description: "bodyRouter.ts",
+        },
     ],
     host: "".concat(process.env.DB_HOST, ":").concat(process.env.SERVER_PORT),
     basePath: "/",

@@ -39,16 +39,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var database_1 = __importDefault(require("../database"));
-var User = /** @class */ (function () {
-    function User() {
+var Body = /** @class */ (function () {
+    function Body() {
     }
-    User.findAll = function () {
+    // 전체 기록 조회
+    Body.findAll = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, rows, fields;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "SELECT email,nickname,created_at  FROM users",
+                            sql: "SELECT * FROM bodies",
                         })];
                     case 1:
                         _a = _b.sent(), rows = _a[0], fields = _a[1];
@@ -57,13 +58,14 @@ var User = /** @class */ (function () {
             });
         });
     };
-    User.countAll = function () {
+    // 전체 기록 개수 조회
+    Body.countAll = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, rows, fields;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "SELECT count(user_id) AS cnt FROM users",
+                            sql: "SELECT count(body_id) AS cnt FROM bodies",
                         })];
                     case 1:
                         _a = _b.sent(), rows = _a[0], fields = _a[1];
@@ -72,14 +74,15 @@ var User = /** @class */ (function () {
             });
         });
     };
-    User.findByUserId = function (_a) {
+    // 특정 유저의 기록 조회
+    Body.findByUserId = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
             var _b, rows, fields;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "SELECT * FROM users WHERE `user_id` = ?",
+                            sql: "SELECT * FROM bodies WHERE `user_id` = ?",
                             values: [user_id],
                         })];
                     case 1:
@@ -89,90 +92,15 @@ var User = /** @class */ (function () {
             });
         });
     };
-    User.findByEmail = function (_a) {
-        var email = _a.email;
-        return __awaiter(this, void 0, void 0, function () {
-            var _b, rows, fields;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "SELECT * FROM users WHERE `email` = ?",
-                            values: [email],
-                        })];
-                    case 1:
-                        _b = _c.sent(), rows = _b[0], fields = _b[1];
-                        return [2 /*return*/, rows];
-                }
-            });
-        });
-    };
-    User.findByNickname = function (_a) {
-        var nickname = _a.nickname;
-        return __awaiter(this, void 0, void 0, function () {
-            var _b, rows, fields;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "SELECT * FROM users WHERE `nickname` = ?",
-                            values: [nickname],
-                        })];
-                    case 1:
-                        _b = _c.sent(), rows = _b[0], fields = _b[1];
-                        return [2 /*return*/, rows];
-                }
-            });
-        });
-    };
-    User.create = function (_a) {
-        var user_id = _a.user_id, email = _a.email, password = _a.password, nickname = _a.nickname, provider = _a.provider, created_at = _a.created_at;
-        return __awaiter(this, void 0, void 0, function () {
-            var _b, rows, fields;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "INSERT INTO users (user_id, email, password, nickname, provider, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-                            values: [user_id, email, password, nickname, provider, created_at],
-                        })];
-                    case 1:
-                        _b = _c.sent(), rows = _b[0], fields = _b[1];
-                        return [2 /*return*/, rows];
-                }
-            });
-        });
-    };
-    User.update = function (_a) {
-        var user_id = _a.user_id, password = _a.password, nickname = _a.nickname;
-        return __awaiter(this, void 0, void 0, function () {
-            var _b, rows, fields;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "UPDATE users SET `password` = ?, `nickname` = ? WHERE `user_id` = ?",
-                            values: [password, nickname, user_id],
-                        })];
-                    case 1:
-                        _b = _c.sent(), rows = _b[0], fields = _b[1];
-                        return [2 /*return*/, rows];
-                }
-            });
-        });
-    };
-    // (FE요청) 삭제
-    // static async updateFilename({ email, new_filename }) {
-    //   const [rows, fields] = await promisePool.query({
-    //     sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
-    //     values: [new_filename, email],
-    //   });
-    //   return rows;
-    // }
-    User.delete = function (_a) {
+    // 특정 유저의 기록 개수 조회
+    Body.countByUserId = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
             var _b, rows, fields;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "DELETE FROM users WHERE `user_id` = ?",
+                            sql: "SELECT count(body_id) AS cnt FROM bodies WHERE `user_id` = ?",
                             values: [user_id],
                         })];
                     case 1:
@@ -182,6 +110,60 @@ var User = /** @class */ (function () {
             });
         });
     };
-    return User;
+    // 기록 시작
+    Body.create = function (_a) {
+        var body_id = _a.body_id, user_id = _a.user_id, tag = _a.tag, start_time = _a.start_time;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "INSERT INTO bodies (body_id, user_id, tag, start_time) VALUES (?, ?, ?, ?)",
+                            values: [body_id, user_id, tag, start_time],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    // 특정 기록 조회 - 기록 종료 확인용
+    Body.findByBodyId = function (_a) {
+        var body_id = _a.body_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT start_time, end_time FROM bodies WHERE `body_id` = ?",
+                            values: [body_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    // 기록 종료
+    Body.patch = function (_a) {
+        var body_id = _a.body_id, end_time = _a.end_time;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "UPDATE bodies SET `end_time` = ? WHERE `body_id` = ?",
+                            values: [end_time, body_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    return Body;
 }());
-module.exports = User;
+module.exports = Body;

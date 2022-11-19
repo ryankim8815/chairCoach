@@ -11,8 +11,6 @@ class socialLoginService {
   //// 카카오 간편로그인 가입 & 로그인
   static async kakao({ email, access_token }) {
     // email 확인
-    console.log("서비스로 넘어왔나 확인email: ", email);
-    console.log("서비스로 넘어왔나 확인access_token: ", access_token);
     const checkEmail = await User.findByEmail({ email });
     const checkEmailString = JSON.stringify(checkEmail);
     const checkEmailObject = JSON.parse(checkEmailString);

@@ -7,6 +7,7 @@ var cors_1 = __importDefault(require("cors"));
 var userRouter_1 = __importDefault(require("./routers/userRouter"));
 var socialLoginRouter_1 = __importDefault(require("./routers/socialLoginRouter"));
 var neckRouter_1 = __importDefault(require("./routers/neckRouter"));
+var bodyRouter_1 = __importDefault(require("./routers/bodyRouter"));
 var swagger_1 = __importDefault(require("./utils/swagger"));
 var app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -19,6 +20,7 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use(userRouter_1.default);
 app.use(socialLoginRouter_1.default);
 app.use(neckRouter_1.default);
+app.use(bodyRouter_1.default);
 app.use(swagger_1.default);
 // 기본 페이지
 app.get("/", function (req, res) {

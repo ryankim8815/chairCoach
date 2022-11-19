@@ -84,7 +84,7 @@ const neckResults = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.params.user_id;
+    const user_id = req.user_id;
     const Necks = await neckService.getNecks({ user_id });
     console.log(Necks);
     res.status(200).json(Necks);
@@ -100,19 +100,13 @@ const neckResults = async (
 };
 /**
  * @swagger
- * /user/{user_id}/neck:
+ * /neck:
  *   get:
  *     summary: 특정 유저의 거북목 테스트 결과 조회
  *     description: 로그인한 사용자만 이용 가능합니다.
  *     tags: ["neckRouter"]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: user_id
- *         schema:
- *           type: string
- *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -230,7 +224,7 @@ const neckCreate = async (
  */
 
 neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
-neckRouter.get("/user/:user_id/neck", neckResults); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.get("/neck", authMiddleware, neckResults); // 특정 유저의 거북목 테스트 결과 조회
 neckRouter.post("/neck", authMiddleware, upload.single("file"), neckCreate); // 거북목 테스트 결과 기록
 
 export = neckRouter;

@@ -5,7 +5,6 @@ class Neck {
     const [rows, fields] = await promisePool.query({
       sql: "SELECT * FROM necks",
     });
-    console.log("row: ", rows);
     return rows;
   }
 
@@ -23,7 +22,6 @@ class Neck {
       sql: "SELECT * FROM necks WHERE `user_id` = ?",
       values: [user_id],
     });
-    console.log("row: ", rows);
     return rows;
   }
 

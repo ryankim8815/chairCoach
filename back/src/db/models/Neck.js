@@ -53,7 +53,6 @@ var Neck = /** @class */ (function () {
                         })];
                     case 1:
                         _a = _b.sent(), rows = _a[0], fields = _a[1];
-                        console.log("row: ", rows);
                         return [2 /*return*/, rows];
                 }
             });
@@ -88,7 +87,6 @@ var Neck = /** @class */ (function () {
                         })];
                     case 1:
                         _b = _c.sent(), rows = _b[0], fields = _b[1];
-                        console.log("row: ", rows);
                         return [2 /*return*/, rows];
                 }
             });

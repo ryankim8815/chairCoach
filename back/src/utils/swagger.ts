@@ -37,6 +37,10 @@ const swaggerDefinition = {
       name: "neckRouter",
       description: "neckRouter.ts",
     },
+    {
+      name: "bodyRouter",
+      description: "bodyRouter.ts",
+    },
   ],
   host: `${process.env.DB_HOST}:${process.env.SERVER_PORT}`,
   basePath: "/",

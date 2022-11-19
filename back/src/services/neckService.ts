@@ -1,6 +1,4 @@
-import User from "../db/models/User";
 import Neck from "../db/models/Neck";
-import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment-timezone";
 moment.tz.setDefault("Asia/Seoul");

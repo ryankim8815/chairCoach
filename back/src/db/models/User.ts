@@ -4,7 +4,6 @@ class User {
     const [rows, fields] = await promisePool.query({
       sql: "SELECT email,nickname,created_at  FROM users",
     });
-    console.log("row: ", rows);
     return rows;
   }
   static async countAll() {
