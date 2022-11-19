@@ -47,11 +47,9 @@ var User = /** @class */ (function () {
             var _a, rows, fields;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        console.log("User: before query");
-                        return [4 /*yield*/, database_1.default.query({
-                                sql: "SELECT email,nickname,created_at  FROM users",
-                            })];
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT email,nickname,created_at  FROM users",
+                        })];
                     case 1:
                         _a = _b.sent(), rows = _a[0], fields = _a[1];
                         console.log("row: ", rows);

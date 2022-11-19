@@ -34,8 +34,6 @@ const kakaoOauth = async (
   const code = req.body.code;
   const REST_API_KEY = process.env.KAKAO_REST_API_KEY;
   const REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
-  console.log("REST_API_KEY: ", REST_API_KEY);
-  console.log("REDIRECT_URI: ", REDIRECT_URI);
   try {
     let kakaoToken: any = "";
     await axios({
@@ -52,13 +50,11 @@ const kakaoOauth = async (
       }),
     })
       .then((res) => {
-        console.log("res: ", res);
         kakaoToken = res;
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log("kakaoToken: ", kakaoToken);
     ///////정보 받아오기///////
     let kakaoUser: any = "";
     const access_token = kakaoToken.access_token;
@@ -70,13 +66,11 @@ const kakaoOauth = async (
       url: "https://kapi.kakao.com/v1/oidc/userinfo",
     })
       .then((res) => {
-        console.log("res: ", res);
         kakaoUser = res;
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log("kakaoUser: ", kakaoUser);
     // 로그인 & 회원가입
     const email = kakaoUser.email;
     const logedinUser = await socialLoginService.kakao({ email, access_token });
@@ -270,5 +264,6 @@ const naverOauth = async (
 
 socialLoginRouter.post("/kakaoOauth", kakaoOauth);
 socialLoginRouter.post("/naverOauth", naverOauth);
+// socialLoginRouter.post("/googleOauth", googleOauth);
 
 export = socialLoginRouter;

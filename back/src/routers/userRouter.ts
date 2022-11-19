@@ -13,9 +13,7 @@ const userList = async (
   next: express.NextFunction
 ) => {
   try {
-    console.log("before service");
     const allUsers = await userService.getAllUsers();
-    console.log("after service");
     console.log(allUsers);
     res.status(200).json(allUsers);
   } catch (err) {

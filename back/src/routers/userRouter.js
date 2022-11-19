@@ -75,11 +75,9 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                console.log("before service");
                 return [4 /*yield*/, userService_1.default.getAllUsers()];
             case 1:
                 allUsers = _a.sent();
-                console.log("after service");
                 console.log(allUsers);
                 res.status(200).json(allUsers);
                 return [3 /*break*/, 3];

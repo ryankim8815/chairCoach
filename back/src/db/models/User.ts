@@ -1,7 +1,6 @@
 import promisePool from "../database";
 class User {
   static async findAll() {
-    console.log("User: before query");
     const [rows, fields] = await promisePool.query({
       sql: "SELECT email,nickname,created_at  FROM users",
     });

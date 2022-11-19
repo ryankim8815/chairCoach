@@ -92,8 +92,6 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 code = req.body.code;
                 REST_API_KEY = process.env.KAKAO_REST_API_KEY;
                 REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
-                console.log("REST_API_KEY: ", REST_API_KEY);
-                console.log("REDIRECT_URI: ", REDIRECT_URI);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 5, , 6]);
@@ -112,7 +110,6 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                         }),
                     })
                         .then(function (res) {
-                        console.log("res: ", res);
                         kakaoToken_1 = res;
                     })
                         .catch(function (err) {
@@ -120,7 +117,6 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     })];
             case 2:
                 _a.sent();
-                console.log("kakaoToken: ", kakaoToken_1);
                 kakaoUser_1 = "";
                 access_token = kakaoToken_1.access_token;
                 return [4 /*yield*/, (0, axios_1.default)({
@@ -131,7 +127,6 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                         url: "https://kapi.kakao.com/v1/oidc/userinfo",
                     })
                         .then(function (res) {
-                        console.log("res: ", res);
                         kakaoUser_1 = res;
                     })
                         .catch(function (err) {
@@ -139,7 +134,6 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     })];
             case 3:
                 _a.sent();
-                console.log("kakaoUser: ", kakaoUser_1);
                 email = kakaoUser_1.email;
                 return [4 /*yield*/, socialLoginService_1.default.kakao({ email: email, access_token: access_token })];
             case 4:

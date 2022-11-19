@@ -33,6 +33,10 @@ const swaggerDefinition = {
       name: "userRouter",
       description: "userRouter.ts",
     },
+    {
+      name: "neckRouter",
+      description: "neckRouter.ts",
+    },
   ],
   host: `${process.env.DB_HOST}:${process.env.SERVER_PORT}`,
   basePath: "/",

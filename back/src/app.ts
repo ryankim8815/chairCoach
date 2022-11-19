@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRouter from "./routers/userRouter";
 import socialLoginRouter from "./routers/socialLoginRouter";
+import neckRouter from "./routers/neckRouter";
 import swagger from "./utils/swagger";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(userRouter);
 app.use(socialLoginRouter);
+app.use(neckRouter);
 app.use(swagger);
 
 // 기본 페이지
