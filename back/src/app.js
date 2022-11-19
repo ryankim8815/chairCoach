@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var userRouter_1 = __importDefault(require("./routers/userRouter"));
+var socialLoginRouter_1 = __importDefault(require("./routers/socialLoginRouter"));
 var swagger_1 = __importDefault(require("./utils/swagger"));
 var app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -15,6 +16,7 @@ app.use(express_1.default.urlencoded({ extended: false }));
 // express.json(): POST 등의 요청과 함께 오는 json형태의 데이터를 인식하고 핸들링할 수 있게 함.
 // express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(userRouter_1.default);
+app.use(socialLoginRouter_1.default);
 app.use(swagger_1.default);
 // 기본 페이지
 app.get("/", function (req, res) {
