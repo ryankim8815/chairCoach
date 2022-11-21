@@ -27,7 +27,8 @@ const authMiddleware = async function (
     const jwtDecoded: any = jwt.verify(userToken, secretKey);
     const user_id = jwtDecoded.user_id;
     // console.log("미들웨어에서 토큰 확인: ", email);
-    req.user_id = user_id;
+    // req.user_id = user_id;
+    req.body.user_id = user_id;
     next();
   } catch (error) {
     const result_errInvalidToken = {

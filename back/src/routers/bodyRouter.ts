@@ -81,7 +81,7 @@ const bodyRecords = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const Bodies = await bodyService.getBodies({ user_id });
     console.log(Bodies);
     res.status(200).json(Bodies);
@@ -153,7 +153,7 @@ const bodyCreate = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const tag = req.body.tag;
     const body = await bodyService.addBody({
       user_id,
@@ -218,7 +218,7 @@ const bodyUpdate = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const body_id = req.body.body_id;
     const body = await bodyService.updateBody({
       body_id,

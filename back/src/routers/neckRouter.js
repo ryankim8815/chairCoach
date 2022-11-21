@@ -152,7 +152,7 @@ var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, v
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
             case 1:
                 Necks = _a.sent();
@@ -234,7 +234,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 filename = req.file.filename;
                 result = req.body.result;
                 score = req.body.score;

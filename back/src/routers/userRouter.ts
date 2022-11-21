@@ -1,5 +1,6 @@
 import * as express from "express";
 import authMiddleware from "../middlewares/authMiddleware";
+import * as validation from "../middlewares/validationMiddleware";
 // import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
 import userService from "../services/userService";
 // import asyncHandler from "../utils/asyncHandler";
@@ -83,7 +84,7 @@ const userCurrent = async (
 ) => {
   try {
     // const email = req.email;  // user_id로 변경
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     // console.log("라우터에서 토큰 확인: ", email);
     const currentUser = await userService.getCurrentUser({ user_id });
     console.log(currentUser);
@@ -286,7 +287,7 @@ const userUpdate = async (
 ) => {
   try {
     // const email = req.email;  // user_id로 변경
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const currentPassword = req.body.currentPassword;
     const password = req.body.password;
     const nickname = req.body.nickname;
@@ -359,7 +360,7 @@ const userDelete = async (
 ) => {
   try {
     // const email = req.email;  // user_id로 변경
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const password = req.body.password;
     const deleteUser = await userService.deleteUser({
       user_id,
@@ -481,11 +482,26 @@ const userDelete = async (
 
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검섹
-userRouter.get("/user", authMiddleware, userCurrent); // 현재 사용자 정보 조회
+userRouter.get(
+  "/user",
+  authMiddleware,
+  validation.validateUserCurrent,
+  userCurrent
+); // 현재 사용자 정보 조회
 userRouter.post("/signup", userRegister); // 자체 회원가입
 userRouter.post("/signin", userSignin); // 로그인
-userRouter.put("/user", authMiddleware, userUpdate); // 유저 정보 업데이트(pw & nickname)
-userRouter.delete("/user", authMiddleware, userDelete); // 유저 삭제
+userRouter.put(
+  "/user",
+  authMiddleware,
+  validation.validateUserUpdate,
+  userUpdate
+); // 유저 정보 업데이트(pw & nickname)
+userRouter.delete(
+  "/user",
+  authMiddleware,
+  validation.validateUserDelete,
+  userDelete
+); // 유저 삭제
 // (FE요청) 삭제
 // userRouter.post(
 //   "/u/upload_image",

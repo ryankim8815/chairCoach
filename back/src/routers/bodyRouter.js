@@ -147,7 +147,7 @@ var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, v
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 return [4 /*yield*/, bodyService_1.default.getBodies({ user_id: user_id })];
             case 1:
                 Bodies = _a.sent();
@@ -225,7 +225,7 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 tag = req.body.tag;
                 return [4 /*yield*/, bodyService_1.default.addBody({
                         user_id: user_id,
@@ -296,7 +296,7 @@ var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 body_id = req.body.body_id;
                 return [4 /*yield*/, bodyService_1.default.updateBody({
                         body_id: body_id,

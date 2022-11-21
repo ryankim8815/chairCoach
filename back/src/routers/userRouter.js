@@ -63,6 +63,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var express = __importStar(require("express"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
+var validation = __importStar(require("../middlewares/validationMiddleware"));
 // import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
 var userService_1 = __importDefault(require("../services/userService"));
 // import asyncHandler from "../utils/asyncHandler";
@@ -150,7 +151,7 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 return [4 /*yield*/, userService_1.default.getCurrentUser({ user_id: user_id })];
             case 1:
                 currentUser = _a.sent();
@@ -369,7 +370,7 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 currentPassword = req.body.currentPassword;
                 password = req.body.password;
                 nickname = req.body.nickname;
@@ -447,7 +448,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 password = req.body.password;
                 return [4 /*yield*/, userService_1.default.deleteUser({
                         user_id: user_id,
@@ -574,9 +575,9 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
 //  */
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검섹
-userRouter.get("/user", authMiddleware_1.default, userCurrent); // 현재 사용자 정보 조회
+userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회
 userRouter.post("/signup", userRegister); // 자체 회원가입
 userRouter.post("/signin", userSignin); // 로그인
-userRouter.put("/user", authMiddleware_1.default, userUpdate); // 유저 정보 업데이트(pw & nickname)
-userRouter.delete("/user", authMiddleware_1.default, userDelete); // 유저 삭제
+userRouter.put("/user", authMiddleware_1.default, validation.validateUserUpdate, userUpdate); // 유저 정보 업데이트(pw & nickname)
+userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDelete, userDelete); // 유저 삭제
 module.exports = userRouter;

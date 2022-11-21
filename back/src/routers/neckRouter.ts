@@ -84,7 +84,7 @@ const neckResults = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const Necks = await neckService.getNecks({ user_id });
     console.log(Necks);
     res.status(200).json(Necks);
@@ -160,7 +160,7 @@ const neckCreate = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const filename = req.file.filename;
     const result = req.body.result;
     const score = req.body.score;
