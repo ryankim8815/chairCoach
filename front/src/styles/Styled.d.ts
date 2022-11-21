@@ -5,5 +5,6 @@ declare module "styled-components" {
   export interface DefaultTheme {
     colors: ColorsTypes;
     fontSize: FontSizeTypes;
+    common: CommonTypes;
   }
 }
