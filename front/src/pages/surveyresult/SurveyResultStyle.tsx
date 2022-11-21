@@ -45,7 +45,8 @@ display:flex;
 flex-direction:column;
 background-color:#FFFFFF;
 margin-top:40px;
-aling-items:center;
+align-items:center;
+justify-content:space-evenly;
 `
 
 
@@ -73,4 +74,8 @@ font-weight:600;
 export const IconImg=styled.img`
 width:160px;
 height:160px;
+`
+
+export const BoldLetter=styled.span`
+font-weight:600;
 `
