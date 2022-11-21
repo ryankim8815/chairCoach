@@ -1,12 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import GlobalStyles from './../styles/InputSytle';
+import { ThemeProvider } from "styled-components";
+import theme from './../styles/Theme';
 
 function App() {
   return (
-    <div>
-      
-    </div>
+      <ThemeProvider theme={theme}>
+        <div>
+          <GlobalStyles />
+        </div>
+      </ThemeProvider>
   );
 }
 
