@@ -18,7 +18,7 @@ const validateUserCurrent = async function (
     const result_err = {
       result: false,
       cause: "type",
-      message: "api 요청시 잘못된 type을 첨부하여 오류가 발생했습니다.",
+      message: "api 요청시 잘못된 type 첨부: " + err.details[0].message,
     };
     console.log(result_err);
     // res.status(200).json(result_err);
@@ -43,7 +43,7 @@ const validateUserUpdate = async function (
     const result_err = {
       result: false,
       cause: "type",
-      message: "api 요청시 잘못된 type을 첨부하여 오류가 발생했습니다.",
+      message: "api 요청시 잘못된 type 첨부: " + err.details[0].message,
     };
     console.log(result_err);
     // res.status(200).json(result_err);
@@ -68,7 +68,7 @@ const validateUserDelete = async function (
     const result_err = {
       result: false,
       cause: "type",
-      message: "api 요청시 잘못된 type을 첨부하여 오류가 발생했습니다.",
+      message: "api 요청시 잘못된 type 첨부: " + err.details[0].message,
     };
     console.log(result_err);
     // res.status(200).json(result_err);

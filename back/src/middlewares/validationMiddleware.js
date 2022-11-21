@@ -56,7 +56,7 @@ var validateUserCurrent = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type을 첨부하여 오류가 발생했습니다.",
+                        message: "api 요청시 잘못된 type 첨부: " + err_1.details[0].message,
                     };
                     console.log(result_err);
                     // res.status(200).json(result_err);
@@ -94,7 +94,7 @@ var validateUserUpdate = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type을 첨부하여 오류가 발생했습니다.",
+                        message: "api 요청시 잘못된 type 첨부: " + err_2.details[0].message,
                     };
                     console.log(result_err);
                     // res.status(200).json(result_err);
@@ -132,7 +132,7 @@ var validateUserDelete = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type을 첨부하여 오류가 발생했습니다.",
+                        message: "api 요청시 잘못된 type 첨부: " + err_3.details[0].message,
                     };
                     console.log(result_err);
                     // res.status(200).json(result_err);
