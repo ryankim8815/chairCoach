@@ -64,6 +64,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express = __importStar(require("express"));
 var neckService_1 = __importDefault(require("../services/neckService"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
+var validation = __importStar(require("../middlewares/neckValidationMiddleware"));
 var uploadMiddleware_1 = __importDefault(require("../middlewares/uploadMiddleware"));
 var neckRouter = express.Router();
 // GET: 전체 거북목 테스트 결과 조회 기능
@@ -304,6 +305,8 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
  */
 neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
-neckRouter.get("/neck", authMiddleware_1.default, neckResults); // 특정 유저의 거북목 테스트 결과 조회
-neckRouter.post("/neck", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), neckCreate); // 거북목 테스트 결과 기록
+neckRouter.get("/neck", authMiddleware_1.default, validation.validateNeckResults, neckResults); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.post("/neck", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), 
+//   validation.validateNeckResult,
+neckCreate); // 거북목 테스트 결과 기록
 module.exports = neckRouter;

@@ -1,6 +1,7 @@
 import * as express from "express";
 import neckService from "../services/neckService";
 import authMiddleware from "../middlewares/authMiddleware";
+import * as validation from "../middlewares/neckValidationMiddleware";
 import upload from "../middlewares/uploadMiddleware";
 import type { MulterFile } from "../customType/multer.d";
 const neckRouter = express.Router();
@@ -224,7 +225,18 @@ const neckCreate = async (
  */
 
 neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
-neckRouter.get("/neck", authMiddleware, neckResults); // 특정 유저의 거북목 테스트 결과 조회
-neckRouter.post("/neck", authMiddleware, upload.single("file"), neckCreate); // 거북목 테스트 결과 기록
+neckRouter.get(
+  "/neck",
+  authMiddleware,
+  validation.validateNeckResults,
+  neckResults
+); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.post(
+  "/neck",
+  authMiddleware,
+  upload.single("file"),
+  //   validation.validateNeckResult,
+  neckCreate
+); // 거북목 테스트 결과 기록
 
 export = neckRouter;
