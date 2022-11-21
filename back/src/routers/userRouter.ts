@@ -488,8 +488,8 @@ userRouter.get(
   validation.validateUserCurrent,
   userCurrent
 ); // 현재 사용자 정보 조회
-userRouter.post("/signup", userRegister); // 자체 회원가입
-userRouter.post("/signin", userSignin); // 로그인
+userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
+userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
 userRouter.put(
   "/user",
   authMiddleware,

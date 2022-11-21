@@ -576,8 +576,8 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검섹
 userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회
-userRouter.post("/signup", userRegister); // 자체 회원가입
-userRouter.post("/signin", userSignin); // 로그인
+userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
+userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
 userRouter.put("/user", authMiddleware_1.default, validation.validateUserUpdate, userUpdate); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDelete, userDelete); // 유저 삭제
 module.exports = userRouter;
