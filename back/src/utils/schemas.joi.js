@@ -22,7 +22,7 @@ exports.userCreateSchema = joi_1.default.object().keys({
         .pattern(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"))
         .required(),
     nickname: joi_1.default.string()
-        .pattern(new RegExp("^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|].{2,8}$")) // 최소 2 자, 한글 영어 숫자
+        .pattern(new RegExp("^[A-Za-z0-9_-]{2,10}$")) // 최소 2~10 자, 영어 숫자
         .required(),
     //   user_id: Joi.number().required(), // test
 });
