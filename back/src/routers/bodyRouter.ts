@@ -1,7 +1,8 @@
 import * as express from "express";
 import bodyService from "../services/bodyService";
 import authMiddleware from "../middlewares/authMiddleware";
-import upload from "../middlewares/uploadMiddleware";
+import * as validation from "../middlewares/bodyValidationMiddleware";
+// import upload from "../middlewares/uploadMiddleware";
 import type { MulterFile } from "../customType/multer.d";
 const bodyRouter = express.Router();
 
@@ -213,12 +214,13 @@ const bodyCreate = async (
 
 // PATCH: 특정 유저의 운동 기록 종료
 const bodyUpdate = async (
-  req: express.Request & { files: MulterFile[] },
+  // req: express.Request & { files: MulterFile[] },
+  req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.body.user_id;
+    const user_id = req.body.user_id; // 확인하는 것으로 수정 예정
     const body_id = req.body.body_id;
     const body = await bodyService.updateBody({
       body_id,
@@ -273,8 +275,23 @@ const bodyUpdate = async (
  */
 
 bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능
-bodyRouter.get("/body", authMiddleware, bodyRecords); // 특정 유저의 운동 기록 조회
-bodyRouter.post("/body", authMiddleware, bodyCreate); // 특정 유저의 운동 기록 시작
-bodyRouter.patch("/body", authMiddleware, bodyUpdate); // 특정 유저의 운동 기록 종료
+bodyRouter.get(
+  "/body",
+  authMiddleware,
+  validation.validateBodyRecords,
+  bodyRecords
+); // 특정 유저의 운동 기록 조회
+bodyRouter.post(
+  "/body",
+  authMiddleware,
+  validation.validateBodyCreate,
+  bodyCreate
+); // 특정 유저의 운동 기록 시작
+bodyRouter.patch(
+  "/body",
+  authMiddleware,
+  validation.validateBodyUpdate,
+  bodyUpdate
+); // 특정 유저의 운동 기록 종료
 
 export = bodyRouter;

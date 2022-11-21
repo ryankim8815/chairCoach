@@ -307,6 +307,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
 neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
 neckRouter.get("/neck", authMiddleware_1.default, validation.validateNeckResults, neckResults); // 특정 유저의 거북목 테스트 결과 조회
 neckRouter.post("/neck", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), 
+////////// Multer로 인한 이슈 발생 //////////
 //   validation.validateNeckResult,
 neckCreate); // 거북목 테스트 결과 기록
 module.exports = neckRouter;

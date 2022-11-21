@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateNeckResult = exports.validateNeckResults = void 0;
-var neckSchemas_joi_1 = require("../utils/neckSchemas.joi");
-var validateNeckResults = function (req, res, next) {
+exports.validateBodyUpdate = exports.validateBodyCreate = exports.validateBodyRecords = void 0;
+var bodySchemas_joi_1 = require("../utils/bodySchemas.joi");
+var validateBodyRecords = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
         var body, err_1, result_err;
         return __generator(this, function (_a) {
@@ -46,12 +46,8 @@ var validateNeckResults = function (req, res, next) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     body = req.body;
-                    // const body = req;
-                    // console.log("REQQQQ: ", req);
-                    return [4 /*yield*/, neckSchemas_joi_1.neckResultsSchema.validateAsync(body)];
+                    return [4 /*yield*/, bodySchemas_joi_1.bodyRecordsSchema.validateAsync(body)];
                 case 1:
-                    // const body = req;
-                    // console.log("REQQQQ: ", req);
                     _a.sent();
                     next();
                     return [3 /*break*/, 3];
@@ -60,10 +56,9 @@ var validateNeckResults = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_1,
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    // res.status(200).json(result_err);
                     res.status(499).json(result_err);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -71,39 +66,62 @@ var validateNeckResults = function (req, res, next) {
         });
     });
 };
-exports.validateNeckResults = validateNeckResults;
-////////// Multer로 인한 이슈 발생 //////////
-var validateNeckResult = function (req, res, next) {
+exports.validateBodyRecords = validateBodyRecords;
+var validateBodyCreate = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
-        var body, file, err_2, result_err;
+        var body, err_2, result_err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 2, , 3]);
                     body = req.body;
-                    file = req.file;
-                    return [4 /*yield*/, neckSchemas_joi_1.neckResultSchema.validateAsync(body)];
+                    return [4 /*yield*/, bodySchemas_joi_1.bodyCreateSchema.validateAsync(body)];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, neckSchemas_joi_1.fileSchema.validateAsync(file)];
-                case 2:
-                    _a.sent();
                     next();
-                    return [3 /*break*/, 4];
-                case 3:
+                    return [3 /*break*/, 3];
+                case 2:
                     err_2 = _a.sent();
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_2,
                     };
-                    console.log(result_err, err_2);
-                    // res.status(200).json(result_err);
+                    console.log(result_err);
                     res.status(499).json(result_err);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });
 };
-exports.validateNeckResult = validateNeckResult;
+exports.validateBodyCreate = validateBodyCreate;
+var validateBodyUpdate = function (req, res, next) {
+    return __awaiter(this, void 0, void 0, function () {
+        var body, err_3, result_err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    body = req.body;
+                    return [4 /*yield*/, bodySchemas_joi_1.bodyUpdateSchema.validateAsync(body)];
+                case 1:
+                    _a.sent();
+                    next();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_3 = _a.sent();
+                    result_err = {
+                        result: false,
+                        cause: "type",
+                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_3,
+                    };
+                    console.log(result_err);
+                    res.status(499).json(result_err);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+};
+exports.validateBodyUpdate = validateBodyUpdate;

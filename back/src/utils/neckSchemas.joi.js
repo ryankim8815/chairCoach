@@ -9,6 +9,7 @@ exports.neckResultsSchema = joi_1.default.object().keys({
     user_id: joi_1.default.string().required(),
     //   user_id: Joi.number().required(), // test용
 });
+////////// Multer로 인한 이슈 발생 //////////
 exports.neckResultSchema = joi_1.default.object().keys({
     //   user_id: Joi.string().required(),
     //   user_id: Joi.number().required(), // test용

@@ -64,6 +64,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express = __importStar(require("express"));
 var bodyService_1 = __importDefault(require("../services/bodyService"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
+var validation = __importStar(require("../middlewares/bodyValidationMiddleware"));
 var bodyRouter = express.Router();
 // GET: 전체 운동 기록 조회 기능
 var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -290,7 +291,9 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   example: fawa524tweryht3w
  */
 // PATCH: 특정 유저의 운동 기록 종료
-var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+var bodyUpdate = function (
+// req: express.Request & { files: MulterFile[] },
+req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var user_id, body_id, body, err_4, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -357,7 +360,7 @@ var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   example: 해당 유저의 운동 기록 종료가 성공적으로 이뤄졌습니다.
  */
 bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능
-bodyRouter.get("/body", authMiddleware_1.default, bodyRecords); // 특정 유저의 운동 기록 조회
-bodyRouter.post("/body", authMiddleware_1.default, bodyCreate); // 특정 유저의 운동 기록 시작
-bodyRouter.patch("/body", authMiddleware_1.default, bodyUpdate); // 특정 유저의 운동 기록 종료
+bodyRouter.get("/body", authMiddleware_1.default, validation.validateBodyRecords, bodyRecords); // 특정 유저의 운동 기록 조회
+bodyRouter.post("/body", authMiddleware_1.default, validation.validateBodyCreate, bodyCreate); // 특정 유저의 운동 기록 시작
+bodyRouter.patch("/body", authMiddleware_1.default, validation.validateBodyUpdate, bodyUpdate); // 특정 유저의 운동 기록 종료
 module.exports = bodyRouter;

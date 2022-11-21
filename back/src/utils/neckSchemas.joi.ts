@@ -5,6 +5,7 @@ export const neckResultsSchema = Joi.object().keys({
   //   user_id: Joi.number().required(), // test용
 });
 
+////////// Multer로 인한 이슈 발생 //////////
 export const neckResultSchema = Joi.object().keys({
   //   user_id: Joi.string().required(),
   //   user_id: Joi.number().required(), // test용

@@ -235,6 +235,7 @@ neckRouter.post(
   "/neck",
   authMiddleware,
   upload.single("file"),
+  ////////// Multer로 인한 이슈 발생 //////////
   //   validation.validateNeckResult,
   neckCreate
 ); // 거북목 테스트 결과 기록
