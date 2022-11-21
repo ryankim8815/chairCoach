@@ -7,6 +7,7 @@ import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import NeckSurvey from './pages/necksurvey/NeckSurvey';
 import SurveyResult from './pages/surveyresult/SurveyResult';
+import AboutNeck from './pages/aboutneck/AboutNeck';
 function App() {
   return (
     <>
@@ -19,7 +20,7 @@ function App() {
           <Route path='/register' element={<Register/>}/>
           <Route path='/necksurvey' element={<NeckSurvey/>}/>
           <Route path='/surveyresult' element={<SurveyResult/>}/>
-          <Route path='/' element={<MainPage/>}/>
+          <Route path='/aboutneck' element={<AboutNeck/>}/>
 
         </Routes>
       </ThemeProvider>
