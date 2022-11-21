@@ -1,13 +1,12 @@
 import GlobalStyles from "./styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/Theme";
-import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/mainpage/Main";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import NeckSurvey from "./pages/necksurvey/NeckSurvey";
-
+import SurveyResult from "./pages/surveyresult/SurveyResult";
 function App() {
   return (
     <>
@@ -19,6 +18,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/necksurvey" element={<NeckSurvey />} />
+            <Route path="/surveyresult" element={<SurveyResult />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
