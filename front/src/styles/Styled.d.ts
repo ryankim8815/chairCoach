@@ -1,10 +1,16 @@
 import "styled-components";
-import { ColorsTypes, FontSizeTypes } from "./Theme";
+import { ColorsTypes, FontSizeTypes, CommonTypes } from "./Theme";
 
 declare module "styled-components" {
   export interface DefaultTheme {
     colors: ColorsTypes;
     fontSize: FontSizeTypes;
     common: CommonTypes;
+  }
+
+  export interface BtnStyle {
+    hover?: string;
+    check?: string;
+    size?: string;
   }
 }
