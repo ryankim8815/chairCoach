@@ -2,10 +2,13 @@ import styled, { css, BtnStyle } from "styled-components";
 import theme from "./Theme";
 
 const check = css<BtnStyle>`
-  border: 1px solid ${({ check }) => check === 'true' ? theme.colors.main : theme.colors.greyBorder};
+  border: 1px solid
+    ${({ check }) =>
+      check === "true" ? theme.colors.main : theme.colors.greyBorder};
   border-radius: 2px;
-  background: ${({ check }) => check === 'true' ? theme.colors.main : theme.colors.greyBtnBg};
-  color: ${({ check }) => check === 'true' ? '#fff' : theme.colors.greyText};
+  background: ${({ check }) =>
+    check === "true" ? theme.colors.main : theme.colors.greyBtnBg};
+  color: ${({ check }) => (check === "true" ? "#fff" : theme.colors.greyText)};
 `;
 
 // 마이페이지 버튼
@@ -18,9 +21,9 @@ export const SmallBtn = styled.button`
   font-size: 15px;
   color: ${({ theme }) => theme.colors.greyText};
 
-  transition: all .3s;
+  transition: all 0.3s;
 
-  &:hover{
+  &:hover {
     border: none;
     background: ${({ theme }) => theme.colors.main};
     color: #fff;
@@ -32,12 +35,12 @@ export const MiddleBtn = styled.button<BtnStyle>`
   width: 200px;
   height: 48px;
   border-radius: 2px;
-  background: ${({ hover }) => hover === 'true' ? theme.colors.mainDark : theme.colors.main};
+  background: ${({ hover }) =>
+    hover === "true" ? theme.colors.mainDark : theme.colors.main};
   color: #fff;
-  transition: .3s;
+  transition: 0.3s;
 
-
-  &:hover{
+  &:hover {
     background: ${({ theme }) => theme.colors.main};
   }
 `;
@@ -49,18 +52,18 @@ export const LoginBtn = styled.button`
   border-radius: 2px;
   background: ${({ theme }) => theme.colors.main};
   color: #fff;
-`
+`;
 
 // 회원가입, 회원정보 수정 버튼
 export const InputBtn = styled.button<BtnStyle>`
   width: 400px;
   height: 40px;
   ${check}
-`
+`;
 
 // 네, 아니오 / 다시하기, 나가기
 export const CheckBtn = styled.button<BtnStyle>`
-  width: ${({ size }) => size === 'big' ? '440px' : '200px'};
+  width: ${({ size }) => (size === "big" ? "440px" : "200px")};
   height: 48px;
   ${check}
 `;

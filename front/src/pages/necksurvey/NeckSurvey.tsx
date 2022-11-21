@@ -41,22 +41,21 @@ const NeckSurvey = () => {
   const [page, setPage] = useState(1);
   const [point, setPoint] = useState(0);
   const handlePage = () => {
-     setPage(page + 1);
+    setPage(page + 1);
   };
   const handlePoint = () => {
     setPoint(point + 1);
   };
-  useEffect(()=>{
-    if(page===11){
-        navigate("/surveyresult", {
-            state: {
-              point: point,
-            },
-          })
+  useEffect(() => {
+    if (page === 11) {
+      navigate("/surveyresult", {
+        state: {
+          point: point,
+        },
+      });
     }
-    
-  },[page])
-  console.log(page)
+  }, [page]);
+  console.log(page);
   return (
     <S.SurveyContainer>
       <S.TitleBox>

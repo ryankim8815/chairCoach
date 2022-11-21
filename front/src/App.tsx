@@ -2,7 +2,7 @@ import GlobalStyles from "./styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/Theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Main from "./pages/mainpage/Main";
+import Main from "./pages/main/Main";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import NeckSurvey from "./pages/necksurvey/NeckSurvey";
