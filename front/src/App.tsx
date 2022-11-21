@@ -6,6 +6,7 @@ import MainPage from './pages/mainpage/MainPage';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import NeckSurvey from './pages/necksurvey/NeckSurvey';
+import SurveyResult from './pages/surveyresult/SurveyResult';
 function App() {
   return (
     <>
@@ -17,7 +18,7 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/necksurvey' element={<NeckSurvey/>}/>
-          <Route path='/' element={<MainPage/>}/>
+          <Route path='/surveyresult' element={<SurveyResult/>}/>
           <Route path='/' element={<MainPage/>}/>
 
         </Routes>
