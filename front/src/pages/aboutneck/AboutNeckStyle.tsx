@@ -1,15 +1,18 @@
 import styled from "styled-components";
 
 export const WholePage = styled.div`
-  height: 1550px;
-  width: 100%;
+  ${({ theme }) => theme.common.contentMinLayout};
   background: ${({ theme }) => theme.colors.mainLight};
-  display: flex;
   flex-direction: column;
+  .inner {
+    ${({ theme }) => theme.common.inner};
+    padding: 120px 0;
+  }
 `;
 
 export const TitleBox = styled.div`
-  margin: 184px auto 0 auto;
+  margin: 0 auto;
+  text-align: center;
 `;
 
 export const Title = styled.span`

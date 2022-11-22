@@ -8,6 +8,7 @@ const AboutNeck = () => {
   const navigate = useNavigate();
   return (
     <S.WholePage>
+        <div className='inner'>
       <S.TitleBox>
         <S.Title>
           <S.Bold>거북목 증후군</S.Bold>에 대해 알아보아요.
@@ -88,6 +89,7 @@ const AboutNeck = () => {
           </S.BtnBox>
         </S.Title>
       </S.ChioceBox>
+      </div>
     </S.WholePage>
   );
 };

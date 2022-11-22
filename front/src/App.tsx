@@ -13,6 +13,7 @@ import NeckSurvey from './pages/necksurvey/NeckSurvey';
 import ChairCoach from './pages/chaircoach/ChairCoach';
 import SurveyResult from "./pages/surveyresult/SurveyResult";
 import AboutNeck from "./pages/aboutneck/AboutNeck";
+import NotificationStretching from "./pages/notificationStretching/NotificationStretching";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path='/chaircoach' element={<ChairCoach/>}/>
             <Route path="/surveyresult" element={<SurveyResult />} />
             <Route path="/aboutneck" element={<AboutNeck />} />
+            <Route path="/notificationstretching" element={<NotificationStretching/>}/>
           </Routes>
           <Footer/>
         </ThemeProvider>

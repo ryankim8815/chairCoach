@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 export const SurveyContainer = styled.div`
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+${({ theme }) => theme.common.contentMinLayout};
+${({ theme }) => theme.common.flexCenter};
   background: ${({ theme }) => theme.colors.mainLight};
   flex-direction: column;
+  .inner {
+    ${({ theme }) => theme.common.inner};
+    padding: 120px 0;
 `;
 
 export const ContentBox = styled.div`

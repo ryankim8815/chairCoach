@@ -26,6 +26,7 @@ const NeckSurvey = () => {
   console.log(page);
   return (
     <S.SurveyContainer>
+        <div className="inner">
       <S.TitleBox>
         <S.Title>거북목증후군 자가진단 테스트</S.Title>
         <S.Page>{page}/10</S.Page>
@@ -56,6 +57,7 @@ const NeckSurvey = () => {
           아니오
         </S.Btn>
       </S.ContentBox>
+      </div>
     </S.SurveyContainer>
   );
 };
