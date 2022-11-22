@@ -85,7 +85,7 @@ var validateBodyCreate = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_2,
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
                     res.status(499).json(result_err);
@@ -114,7 +114,7 @@ var validateBodyUpdate = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_3,
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
                     res.status(499).json(result_err);

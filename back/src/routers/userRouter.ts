@@ -1,10 +1,8 @@
 import * as express from "express";
 import authMiddleware from "../middlewares/authMiddleware";
 import * as validation from "../middlewares/validationMiddleware";
-// import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
 import userService from "../services/userService";
-// import asyncHandler from "../utils/asyncHandler";
-// import type { MulterFile } from "../customType/multer.d";  // (FE요청) 삭제
+
 const userRouter = express.Router();
 
 // GET: 사용자 리스트 조회 기능
@@ -83,9 +81,7 @@ const userCurrent = async (
   next: express.NextFunction
 ) => {
   try {
-    // const email = req.email;  // user_id로 변경
     const user_id = req.body.user_id;
-    // console.log("라우터에서 토큰 확인: ", email);
     const currentUser = await userService.getCurrentUser({ user_id });
     console.log(currentUser);
     res.status(200).json(currentUser);
@@ -286,7 +282,6 @@ const userUpdate = async (
   next: express.NextFunction
 ) => {
   try {
-    // const email = req.email;  // user_id로 변경
     const user_id = req.body.user_id;
     const currentPassword = req.body.currentPassword;
     const password = req.body.password;
@@ -359,7 +354,6 @@ const userDelete = async (
   next: express.NextFunction
 ) => {
   try {
-    // const email = req.email;  // user_id로 변경
     const user_id = req.body.user_id;
     const password = req.body.password;
     const deleteUser = await userService.deleteUser({
@@ -415,71 +409,6 @@ const userDelete = async (
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
 
-// (FE요청) 삭제
-// //// POST: 프로필 사진 업로드
-// const userUploadImage = async (
-//   req: express.Request & { files: MulterFile[] },
-//   res: express.Response,
-//   next: express.NextFunction
-// ) => {
-//   try {
-//     const email = req.email;
-//     // const old_filename = req.filename;
-//     const new_filename = req.file.filename;
-//     console.log("new_filename: ", new_filename);
-//     const uploadUserImage = await userService.uploadUserImage({
-//       email,
-//       new_filename,
-//     });
-//     console.log(uploadUserImage);
-//     res.status(200).json(uploadUserImage);
-//   } catch (err) {
-//     const result_err = {
-//       result: false,
-//       cause: "api",
-//       message: "uploadUserImage api에서 오류가 발생했습니다.",
-//     };
-//     console.log(result_err);
-//     res.status(200).json(result_err);
-//   }
-// };
-// /**
-//  * @swagger
-//  * /u/upload_image:
-//  *   post:
-//  *     summary: 프로필 사진 업로드
-//  *     description: 확장자, 사이즈, 용량 제한에 대한 사항은 아직 미정입니다.
-//  *     tags: ["userRouter"]
-//  *     security:
-//  *       - bearerAuth: []
-//  *     requestBody:
-//  *       content:
-//  *        multipart/form-data:
-//  *           schema:
-//  *             type: object
-//  *             properties:
-//  *               file:
-//  *                type: string
-//  *                format: binary
-//  *     responses:
-//  *       200:
-//  *         description: successful operation
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 result:
-//  *                   type: boolean
-//  *                   example: true
-//  *                 cause:
-//  *                   type: string
-//  *                   example: success
-//  *                 message:
-//  *                   type: string
-//  *                   example: ${nickname}님의 프로필 사진 업데이트가 성공적으로 이뤄졌습니다.
-//  */
-
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검섹
 userRouter.get(
@@ -502,12 +431,5 @@ userRouter.delete(
   validation.validateUserDelete,
   userDelete
 ); // 유저 삭제
-// (FE요청) 삭제
-// userRouter.post(
-//   "/u/upload_image",
-//   authMiddleware,
-//   upload.single("file"),
-//   userUploadImage
-// ); // 프로필 사진 업로드(기존 사진 자동 삭제)
-// 능
+
 export = userRouter;

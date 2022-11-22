@@ -64,10 +64,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express = __importStar(require("express"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 var validation = __importStar(require("../middlewares/validationMiddleware"));
-// import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
 var userService_1 = __importDefault(require("../services/userService"));
-// import asyncHandler from "../utils/asyncHandler";
-// import type { MulterFile } from "../customType/multer.d";  // (FE요청) 삭제
 var userRouter = express.Router();
 // GET: 사용자 리스트 조회 기능
 var userList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -509,70 +506,6 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: string
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
-// (FE요청) 삭제
-// //// POST: 프로필 사진 업로드
-// const userUploadImage = async (
-//   req: express.Request & { files: MulterFile[] },
-//   res: express.Response,
-//   next: express.NextFunction
-// ) => {
-//   try {
-//     const email = req.email;
-//     // const old_filename = req.filename;
-//     const new_filename = req.file.filename;
-//     console.log("new_filename: ", new_filename);
-//     const uploadUserImage = await userService.uploadUserImage({
-//       email,
-//       new_filename,
-//     });
-//     console.log(uploadUserImage);
-//     res.status(200).json(uploadUserImage);
-//   } catch (err) {
-//     const result_err = {
-//       result: false,
-//       cause: "api",
-//       message: "uploadUserImage api에서 오류가 발생했습니다.",
-//     };
-//     console.log(result_err);
-//     res.status(200).json(result_err);
-//   }
-// };
-// /**
-//  * @swagger
-//  * /u/upload_image:
-//  *   post:
-//  *     summary: 프로필 사진 업로드
-//  *     description: 확장자, 사이즈, 용량 제한에 대한 사항은 아직 미정입니다.
-//  *     tags: ["userRouter"]
-//  *     security:
-//  *       - bearerAuth: []
-//  *     requestBody:
-//  *       content:
-//  *        multipart/form-data:
-//  *           schema:
-//  *             type: object
-//  *             properties:
-//  *               file:
-//  *                type: string
-//  *                format: binary
-//  *     responses:
-//  *       200:
-//  *         description: successful operation
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 result:
-//  *                   type: boolean
-//  *                   example: true
-//  *                 cause:
-//  *                   type: string
-//  *                   example: success
-//  *                 message:
-//  *                   type: string
-//  *                   example: ${nickname}님의 프로필 사진 업데이트가 성공적으로 이뤄졌습니다.
-//  */
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검섹
 userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회

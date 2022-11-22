@@ -5,9 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express_1 = __importDefault(require("express"));
 var swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 var swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
-// import path from "path";
-// import yaml from "yamljs";
-// import userRouter from "../routers/userRouter";
 var cors_1 = __importDefault(require("cors"));
 require("dotenv").config();
 var swagger = (0, express_1.default)();
@@ -67,10 +64,6 @@ var swaggerDefinition = {
                     nickname: {
                         type: "string",
                     },
-                    // (FE요청) 삭제
-                    // profile_image: {
-                    //   type: "string",
-                    // },
                     provider: {
                         type: "string",
                     },
@@ -79,22 +72,6 @@ var swaggerDefinition = {
                     },
                 },
             },
-            // (FE요청) 삭제
-            // attendances: {
-            //   type: "object",
-            //   properties: {
-            //     atnd_id: {
-            //       type: "string",
-            //       description: "PK, UUID",
-            //     },
-            //     user_id: {
-            //       type: "string",
-            //     },
-            //     created_at: {
-            //       type: "timstamp",
-            //     },
-            //   },
-            // },
             body: {
                 type: "object",
                 properties: {
@@ -140,28 +117,6 @@ var swaggerDefinition = {
                     },
                 },
             },
-            // (FE요청) 삭제
-            // self: {
-            //   type: "object",
-            //   properties: {
-            //     self_id: {
-            //       type: "string",
-            //       description: "PK, UUID",
-            //     },
-            //     user_id: {
-            //       type: "string",
-            //     },
-            //     filename: {
-            //       type: "string",
-            //     },
-            //     result: {
-            //       type: "string",
-            //     },
-            //     created_at: {
-            //       type: "timstamp",
-            //     },
-            //   },
-            // },
         },
     },
 };
@@ -170,8 +125,7 @@ var option = {
     apis: ["./src/routers/*.js"], // 디렉터리 선언이 상대경로인데 본 파일 기준이 아니라 back 기준으로 선언해야함. 이것 때문에 시간이 오래 걸림
     //   swaggerPaths,
 };
-var swaggerSpec = (0, swagger_jsdoc_1.default)(option); // json
-// const swaggerSpec = yaml.load(path.join(__dirname, "./build.yarm")); // yaml
+var swaggerSpec = (0, swagger_jsdoc_1.default)(option);
 // Docs in Json format
 swagger.get("/swagger.json", function (req, res) {
     res.setHeader("Content-Type", "application/json");

@@ -1,6 +1,5 @@
 import mysql from "mysql2";
 import "dotenv/config";
-// require("dotenv").config();
 
 const dbConfig = {
   host: process.env.DB_HOST,
@@ -10,7 +9,6 @@ const dbConfig = {
   connectionLimit: 10,
   queueLimit: 0, // unlimited
 };
-// console.log("dbconfig check: ", dbConfig);
 const pool = mysql.createPool(dbConfig);
 const promisePool = pool.promise();
 //

@@ -59,7 +59,6 @@ var validateUserCurrent = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    // res.status(200).json(result_err);
                     res.status(499).json(result_err);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -76,16 +75,8 @@ var validateUserCreate = function (req, res, next) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     body = req.body;
-                    // console.log("req: ", req);
-                    // console.log("typeof req: ", typeof req);
-                    // console.log("req.body.user_id: ", req.body.user_id);
-                    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
                     return [4 /*yield*/, schemas_joi_1.userCreateSchema.validateAsync(body)];
                 case 1:
-                    // console.log("req: ", req);
-                    // console.log("typeof req: ", typeof req);
-                    // console.log("req.body.user_id: ", req.body.user_id);
-                    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
                     _a.sent();
                     next();
                     return [3 /*break*/, 3];
@@ -97,7 +88,6 @@ var validateUserCreate = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    // res.status(200).json(result_err);
                     res.status(499).json(result_err);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -127,7 +117,6 @@ var validateUserLogin = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    // res.status(200).json(result_err);
                     res.status(499).json(result_err);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -144,16 +133,8 @@ var validateUserUpdate = function (req, res, next) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     body = req.body;
-                    // console.log("req: ", req);
-                    // console.log("typeof req: ", typeof req);
-                    // console.log("req.body.user_id: ", req.body.user_id);
-                    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
                     return [4 /*yield*/, schemas_joi_1.userUpdateSchema.validateAsync(body)];
                 case 1:
-                    // console.log("req: ", req);
-                    // console.log("typeof req: ", typeof req);
-                    // console.log("req.body.user_id: ", req.body.user_id);
-                    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
                     _a.sent();
                     next();
                     return [3 /*break*/, 3];
@@ -165,7 +146,6 @@ var validateUserUpdate = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    // res.status(200).json(result_err);
                     res.status(499).json(result_err);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -182,16 +162,8 @@ var validateUserDelete = function (req, res, next) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     body = req.body;
-                    // console.log("req: ", req);
-                    // console.log("typeof req: ", typeof req);
-                    // console.log("req.body.user_id: ", req.body.user_id);
-                    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
                     return [4 /*yield*/, schemas_joi_1.userDeleteSchema.validateAsync(body)];
                 case 1:
-                    // console.log("req: ", req);
-                    // console.log("typeof req: ", typeof req);
-                    // console.log("req.body.user_id: ", req.body.user_id);
-                    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
                     _a.sent();
                     next();
                     return [3 /*break*/, 3];
@@ -203,7 +175,6 @@ var validateUserDelete = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    // res.status(200).json(result_err);
                     res.status(499).json(result_err);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];

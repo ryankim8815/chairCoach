@@ -45,8 +45,6 @@ var authMiddleware = function (req, res, next) {
         var userToken, result_errNoToken, secretKey, jwtDecoded, user_id, result_errInvalidToken;
         return __generator(this, function (_c) {
             userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
-            // 이 토큰은 jwt 토큰 문자열이거나, 혹은 "null" 문자열임.
-            // 토큰이 "null" 일 경우, login_required 가 필요한 서비스 사용을 제한함.
             if (userToken === "null") {
                 result_errNoToken = {
                     result: false,
@@ -57,14 +55,10 @@ var authMiddleware = function (req, res, next) {
                 res.status(400).json(result_errNoToken);
                 return [2 /*return*/];
             }
-            // 해당 token 이 정상적인 token인지 확인 -> 토큰에 담긴 user_id 정보 추출
             try {
                 secretKey = process.env.JWT_SECRET_KEY || "secret-key";
                 jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
                 user_id = jwtDecoded.user_id;
-                // console.log("미들웨어에서 토큰 확인: ", email);
-                // req.user_id = user_id;
-                // req.user_id = { user_id: user_id };
                 req.body.user_id = user_id;
                 next();
             }

@@ -7,11 +7,9 @@ exports.fileSchema = exports.neckResultSchema = exports.neckResultsSchema = void
 var joi_1 = __importDefault(require("joi"));
 exports.neckResultsSchema = joi_1.default.object().keys({
     user_id: joi_1.default.string().required(),
-    //   user_id: Joi.number().required(), // test용
 });
 exports.neckResultSchema = joi_1.default.object().keys({
     user_id: joi_1.default.string().required(),
-    //   user_id: Joi.number().required(), // test용
     result: joi_1.default.number().required(),
     score: joi_1.default.number().integer().required(), // int
 });

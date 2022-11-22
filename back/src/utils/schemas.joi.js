@@ -7,7 +7,6 @@ exports.userDeleteSchema = exports.userUpdateSchema = exports.userLoginSchema = 
 var joi_1 = __importDefault(require("joi"));
 exports.userCurrentSchema = joi_1.default.object().keys({
     user_id: joi_1.default.string().required(),
-    //   user_id: Joi.number().required(), // test
 });
 exports.userCreateSchema = joi_1.default.object().keys({
     email: joi_1.default.string()
@@ -24,7 +23,6 @@ exports.userCreateSchema = joi_1.default.object().keys({
     nickname: joi_1.default.string()
         .pattern(new RegExp("^[A-Za-z0-9_-]{2,10}$")) // 최소 2~10 자, 영어 숫자
         .required(),
-    //   user_id: Joi.number().required(), // test
 });
 exports.userLoginSchema = joi_1.default.object().keys({
     email: joi_1.default.string()
@@ -42,11 +40,8 @@ exports.userUpdateSchema = joi_1.default.object().keys({
     currentPassword: joi_1.default.string().required(),
     password: joi_1.default.string().required(),
     nickname: joi_1.default.string().required(),
-    //   user_id: Joi.number().required(), // test
 });
 exports.userDeleteSchema = joi_1.default.object().keys({
     user_id: joi_1.default.string().required(),
     password: joi_1.default.string().required(),
-    //   password: Joi.number().required(),
-    //   user_id: Joi.number().required(), // test
 });

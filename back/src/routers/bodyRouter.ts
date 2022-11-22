@@ -2,7 +2,6 @@ import * as express from "express";
 import bodyService from "../services/bodyService";
 import authMiddleware from "../middlewares/authMiddleware";
 import * as validation from "../middlewares/bodyValidationMiddleware";
-// import upload from "../middlewares/uploadMiddleware";
 import type { MulterFile } from "../customType/multer.d";
 const bodyRouter = express.Router();
 

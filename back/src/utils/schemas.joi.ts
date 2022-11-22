@@ -2,7 +2,6 @@ import Joi from "joi";
 
 export const userCurrentSchema = Joi.object().keys({
   user_id: Joi.string().required(),
-  //   user_id: Joi.number().required(), // test
 });
 
 export const userCreateSchema = Joi.object().keys({
@@ -24,7 +23,6 @@ export const userCreateSchema = Joi.object().keys({
   nickname: Joi.string()
     .pattern(new RegExp("^[A-Za-z0-9_-]{2,10}$")) // 최소 2~10 자, 영어 숫자
     .required(),
-  //   user_id: Joi.number().required(), // test
 });
 
 export const userLoginSchema = Joi.object().keys({
@@ -44,12 +42,9 @@ export const userUpdateSchema = Joi.object().keys({
   currentPassword: Joi.string().required(),
   password: Joi.string().required(),
   nickname: Joi.string().required(),
-  //   user_id: Joi.number().required(), // test
 });
 
 export const userDeleteSchema = Joi.object().keys({
   user_id: Joi.string().required(),
   password: Joi.string().required(),
-  //   password: Joi.number().required(),
-  //   user_id: Joi.number().required(), // test
 });

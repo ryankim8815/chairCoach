@@ -157,14 +157,6 @@ var User = /** @class */ (function () {
             });
         });
     };
-    // (FE요청) 삭제
-    // static async updateFilename({ email, new_filename }) {
-    //   const [rows, fields] = await promisePool.query({
-    //     sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
-    //     values: [new_filename, email],
-    //   });
-    //   return rows;
-    // }
     User.delete = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {

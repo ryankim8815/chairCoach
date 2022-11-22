@@ -46,12 +46,8 @@ var validateNeckResults = function (req, res, next) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     body = req.body;
-                    // const body = req;
-                    // console.log("REQQQQ: ", req);
                     return [4 /*yield*/, neckSchemas_joi_1.neckResultsSchema.validateAsync(body)];
                 case 1:
-                    // const body = req;
-                    // console.log("REQQQQ: ", req);
                     _a.sent();
                     next();
                     return [3 /*break*/, 3];
@@ -72,7 +68,6 @@ var validateNeckResults = function (req, res, next) {
     });
 };
 exports.validateNeckResults = validateNeckResults;
-////////// Multer로 인한 이슈 발생 //////////
 var validateNeckResult = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
         var body, file, err_2, result_err;
@@ -80,7 +75,6 @@ var validateNeckResult = function (req, res, next) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    console.log("REQ: ", req);
                     body = req.body;
                     file = req.file;
                     return [4 /*yield*/, neckSchemas_joi_1.neckResultSchema.validateAsync(body)];
@@ -96,7 +90,7 @@ var validateNeckResult = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_2,
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err, err_2);
                     // res.status(200).json(result_err);

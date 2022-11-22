@@ -23,7 +23,6 @@ const validateUserCurrent = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    // res.status(200).json(result_err);
     res.status(499).json(result_err);
   }
 };
@@ -35,10 +34,6 @@ const validateUserCreate = async function (
 ) {
   try {
     const body = req.body;
-    // console.log("req: ", req);
-    // console.log("typeof req: ", typeof req);
-    // console.log("req.body.user_id: ", req.body.user_id);
-    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
     await userCreateSchema.validateAsync(body);
     next();
   } catch (err) {
@@ -48,7 +43,6 @@ const validateUserCreate = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    // res.status(200).json(result_err);
     res.status(499).json(result_err);
   }
 };
@@ -69,7 +63,6 @@ const validateUserLogin = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    // res.status(200).json(result_err);
     res.status(499).json(result_err);
   }
 };
@@ -81,10 +74,6 @@ const validateUserUpdate = async function (
 ) {
   try {
     const body = req.body;
-    // console.log("req: ", req);
-    // console.log("typeof req: ", typeof req);
-    // console.log("req.body.user_id: ", req.body.user_id);
-    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
     await userUpdateSchema.validateAsync(body);
     next();
   } catch (err) {
@@ -94,7 +83,6 @@ const validateUserUpdate = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    // res.status(200).json(result_err);
     res.status(499).json(result_err);
   }
 };
@@ -106,10 +94,6 @@ const validateUserDelete = async function (
 ) {
   try {
     const body = req.body;
-    // console.log("req: ", req);
-    // console.log("typeof req: ", typeof req);
-    // console.log("req.body.user_id: ", req.body.user_id);
-    // console.log("typeof req.body.user_id: ", typeof req.body.user_id);
     await userDeleteSchema.validateAsync(body);
     next();
   } catch (err) {
@@ -119,12 +103,10 @@ const validateUserDelete = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    // res.status(200).json(result_err);
     res.status(499).json(result_err);
   }
 };
 
-// export = validationMiddleware;
 export {
   validateUserCurrent,
   validateUserCreate,

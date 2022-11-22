@@ -2,12 +2,10 @@ import Joi from "joi";
 
 export const neckResultsSchema = Joi.object().keys({
   user_id: Joi.string().required(),
-  //   user_id: Joi.number().required(), // test용
 });
 
 export const neckResultSchema = Joi.object().keys({
   user_id: Joi.string().required(),
-  //   user_id: Joi.number().required(), // test용
   result: Joi.number().required(), // float
   score: Joi.number().integer().required(), // int
 });
