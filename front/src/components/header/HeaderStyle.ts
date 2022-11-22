@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const HeaderLayout = styled.header`
   position: fixed;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 64px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.greyBorder};
