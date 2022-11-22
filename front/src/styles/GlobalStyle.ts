@@ -15,6 +15,11 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Noto Sans KR', sans-serif;
   }
 
+  a{
+    text-decoration: none;
+    color: #333;
+  }
+
   span{display: inline-block}
   
   button{

@@ -1,29 +1,23 @@
-import styled, {css} from "styled-components";
+import styled from "styled-components";
 
-const flexSpaceBetween = css`
-  ${({ theme }) => theme.common.flexCenter};
-  justify-content: space-between;
-  
-`;
-
-export const HeaderCon = styled.header`
+const HeaderStyle = styled.header`
+  position: fixed;
+  width: 100%;
   height: 64px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.greyBorder};
+  background: #fff;
+
   .inner{
     ${({ theme }) => theme.common.flexCenter};
+    justify-content: space-between;
     max-width: 1180px;
+    height: 100%;
     margin: 0 auto;
 
-    nav{
-      ul{
-        ${flexSpaceBetween}
-        li{}
-      }
-    }
-
-    .login{
-      ul{
-        ${flexSpaceBetween}
-      }
+    .left{
+      ${({ theme }) => theme.common.flexCenter};
     }
   }
 `;
+
+export default HeaderStyle;

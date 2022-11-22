@@ -1,27 +1,28 @@
+import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.svg'
-import { HeaderCon } from './HeaderStyle'
+
+import Nav from './Nav';
+import NavLogout from './NavLogout';
+import NavLogin from './NavLogin';
+
+// style
+import HeaderStyle from './HeaderStyle'
+
 
 const Header = () => {
+  const navigate = useNavigate(); 
   return (
-    <HeaderCon>
+    <HeaderStyle>
       <div className='inner'>
-        <h1><img src={logo} alt="chair coach" /></h1>
-        <nav>
-          <ul>
-            <li>체어코치</li>
-            <li>거북목진단</li>
-            <li><button>마이페이지</button></li>
-          </ul>
-        </nav>
-
-        <div className='login'>
-          <ul>
-            <li>로그인</li>
-            <li>회원가입</li>
-          </ul>
+        <div className='left'>
+          <h1 onClick={()=>navigate('/')}><img  src={logo} alt="chair coach" /></h1>
+          <Nav/>
         </div>
+
+        {/* <NavLogin/> */}
+        <NavLogout/>
       </div>
-    </HeaderCon>
+    </HeaderStyle>
   )
 }
 
