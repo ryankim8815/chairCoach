@@ -43,7 +43,7 @@ const NeckGuide = () => {
           </S.Card>
         </S.LowCont>
         <S.Btn onClick={()=>{
-            navigate('/chaircoach')
+            navigate('/neckinspection')
         }}>확인 완료</S.Btn>
       </div>
     </S.NotificationLayout>

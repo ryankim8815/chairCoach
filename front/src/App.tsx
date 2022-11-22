@@ -5,7 +5,6 @@ import theme from './styles/Theme';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Header from './components/header/Header';
 import Footer from "./components/footer/Footer";
-
 import Main from "./pages/main/Main";
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
@@ -14,6 +13,7 @@ import ChairCoach from './pages/chairCoach/ChairCoach';
 import SurveyResult from "./pages/surveyResult/SurveyResult";
 import AboutNeck from "./pages/aboutNeck/AboutNeck";
 import NeckGuide from "./pages/neckGuide/NeckGuide";
+import NeckInspection from "./pages/neckInspection/NeckInspection";
 
 function App() {
   return (
@@ -30,7 +30,9 @@ function App() {
             <Route path='/chaircoach' element={<ChairCoach/>}/>
             <Route path="/surveyresult" element={<SurveyResult />} />
             <Route path="/aboutneck" element={<AboutNeck />} />
-            <Route path="/notificationstretching" element={<NeckGuide/>}/>
+            <Route path="/neckguide" element={<NeckGuide/>}/>
+            <Route path="/neckinspection" element={<NeckInspection/>}/>
+            
           </Routes>
           <Footer/>
         </ThemeProvider>
