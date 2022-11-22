@@ -5,7 +5,7 @@ import aboutNeck2 from "../../assets/img/aboutneck2.png";
 import aboutNeck3 from "../../assets/img/aboutneck3.png";
 import { useNavigate } from "react-router-dom";
 const AboutNeck = () => {
-    const navigate=useNavigate();
+  const navigate = useNavigate();
   return (
     <S.WholePage>
       <S.TitleBox>
@@ -58,9 +58,11 @@ const AboutNeck = () => {
         <S.Title>
           <S.Bold>거북목 진단</S.Bold>
           <S.BtnBox>
-            <S.ChoiceBtn onClick={()=>{
-                navigate('/necksurvey')
-            }}>
+            <S.ChoiceBtn
+              onClick={() => {
+                navigate("/necksurvey");
+              }}
+            >
               <S.BtnText>
                 <S.SubTitle>거북목증후군 자가진단 테스트</S.SubTitle>
                 <S.Text>
@@ -70,9 +72,11 @@ const AboutNeck = () => {
                 </S.Text>
               </S.BtnText>
             </S.ChoiceBtn>
-            <S.ChoiceBtn onClick={()=>{
-                navigate('/chaircoach')
-            }}>
+            <S.ChoiceBtn
+              onClick={() => {
+                navigate("/chaircoach");
+              }}
+            >
               <S.BtnText>
                 <S.SubTitle>체어코치 AI를 통한 거북목 진단</S.SubTitle>
                 <S.Text>
