@@ -13,7 +13,7 @@ flex-direction:column;
 export const ContentBox=styled.div`
 width:800px;
 height:588px;
-background-color:white;
+background-color:#FFFFFF;
 display:flex;
 flex-direction:column;
 align-items:center;
