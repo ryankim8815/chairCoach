@@ -1,11 +1,11 @@
 import React from "react";
-import * as S from "./NotificationStretchingStyle";
+import * as S from "./NeckGuideStyle";
 import notification1 from '../../assets/img/notification1.jpg'
 import notification2 from '../../assets/img/notification2.jpg'
 import notification4 from '../../assets/img/notification4.jpg'
 import { useNavigate } from "react-router-dom";
 
-const NotificationStretching = () => {
+const NeckGuide = () => {
     const navigate=useNavigate();
   return (
     <S.NotificationLayout>
@@ -50,4 +50,4 @@ const NotificationStretching = () => {
   );
 };
 
-export default NotificationStretching;
+export default NeckGuide;

@@ -9,11 +9,11 @@ import Footer from "./components/footer/Footer";
 import Main from "./pages/main/Main";
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
-import NeckSurvey from './pages/necksurvey/NeckSurvey';
-import ChairCoach from './pages/chaircoach/ChairCoach';
-import SurveyResult from "./pages/surveyresult/SurveyResult";
-import AboutNeck from "./pages/aboutneck/AboutNeck";
-import NotificationStretching from "./pages/notificationStretching/NotificationStretching";
+import NeckSurvey from './pages/neckSurvey/NeckSurvey';
+import ChairCoach from './pages/chairCoach/ChairCoach';
+import SurveyResult from "./pages/surveyResult/SurveyResult";
+import AboutNeck from "./pages/aboutNeck/AboutNeck";
+import NeckGuide from "./pages/neckGuide/NeckGuide";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
             <Route path='/chaircoach' element={<ChairCoach/>}/>
             <Route path="/surveyresult" element={<SurveyResult />} />
             <Route path="/aboutneck" element={<AboutNeck />} />
-            <Route path="/notificationstretching" element={<NotificationStretching/>}/>
+            <Route path="/notificationstretching" element={<NeckGuide/>}/>
           </Routes>
           <Footer/>
         </ThemeProvider>
