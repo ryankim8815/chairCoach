@@ -11,10 +11,10 @@ export const ResultContainer = styled.div`
 `;
 
 export const Title = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.title}px;
+  font-size: ${({ theme }) => theme.fontSize.title};
 `;
 export const SubTitle = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.subTitle}px;
+  font-size: ${({ theme }) => theme.fontSize.subTitle};
 `;
 
 export const TitleBox = styled.div`

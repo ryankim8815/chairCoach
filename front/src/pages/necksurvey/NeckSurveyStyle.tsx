@@ -29,16 +29,16 @@ export const TitleBox = styled.div`
 `;
 
 export const Title = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.title}px;
+  font-size: ${({ theme }) => theme.fontSize.title};
   font-weight: 500;
 `;
 export const SubTitle = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.subTitle}px;
+  font-size: ${({ theme }) => theme.fontSize.subTitle};
   font-weight: 500;
 `;
 
 export const Page = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.text}px;
+  font-size: ${({ theme }) => theme.fontSize.text};
   font-weight: 600;
 `;
 

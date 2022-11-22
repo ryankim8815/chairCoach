@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const WholePage = styled.div`
-  height: 1815px;
+  height: 1550px;
   width: 100%;
   background: ${({ theme }) => theme.colors.mainLight};
   display: flex;
@@ -13,15 +13,15 @@ export const TitleBox = styled.div`
 `;
 
 export const Title = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.title}px;
+  font-size: ${({ theme }) => theme.fontSize.title};
 `;
 
 export const SubTitle = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.subTitle}px;
+  font-size: ${({ theme }) => theme.fontSize.subTitle};
   font-weight: 500;
 `;
 export const Text = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.text}px;
+  font-size: ${({ theme }) => theme.fontSize.text};
   margin-top: 20px;
 `;
 
@@ -62,7 +62,7 @@ export const ChioceBox = styled.div`
   height: 234px;
   display: flex;
   flex-direction: column;
-  margin: 120px auto;
+  margin: 120px auto 0 auto;
 `;
 export const BtnBox = styled.div`
   display: flex;

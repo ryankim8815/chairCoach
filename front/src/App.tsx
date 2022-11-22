@@ -12,6 +12,7 @@ import Register from './pages/register/Register';
 import NeckSurvey from './pages/necksurvey/NeckSurvey';
 import ChairCoach from './pages/chaircoach/ChairCoach';
 import SurveyResult from "./pages/surveyresult/SurveyResult";
+import AboutNeck from "./pages/aboutneck/AboutNeck";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path='/necksurvey' element={<NeckSurvey/>}/>
             <Route path='/chaircoach' element={<ChairCoach/>}/>
             <Route path="/surveyresult" element={<SurveyResult />} />
+            <Route path="/aboutneck" element={<AboutNeck />} />
           </Routes>
           <Footer/>
         </ThemeProvider>
