@@ -28,6 +28,11 @@ const common = {
     justify-contents: center;
     align-items: center;
   `,
+
+  inner:`
+    max-width: 1180px;
+    margin: 0 auto;
+  `,
 };
 
 export type ColorsTypes = typeof colors;

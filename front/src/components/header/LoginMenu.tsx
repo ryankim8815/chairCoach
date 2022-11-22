@@ -2,17 +2,18 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 // style
-import NavLoginStyle from './NavLoginStyle';
+import { LoginMenuCon } from './HeaderStyle';
+
 
 // react-icons
 import { AiFillCaretDown } from "react-icons/ai";
 import { AiFillCaretUp } from "react-icons/ai";
 
-const NavLogin = () => {
+const LoginMenu = () => {
   const [userMenu, setUserMenu] = useState(false);
   
   return (
-    <NavLoginStyle>
+    <LoginMenuCon>
       <button onClick={()=>setUserMenu(!userMenu)}>누구님 {userMenu ? <AiFillCaretUp/> : <AiFillCaretDown/>}</button>
       {
         userMenu &&
@@ -22,8 +23,8 @@ const NavLogin = () => {
           <li><Link to='/'>회원 탈퇴</Link></li>
         </ul>
       }
-    </NavLoginStyle>
+    </LoginMenuCon>
   );
 };
 
-export default NavLogin;
+export default LoginMenu;

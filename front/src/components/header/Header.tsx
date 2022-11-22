@@ -2,27 +2,27 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.svg'
 
 import Nav from './Nav';
-import NavLogout from './NavLogout';
-import NavLogin from './NavLogin';
+import LogoutMenu from './LogoutMenu';
+import LoginMenu from './LoginMenu';
 
 // style
-import HeaderStyle from './HeaderStyle'
+import { HeaderLayout } from './HeaderStyle';
 
 
 const Header = () => {
   const navigate = useNavigate(); 
   return (
-    <HeaderStyle>
+    <HeaderLayout>
       <div className='inner'>
         <div className='left'>
           <h1 onClick={()=>navigate('/')}><img  src={logo} alt="chair coach" /></h1>
           <Nav/>
         </div>
 
-        {/* <NavLogin/> */}
-        <NavLogout/>
+        {/* <LoginMenu/> */}
+        <LogoutMenu/>
       </div>
-    </HeaderStyle>
+    </HeaderLayout>
   )
 }
 
