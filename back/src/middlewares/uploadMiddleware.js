@@ -5,13 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var multer_1 = __importDefault(require("multer"));
 var storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        // cb(null, "uploads/");
         cb(null, "./uploads");
     },
     filename: function (req, file, cb) {
         var originalname = file.originalname.split(".");
         var ext = originalname[originalname.length - 1];
         var uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        req.body = JSON.parse(JSON.stringify(req.body)); // [Object: null prototype] 방지
         cb(null, file.fieldname + "-" + uniqueSuffix + "." + ext);
     },
 });

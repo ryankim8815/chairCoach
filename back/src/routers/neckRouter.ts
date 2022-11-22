@@ -233,10 +233,11 @@ neckRouter.get(
 ); // 특정 유저의 거북목 테스트 결과 조회
 neckRouter.post(
   "/neck",
-  authMiddleware,
+  // authMiddleware,
   upload.single("file"),
+  authMiddleware,
   ////////// Multer로 인한 이슈 발생 //////////
-  //   validation.validateNeckResult,
+  validation.validateNeckResult,
   neckCreate
 ); // 거북목 테스트 결과 기록
 

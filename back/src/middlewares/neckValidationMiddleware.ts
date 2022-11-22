@@ -20,7 +20,7 @@ const validateNeckResults = async function (
     const result_err = {
       result: false,
       cause: "type",
-      message: "api 요청시 잘못된 type이 첨부되었습니다." + err,
+      message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
     // res.status(200).json(result_err);
@@ -35,7 +35,7 @@ const validateNeckResult = async function (
   next: express.NextFunction
 ) {
   try {
-    // console.log("REQ: ", req);
+    console.log("REQ: ", req);
     const body = req.body;
     const file = req.file;
     await neckResultSchema.validateAsync(body);
@@ -45,7 +45,7 @@ const validateNeckResult = async function (
     const result_err = {
       result: false,
       cause: "type",
-      message: "api 요청시 잘못된 type이 첨부되었습니다.",
+      message: "api 요청시 잘못된 type이 첨부되었습니다." + err,
     };
     console.log(result_err, err);
     // res.status(200).json(result_err);

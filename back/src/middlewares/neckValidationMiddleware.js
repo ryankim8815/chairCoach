@@ -60,7 +60,7 @@ var validateNeckResults = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_1,
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
                     // res.status(200).json(result_err);
@@ -80,6 +80,7 @@ var validateNeckResult = function (req, res, next) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
+                    console.log("REQ: ", req);
                     body = req.body;
                     file = req.file;
                     return [4 /*yield*/, neckSchemas_joi_1.neckResultSchema.validateAsync(body)];
@@ -95,7 +96,7 @@ var validateNeckResult = function (req, res, next) {
                     result_err = {
                         result: false,
                         cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                        message: "api 요청시 잘못된 type이 첨부되었습니다." + err_2,
                     };
                     console.log(result_err, err_2);
                     // res.status(200).json(result_err);
