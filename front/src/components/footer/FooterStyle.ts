@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const FooterLayout = styled.footer`
-  padding-bottom: 80px;
+  height: 172px;
   background: ${({ theme }) => theme.colors.mainDark};
 
   .inner{

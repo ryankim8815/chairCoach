@@ -33,6 +33,11 @@ const common = {
     max-width: 1180px;
     margin: 0 auto;
   `,
+
+  contentMinLayout:`
+    min-height: calc(100vh - 64px - 172px);
+    margin-top: 64px;
+  `,
 };
 
 export type ColorsTypes = typeof colors;
