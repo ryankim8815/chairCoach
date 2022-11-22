@@ -304,7 +304,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
  */
-neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
+neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능, 개발 시 편의용으로 사용처가 없다면 삭제 예정
 neckRouter.get("/neck", authMiddleware_1.default, validation.validateNeckResults, neckResults); // 특정 유저의 거북목 테스트 결과 조회
 neckRouter.post("/neck", uploadMiddleware_1.default.single("file"), authMiddleware_1.default, validation.validateNeckResult, neckCreate); // 거북목 테스트 결과 기록
 module.exports = neckRouter;

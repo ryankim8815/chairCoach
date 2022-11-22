@@ -273,7 +273,7 @@ const bodyUpdate = async (
  *                   example: 해당 유저의 운동 기록 종료가 성공적으로 이뤄졌습니다.
  */
 
-bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능
+bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능, 개발시 편의를 위한 기능으로 사용처가 없다면 삭제 예정
 bodyRouter.get(
   "/body",
   authMiddleware,

@@ -507,7 +507,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
 // api index
-userRouter.get("/users", userList); // 전체 사용자 검섹
+userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
 userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회
 userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
 userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인

@@ -410,7 +410,7 @@ const userDelete = async (
  */
 
 // api index
-userRouter.get("/users", userList); // 전체 사용자 검섹
+userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
 userRouter.get(
   "/user",
   authMiddleware,
