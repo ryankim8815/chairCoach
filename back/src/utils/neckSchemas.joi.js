@@ -16,11 +16,11 @@ exports.neckResultSchema = joi_1.default.object().keys({
 exports.fileSchema = joi_1.default.object().keys({
     fieldname: joi_1.default.string().valid("file").required(),
     originalname: joi_1.default.string()
-        .pattern(new RegExp("^([\\ \\S]+(\\.(jpg|png|gif|bmp))$)"))
+        .pattern(new RegExp("^([\\ \\S]+(\\.(png|jpg|jpeg|gif))$)"))
         .required(),
     encoding: joi_1.default.string().valid("7bit").required(),
     mimetype: joi_1.default.string()
-        .valid("image/png" || "image/jpg" || "image/jpeg")
+        .valid("image/png" || "image/jpg" || "image/jpeg" || "image/gif")
         .required(),
     destination: joi_1.default.string().valid("./uploads").required(),
     filename: joi_1.default.string().required(),

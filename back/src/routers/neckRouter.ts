@@ -1,9 +1,10 @@
 import * as express from "express";
 import neckService from "../services/neckService";
 import authMiddleware from "../middlewares/authMiddleware";
+import uploadMiddleware from "../middlewares/uploadMiddleware";
 import * as validation from "../middlewares/neckValidationMiddleware";
-import upload from "../middlewares/uploadMiddleware";
 import type { MulterFile } from "../customType/multer.d";
+
 const neckRouter = express.Router();
 
 // GET: 전체 거북목 테스트 결과 조회 기능
@@ -15,7 +16,7 @@ const neckResultList = async (
   try {
     const allNecks = await neckService.getAllNecks();
     console.log(allNecks);
-    res.status(200).json(allNecks);
+    return res.status(200).json(allNecks);
   } catch (err) {
     const result_err = {
       result: false,
@@ -23,7 +24,7 @@ const neckResultList = async (
       message: "neckResultList api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -88,7 +89,7 @@ const neckResults = async (
     const user_id = req.body.user_id;
     const Necks = await neckService.getNecks({ user_id });
     console.log(Necks);
-    res.status(200).json(Necks);
+    return res.status(200).json(Necks);
   } catch (err) {
     const result_err = {
       result: false,
@@ -96,7 +97,7 @@ const neckResults = async (
       message: "neckResults api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -172,7 +173,7 @@ const neckCreate = async (
       filename,
     });
     console.log(allUsers);
-    res.status(200).json(allUsers);
+    return res.status(200).json(allUsers);
   } catch (err) {
     const result_err = {
       result: false,
@@ -180,7 +181,7 @@ const neckCreate = async (
       message: "neckCreate api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -233,7 +234,7 @@ neckRouter.get(
 ); // 특정 유저의 거북목 테스트 결과 조회
 neckRouter.post(
   "/neck",
-  upload.single("file"),
+  uploadMiddleware,
   authMiddleware,
   validation.validateNeckResult,
   neckCreate

@@ -75,7 +75,7 @@ const kakaoOauth = async (
     const email = kakaoUser.email;
     const logedinUser = await socialLoginService.kakao({ email, access_token });
     console.log(logedinUser);
-    res.status(200).json(logedinUser);
+    return res.status(200).json(logedinUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -83,7 +83,7 @@ const kakaoOauth = async (
       message: "kakaoOauth api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -192,7 +192,7 @@ const naverOauth = async (
     const email = naverUserRes.email;
     const logedinUser = await socialLoginService.naver({ email, access_token });
     console.log(logedinUser);
-    res.status(200).json(logedinUser);
+    return res.status(200).json(logedinUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -200,7 +200,7 @@ const naverOauth = async (
       message: "naverOauth api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**

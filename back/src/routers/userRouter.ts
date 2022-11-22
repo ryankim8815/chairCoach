@@ -14,7 +14,7 @@ const userList = async (
   try {
     const allUsers = await userService.getAllUsers();
     console.log(allUsers);
-    res.status(200).json(allUsers);
+    return res.status(200).json(allUsers);
   } catch (err) {
     const result_err = {
       result: false,
@@ -22,7 +22,7 @@ const userList = async (
       message: "userList api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -84,7 +84,7 @@ const userCurrent = async (
     const user_id = req.body.user_id;
     const currentUser = await userService.getCurrentUser({ user_id });
     console.log(currentUser);
-    res.status(200).json(currentUser);
+    return res.status(200).json(currentUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -92,7 +92,7 @@ const userCurrent = async (
       message: "userCurrent api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -148,7 +148,7 @@ const userRegister = async (
     const nickname = req.body.nickname;
     const newUser = await userService.addUser({ email, password, nickname });
     console.log(newUser);
-    res.status(200).json(newUser);
+    return res.status(200).json(newUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -156,7 +156,7 @@ const userRegister = async (
       message: "userRegister api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -211,7 +211,7 @@ const userSignin = async (
     const password = req.body.password;
     const signinUser = await userService.getUser({ email, password });
     console.log(signinUser);
-    res.status(200).json(signinUser);
+    return res.status(200).json(signinUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -219,7 +219,7 @@ const userSignin = async (
       message: "userLogin api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -293,7 +293,7 @@ const userUpdate = async (
       nickname,
     });
     console.log(updateUser);
-    res.status(200).json(updateUser);
+    return res.status(200).json(updateUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -301,7 +301,7 @@ const userUpdate = async (
       message: "userUpdate api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -361,7 +361,7 @@ const userDelete = async (
       password,
     });
     console.log(deleteUser);
-    res.status(200).json(deleteUser);
+    return res.status(200).json(deleteUser);
   } catch (err) {
     const result_err = {
       result: false,
@@ -369,7 +369,7 @@ const userDelete = async (
       message: "userDelete api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**

@@ -14,7 +14,7 @@ const authMiddleware = async function (
       message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
     };
     console.log(result_errNoToken);
-    res.status(400).json(result_errNoToken);
+    return res.status(400).json(result_errNoToken);
     return;
   }
   try {
@@ -30,7 +30,7 @@ const authMiddleware = async function (
       message: "정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.",
     };
     console.log(result_errInvalidToken);
-    res.status(400).json(result_errInvalidToken);
+    return res.status(400).json(result_errInvalidToken);
   }
 };
 

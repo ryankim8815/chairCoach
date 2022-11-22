@@ -23,7 +23,7 @@ const validateUserCurrent = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    res.status(499).json(result_err);
+    return res.status(499).json(result_err);
   }
 };
 
@@ -43,7 +43,7 @@ const validateUserCreate = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    res.status(499).json(result_err);
+    return res.status(499).json(result_err);
   }
 };
 
@@ -63,7 +63,7 @@ const validateUserLogin = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    res.status(499).json(result_err);
+    return res.status(499).json(result_err);
   }
 };
 
@@ -83,7 +83,7 @@ const validateUserUpdate = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    res.status(499).json(result_err);
+    return res.status(499).json(result_err);
   }
 };
 
@@ -103,7 +103,7 @@ const validateUserDelete = async function (
       message: "api 요청시 잘못된 type이 첨부되었습니다.",
     };
     console.log(result_err);
-    res.status(499).json(result_err);
+    return res.status(499).json(result_err);
   }
 };
 

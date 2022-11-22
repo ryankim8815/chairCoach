@@ -59,8 +59,7 @@ var validateUserCurrent = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    res.status(499).json(result_err);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, res.status(499).json(result_err)];
                 case 3: return [2 /*return*/];
             }
         });
@@ -88,8 +87,7 @@ var validateUserCreate = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    res.status(499).json(result_err);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, res.status(499).json(result_err)];
                 case 3: return [2 /*return*/];
             }
         });
@@ -117,8 +115,7 @@ var validateUserLogin = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    res.status(499).json(result_err);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, res.status(499).json(result_err)];
                 case 3: return [2 /*return*/];
             }
         });
@@ -146,8 +143,7 @@ var validateUserUpdate = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    res.status(499).json(result_err);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, res.status(499).json(result_err)];
                 case 3: return [2 /*return*/];
             }
         });
@@ -175,8 +171,7 @@ var validateUserDelete = function (req, res, next) {
                         message: "api 요청시 잘못된 type이 첨부되었습니다.",
                     };
                     console.log(result_err);
-                    res.status(499).json(result_err);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, res.status(499).json(result_err)];
                 case 3: return [2 /*return*/];
             }
         });

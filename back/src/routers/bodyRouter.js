@@ -77,8 +77,7 @@ var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0
             case 1:
                 allBodies = _a.sent();
                 console.log(allBodies);
-                res.status(200).json(allBodies);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(allBodies)];
             case 2:
                 err_1 = _a.sent();
                 result_err = {
@@ -87,8 +86,7 @@ var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0
                     message: "bodyRecordlist api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -153,8 +151,7 @@ var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 1:
                 Bodies = _a.sent();
                 console.log(Bodies);
-                res.status(200).json(Bodies);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(Bodies)];
             case 2:
                 err_2 = _a.sent();
                 result_err = {
@@ -163,8 +160,7 @@ var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, v
                     message: "bodyRecords api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -235,8 +231,7 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 body = _a.sent();
                 console.log(body);
-                res.status(200).json(body);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(body)];
             case 2:
                 err_3 = _a.sent();
                 result_err = {
@@ -245,8 +240,7 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "bodyCreate api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -307,8 +301,7 @@ req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
             case 1:
                 body = _a.sent();
                 console.log(body);
-                res.status(200).json(body);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(body)];
             case 2:
                 err_4 = _a.sent();
                 result_err = {
@@ -317,8 +310,7 @@ req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
                     message: "bodyUpdate api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });

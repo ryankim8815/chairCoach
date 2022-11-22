@@ -139,8 +139,7 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 4:
                 logedinUser = _a.sent();
                 console.log(logedinUser);
-                res.status(200).json(logedinUser);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(logedinUser)];
             case 5:
                 err_1 = _a.sent();
                 result_err = {
@@ -149,8 +148,7 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "kakaoOauth api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 6: return [2 /*return*/];
         }
     });
@@ -264,8 +262,7 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 4:
                 logedinUser = _a.sent();
                 console.log(logedinUser);
-                res.status(200).json(logedinUser);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(logedinUser)];
             case 5:
                 err_2 = _a.sent();
                 result_err = {
@@ -274,8 +271,7 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "naverOauth api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 6: return [2 /*return*/];
         }
     });

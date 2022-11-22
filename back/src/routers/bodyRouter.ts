@@ -14,7 +14,7 @@ const bodyRecordlist = async (
   try {
     const allBodies = await bodyService.getAllBodies();
     console.log(allBodies);
-    res.status(200).json(allBodies);
+    return res.status(200).json(allBodies);
   } catch (err) {
     const result_err = {
       result: false,
@@ -22,7 +22,7 @@ const bodyRecordlist = async (
       message: "bodyRecordlist api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -84,7 +84,7 @@ const bodyRecords = async (
     const user_id = req.body.user_id;
     const Bodies = await bodyService.getBodies({ user_id });
     console.log(Bodies);
-    res.status(200).json(Bodies);
+    return res.status(200).json(Bodies);
   } catch (err) {
     const result_err = {
       result: false,
@@ -92,7 +92,7 @@ const bodyRecords = async (
       message: "bodyRecords api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -160,7 +160,7 @@ const bodyCreate = async (
       tag,
     });
     console.log(body);
-    res.status(200).json(body);
+    return res.status(200).json(body);
   } catch (err) {
     const result_err = {
       result: false,
@@ -168,7 +168,7 @@ const bodyCreate = async (
       message: "bodyCreate api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -225,7 +225,7 @@ const bodyUpdate = async (
       body_id,
     });
     console.log(body);
-    res.status(200).json(body);
+    return res.status(200).json(body);
   } catch (err) {
     const result_err = {
       result: false,
@@ -233,7 +233,7 @@ const bodyUpdate = async (
       message: "bodyUpdate api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
