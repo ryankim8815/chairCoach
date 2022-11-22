@@ -1,62 +1,52 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+
 import googleIcon from '../../assets/img/googleIcon.png';
 import kakaoIcon from '../../assets/img/kakaoIcon.png';
 import naverIcon from '../../assets/img/naverIcon.png';
-import registerImg from '../../assets/img/registerImg.jpg';
 
-const smallTitle = css`
-  margin-bottom: 20px;
-  font-weight: 300;
-  color: ${({ theme }) => theme.colors.greyText};
-`;
-
-export const RegisterLayout = styled.div`
+export const LoginLayout = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
   ${({ theme }) => theme.common.flexCenter};
-
+  
   .inner{
-    ${({ theme }) => theme.common.inner};
-    width: 1180px;
-    display: grid;
-    grid-template-columns: 6fr 4fr;
-    gap: 40px;
+    width: 800px;
+    margin: 0 auto;
     padding: 120px 0;
   }
 `;
 
-export const LeftCon = styled.div`
-  padding: 0 64px;
-  border: 1px solid ${({ theme }) => theme.colors.greyBorder};
-  border-radius: 2px;
-`;
+export const TopCon = styled.div`
+  ${({ theme }) => theme.common.flexCenter};
+  flex-direction: column;
+  padding-bottom: 40px;
 
-export const TopWrap = styled.div`
-  padding: 40px 0;
-  p{
-    ${smallTitle}
+  img{
+    height: 28px;
   }
 
-  h2{
-    margin-bottom: 64px;
-    font-size: ${({ theme }) => theme.fontSize.title};
-    span{
-      font-weight: 700;
-      line-height: 1.25;
+  form{
+    margin-top: 40px;
+    
+    button{
+      margin-top: 64px;
     }
   }
 `;
 
-export const BottomWrap = styled.div`
-  padding: 40px 0;
+export const BottomCon = styled.div`
+  ${({ theme }) => theme.common.flexCenter};
+  flex-direction: column;
+  padding-top: 40px;
   border-top: 1px solid ${({ theme }) => theme.colors.greyBorder};
 
   p{
-    ${smallTitle}
+    margin-bottom: 20px;
+    font-weight: 300;
+    color: ${({ theme }) => theme.colors.greyText};
   }
 
   ul{
     ${({ theme }) => theme.common.flexCenter};
-    justify-content: inherit;
     margin-bottom: 64px;
 
     li{
@@ -95,19 +85,4 @@ export const BottomWrap = styled.div`
       }
     }
   }
-
-  .loginText{
-    font-weight: 400;
-    a{
-      font-weight: 500;
-      color: ${({ theme }) => theme.colors.main};
-    }
-  }
-`;
-
-export const RightCon = styled.div`
-  border-radius: 2px;
-  background: url(${registerImg}) no-repeat center;
-  background-size: cover; 
-  text-indent: -9999px;
 `;
