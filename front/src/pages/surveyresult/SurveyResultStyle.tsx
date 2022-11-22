@@ -65,6 +65,7 @@ align-items:center;
 export const TextBox=styled.div`
 width:262px;
 height:105px;
+line-height: 1.25;
 `
 export const Percent=styled.span`
 color:${({theme})=>theme.colors.main};
