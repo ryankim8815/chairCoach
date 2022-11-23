@@ -155,12 +155,19 @@ class userService {
     const checkNewUserString = JSON.stringify(checkNewUser);
     const checkNewUserObject = JSON.parse(checkNewUserString);
     if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
-      const result_success = {
-        result: true,
-        cause: "success",
-        message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
-      };
-      return result_success;
+      const deleteCode = await Code.delete({
+        email,
+      });
+      const deleteCodeString = JSON.stringify(deleteCode);
+      const deleteCodeObject = JSON.parse(deleteCodeString);
+      if (deleteCodeObject.affectedRows == 1) {
+        const result_success = {
+          result: true,
+          cause: "success",
+          message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
+        };
+        return result_success;
+      }
     }
   }
 
@@ -293,6 +300,7 @@ class userService {
   }
   /////////////////////////////////
   //// 회원가입 전 이메일 인증
+  // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
   static async sendCode({ email, code }) {
     const saveCode = await Code.create({
       email,

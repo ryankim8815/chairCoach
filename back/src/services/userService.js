@@ -170,7 +170,7 @@ var userService = /** @class */ (function () {
     userService.addUser = function (_a) {
         var email = _a.email, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, result_success;
+            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, deleteCode, deleteCodeString, deleteCodeObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
@@ -222,7 +222,15 @@ var userService = /** @class */ (function () {
                         checkNewUser = _b.sent();
                         checkNewUserString = JSON.stringify(checkNewUser);
                         checkNewUserObject = JSON.parse(checkNewUserString);
-                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
+                        if (!(newUserObject.affectedRows == 1 && checkNewUserObject.length == 1)) return [3 /*break*/, 7];
+                        return [4 /*yield*/, Code_1.default.delete({
+                                email: email,
+                            })];
+                    case 6:
+                        deleteCode = _b.sent();
+                        deleteCodeString = JSON.stringify(deleteCode);
+                        deleteCodeObject = JSON.parse(deleteCodeString);
+                        if (deleteCodeObject.affectedRows == 1) {
                             result_success = {
                                 result: true,
                                 cause: "success",
@@ -230,7 +238,8 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_success];
                         }
-                        return [2 /*return*/];
+                        _b.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -380,6 +389,7 @@ var userService = /** @class */ (function () {
     };
     /////////////////////////////////
     //// 회원가입 전 이메일 인증
+    // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
     userService.sendCode = function (_a) {
         var email = _a.email, code = _a.code;
         return __awaiter(this, void 0, void 0, function () {
