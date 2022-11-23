@@ -1,12 +1,9 @@
-import styled from 'styled-components'
-import { InputStyle } from 'styled-components'
+import styled, { css, InputStyle } from "styled-components";
 
-export const InputText = styled.input` 
+const basicsInputText = css`
   display: block;
-  width: 400px;
   height: 40px;
-  margin-bottom: 8px;
-  padding: 0 20px;
+  padding: 0 16px;
   border: 1px solid ${({ theme }) => theme.colors.greyBorder};
   border-radius: 2px;
   font-size: ${({ theme }) => theme.fontSize.text};
@@ -22,6 +19,22 @@ export const InputText = styled.input`
     color: ${({ theme }) => theme.colors.greyText};
   }
 `;
+
+export const InputText = styled.input<InputStyle>`
+  ${basicsInputText}
+  width: ${({ length }) => length === "small" ? 'auto' : '400px'};
+  margin-bottom: ${({ length }) => length === "small" ? 0 : '8px'};
+`;
+
+export const CheckInputCon = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 4px;
+  margin-bottom: 8px;
+  & + div{
+    margin-top: 40px;
+  }
+`
 
 export const WarningText = styled.span<InputStyle>`
   display: block;
