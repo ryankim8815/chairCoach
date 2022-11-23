@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import * as S from "./MainStyle";
 import * as B from "../../styles/BtnStyle";
 import bannerImg from "../../assets/image/main_banner.png";
@@ -35,12 +36,15 @@ const BannerButton = styled(B.MiddleBtn)`
 `;
 
 const Banner = () => {
+  const navigate = useNavigate();
   return (
     <MainBanner>
       <BannerContent>
         <BannerText>오늘도 근무 중인 당신에게,</BannerText>
         <BannerText>CHAIR COACH</BannerText>
-        <BannerButton hover="true">체어코치 하러가기</BannerButton>
+        <BannerButton hover="true" onClick={(e) => navigate("/chaircoach")}>
+          체어코치 하러가기
+        </BannerButton>
       </BannerContent>
     </MainBanner>
   );
