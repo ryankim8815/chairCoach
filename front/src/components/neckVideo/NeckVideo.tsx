@@ -2,13 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import * as S from "./NeckVideoStyle";
 
 import styled from "styled-components";
-const CanvasResultCon = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 100;
-`;
+
 
 const NeckVideo = ({ time,step,setStep }: any) => {
   const videoRef = useRef(null);
@@ -28,7 +22,6 @@ const NeckVideo = ({ time,step,setStep }: any) => {
         console.log(e);
       });
   };
-
   const takePhoto = () => {
     const width = 414;
     const height = width / (16 / 9);
@@ -37,9 +30,14 @@ const NeckVideo = ({ time,step,setStep }: any) => {
     console.log(video);
     photo.width = width;
     photo.height = height;
-
     let ctx = photo.getContext("2d");
     ctx.drawImage(video, 0, 0, width, height);
+    const data=photo.toDataURL('image/jpeg');
+    console.warn(data);
+    const link=document.createElement('a');
+    link.href=data;
+    link.innerHTML = `<img src='${data}' alt='thumbnail'/>`;
+
     setHasPhoto(true);
   };
   useEffect(() => {
@@ -53,9 +51,9 @@ const NeckVideo = ({ time,step,setStep }: any) => {
   return (
     <div>
       <S.CameraCont onClick={takePhoto} ref={videoRef}></S.CameraCont>
-      <CanvasResultCon>
+      <S.CanvasResultCon>
           <canvas ref={photoRef} /> 
-      </CanvasResultCon>
+      </S.CanvasResultCon>
     </div>
   );
 };
