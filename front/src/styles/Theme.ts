@@ -17,16 +17,26 @@ const colors = {
 };
 
 const fontSize = {
-  title: 32, // 메인타이틀
-  subTitle: 24, // 박스안의 제목들
-  text: 15,
+  title: '32px', // 메인타이틀
+  subTitle: '24px', // 박스안의 제목들
+  text: '15px',
 };
 
 const common = {
   flexCenter: `
     display: flex;
-    justify-contents: center;
+    justify-content: center;
     align-items: center;
+  `,
+
+  inner:`
+    max-width: 1180px;
+    margin: 0 auto;
+  `,
+
+  contentMinLayout:`
+    min-height: calc(100vh - 64px - 172px);
+    margin-top: 64px;
   `,
 };
 

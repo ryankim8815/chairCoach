@@ -1,10 +1,12 @@
-import React from 'react'
-
-const Timer = () => {
+import React, { useState } from 'react'
+import * as S from './TimerStyle'
+const Timer = ({time,setTime}:any) => {
   return (
-    <div>
-      timer
-    </div>
+    <S.OutTimer>
+        <S.InnerTimer>
+          <S.Title>{time}</S.Title>
+        </S.InnerTimer>
+      </S.OutTimer>
   )
 }
 
