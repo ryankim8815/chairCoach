@@ -1,5 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as S from "./NeckVideoStyle";
+
+import styled from "styled-components";
+const CanvasResultCon = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+`;
+
 const NeckVideo = ({ time,step,setStep }: any) => {
   const videoRef = useRef(null);
   const photoRef = useRef(null);
@@ -42,10 +52,10 @@ const NeckVideo = ({ time,step,setStep }: any) => {
 
   return (
     <div>
-     
-
       <S.CameraCont onClick={takePhoto} ref={videoRef}></S.CameraCont>
-      <canvas ref={photoRef} /> 
+      <CanvasResultCon>
+          <canvas ref={photoRef} /> 
+      </CanvasResultCon>
     </div>
   );
 };
