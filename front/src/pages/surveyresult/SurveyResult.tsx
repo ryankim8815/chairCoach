@@ -28,7 +28,7 @@ const SurveyResult = () => {
           <S.HalfBox>
             <S.TextBox>
               <S.SubTitle>
-                설문 조항 결과에 따르면, name님의 거북목 위험도는{" "}
+                설문 조항 결과에 따르면, abcdefghijkl님의 거북목 위험도는{" "}
                 <S.Percent>{point * 10}%</S.Percent>
                 입니다!
               </S.SubTitle>
