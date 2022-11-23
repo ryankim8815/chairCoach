@@ -28,12 +28,17 @@ const SingUp = () => {
             </S.InputWrap>
 
             <S.InputWrap>
-              <p>비밀번호</p>
-              <F.InputText type="text" name="" id="" placeholder='영문, 숫자, 특수문자 포함 8자 이상입력해주세요.' />
-              <F.WarningText>영어,숫자,특수문자를 포함한 8글자 이상이여야 합니다.</F.WarningText>
+              <div>
+                <p>비밀번호</p>
+                <F.InputText type="text" name="" id="" placeholder='영문, 숫자, 특수문자 포함 8자 이상입력해주세요.' />
+                <F.WarningText>영어,숫자,특수문자를 포함한 8글자 이상이여야 합니다.</F.WarningText>
+              </div>
 
-              <F.InputText type="text" name="" id="" placeholder='비밀번호를 다시 입력해주세요.' />
-              <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
+              <div>
+                <p>비밀번호 확인</p>
+                <F.InputText type="text" name="" id="" placeholder='비밀번호를 다시 입력해주세요.' />
+                <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
+              </div>
             </S.InputWrap>
 
             <S.InputWrap>
@@ -46,7 +51,6 @@ const SingUp = () => {
           </fieldset>
         </form>
       </S.FormCon>
-
     </S.SingUpLayout>
   );
 };

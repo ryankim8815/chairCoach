@@ -30,10 +30,6 @@ export const CheckInputCon = styled.div`
   display: grid;
   grid-template-columns: 1fr 120px;
   gap: 4px;
-  margin-bottom: 8px;
-  & + div{
-    margin-top: 40px;
-  }
 `
 
 export const WarningText = styled.span<InputStyle>`

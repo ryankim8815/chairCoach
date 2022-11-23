@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // style
 import { LoginMenuCon } from './HeaderStyle';
-
 
 // react-icons
 import { AiFillCaretDown } from "react-icons/ai";
@@ -18,7 +17,7 @@ const LoginMenu = () => {
       {
         userMenu &&
         <ul>
-          <li><Link to='/'>회원정보 변경</Link></li>
+          <li><Link to='/userInfoChange'>회원정보 변경</Link></li>
           <li><Link to='/'>로그아웃</Link></li>
           <li><Link to='/'>회원 탈퇴</Link></li>
         </ul>

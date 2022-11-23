@@ -24,6 +24,10 @@ export const InputWrap = styled.div`
     margin-top: 64px;
   }
 
+  div + div{
+    margin-top: 40px;
+  }
+
   p{
     font-weight: 500;
     margin-bottom: 8px;
@@ -32,8 +36,4 @@ export const InputWrap = styled.div`
   input:nth-of-type(2){
     margin-top: 40px;
   }
-
-  /* form fieldset > button{
-    margin-top: 64px;
-  } */
 `;
