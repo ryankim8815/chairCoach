@@ -1,4 +1,5 @@
-import styled, { InputStyle } from "styled-components";
+import styled from 'styled-components'
+import { InputStyle } from 'styled-components'
 
 export const InputText = styled.input` 
   display: block;
