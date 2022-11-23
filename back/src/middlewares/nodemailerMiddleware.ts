@@ -9,7 +9,9 @@ const sendEmail = async function (
   console.log("email checking: ", req.body.email);
   try {
     const email = req.body.email;
-    const code = req.body.code || 3333;
+    // const code = req.body.code || 3333;
+    const code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+    req.body.code = code;
 
     let transporter = nodemailer.createTransport({
       service: "gmail",

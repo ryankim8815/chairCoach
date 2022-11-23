@@ -418,14 +418,14 @@ const userSendEmail = async (
 ) => {
   try {
     const email = req.body.email;
-    // const sendCodeToEmail = await userService.uploadUserImage({ // redis 활용
-    //   user_id,
-    //   new_filename,
-    // });
-    // console.log(uploadUserImage);
-    // return res.status(200).json(uploadUserImage);
-    console.log(`${email}로 인증 코드를 발송했습니다.`);
-    return res.status(200).json("메일 발송 성공!");
+    const code = req.body.code;
+    const sendCodeToEmail = await userService.sendCode({
+      // redis 활용 고려
+      email,
+      code,
+    });
+    console.log(sendCodeToEmail);
+    return res.status(200).json(sendCodeToEmail);
   } catch (err) {
     const result_err = {
       result: false,

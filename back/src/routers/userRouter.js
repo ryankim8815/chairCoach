@@ -497,29 +497,33 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
  */
 /// POST: email 인증을 위한 코드 발송
 var userSendEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, result_err;
+    var email, code, sendCodeToEmail, err_7, result_err;
     return __generator(this, function (_a) {
-        try {
-            email = req.body.email;
-            // const sendCodeToEmail = await userService.uploadUserImage({ // redis 활용
-            //   user_id,
-            //   new_filename,
-            // });
-            // console.log(uploadUserImage);
-            // return res.status(200).json(uploadUserImage);
-            console.log("".concat(email, "\uB85C \uC778\uC99D \uCF54\uB4DC\uB97C \uBC1C\uC1A1\uD588\uC2B5\uB2C8\uB2E4."));
-            return [2 /*return*/, res.status(200).json("메일 발송 성공!")];
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                email = req.body.email;
+                code = req.body.code;
+                return [4 /*yield*/, userService_1.default.sendCode({
+                        // redis 활용 고려
+                        email: email,
+                        code: code,
+                    })];
+            case 1:
+                sendCodeToEmail = _a.sent();
+                console.log(sendCodeToEmail);
+                return [2 /*return*/, res.status(200).json(sendCodeToEmail)];
+            case 2:
+                err_7 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "userSendEmail api에서 오류가 발생했습니다.",
+                };
+                console.log(result_err);
+                return [2 /*return*/, res.status(200).json(result_err)];
+            case 3: return [2 /*return*/];
         }
-        catch (err) {
-            result_err = {
-                result: false,
-                cause: "api",
-                message: "userSendEmail api에서 오류가 발생했습니다.",
-            };
-            console.log(result_err);
-            return [2 /*return*/, res.status(200).json(result_err)];
-        }
-        return [2 /*return*/];
     });
 }); };
 // api index

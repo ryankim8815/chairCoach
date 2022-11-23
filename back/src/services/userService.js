@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var User_1 = __importDefault(require("../db/models/User"));
+var Code_1 = __importDefault(require("../db/models/Code"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var uuid_1 = require("uuid");
@@ -369,6 +370,43 @@ var userService = /** @class */ (function () {
                                 result: true,
                                 cause: "success",
                                 message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
+                            };
+                            return [2 /*return*/, result_success];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /////////////////////////////////
+    //// 회원가입 전 이메일 인증
+    userService.sendCode = function (_a) {
+        var email = _a.email, code = _a.code;
+        return __awaiter(this, void 0, void 0, function () {
+            var saveCode, saveCodeString, saveCodeObject, result_success, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Code_1.default.create({
+                            email: email,
+                            code: code,
+                        })];
+                    case 1:
+                        saveCode = _b.sent();
+                        saveCodeString = JSON.stringify(saveCode);
+                        saveCodeObject = JSON.parse(saveCodeString);
+                        if (saveCodeObject.affectedRows == 1) {
+                            result_success = {
+                                result: true,
+                                cause: "success",
+                                message: "code \uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                            };
+                            return [2 /*return*/, result_success];
+                        }
+                        else if (saveCodeObject.affectedRows == 2) {
+                            result_success = {
+                                result: true,
+                                cause: "success",
+                                message: "code \uC7AC\uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             };
                             return [2 /*return*/, result_success];
                         }
