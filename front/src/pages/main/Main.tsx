@@ -4,6 +4,8 @@ import * as B from "../../styles/BtnStyle";
 import Banner from "./Banner";
 import IntroduceLayout from "./IntroduceLayout";
 import { notifyMe } from "../../components/alarm/Alarm";
+import ExplainLayout from "./ExplainLayout";
+import SelectLayout from "./SelectLayout";
 
 const Main = () => {
   useEffect(()=>{
@@ -15,6 +17,8 @@ const Main = () => {
     <S.MainLayout>
       <Banner />
       <IntroduceLayout />
+      <ExplainLayout />
+      <SelectLayout />
     </S.MainLayout>
   );
 };
