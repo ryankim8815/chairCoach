@@ -11,6 +11,9 @@ const smallTitle = css`
 `;
 
 export const RegisterLayout = styled.div`
+  ${({ theme }) => theme.common.contentMinLayout};
+  ${({ theme }) => theme.common.flexCenter};
+
   .inner{
     ${({ theme }) => theme.common.inner};
     width: 1180px;
