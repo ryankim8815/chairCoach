@@ -52,7 +52,7 @@ const SurveyResult = () => {
           <S.BtnBox>
             <RecommendButton
               onClick={() => {
-                navigate("/notificationstretching");
+                navigate("/neckguide");
               }}
               size="small"
               check="false"

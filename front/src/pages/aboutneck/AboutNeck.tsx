@@ -75,7 +75,7 @@ const AboutNeck = () => {
             </S.ChoiceBtn>
             <S.ChoiceBtn
               onClick={() => {
-                navigate("/neckinspection");
+                navigate("/neckguide");
               }}
             >
               <S.BtnText>
