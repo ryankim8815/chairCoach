@@ -6,3 +6,9 @@ height:60vh;
 object-fit: fill;
 margin-left:4%;
 `
+export const PhotoCont=styled.div`
+width:110%;
+height:60vh;
+object-fit: fill;
+margin-left:4%;
+`
