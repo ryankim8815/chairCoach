@@ -21,9 +21,7 @@ export const userCreateSchema = Joi.object().keys({
     )
     .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
   nickname: Joi.string()
-    // .pattern(new RegExp("^[A-Za-z0-9_-]{2,10}$")) // 최소 2~10 자, 영어 숫자 // FE에서 url에서 활용하지 않는다고 해서 주석처리함
-    .min(3) // FE에서 확정전 임의 값
-    .max(10) // FE에서 확정전 임의 값
+    .pattern(new RegExp("^([ㄱ-힣0-9_-]{2,8}|[A-Za-z0-9_-]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
     .required(),
 });
 
@@ -56,9 +54,7 @@ export const userUpdateSchema = Joi.object().keys({
     )
     .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
   nickname: Joi.string()
-    // .pattern(new RegExp("^[A-Za-z0-9_-]{2,10}$")) // 최소 2~10 자, 영어 숫자 // FE에서 url에서 활용하지 않는다고 해서 주석처리함
-    .min(3) // FE에서 확정전 임의 값
-    .max(10) // FE에서 확정전 임의 값
+    .pattern(new RegExp("^([ㄱ-힣0-9_-]{2,8}|[A-Za-z0-9_-]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
     .required(),
 });
 
