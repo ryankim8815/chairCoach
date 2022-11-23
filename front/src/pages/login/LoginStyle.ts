@@ -4,10 +4,7 @@ import googleIcon from '../../assets/img/googleIcon.png';
 import kakaoIcon from '../../assets/img/kakaoIcon.png';
 import naverIcon from '../../assets/img/naverIcon.png';
 
-export const LoginLayout = styled.div`
-  ${({ theme }) => theme.common.contentMinLayout};
-  ${({ theme }) => theme.common.flexCenter};
-  
+export const LoginLayout = styled.div`  
   .inner{
     width: 800px;
     margin: 0 auto;
