@@ -1,5 +1,6 @@
 import * as express from "express";
 import authMiddleware from "../middlewares/authMiddleware";
+import nodemailerMiddleware from "../middlewares/nodemailerMiddleware";
 import * as validation from "../middlewares/validationMiddleware";
 import userService from "../services/userService";
 
@@ -409,6 +410,33 @@ const userDelete = async (
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
 
+/// POST: email 인증을 위한 코드 발송
+const userSendEmail = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const email = req.body.email;
+    // const sendCodeToEmail = await userService.uploadUserImage({ // redis 활용
+    //   user_id,
+    //   new_filename,
+    // });
+    // console.log(uploadUserImage);
+    // return res.status(200).json(uploadUserImage);
+    console.log(`${email}로 인증 코드를 발송했습니다.`);
+    return res.status(200).json("메일 발송 성공!");
+  } catch (err) {
+    const result_err = {
+      result: false,
+      cause: "api",
+      message: "userSendEmail api에서 오류가 발생했습니다.",
+    };
+    console.log(result_err);
+    return res.status(200).json(result_err);
+  }
+};
+
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
 userRouter.get(
@@ -431,5 +459,6 @@ userRouter.delete(
   validation.validateUserDelete,
   userDelete
 ); // 유저 삭제
+userRouter.post("/user/mail", nodemailerMiddleware, userSendEmail); // email로 코드 발송
 
 export = userRouter;
