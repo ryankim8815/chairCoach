@@ -170,7 +170,7 @@ var userService = /** @class */ (function () {
     userService.addUser = function (_a) {
         var email = _a.email, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, deleteCode, deleteCodeString, deleteCodeObject, result_success;
+            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
@@ -222,24 +222,16 @@ var userService = /** @class */ (function () {
                         checkNewUser = _b.sent();
                         checkNewUserString = JSON.stringify(checkNewUser);
                         checkNewUserObject = JSON.parse(checkNewUserString);
-                        if (!(newUserObject.affectedRows == 1 && checkNewUserObject.length == 1)) return [3 /*break*/, 7];
-                        return [4 /*yield*/, Code_1.default.delete({
-                                email: email,
-                            })];
-                    case 6:
-                        deleteCode = _b.sent();
-                        deleteCodeString = JSON.stringify(deleteCode);
-                        deleteCodeObject = JSON.parse(deleteCodeString);
-                        if (deleteCodeObject.affectedRows == 1) {
+                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
                             result_success = {
                                 result: true,
                                 cause: "success",
                                 message: "".concat(nickname, "\uB2D8\uC758 \uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
                             };
                             return [2 /*return*/, result_success];
+                            // }
                         }
-                        _b.label = 7;
-                    case 7: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -319,11 +311,11 @@ var userService = /** @class */ (function () {
             });
         });
     };
-    //// 회원정보 삭제
+    //// 회원정보 삭제 -> 탈퇴
     userService.deleteUser = function (_a) {
         var user_id = _a.user_id, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var checkUserId, checkUserIdString, checkUserIdObject, result_errUserId, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, updatedUser, updatedUserString, updatedUserObject, checkUpdatedUser, checkUpdatedUserString, checkUpdatedUserObject, result_errDelete, result_success;
+            var checkUserId, checkUserIdString, checkUserIdObject, result_errUserId, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, updatedUser, updatedUserString, updatedUserObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
@@ -352,33 +344,19 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_errPassword];
                         }
-                        return [4 /*yield*/, User_1.default.delete({
+                        return [4 /*yield*/, User_1.default.withdraw({
                                 user_id: user_id,
                             })];
                     case 3:
                         updatedUser = _b.sent();
                         updatedUserString = JSON.stringify(updatedUser);
                         updatedUserObject = JSON.parse(updatedUserString);
-                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
-                    case 4:
-                        checkUpdatedUser = _b.sent();
-                        checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
-                        checkUpdatedUserObject = JSON.parse(checkUpdatedUserString);
-                        if (updatedUserObject.affectedRows !== 1 &&
-                            checkUpdatedUserObject.length !== 0) {
-                            result_errDelete = {
-                                result: true,
-                                cause: "delete",
-                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uB97C \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."),
-                            };
-                            return [2 /*return*/, result_errDelete];
-                        }
-                        else if (updatedUserObject.affectedRows == 1 &&
-                            checkUpdatedUserObject.length == 0) {
+                        if (updatedUserObject.affectedRows == 1) {
                             result_success = {
                                 result: true,
                                 cause: "success",
-                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
+                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD0C8\uD1F4\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4. 30\uC77C \uD6C4 \uD68C\uC6D0 \uC815\uBCF4\uAC00 \uC0AD\uC81C\uB429\uB2C8\uB2E4."),
+                                // withdraw_at: updatedUser,
                             };
                             return [2 /*return*/, result_success];
                         }

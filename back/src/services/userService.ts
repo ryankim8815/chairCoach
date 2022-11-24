@@ -155,19 +155,19 @@ class userService {
     const checkNewUserString = JSON.stringify(checkNewUser);
     const checkNewUserObject = JSON.parse(checkNewUserString);
     if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
-      const deleteCode = await Code.delete({
-        email,
-      });
-      const deleteCodeString = JSON.stringify(deleteCode);
-      const deleteCodeObject = JSON.parse(deleteCodeString);
-      if (deleteCodeObject.affectedRows == 1) {
-        const result_success = {
-          result: true,
-          cause: "success",
-          message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
-        };
-        return result_success;
-      }
+      // const deleteCode = await Code.delete({
+      //   email,
+      // });
+      // const deleteCodeString = JSON.stringify(deleteCode);
+      // const deleteCodeObject = JSON.parse(deleteCodeString);
+      // if (deleteCodeObject.affectedRows == 1) {
+      const result_success = {
+        result: true,
+        cause: "success",
+        message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
+      };
+      return result_success;
+      // }
     }
   }
 
@@ -238,7 +238,7 @@ class userService {
     }
   }
 
-  //// 회원정보 삭제
+  //// 회원정보 삭제 -> 탈퇴
   static async deleteUser({ user_id, password }) {
     const checkUserId = await User.findByUserId({ user_id });
     const checkUserIdString = JSON.stringify(checkUserId);
@@ -268,32 +268,17 @@ class userService {
       };
       return result_errPassword;
     }
-    const updatedUser = await User.delete({
+    const updatedUser = await User.withdraw({
       user_id,
     });
     const updatedUserString = JSON.stringify(updatedUser);
     const updatedUserObject = JSON.parse(updatedUserString);
-    const checkUpdatedUser = await User.findByUserId({ user_id });
-    const checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
-    const checkUpdatedUserObject = JSON.parse(checkUpdatedUserString);
-    if (
-      updatedUserObject.affectedRows !== 1 &&
-      checkUpdatedUserObject.length !== 0
-    ) {
-      const result_errDelete = {
-        result: true,
-        cause: "delete",
-        message: `${checkUserIdObject[0].nickname}님의 회원정보 삭제를 실패했습니다.`,
-      };
-      return result_errDelete;
-    } else if (
-      updatedUserObject.affectedRows == 1 &&
-      checkUpdatedUserObject.length == 0
-    ) {
+    if (updatedUserObject.affectedRows == 1) {
       const result_success = {
         result: true,
         cause: "success",
-        message: `${checkUserIdObject[0].nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.`,
+        message: `${checkUserIdObject[0].nickname}님의 탈퇴가 성공적으로 이뤄졌습니다. 30일 후 회원 정보가 삭제됩니다.`,
+        // withdraw_at: updatedUser,
       };
       return result_success;
     }
