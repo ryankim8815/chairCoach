@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as S from "./SurveyResultStyle";
 import result1 from "../../assets/img/result1.png";
