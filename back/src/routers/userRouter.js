@@ -558,7 +558,10 @@ var userSendEmail = function (req, res, next) { return __awaiter(void 0, void 0,
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
+ *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ *                 code:
+ *                   type: number
+ *                   example: 0000
  */
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정

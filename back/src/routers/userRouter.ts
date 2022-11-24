@@ -468,7 +468,10 @@ const userSendEmail = async (
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
+ *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ *                 code:
+ *                   type: number
+ *                   example: 0000
  */
 
 // api index
