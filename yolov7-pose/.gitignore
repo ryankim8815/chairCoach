@@ -1,0 +1,14 @@
+# data
+/data/images
+*.jpg
+
+
+# run result
+/runs
+
+# Neural Network weights
+*.pt
+*.weights
+
+*.log
+*.csv
