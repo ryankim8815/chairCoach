@@ -21,7 +21,7 @@ exports.userCreateSchema = joi_1.default.object().keys({
         .pattern(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"))
         .required(),
     nickname: joi_1.default.string()
-        .pattern(new RegExp("^([ㄱ-힣0-9_-]{2,8}|[A-Za-z0-9_-]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
+        .pattern(new RegExp("^([가-힣0-9]{2,8}|[A-Za-z0-9]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
         .required(),
 });
 exports.userLoginSchema = joi_1.default.object().keys({
@@ -44,7 +44,7 @@ exports.userUpdateSchema = joi_1.default.object().keys({
         .pattern(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"))
         .required(),
     nickname: joi_1.default.string()
-        .pattern(new RegExp("^([ㄱ-힣0-9_-]{2,8}|[A-Za-z0-9_-]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
+        .pattern(new RegExp("^([가-힣0-9]{2,8}|[A-Za-z0-9]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
         .required(),
 });
 exports.userDeleteSchema = joi_1.default.object().keys({
