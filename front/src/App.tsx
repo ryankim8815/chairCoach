@@ -15,6 +15,9 @@ import AboutNeck from "./pages/aboutNeck/AboutNeck";
 import NeckGuide from "./pages/neckGuide/NeckGuide";
 import NeckInspection from "./pages/neckInspection/NeckInspection";
 import InspectionResult from "./pages/inspectionResult/InspectionResult";
+import SingUp from './pages/singUp/SingUp';
+import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
+
 
 function App() {
   return (
@@ -27,6 +30,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
+            <Route path='/singup' element={<SingUp/>}/>
             <Route path='/necksurvey' element={<NeckSurvey/>}/>
             <Route path='/chaircoach' element={<ChairCoach/>}/>
             <Route path="/surveyresult" element={<SurveyResult />} />
@@ -34,6 +38,8 @@ function App() {
             <Route path="/neckguide" element={<NeckGuide/>}/>
             <Route path="/neckinspection" element={<NeckInspection/>}/>
             <Route path='/inspectionresult' element={<InspectionResult/>}/>
+            <Route path="/userInfoChange" element={<UserInfoChange />} />
+
           </Routes>
           <Footer/>
         </ThemeProvider>

@@ -19,7 +19,7 @@ const Header = () => {
           <Nav/>
         </div>
 
-        {/* <LoginMenu/> */}
+        <LoginMenu/>
         <LogoutMenu/>
       </div>
     </HeaderLayout>

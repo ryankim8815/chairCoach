@@ -21,6 +21,10 @@ const GlobalStyles = createGlobalStyle`
   }
 
   span{display: inline-block}
+
+  input, button{
+    font-family: 'Noto Sans KR', sans-serif;
+  }
   
   button{
     padding: 0;

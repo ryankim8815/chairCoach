@@ -16,5 +16,6 @@ declare module "styled-components" {
 
   export interface InputStyle {
     lineHeight?: string;
+    length?: string;
   }
 }

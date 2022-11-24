@@ -11,6 +11,11 @@ const check = css<BtnStyle>`
   color: ${({ check }) => (check === "true" ? "#fff" : theme.colors.greyText)};
 `;
 
+const purple = css`
+  background: ${({ theme }) => theme.colors.main};
+  color: #fff;
+`;
+
 // 마이페이지 버튼
 export const SmallBtn = styled.button`
   width: 88px;
@@ -25,8 +30,7 @@ export const SmallBtn = styled.button`
 
   &:hover {
     border: none;
-    background: ${({ theme }) => theme.colors.main};
-    color: #fff;
+    ${purple}
   }
 `;
 
@@ -50,8 +54,7 @@ export const LoginBtn = styled.button`
   width: 400px;
   height: 40px;
   border-radius: 2px;
-  background: ${({ theme }) => theme.colors.main};
-  color: #fff;
+  ${purple}
 `;
 
 // 회원가입, 회원정보 수정 버튼
@@ -66,4 +69,13 @@ export const CheckBtn = styled.button<BtnStyle>`
   width: ${({ size }) => (size === "big" ? "440px" : "200px")};
   height: 48px;
   ${check}
+`;
+
+// 인증번호 요청, 인증번호 확인
+export const InputCheckBtn = styled.button`
+  width: 120px;
+  height: 40px;
+  ${purple}
+  border-radius: 2px;
+  font-size: ${({ theme }) => theme.fontSize.text};
 `;
