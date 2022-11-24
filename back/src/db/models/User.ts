@@ -68,6 +68,14 @@ class User {
     return rows;
   }
 
+  static async undoWithdraw({ user_id }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "UPDATE users SET `withdraw_at` = null, `status` = null WHERE `user_id` = ?",
+      values: [user_id],
+    });
+    return rows;
+  }
+
   static async delete({ user_id }) {
     const [rows, fields] = await promisePool.query({
       sql: "DELETE FROM users WHERE `user_id` = ?",

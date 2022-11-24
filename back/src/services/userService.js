@@ -122,7 +122,7 @@ var userService = /** @class */ (function () {
     userService.getUser = function (_a) {
         var email = _a.email, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var user, userString, userObject, result_errEmail, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, secretKey, token, result_success;
+            var user, userString, userObject, result_errEmail, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, user_id, withdrawnUser, withdrawnUserString, withdrawnUserObject, result_err, secretKey, token, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
@@ -151,6 +151,26 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_errPassword];
                         }
+                        if (!(userObject[0].status == "pending")) return [3 /*break*/, 4];
+                        user_id = thisUser.user_id;
+                        return [4 /*yield*/, User_1.default.undoWithdraw({ user_id: user_id })];
+                    case 3:
+                        withdrawnUser = _b.sent();
+                        withdrawnUserString = JSON.stringify(withdrawnUser);
+                        withdrawnUserObject = JSON.parse(withdrawnUserString);
+                        if (withdrawnUserObject.affectedRows === 0) {
+                            result_err = {
+                                result: false,
+                                cause: "status",
+                                message: "탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다.",
+                            };
+                            return [2 /*return*/, result_err];
+                        }
+                        else {
+                            thisUser.status = null;
+                        }
+                        _b.label = 4;
+                    case 4:
                         secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
                         token = jsonwebtoken_1.default.sign({ user_id: thisUser.user_id }, secretKey);
                         delete thisUser.password;

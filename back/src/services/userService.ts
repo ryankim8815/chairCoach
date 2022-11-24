@@ -94,6 +94,23 @@ class userService {
       };
       return result_errPassword;
     }
+    // 탈퇴한 사용자가 30일 이내 로그인 시도 시
+    if (userObject[0].status == "pending") {
+      const user_id = thisUser.user_id;
+      const withdrawnUser = await User.undoWithdraw({ user_id });
+      const withdrawnUserString = JSON.stringify(withdrawnUser);
+      const withdrawnUserObject = JSON.parse(withdrawnUserString);
+      if (withdrawnUserObject.affectedRows === 0) {
+        const result_err = {
+          result: false,
+          cause: "status",
+          message: "탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다.",
+        };
+        return result_err;
+      } else {
+        thisUser.status = null;
+      }
+    }
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
     const token = jwt.sign({ user_id: thisUser.user_id }, secretKey);
     delete thisUser.password;
