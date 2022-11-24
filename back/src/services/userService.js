@@ -409,6 +409,7 @@ var userService = /** @class */ (function () {
                                 result: true,
                                 cause: "success",
                                 message: "code \uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                code: code,
                             };
                             return [2 /*return*/, result_success];
                         }
@@ -417,6 +418,7 @@ var userService = /** @class */ (function () {
                                 result: true,
                                 cause: "success",
                                 message: "code \uC7AC\uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                code: code,
                             };
                             return [2 /*return*/, result_success];
                         }
