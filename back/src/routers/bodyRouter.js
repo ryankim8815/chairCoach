@@ -64,6 +64,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express = __importStar(require("express"));
 var bodyService_1 = __importDefault(require("../services/bodyService"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
+var validation = __importStar(require("../middlewares/bodyValidationMiddleware"));
 var bodyRouter = express.Router();
 // GET: 전체 운동 기록 조회 기능
 var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -76,8 +77,7 @@ var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0
             case 1:
                 allBodies = _a.sent();
                 console.log(allBodies);
-                res.status(200).json(allBodies);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(allBodies)];
             case 2:
                 err_1 = _a.sent();
                 result_err = {
@@ -86,8 +86,7 @@ var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0
                     message: "bodyRecordlist api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -147,13 +146,12 @@ var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, v
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 return [4 /*yield*/, bodyService_1.default.getBodies({ user_id: user_id })];
             case 1:
                 Bodies = _a.sent();
                 console.log(Bodies);
-                res.status(200).json(Bodies);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(Bodies)];
             case 2:
                 err_2 = _a.sent();
                 result_err = {
@@ -162,8 +160,7 @@ var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, v
                     message: "bodyRecords api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -225,7 +222,7 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 tag = req.body.tag;
                 return [4 /*yield*/, bodyService_1.default.addBody({
                         user_id: user_id,
@@ -234,8 +231,7 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 body = _a.sent();
                 console.log(body);
-                res.status(200).json(body);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(body)];
             case 2:
                 err_3 = _a.sent();
                 result_err = {
@@ -244,8 +240,7 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "bodyCreate api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -290,13 +285,15 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   example: fawa524tweryht3w
  */
 // PATCH: 특정 유저의 운동 기록 종료
-var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+var bodyUpdate = function (
+// req: express.Request & { files: MulterFile[] },
+req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var user_id, body_id, body, err_4, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 body_id = req.body.body_id;
                 return [4 /*yield*/, bodyService_1.default.updateBody({
                         body_id: body_id,
@@ -304,8 +301,7 @@ var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 body = _a.sent();
                 console.log(body);
-                res.status(200).json(body);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(body)];
             case 2:
                 err_4 = _a.sent();
                 result_err = {
@@ -314,8 +310,7 @@ var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "bodyUpdate api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -356,8 +351,8 @@ var bodyUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: string
  *                   example: 해당 유저의 운동 기록 종료가 성공적으로 이뤄졌습니다.
  */
-bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능
-bodyRouter.get("/body", authMiddleware_1.default, bodyRecords); // 특정 유저의 운동 기록 조회
-bodyRouter.post("/body", authMiddleware_1.default, bodyCreate); // 특정 유저의 운동 기록 시작
-bodyRouter.patch("/body", authMiddleware_1.default, bodyUpdate); // 특정 유저의 운동 기록 종료
+bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능, 개발시 편의를 위한 기능으로 사용처가 없다면 삭제 예정
+bodyRouter.get("/body", authMiddleware_1.default, validation.validateBodyRecords, bodyRecords); // 특정 유저의 운동 기록 조회
+bodyRouter.post("/body", authMiddleware_1.default, validation.validateBodyCreate, bodyCreate); // 특정 유저의 운동 기록 시작
+bodyRouter.patch("/body", authMiddleware_1.default, validation.validateBodyUpdate, bodyUpdate); // 특정 유저의 운동 기록 종료
 module.exports = bodyRouter;

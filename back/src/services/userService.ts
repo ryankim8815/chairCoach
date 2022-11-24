@@ -1,7 +1,7 @@
 import User from "../db/models/User";
+import Code from "../db/models/Code";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-// import fs from "fs";   // (FE요청) 삭제
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment-timezone";
 moment.tz.setDefault("Asia/Seoul");
@@ -36,9 +36,6 @@ class userService {
       delete currentUserObject[i].password;
       delete currentUserObject[i].user_id;
     }
-    // const countUsers = await User.countAll();
-    // const countUsersString = JSON.stringify(countUsers);
-    // const countUsersObject = JSON.parse(countUsersString);
     if (currentUserObject.length === 0) {
       const result_errUserId = {
         result: false,
@@ -140,15 +137,10 @@ class userService {
       };
       return result_errNickname;
     }
-    // UUID 생성
     const user_id = uuidv4();
-    // 비밀번호 해쉬화
     password = await bcrypt.hash(password, 10);
-    // provider
     const provider = "chairCoach";
-    // created_time
     const created_at = moment().format("YYYY-MM-DD HH:mm:ss");
-    // 사용자 추가
     const newUser = await User.create({
       user_id,
       email,
@@ -163,18 +155,24 @@ class userService {
     const checkNewUserString = JSON.stringify(checkNewUser);
     const checkNewUserObject = JSON.parse(checkNewUserString);
     if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
-      const result_success = {
-        result: true,
-        cause: "success",
-        message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
-      };
-      return result_success;
+      const deleteCode = await Code.delete({
+        email,
+      });
+      const deleteCodeString = JSON.stringify(deleteCode);
+      const deleteCodeObject = JSON.parse(deleteCodeString);
+      if (deleteCodeObject.affectedRows == 1) {
+        const result_success = {
+          result: true,
+          cause: "success",
+          message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
+        };
+        return result_success;
+      }
     }
   }
 
   //// 회원 정보 수정
   static async updateUser({ user_id, currentPassword, password, nickname }) {
-    // user_id 확인
     const checkUserId = await User.findByUserId({ user_id });
     const checkUserIdString = JSON.stringify(checkUserId);
     const checkUserIdObject = JSON.parse(checkUserIdString);
@@ -187,7 +185,6 @@ class userService {
       };
       return result_errUserId;
     }
-    // 기존 비밀번호 확인
     const thisUser = checkUserIdObject[0];
     const hashedCorrectPassword = thisUser.password;
 
@@ -204,7 +201,6 @@ class userService {
       };
       return result_errPassword;
     }
-    // nickname 중복 확인
     const checkNickname = await User.findByNickname({ nickname });
     const checkNicknameString = JSON.stringify(checkNickname);
     const checkNicknameObject = JSON.parse(checkNicknameString);
@@ -224,9 +220,7 @@ class userService {
       };
       return result_errNickname;
     }
-    // 비밀번호 해쉬화
     password = await bcrypt.hash(password, 10);
-    // 사용자 수정
     const updatedUser = await User.update({
       user_id,
       password,
@@ -243,62 +237,9 @@ class userService {
       return result_success;
     }
   }
-  // (FE요청) 삭제
-  // //// 프로필 사진 업로드
-  // static async uploadUserImage({ email, new_filename }) {
-  //   // email 확인
-  //   const checkEmail = await User.findByEmail({ email });
-  //   const checkEmailString = JSON.stringify(checkEmail);
-  //   const checkEmailObject = JSON.parse(checkEmailString);
-  //   if (checkEmailObject.length === 0) {
-  //     const result_errEmail = {
-  //       result: false,
-  //       cause: "email",
-  //       message:
-  //         "입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
-  //     };
-  //     return result_errEmail;
-  //   }
-  //   // db에 파일 경로 갱신
-  //   const updateFilename = User.updateFilename({ email, new_filename });
-  //   // 파일 삭제
-  //   console.log("파일명 확인: ", checkEmailObject[0].profile_image);
-  //   const old_filename = checkEmailObject[0].profile_image;
-  //   //Directory 존재 여부 체크
-  //   if (checkEmailObject[0].profile_image == null) {
-  //     // 추후 null을 ./default.jpg로 변경 필요
-  //     console.log(
-  //       "기존 프로필 사진이 없습니다. 기존 사진 삭제 절차는 생략됩니다."
-  //     );
-  //   } else {
-  //     const directory = fs.existsSync(`./uploads/${old_filename}`); //디렉토리 경로 입력
-  //     console.log("삭제할 파일 경로: ", directory);
-  //     //Directory가 존재 한다면 true 없다면 false
-  //     console.log("Boolan : ", directory);
-  //     if (!directory) {
-  //       console.log(
-  //         `[확인요망]: 기존 프로필 사진(파일명: ${old_filename})이 존재하지 않습니다.`
-  //       );
-  //     }
-  //     fs.rm(`./uploads/${old_filename}`, { recursive: true }, (err) => {
-  //       if (err != null) {
-  //         console.log(
-  //           `[확인요망]: 기존 프로필 사진(파일명: ${old_filename})을 삭제하던 중 오류가 발생했습니다. (에러 메시지: ${err})`
-  //         );
-  //       }
-  //     });
-  //   }
-  //   const result_success = {
-  //     result: true,
-  //     cause: "success",
-  //     message: `${checkEmailObject[0].nickname}님의 프로필 사진 업데이트가 성공적으로 이뤄졌습니다.`,
-  //   };
-  //   return result_success;
-  // }
 
   //// 회원정보 삭제
   static async deleteUser({ user_id, password }) {
-    // email 확인
     const checkUserId = await User.findByUserId({ user_id });
     const checkUserIdString = JSON.stringify(checkUserId);
     const checkUserIdObject = JSON.parse(checkUserIdString);
@@ -311,7 +252,6 @@ class userService {
       };
       return result_errUserId;
     }
-    // 기존 비밀번호 확인
     const thisUser = checkUserIdObject[0];
     const hashedCorrectPassword = thisUser.password;
 
@@ -328,7 +268,6 @@ class userService {
       };
       return result_errPassword;
     }
-    // 사용자 삭제
     const updatedUser = await User.delete({
       user_id,
     });
@@ -355,6 +294,32 @@ class userService {
         result: true,
         cause: "success",
         message: `${checkUserIdObject[0].nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.`,
+      };
+      return result_success;
+    }
+  }
+  /////////////////////////////////
+  //// 회원가입 전 이메일 인증
+  // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
+  static async sendCode({ email, code }) {
+    const saveCode = await Code.create({
+      email,
+      code,
+    });
+    const saveCodeString = JSON.stringify(saveCode);
+    const saveCodeObject = JSON.parse(saveCodeString);
+    if (saveCodeObject.affectedRows == 1) {
+      const result_success = {
+        result: true,
+        cause: "success",
+        message: `code 발급이 성공적으로 이뤄졌습니다.`,
+      };
+      return result_success;
+    } else if (saveCodeObject.affectedRows == 2) {
+      const result_success = {
+        result: true,
+        cause: "success",
+        message: `code 재발급이 성공적으로 이뤄졌습니다.`,
       };
       return result_success;
     }

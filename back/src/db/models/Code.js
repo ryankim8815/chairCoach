@@ -38,41 +38,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var authMiddleware = function (req, res, next) {
-    var _a, _b;
-    return __awaiter(this, void 0, void 0, function () {
-        var userToken, result_errNoToken, secretKey, jwtDecoded, user_id, result_errInvalidToken;
-        return __generator(this, function (_c) {
-            userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
-            if (userToken === "null") {
-                result_errNoToken = {
-                    result: false,
-                    cause: "token",
-                    message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
-                };
-                console.log(result_errNoToken);
-                return [2 /*return*/, res.status(400).json(result_errNoToken)];
-                return [2 /*return*/];
-            }
-            try {
-                secretKey = process.env.JWT_SECRET_KEY || "secret-key";
-                jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
-                user_id = jwtDecoded.user_id;
-                req.body.user_id = user_id;
-                next();
-            }
-            catch (error) {
-                result_errInvalidToken = {
-                    result: false,
-                    cause: "token",
-                    message: "정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.",
-                };
-                console.log(result_errInvalidToken);
-                return [2 /*return*/, res.status(400).json(result_errInvalidToken)];
-            }
-            return [2 /*return*/];
+var database_1 = __importDefault(require("../database"));
+var Code = /** @class */ (function () {
+    function Code() {
+    }
+    Code.create = function (_a) {
+        var email = _a.email, code = _a.code;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            //   sql: "INSERT INTO codes (email, code) VALUES (?, ?)",
+                            sql: "REPLACE INTO codes (email, code) VALUES (?, ?)",
+                            values: [email, code],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
         });
-    });
-};
-module.exports = authMiddleware;
+    };
+    Code.delete = function (_a) {
+        var email = _a.email;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "DELETE FROM codes WHERE `email` = ?",
+                            values: [email],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    return Code;
+}());
+module.exports = Code;

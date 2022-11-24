@@ -38,41 +38,49 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var authMiddleware = function (req, res, next) {
-    var _a, _b;
+var nodemailer_1 = __importDefault(require("nodemailer"));
+var sendEmail = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
-        var userToken, result_errNoToken, secretKey, jwtDecoded, user_id, result_errInvalidToken;
-        return __generator(this, function (_c) {
-            userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
-            if (userToken === "null") {
-                result_errNoToken = {
-                    result: false,
-                    cause: "token",
-                    message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
-                };
-                console.log(result_errNoToken);
-                return [2 /*return*/, res.status(400).json(result_errNoToken)];
-                return [2 /*return*/];
+        var email, code, transporter, info, err_1, result_err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log("email checking: ", req.body.email);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    email = req.body.email;
+                    code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+                    req.body.code = code;
+                    transporter = nodemailer_1.default.createTransport({
+                        service: "gmail",
+                        auth: {
+                            user: process.env.EMAIL_ACCOUNT,
+                            pass: process.env.APP_PASSWORD,
+                        },
+                    });
+                    return [4 /*yield*/, transporter.sendMail({
+                            from: '"Chair Coach" <dogfoot.info@gmail.com>',
+                            to: email,
+                            subject: "ChairCoach에서 메일 확인을 위해 보내드립니다. ✔",
+                            html: "<b>Hello world?</b>\n            <h1>".concat(code, "</h1> \n            <h3>\uC704\uC758 \uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.</h3>\n      "),
+                        })];
+                case 2:
+                    info = _a.sent();
+                    next();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    result_err = {
+                        result: false,
+                        cause: "mail",
+                        message: "mail 발송에 실패했습니다.",
+                    };
+                    console.log(result_err);
+                    return [2 /*return*/, res.status(499).json(result_err)];
+                case 4: return [2 /*return*/];
             }
-            try {
-                secretKey = process.env.JWT_SECRET_KEY || "secret-key";
-                jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
-                user_id = jwtDecoded.user_id;
-                req.body.user_id = user_id;
-                next();
-            }
-            catch (error) {
-                result_errInvalidToken = {
-                    result: false,
-                    cause: "token",
-                    message: "정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.",
-                };
-                console.log(result_errInvalidToken);
-                return [2 /*return*/, res.status(400).json(result_errInvalidToken)];
-            }
-            return [2 /*return*/];
         });
     });
 };
-module.exports = authMiddleware;
+module.exports = sendEmail;

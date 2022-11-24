@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var mysql2_1 = __importDefault(require("mysql2"));
 require("dotenv/config");
-// require("dotenv").config();
 var dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -13,7 +12,6 @@ var dbConfig = {
     connectionLimit: 10,
     queueLimit: 0, // unlimited
 };
-// console.log("dbconfig check: ", dbConfig);
 var pool = mysql2_1.default.createPool(dbConfig);
 var promisePool = pool.promise();
 module.exports = promisePool;

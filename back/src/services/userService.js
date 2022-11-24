@@ -39,9 +39,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var User_1 = __importDefault(require("../db/models/User"));
+var Code_1 = __importDefault(require("../db/models/Code"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-// import fs from "fs";   // (FE요청) 삭제
 var uuid_1 = require("uuid");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 moment_timezone_1.default.tz.setDefault("Asia/Seoul");
@@ -91,9 +91,6 @@ var userService = /** @class */ (function () {
                             delete currentUserObject[i].password;
                             delete currentUserObject[i].user_id;
                         }
-                        // const countUsers = await User.countAll();
-                        // const countUsersString = JSON.stringify(countUsers);
-                        // const countUsersObject = JSON.parse(countUsersString);
                         if (currentUserObject.length === 0) {
                             result_errUserId = {
                                 result: false,
@@ -173,7 +170,7 @@ var userService = /** @class */ (function () {
     userService.addUser = function (_a) {
         var email = _a.email, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, result_success;
+            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, deleteCode, deleteCodeString, deleteCodeObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
@@ -205,7 +202,6 @@ var userService = /** @class */ (function () {
                         user_id = (0, uuid_1.v4)();
                         return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
                     case 3:
-                        // 비밀번호 해쉬화
                         password = _b.sent();
                         provider = "chairCoach";
                         created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
@@ -226,7 +222,15 @@ var userService = /** @class */ (function () {
                         checkNewUser = _b.sent();
                         checkNewUserString = JSON.stringify(checkNewUser);
                         checkNewUserObject = JSON.parse(checkNewUserString);
-                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
+                        if (!(newUserObject.affectedRows == 1 && checkNewUserObject.length == 1)) return [3 /*break*/, 7];
+                        return [4 /*yield*/, Code_1.default.delete({
+                                email: email,
+                            })];
+                    case 6:
+                        deleteCode = _b.sent();
+                        deleteCodeString = JSON.stringify(deleteCode);
+                        deleteCodeObject = JSON.parse(deleteCodeString);
+                        if (deleteCodeObject.affectedRows == 1) {
                             result_success = {
                                 result: true,
                                 cause: "success",
@@ -234,7 +238,8 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_success];
                         }
-                        return [2 /*return*/];
+                        _b.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -291,7 +296,6 @@ var userService = /** @class */ (function () {
                         }
                         return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
                     case 4:
-                        // 비밀번호 해쉬화
                         password = _b.sent();
                         return [4 /*yield*/, User_1.default.update({
                                 user_id: user_id,
@@ -315,58 +319,6 @@ var userService = /** @class */ (function () {
             });
         });
     };
-    // (FE요청) 삭제
-    // //// 프로필 사진 업로드
-    // static async uploadUserImage({ email, new_filename }) {
-    //   // email 확인
-    //   const checkEmail = await User.findByEmail({ email });
-    //   const checkEmailString = JSON.stringify(checkEmail);
-    //   const checkEmailObject = JSON.parse(checkEmailString);
-    //   if (checkEmailObject.length === 0) {
-    //     const result_errEmail = {
-    //       result: false,
-    //       cause: "email",
-    //       message:
-    //         "입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
-    //     };
-    //     return result_errEmail;
-    //   }
-    //   // db에 파일 경로 갱신
-    //   const updateFilename = User.updateFilename({ email, new_filename });
-    //   // 파일 삭제
-    //   console.log("파일명 확인: ", checkEmailObject[0].profile_image);
-    //   const old_filename = checkEmailObject[0].profile_image;
-    //   //Directory 존재 여부 체크
-    //   if (checkEmailObject[0].profile_image == null) {
-    //     // 추후 null을 ./default.jpg로 변경 필요
-    //     console.log(
-    //       "기존 프로필 사진이 없습니다. 기존 사진 삭제 절차는 생략됩니다."
-    //     );
-    //   } else {
-    //     const directory = fs.existsSync(`./uploads/${old_filename}`); //디렉토리 경로 입력
-    //     console.log("삭제할 파일 경로: ", directory);
-    //     //Directory가 존재 한다면 true 없다면 false
-    //     console.log("Boolan : ", directory);
-    //     if (!directory) {
-    //       console.log(
-    //         `[확인요망]: 기존 프로필 사진(파일명: ${old_filename})이 존재하지 않습니다.`
-    //       );
-    //     }
-    //     fs.rm(`./uploads/${old_filename}`, { recursive: true }, (err) => {
-    //       if (err != null) {
-    //         console.log(
-    //           `[확인요망]: 기존 프로필 사진(파일명: ${old_filename})을 삭제하던 중 오류가 발생했습니다. (에러 메시지: ${err})`
-    //         );
-    //       }
-    //     });
-    //   }
-    //   const result_success = {
-    //     result: true,
-    //     cause: "success",
-    //     message: `${checkEmailObject[0].nickname}님의 프로필 사진 업데이트가 성공적으로 이뤄졌습니다.`,
-    //   };
-    //   return result_success;
-    // }
     //// 회원정보 삭제
     userService.deleteUser = function (_a) {
         var user_id = _a.user_id, password = _a.password;
@@ -427,6 +379,44 @@ var userService = /** @class */ (function () {
                                 result: true,
                                 cause: "success",
                                 message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
+                            };
+                            return [2 /*return*/, result_success];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /////////////////////////////////
+    //// 회원가입 전 이메일 인증
+    // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
+    userService.sendCode = function (_a) {
+        var email = _a.email, code = _a.code;
+        return __awaiter(this, void 0, void 0, function () {
+            var saveCode, saveCodeString, saveCodeObject, result_success, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Code_1.default.create({
+                            email: email,
+                            code: code,
+                        })];
+                    case 1:
+                        saveCode = _b.sent();
+                        saveCodeString = JSON.stringify(saveCode);
+                        saveCodeObject = JSON.parse(saveCodeString);
+                        if (saveCodeObject.affectedRows == 1) {
+                            result_success = {
+                                result: true,
+                                cause: "success",
+                                message: "code \uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                            };
+                            return [2 /*return*/, result_success];
+                        }
+                        else if (saveCodeObject.affectedRows == 2) {
+                            result_success = {
+                                result: true,
+                                cause: "success",
+                                message: "code \uC7AC\uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             };
                             return [2 /*return*/, result_success];
                         }

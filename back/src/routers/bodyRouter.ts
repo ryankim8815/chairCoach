@@ -1,7 +1,7 @@
 import * as express from "express";
 import bodyService from "../services/bodyService";
 import authMiddleware from "../middlewares/authMiddleware";
-import upload from "../middlewares/uploadMiddleware";
+import * as validation from "../middlewares/bodyValidationMiddleware";
 import type { MulterFile } from "../customType/multer.d";
 const bodyRouter = express.Router();
 
@@ -14,7 +14,7 @@ const bodyRecordlist = async (
   try {
     const allBodies = await bodyService.getAllBodies();
     console.log(allBodies);
-    res.status(200).json(allBodies);
+    return res.status(200).json(allBodies);
   } catch (err) {
     const result_err = {
       result: false,
@@ -22,7 +22,7 @@ const bodyRecordlist = async (
       message: "bodyRecordlist api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -81,10 +81,10 @@ const bodyRecords = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const Bodies = await bodyService.getBodies({ user_id });
     console.log(Bodies);
-    res.status(200).json(Bodies);
+    return res.status(200).json(Bodies);
   } catch (err) {
     const result_err = {
       result: false,
@@ -92,7 +92,7 @@ const bodyRecords = async (
       message: "bodyRecords api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -153,14 +153,14 @@ const bodyCreate = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const tag = req.body.tag;
     const body = await bodyService.addBody({
       user_id,
       tag,
     });
     console.log(body);
-    res.status(200).json(body);
+    return res.status(200).json(body);
   } catch (err) {
     const result_err = {
       result: false,
@@ -168,7 +168,7 @@ const bodyCreate = async (
       message: "bodyCreate api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -213,18 +213,19 @@ const bodyCreate = async (
 
 // PATCH: 특정 유저의 운동 기록 종료
 const bodyUpdate = async (
-  req: express.Request & { files: MulterFile[] },
+  // req: express.Request & { files: MulterFile[] },
+  req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id; // 확인하는 것으로 수정 예정
     const body_id = req.body.body_id;
     const body = await bodyService.updateBody({
       body_id,
     });
     console.log(body);
-    res.status(200).json(body);
+    return res.status(200).json(body);
   } catch (err) {
     const result_err = {
       result: false,
@@ -232,7 +233,7 @@ const bodyUpdate = async (
       message: "bodyUpdate api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -272,9 +273,24 @@ const bodyUpdate = async (
  *                   example: 해당 유저의 운동 기록 종료가 성공적으로 이뤄졌습니다.
  */
 
-bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능
-bodyRouter.get("/body", authMiddleware, bodyRecords); // 특정 유저의 운동 기록 조회
-bodyRouter.post("/body", authMiddleware, bodyCreate); // 특정 유저의 운동 기록 시작
-bodyRouter.patch("/body", authMiddleware, bodyUpdate); // 특정 유저의 운동 기록 종료
+bodyRouter.get("/bodies", bodyRecordlist); // 전체 운동 기록 조회 기능, 개발시 편의를 위한 기능으로 사용처가 없다면 삭제 예정
+bodyRouter.get(
+  "/body",
+  authMiddleware,
+  validation.validateBodyRecords,
+  bodyRecords
+); // 특정 유저의 운동 기록 조회
+bodyRouter.post(
+  "/body",
+  authMiddleware,
+  validation.validateBodyCreate,
+  bodyCreate
+); // 특정 유저의 운동 기록 시작
+bodyRouter.patch(
+  "/body",
+  authMiddleware,
+  validation.validateBodyUpdate,
+  bodyUpdate
+); // 특정 유저의 운동 기록 종료
 
 export = bodyRouter;

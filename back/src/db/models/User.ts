@@ -59,14 +59,6 @@ class User {
     });
     return rows;
   }
-  // (FE요청) 삭제
-  // static async updateFilename({ email, new_filename }) {
-  //   const [rows, fields] = await promisePool.query({
-  //     sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
-  //     values: [new_filename, email],
-  //   });
-  //   return rows;
-  // }
 
   static async delete({ user_id }) {
     const [rows, fields] = await promisePool.query({

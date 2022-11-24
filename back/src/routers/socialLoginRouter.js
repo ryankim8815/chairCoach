@@ -64,6 +64,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express = __importStar(require("express"));
 var axios_1 = __importDefault(require("axios"));
 var socialLoginService_1 = __importDefault(require("../services/socialLoginService"));
+var qs_1 = __importDefault(require("qs"));
+var urlencode_1 = __importDefault(require("urlencode"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var socialLoginRouter = express.Router();
 // axios에서 error 발생시 troubleshooting 용이성을 위해
 axios_1.default.interceptors.response.use(function (res) {
@@ -139,8 +142,7 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 4:
                 logedinUser = _a.sent();
                 console.log(logedinUser);
-                res.status(200).json(logedinUser);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(logedinUser)];
             case 5:
                 err_1 = _a.sent();
                 result_err = {
@@ -149,15 +151,14 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "kakaoOauth api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 6: return [2 /*return*/];
         }
     });
 }); };
 /**
  * @swagger
- * /kakaoOauth:
+ * /kakao:
  *   post:
  *     summary: kakao 간편 로그인
  *     description: kakao api 간편 로그인 첫 이용 시, 회원가입 절차도 진행됩니다.
@@ -264,8 +265,7 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 4:
                 logedinUser = _a.sent();
                 console.log(logedinUser);
-                res.status(200).json(logedinUser);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(logedinUser)];
             case 5:
                 err_2 = _a.sent();
                 result_err = {
@@ -274,15 +274,14 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "naverOauth api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 6];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 6: return [2 /*return*/];
         }
     });
 }); };
 /**
  * @swagger
- * /naverOauth:
+ * /naver:
  *   post:
  *     summary: naver 간편 로그인
  *     description: naver api 간편 로그인 첫 이용 시, 회원가입 절차도 진행됩니다.
@@ -338,6 +337,130 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: timestamp
  *                   example: 2022-11-01T01:01:01.000Z
  */
-socialLoginRouter.post("/kakaoOauth", kakaoOauth);
-socialLoginRouter.post("/naverOauth", naverOauth);
+////////////////////////////////////////
+/////////////   구   글   ///////////////
+////////////////////////////////////////
+var googleOauth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, googleToken_1, data, jwtDecoded, jwtDecodedString, jwtDecodedObject, email, refresh_token, logedinUser, err_3, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                code = urlencode_1.default.decode(req.body.code);
+                login_hint = req.body.email || null;
+                nonce = req.body.nonce;
+                state = process.env.GOOGLE_STATE;
+                client_id = process.env.GOOGLE_CLIENT_ID;
+                client_secret = process.env.GOOGLE_CLIENT_SECRET;
+                redirectURI = process.env.GOOGLE_REDIRECT_URL;
+                hd = process.env.GOOGLE_HD;
+                encoded = encodeURIComponent(redirectURI);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 4, , 5]);
+                googleToken_1 = "";
+                data = {
+                    code: code,
+                    client_id: client_id,
+                    client_secret: client_secret,
+                    redirect_uri: redirectURI,
+                    grant_type: "authorization_code",
+                };
+                return [4 /*yield*/, (0, axios_1.default)({
+                        method: "POST",
+                        headers: { "content-type": "application/x-www-form-urlencoded" },
+                        data: qs_1.default.stringify(data),
+                        url: "https://oauth2.googleapis.com/token",
+                    })
+                        .then(function (res) {
+                        googleToken_1 = res;
+                    })
+                        .catch(function (err) {
+                        console.log(err);
+                    })];
+            case 2:
+                _a.sent();
+                jwtDecoded = jsonwebtoken_1.default.decode(googleToken_1.id_token);
+                jwtDecodedString = JSON.stringify(jwtDecoded);
+                jwtDecodedObject = JSON.parse(jwtDecodedString);
+                email = jwtDecodedObject.email;
+                refresh_token = googleToken_1.refresh_token;
+                return [4 /*yield*/, socialLoginService_1.default.google({
+                        email: email,
+                        refresh_token: refresh_token,
+                    })];
+            case 3:
+                logedinUser = _a.sent();
+                console.log(logedinUser);
+                return [2 /*return*/, res.status(200).json(logedinUser)];
+            case 4:
+                err_3 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "googleOauth api에서 오류가 발생했습니다.",
+                };
+                console.log(result_err);
+                return [2 /*return*/, res.status(200).json(result_err)];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /google:
+ *   post:
+ *     summary: google 간편 로그인
+ *     description: google api 간편 로그인 첫 이용 시, 회원가입 절차도 진행됩니다.
+ *     tags: ["socialLoginRouter"]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               code:
+ *                 type: string
+ *                 example: wsh2rwe87iu2gwef9u3rwdft23wes87y13qref97yi
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
+ *                 token:
+ *                   type: string
+ *                   example: awj32ew86tgcvwstudggaiqa98yiqgdiqyas238ewyufdhjv29qiaedz87iyhvd
+ *                 email:
+ *                   type: string
+ *                   example: user@dogfoot.info
+ *                 nickname:
+ *                   type: string
+ *                   example: bowwow
+ *                 profile_image:
+ *                   type: string
+ *                   example: file-1234405177970-416354969.png
+ *                 admin:
+ *                   type: int
+ *                   example: 0
+ *                 provider:
+ *                   type: string
+ *                   example: google
+ *                 created_at:
+ *                   type: timestamp
+ *                   example: 2022-11-01T01:01:01.000Z
+ */
+socialLoginRouter.post("/kakao", kakaoOauth);
+socialLoginRouter.post("/naver", naverOauth);
+socialLoginRouter.post("/google", googleOauth);
 module.exports = socialLoginRouter;
