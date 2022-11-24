@@ -5,11 +5,13 @@ import * as S from './SingUpStyle';
 import * as B from '../../styles/BtnStyle';
 import * as F from '../../styles/InputStyle';
 import * as Api from '../../api/api'
+import { useEffect } from 'react';
 interface LoginData {
   email: string;
   password: string;
 	nickname: string;
-  [key: string]: string;
+  code: number;
+  [key: string]: string | number;
 }
 
 // 이메일 : regex(정규식) 확인 (예시: abc@example.com).
@@ -30,13 +32,42 @@ const validatePwd = (password:string) => {
 
 const SingUp = () => {
     const [email, setEmail] = useState("");
+    const isEmailValid = validateEmail(email);
+
     const [password, setPassword] = useState("");
     const [nickname, setNickname]= useState("");
 
-    const isEmailValid = validateEmail(email);
     const isPwdValid = validatePwd(password);
+    
+    const [codeDisabled, setCodeDisabled] = useState(true);
+    const [code, setCode] = useState(0);
+    const [code2, setCode2] = useState(0);
+    const [checkCode, setCheckCode] = useState(true);
 
-   
+    const handlerCodeClick = async(e: React.MouseEvent<HTMLButtonElement>)=>{
+      e.preventDefault();
+      setCodeDisabled(false);
+
+      const res = await Api.post('user/mail',{
+        email: email
+      });
+      console.log(res)
+      
+      console.log(res.data.code); //number
+      setCode(res.data.code);
+    }
+
+
+    const handlerCheckClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      code === code2 ? setCheckCode(true) : setCheckCode(false);
+      
+      if(code === code2){
+        console.log('yes')
+      }else{
+        console.log('no')
+      }
+    }
 
   return (
     <S.SingUpLayout>
@@ -51,46 +82,41 @@ const SingUp = () => {
               <p>이메일</p>
               <F.CheckInputCon>
                 <F.InputText length='small' type="text" value={email} placeholder='이메일을 입력해주세요.' onChange={e => setEmail(e.target.value)} />
-                <B.InputCheckBtn onClick={async(e)=>{
-                  e.preventDefault();
-                  console.log('1')
-                   const res=await Api.post('user/mail',{
-                    email: email
-                  })
-                  console.log(res)
-                }}>인증번호 요청</B.InputCheckBtn>
+                <B.InputCheckBtn onClick={handlerCodeClick}>인증번호 요청</B.InputCheckBtn>
                 {
-                  !isEmailValid && <F.WarningText>이메일 형식이 아닙니다.</F.WarningText>
+                  email.length === 0 || isEmailValid ? null : <F.WarningText>이메일 형식이 아닙니다.</F.WarningText>
                 }
               </F.CheckInputCon>
 
               <F.CheckInputCon>
-                <F.InputText length='small' type="text" placeholder='인증번호를 입력해주세요.' />
-                <B.InputCheckBtn>인증번호 확인</B.InputCheckBtn>
-                <F.WarningText>인증번호가 틀렸습니다.</F.WarningText>
+                <F.InputText length='small' type="text" disabled={codeDisabled} placeholder='인증번호를 입력해주세요.' onChange={e => setCode2(Number(e.target.value))} />
+                <B.InputCheckBtn onClick={handlerCheckClick}>인증번호 확인</B.InputCheckBtn>
+                {
+                  checkCode ? null : <F.WarningText>인증번호가 틀렸습니다.</F.WarningText>
+                }
               </F.CheckInputCon>
             </S.InputWrap>
 
             <S.InputWrap>
               <div>
                 <p>비밀번호</p>
-                <F.InputText type="text" value={password} placeholder='영문, 숫자, 특수문자 포함 8자 이상입력해주세요.' onChange={e => setPassword(e.target.value)} />
-                {
+                <F.InputText type="password" value={password} disabled placeholder='영문, 숫자, 특수문자 포함 8자 이상입력해주세요.' onChange={e => setPassword(e.target.value)} />
+                {/* {
                   !isPwdValid && <F.WarningText>영어,숫자,특수문자를 포함한 8글자 이상이여야 합니다.</F.WarningText>
-                }
+                } */}
               </div>
 
               <div>
                 <p>비밀번호 확인</p>
-                <F.InputText type="text" name="" id="" placeholder='비밀번호를 다시 입력해주세요.' />
-                <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
+                <F.InputText type="password" disabled placeholder='비밀번호를 다시 입력해주세요.' />
+                {/* <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText> */}
               </div>
             </S.InputWrap>
 
             <S.InputWrap>
               <p>닉네임</p>
-              <F.InputText type="text" name="" id="" placeholder='닉네임을 입력해주세요.' onChange={e => setNickname(e.target.value)} />
-              <F.WarningText>한글+숫자 2~8, 영어+숫자 2~12이여야 합니다.</F.WarningText>
+              <F.InputText type="text" disabled placeholder='닉네임을 입력해주세요.' onChange={e => setNickname(e.target.value)} />
+              {/* <F.WarningText>한글+숫자 2~8, 영어+숫자 2~12이여야 합니다.</F.WarningText> */}
             </S.InputWrap>
 
             <B.InputBtn>가입하기</B.InputBtn>
