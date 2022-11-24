@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import * as S from "./MainStyle";
 import * as B from "../../styles/BtnStyle";
 import bannerImg from "../../assets/image/main_banner.png";
 
@@ -20,35 +21,24 @@ const MainBanner = styled.div`
 `;
 
 const BannerContent = styled.div`
-  max-width: 1180px;
+  width: 1180px;
   padding-top: 200px;
-  &:last-child {
-    text-align: right;
-  }
+  margin: 0 auto;
 `;
-const BannerText = styled.div`
-  width: 450px;
-  //height: 120px;
-  color: #333;
-  font-weight: 500;
-  font-size: 40px;
-  text-align: right;
-  margin-left: auto;
+const BannerText = styled(S.MediumText)`
   margin-bottom: 20px;
 `;
 
 const BannerButton = styled(B.MiddleBtn)`
-  //text-align: right;
   margin-top: 44px;
+  float: right;
 `;
 
 const Banner = () => {
   return (
     <MainBanner>
       <BannerContent>
-        <BannerText>
-          오늘도 근무 중인 당신에게, <br />
-        </BannerText>
+        <BannerText>오늘도 근무 중인 당신에게,</BannerText>
         <BannerText>CHAIR COACH</BannerText>
         <BannerButton hover="true">체어코치 하러가기</BannerButton>
       </BannerContent>
