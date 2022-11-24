@@ -4,7 +4,7 @@ import { useState } from 'react';
 import * as S from './SingUpStyle';
 import * as B from '../../styles/BtnStyle';
 import * as F from '../../styles/InputStyle';
-
+import * as Api from '../../api/api'
 interface LoginData {
   email: string;
   password: string;
@@ -36,7 +36,7 @@ const SingUp = () => {
     const isEmailValid = validateEmail(email);
     const isPwdValid = validatePwd(password);
 
-    console.log(isEmailValid)
+   
 
   return (
     <S.SingUpLayout>
@@ -51,7 +51,14 @@ const SingUp = () => {
               <p>이메일</p>
               <F.CheckInputCon>
                 <F.InputText length='small' type="text" value={email} placeholder='이메일을 입력해주세요.' onChange={e => setEmail(e.target.value)} />
-                <B.InputCheckBtn>인증번호 요청</B.InputCheckBtn>
+                <B.InputCheckBtn onClick={async(e)=>{
+                  e.preventDefault();
+                  console.log('1')
+                   const res=await Api.post('user/mail',{
+                    email: email
+                  })
+                  console.log(res)
+                }}>인증번호 요청</B.InputCheckBtn>
                 {
                   !isEmailValid && <F.WarningText>이메일 형식이 아닙니다.</F.WarningText>
                 }
