@@ -48,7 +48,7 @@ var swaggerDefinition = {
             bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
         },
         schemas: {
-            User: {
+            users: {
                 type: "object",
                 properties: {
                     user_id: {
@@ -70,9 +70,15 @@ var swaggerDefinition = {
                     created_at: {
                         type: "timstamp",
                     },
+                    withdraw_at: {
+                        type: "timstamp",
+                    },
+                    status: {
+                        type: "string",
+                    },
                 },
             },
-            body: {
+            bodies: {
                 type: "object",
                 properties: {
                     body_id: {
@@ -93,7 +99,7 @@ var swaggerDefinition = {
                     },
                 },
             },
-            neck: {
+            necks: {
                 type: "object",
                 properties: {
                     neck_id: {
@@ -111,6 +117,21 @@ var swaggerDefinition = {
                     },
                     score: {
                         type: "int",
+                    },
+                    created_at: {
+                        type: "timstamp",
+                    },
+                },
+            },
+            codes: {
+                type: "object",
+                properties: {
+                    email: {
+                        type: "string",
+                        description: "PK",
+                    },
+                    code: {
+                        type: "string",
                     },
                     created_at: {
                         type: "timstamp",
