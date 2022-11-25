@@ -1,10 +1,13 @@
 import React from 'react'
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const { naver }= window as any;
 
 
+
 const Naver = (props:any) => {
+  const location=useLocation();
     const initializeNaverLogin = () => {
         const naverLogin = new naver.LoginWithNaverId({
           clientId: process.env.REACT_APP_NAVER_CLIENT_ID,
@@ -14,13 +17,19 @@ const Naver = (props:any) => {
         });
         naverLogin.init();
       };
+      const getNaverToken=()=>{
+        if(!location.hash) return;
+        const token=location.hash.split('='[1].split('&')[0]);
+        console.log('네이버토큰',token)
+      }
         
       useEffect(() => {
         initializeNaverLogin();
+        getNaverToken();
       }, []);
   return (
     <div id='naverIdLogin'>
-      
+      네이버로그인중
     </div>
   )
 }
