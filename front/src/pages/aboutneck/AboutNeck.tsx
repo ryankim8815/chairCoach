@@ -1,8 +1,6 @@
 import React from "react";
 import * as S from "./AboutNeckStyle";
-import aboutNeck1 from "../../assets/img/aboutneck1.png";
-import aboutNeck2 from "../../assets/img/aboutneck2.png";
-import aboutNeck3 from "../../assets/img/aboutneck3.png";
+
 import { useNavigate } from "react-router-dom";
 const AboutNeck = () => {
   const navigate = useNavigate();
@@ -16,7 +14,7 @@ const AboutNeck = () => {
       </S.TitleBox>
       <S.MainContents>
         <S.Content>
-          <S.SizedImg src={aboutNeck1} />
+          <S.SizedImg1 />
           <S.TextBox>
             <S.SubTitle>거북목에는 다양한 원인이 있어요!</S.SubTitle>
             <S.Text>
@@ -39,10 +37,10 @@ const AboutNeck = () => {
               추가판 질환의 발생확률이 높아져요!
             </S.Text>
           </S.TextBox>
-          <S.SizedImg src={aboutNeck2} />
+          <S.SizedImg2  />
         </S.Content>
         <S.Content>
-          <S.SizedImg src={aboutNeck3} />
+          <S.SizedImg3  />
           <S.TextBox>
             <S.SubTitle>가장 중요한 예방법은 바른자세!</S.SubTitle>
             <S.Text>

@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import aboutNeck1 from "../../assets/img/aboutneck1.png";
+import aboutNeck2 from "../../assets/img/aboutneck2.png";
+import aboutNeck3 from "../../assets/img/aboutneck3.png";
 
 export const WholePage = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
@@ -15,7 +18,7 @@ export const TitleBox = styled.div`
   text-align: center;
 `;
 
-export const Title = styled.span`
+export const Title = styled.p`
   font-size: ${({ theme }) => theme.fontSize.title};
 `;
 
@@ -24,12 +27,13 @@ export const SubTitle = styled.span`
   font-weight: 500;
 `;
 export const Text = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.text};
+  font-size: 16px;
   margin-top: 20px;
+  line-height:1.25;
 `;
 
 export const Bold = styled.span`
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 export const MainContents = styled.div`
@@ -47,17 +51,35 @@ export const Content = styled.div`
   display: flex;
 `;
 
-export const SizedImg = styled.img`
-  width: 480px;
+export const SizedImg1 = styled.div`
+  width: 50%;
   height: 264px;
+  background-image: url(${aboutNeck1});
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
+export const SizedImg2 = styled.div`
+  width: 50%;
+  height: 264px;
+  background-image: url(${aboutNeck2});
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
+export const SizedImg3 = styled.div`
+  width: 50%;
+  height: 264px;
+  background-image: url(${aboutNeck3});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 export const TextBox = styled.div`
-  width: 480px;
+  width: 50%;
   height: 264px;
   line-height: 1.25;
-  margin-left: 30px;
-  margin-top: 30px;
+  padding:40px;
+  background:#FFF;
+  transition: all .3s;
 `;
 
 export const ChioceBox = styled.div`

@@ -33,8 +33,8 @@ const NeckSurvey = () => {
       </S.TitleBox>
       <S.ContentBox>
         <S.TextBox>
-          <S.SubTitle>Q{page}</S.SubTitle>
-          <S.SubTitle style={{ fontWeight: 400, marginTop: 16 }}>
+          <S.SubTitle style={{fontWeight:700}}>Q{page}</S.SubTitle>
+          <S.SubTitle style={{ marginTop: 16 }}>
             {page === 11 ? null : Data[page - 1].question}
           </S.SubTitle>
         </S.TextBox>
