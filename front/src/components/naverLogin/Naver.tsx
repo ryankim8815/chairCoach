@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
+import * as Api from '../../api/api'
 const { naver }= window as any;
 
 
@@ -17,10 +17,16 @@ const Naver = (props:any) => {
         });
         naverLogin.init();
       };
+      const naverTokenLogin=async(_code:any)=>{
+        console.log('네이버1',_code)
+        if(!_code) return;
+        const res=await Api.post('')
+      }
       const getNaverToken=()=>{
         if(!location.hash) return;
-        const token=location.hash.split('='[1].split('&')[0]);
-        console.log('네이버토큰',token)
+        const token=new URL(window.location.href).searchParams;
+        console.log('navertoken',token)
+        const _code:any = token.get("code");
       }
         
       useEffect(() => {
