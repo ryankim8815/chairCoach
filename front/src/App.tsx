@@ -5,18 +5,18 @@ import theme from './styles/Theme';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Header from './components/header/Header';
 import Footer from "./components/footer/Footer";
-import Main from "./pages/Amain/Main";
-import Login from './pages/Alogin/Login';
-import Register from './pages/Aregister/Register';
-import NeckSurvey from "./pages/AneckSurvey/NeckSurvey";
-import ChairCoach from "./pages/AchairCoach/ChairCoach";
-import SurveyResult from "./pages/AsurveyResult/SurveyResult";
-import AboutNeck from "./pages/AaboutNeck/AboutNeck";
-import NeckGuide from "./pages/AneckGuide/NeckGuide";
-import NeckInspection from "./pages/AneckInspection/NeckInspection";
-import InspectionResult from "./pages/AinspectionResult/InspectionResult";
-import SingUp from './pages/AsingUp/SingUp';
-import UserInfoChange from "./pages/AuserInfoChange/UserInfoChange";
+import Main from "./pages/main/Main";
+import Login from './pages/login/Login';
+import Register from './pages/register/Register';
+import NeckSurvey from "./pages/neckSurvey/NeckSurvey";
+import ChairCoach from "./pages/chairCoach/ChairCoach";
+import SurveyResult from "./pages/surveyResult/SurveyResult";
+import AboutNeck from "./pages/aboutNeck/AboutNeck";
+import NeckGuide from "./pages/neckGuide/NeckGuide";
+import NeckInspection from "./pages/neckInspection/NeckInspection";
+import InspectionResult from "./pages/inspectionResult/InspectionResult";
+import SingUp from './pages/signUp/SignUp';
+import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
 import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 
 

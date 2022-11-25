@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NeckVideo from "../../components/AneckVideo/NeckVideo";
+import NeckVideo from "../../components/neckVideo/NeckVideo";
 import Timer from "../../components/timer/Timer";
 
 import * as S from "./NeckInspectionStyle";
