@@ -5,6 +5,8 @@ import * as S from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
 import { LoginLayout, TopCon, BottomCon } from "./LoginStyle";
 import { useState } from "react";
+import Naver from "../../components/naverLogin/Naver";
+
 
 interface LoginData {
   email: string;
@@ -105,7 +107,7 @@ const Login = () => {
               
             </li>
             <li>
-              <button>네이버</button>
+              <Naver/>
               <span>네이버</span>
             </li>
           </ul>
