@@ -3,6 +3,8 @@ import authMiddleware from "../middlewares/authMiddleware";
 import nodemailerMiddleware from "../middlewares/nodemailerMiddleware";
 import * as validation from "../middlewares/validationMiddleware";
 import userService from "../services/userService";
+// import logger from "../../config/logger";
+const logger = require("../../config/logger");
 
 const userRouter = express.Router();
 
@@ -14,6 +16,7 @@ const userList = async (
 ) => {
   try {
     const allUsers = await userService.getAllUsers();
+    logger.info(allUsers);
     console.log(allUsers);
     return res.status(200).json(allUsers);
   } catch (err) {
