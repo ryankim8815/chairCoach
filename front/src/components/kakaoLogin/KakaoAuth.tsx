@@ -22,7 +22,7 @@ const KakaoAuth = () => {
         console.log(_code)
             if (!_code) return;
             const res = await Api.post("kakao", {code: _code});
-            
+            console.log('제발',res)
             const kakaoUser = res.data;
             const kakaoToken = kakaoUser.token;
 
@@ -31,7 +31,6 @@ const KakaoAuth = () => {
             navigate("/");
         };
         const getPermissonCode = () => {
-            console.log(1)
             const params = new URL(window.location.href).searchParams;
             console.log(params)
             const _code:any = params.get("code");
