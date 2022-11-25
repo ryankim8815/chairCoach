@@ -474,6 +474,65 @@ const signupEmail = async (
  *                 message:
  *                   type: string
  *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ */
+/// GET: email 인증 코드 확인
+const signupVerifyEmail = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const email = req.params.email;
+    const code = req.params.code;
+    const verifyEmailCode = await userService.verifyCode({
+      email,
+      code,
+    });
+    console.log(verifyEmailCode);
+    return res.status(200).json(verifyEmailCode);
+  } catch (err) {
+    const result_err = {
+      result: false,
+      cause: "api",
+      message: "signupVerifyEmail api에서 오류가 발생했습니다.",
+    };
+    console.log(result_err);
+    return res.status(200).json(result_err);
+  }
+};
+/**
+ * @swagger
+ * /signup/email/{email}/code/{code}:
+ *   get:
+ *     summary: email 인증 코드 확인
+ *     description:  코드 발급전에 중복확인을 실시합니다. 재발급 가능하며, 회원 가입시 코드는 폐기됩니다.
+ *     tags: ["userRouter"]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: example@gmail.com
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
  *                 code:
  *                   type: number
  *                   example: 0000
@@ -557,6 +616,7 @@ userRouter.delete(
   userDelete
 ); // 유저 삭제
 userRouter.post("/signup/email", nodemailerMiddleware, signupEmail); // email로 코드 발송
+userRouter.get("/signup/email/:email/code/:code", signupVerifyEmail); // email 인증
 userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
 
 export = userRouter;
