@@ -496,7 +496,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
 /// POST: email 인증을 위한 코드 발송
-var userSendEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+var signupEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var email, code, sendCodeToEmail, err_7, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -518,7 +518,7 @@ var userSendEmail = function (req, res, next) { return __awaiter(void 0, void 0,
                 result_err = {
                     result: false,
                     cause: "api",
-                    message: "userSendEmail api에서 오류가 발생했습니다.",
+                    message: "signupEmail api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
@@ -528,10 +528,75 @@ var userSendEmail = function (req, res, next) { return __awaiter(void 0, void 0,
 }); };
 /**
  * @swagger
- * /user/mail:
+ * /signup/email:
  *   post:
  *     summary: email 인증을 위한 코드 발송
- *     description:  재발급 가능하며, 회원 가입시 코드는 폐기됩니다.
+ *     description:  코드 발급전에 중복확인을 실시합니다. 재발급 가능하며, 회원 가입시 코드는 폐기됩니다.
+ *     tags: ["userRouter"]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: example@gmail.com
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ *                 code:
+ *                   type: number
+ *                   example: 0000
+ */
+/// GET: nickname 중복확인
+var signupNickname = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var nickname, checkNickname, err_8, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                nickname = req.params.nickname;
+                return [4 /*yield*/, userService_1.default.nicknameDuplicateCheck({
+                        nickname: nickname,
+                    })];
+            case 1:
+                checkNickname = _a.sent();
+                console.log(checkNickname);
+                return [2 /*return*/, res.status(200).json(checkNickname)];
+            case 2:
+                err_8 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "signupNickname api에서 오류가 발생했습니다.",
+                };
+                console.log(result_err);
+                return [2 /*return*/, res.status(200).json(result_err)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /signup/nickname/{nickname}:
+ *   get:
+ *     summary: nickname 중복확인
+ *     description:  nickname 중복확인
  *     tags: ["userRouter"]
  *     requestBody:
  *       content:
@@ -570,5 +635,6 @@ userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자�
 userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
 userRouter.put("/user", authMiddleware_1.default, validation.validateUserUpdate, userUpdate); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDelete, userDelete); // 유저 삭제
-userRouter.post("/user/mail", nodemailerMiddleware_1.default, userSendEmail); // email로 코드 발송
+userRouter.post("/signup/email", nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
+userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
 module.exports = userRouter;

@@ -300,7 +300,7 @@ class userService {
       return result_success;
     }
   }
-  /////////////////////////////////
+
   //// 회원가입 전 이메일 인증
   // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
   static async sendCode({ email, code }) {
@@ -324,6 +324,29 @@ class userService {
         cause: "success",
         message: `code 재발급이 성공적으로 이뤄졌습니다.`,
         code: code,
+      };
+      return result_success;
+    }
+  }
+
+  //// 회원가입 전 nickname 중복확인
+  static async nicknameDuplicateCheck({ nickname }) {
+    const checkNickname = await User.findByNickname({ nickname });
+    const checkNicknameString = JSON.stringify(checkNickname);
+    const checkNicknameObject = JSON.parse(checkNicknameString);
+    if (checkNicknameObject.length !== 0) {
+      const result_errNickname = {
+        result: false,
+        cause: "nickname",
+        message:
+          "입력하신 nickname로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
+      };
+      return result_errNickname;
+    } else {
+      const result_success = {
+        result: true,
+        cause: "success",
+        message: `중복된 nickname이 없습니다. 가입을 진행해주세요.`,
       };
       return result_success;
     }

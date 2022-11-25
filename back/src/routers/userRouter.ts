@@ -411,7 +411,7 @@ const userDelete = async (
  */
 
 /// POST: email 인증을 위한 코드 발송
-const userSendEmail = async (
+const signupEmail = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -430,7 +430,7 @@ const userSendEmail = async (
     const result_err = {
       result: false,
       cause: "api",
-      message: "userSendEmail api에서 오류가 발생했습니다.",
+      message: "signupEmail api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
     return res.status(200).json(result_err);
@@ -438,10 +438,71 @@ const userSendEmail = async (
 };
 /**
  * @swagger
- * /user/mail:
+ * /signup/email:
  *   post:
  *     summary: email 인증을 위한 코드 발송
- *     description:  재발급 가능하며, 회원 가입시 코드는 폐기됩니다.
+ *     description:  코드 발급전에 중복확인을 실시합니다. 재발급 가능하며, 회원 가입시 코드는 폐기됩니다.
+ *     tags: ["userRouter"]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: example@gmail.com
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ *                 code:
+ *                   type: number
+ *                   example: 0000
+ */
+
+/// GET: nickname 중복확인
+const signupNickname = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const nickname = req.params.nickname;
+    const checkNickname = await userService.nicknameDuplicateCheck({
+      nickname,
+    });
+    console.log(checkNickname);
+    return res.status(200).json(checkNickname);
+  } catch (err) {
+    const result_err = {
+      result: false,
+      cause: "api",
+      message: "signupNickname api에서 오류가 발생했습니다.",
+    };
+    console.log(result_err);
+    return res.status(200).json(result_err);
+  }
+};
+/**
+ * @swagger
+ * /signup/nickname/{nickname}:
+ *   get:
+ *     summary: nickname 중복확인
+ *     description:  nickname 중복확인
  *     tags: ["userRouter"]
  *     requestBody:
  *       content:
@@ -496,6 +557,7 @@ userRouter.delete(
   validation.validateUserDelete,
   userDelete
 ); // 유저 삭제
-userRouter.post("/user/mail", nodemailerMiddleware, userSendEmail); // email로 코드 발송
+userRouter.post("/signup/email", nodemailerMiddleware, signupEmail); // email로 코드 발송
+userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
 
 export = userRouter;
