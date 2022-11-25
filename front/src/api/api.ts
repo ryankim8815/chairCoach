@@ -4,6 +4,17 @@ const backendPortNumber = "5003";
 const serverUrl =
   "http://" + window.location.hostname + ":" + backendPortNumber + "/";
 
+// axios 에러날때 잡아줌
+axios.interceptors.response.use(
+  (res) => {
+    return res.data;
+  },
+  (err) => {
+    console.log(err);
+    throw new Error("(!) axios error");
+  }
+);
+
 async function get(endpoint: string, params = "") {
   return axios.get(serverUrl + endpoint + "/" + params, {
     // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
