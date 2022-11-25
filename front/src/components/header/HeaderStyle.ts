@@ -8,6 +8,7 @@ export const HeaderLayout = styled.header`
   height: 64px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.greyBorder};
   background: #fff;
+  z-index: 10;
 
   .inner{
     ${({ theme }) => theme.common.flexCenter};

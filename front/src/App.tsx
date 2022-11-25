@@ -14,9 +14,9 @@ import SurveyResult from "./pages/surveyResult/SurveyResult";
 import AboutNeck from "./pages/aboutNeck/AboutNeck";
 import NeckGuide from "./pages/neckGuide/NeckGuide";
 import NeckInspection from "./pages/neckInspection/NeckInspection";
+import InspectionResult from "./pages/inspectionResult/InspectionResult";
 import SignUp from "./pages/signup/SignUp";
 import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
-import InspectionResult from "./pages/inspectionResult/InspectionResult";
 
 function App() {
   return (

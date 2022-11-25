@@ -38,9 +38,9 @@ export const Text = styled.p<MainStyledProps>`
   line-height: ${(props) => `${props.lineHeight}px`};
 `;
 
-// export const TitleText = styled(Text)`
-//   padding-top: 120px;
-// `;
+export const TitleText = styled(Text)`
+  padding-top: 120px;
+`;
 
 export const InlineText = styled(Text)`
   display: inline;

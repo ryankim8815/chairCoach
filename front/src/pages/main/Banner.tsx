@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import * as S from "./MainStyle";
 import * as B from "../../styles/BtnStyle";
-import bannerImg from "../../assets/image/main_banner.png";
+// import bannerImg from "../../assets/image/main_banner.png";
+import bannerImg from "../../assets/image/main_banner.jpg";
 
 const MainBanner = styled.div`
-  height: 640px;
+  /* height: 640px;
   background: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0) 0%,
@@ -18,7 +19,29 @@ const MainBanner = styled.div`
   background-repeat: no-repeat;
   background-blend-mode: multiply;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; */
+
+  position: relative;
+  height: 640px;
+  background: linear-gradient(
+    90deg,
+    rgba(246, 246, 247, 1) 0%,
+    rgba(246, 246, 247, 1) 49%,
+    rgba(196, 176, 253, 1) 51%,
+    rgba(196, 176, 253, 1) 100%
+  );
+  overflow: hidden;
+
+  & > div {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 2000px;
+    height: 640px;
+    background: url(${bannerImg}) no-repeat center;
+    background-size: contain;
+  }
 `;
 
 const BannerContent = styled.div`
