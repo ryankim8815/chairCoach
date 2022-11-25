@@ -18,7 +18,7 @@ from utils.plots import colors, plot_one_box, output_to_keypoint
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 from yolov7_keypoints import extract
 from models.test_xgb import XGBClassifierModel
-from xgboost import XGBClassifier
+
 
 def detect(opt):
     source, weights, view_img, save_txt, imgsz, save_txt_tidl, kpt_label = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size, opt.save_txt_tidl, opt.kpt_label
@@ -155,8 +155,9 @@ def detect(opt):
             # Stream results
             if view_img:
                 cv2.imshow(str(p), im0)
-                # write class
-                info = "{0}".format(answer)
+                
+                # display class
+                info = "This pose is {0}".format(answer)
                 cv2.putText(im0, text=info, org=(30,60), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                             fontScale=0.5, color=(0,255,0), thickness=2)
                 cv2.waitKey(1)  # 1 millisecond
