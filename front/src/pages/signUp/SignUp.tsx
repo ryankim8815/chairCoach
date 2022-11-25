@@ -15,18 +15,16 @@ interface SignUp {
 
 // 이메일 : regex(정규식) 확인 (예시: abc@example.com).
 const validateEmail = (email: string) => {
-  return email
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
 };
 
 // 비밀번호 : 숫자+영문자+특수문자 조합으로 8자리 이상 입력
 const validatePwd = (password: string) => {
-  return password
-    .toLowerCase()
-    .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/);
+  return password.match(
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/
+  );
 };
 
 // 닉네임 : 한글+숫자 2~8, 영어+숫자 2~12이여야 합니다.
@@ -90,7 +88,6 @@ const SingUp = () => {
     // newData.nickname = nickname;
 
     // setSignUp(newData);
-    console.log("..");
     const res = await Api.post("signup", {
       email: email,
       password: password,
@@ -160,12 +157,14 @@ const SingUp = () => {
                   type="password"
                   value={password}
                   disabled={pwDisabled}
-                  placeholder="영문, 숫자, 특수문자 포함 8자 이상입력해주세요."
+                  placeholder="영어 대문자, 영어 소문자, 숫자, 특수문자 포함 8자 이상입력해주세요."
                   onChange={(e) => setPassword(e.target.value)}
+                  id="pwdinput"
                 />
                 {password.length === 0 || isPwdValid ? null : (
                   <F.WarningText>
-                    영어,숫자,특수문자를 포함한 8글자 이상이여야 합니다.
+                    영어 대문자, 영어 소문자, 숫자, 특수문자를 포함한 8글자
+                    이상이여야 합니다.
                   </F.WarningText>
                 )}
               </div>
