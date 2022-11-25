@@ -17,6 +17,7 @@ import NeckInspection from "./pages/neckInspection/NeckInspection";
 import InspectionResult from "./pages/inspectionResult/InspectionResult";
 import SignUp from "./pages/signUp/SignUp";
 import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
+import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/neckinspection" element={<NeckInspection />} />
             <Route path="/inspectionresult" element={<InspectionResult />} />
             <Route path="/userInfoChange" element={<UserInfoChange />} />
+            <Route path="login/oauth2/code/kakao" element={<KakaoAuth />} />
           </Routes>
           <Footer />
         </ThemeProvider>

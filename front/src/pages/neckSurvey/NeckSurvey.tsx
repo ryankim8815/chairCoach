@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import * as S from "./NeckSurveyStyle";
-
 import { useNavigate } from "react-router-dom";
 import { Data } from "./Data";
 
@@ -33,13 +32,12 @@ const NeckSurvey = () => {
         </S.TitleBox>
         <S.ContentBox>
           <S.TextBox>
-            <S.SubTitle>Q{page}</S.SubTitle>
-            <S.SubTitle style={{ fontWeight: 400, marginTop: 16 }}>
+            <S.SubTitle style={{ fontWeight: 700 }}>Q{page}</S.SubTitle>
+            <S.SubTitle style={{ marginTop: 16 }}>
               {page === 11 ? null : Data[page - 1].question}
             </S.SubTitle>
           </S.TextBox>
           {page === 11 ? null : <S.Img src={Data[page - 1].img} />}
-
           <S.Btn
             onClick={() => {
               handlePoint();

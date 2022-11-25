@@ -1,7 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import{ useRef, useEffect, useState } from "react";
 import * as S from "./NeckVideoStyle";
-
-import styled from "styled-components";
 
 
 const NeckVideo = ({ time,step,setStep }: any) => {

@@ -34,11 +34,10 @@ export const Title = styled.span`
 `;
 export const SubTitle = styled.span`
   font-size: ${({ theme }) => theme.fontSize.subTitle};
-  font-weight: 500;
 `;
 
 export const Page = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.text};
+color: ${({ theme }) => theme.colors.main};
   font-weight: 600;
 `;
 

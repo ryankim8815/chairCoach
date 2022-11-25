@@ -5,6 +5,8 @@ import * as S from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
 import { LoginLayout, TopCon, BottomCon } from "./LoginStyle";
 import { useState } from "react";
+import Naver from "../../components/naverLogin/Naver";
+
 
 interface LoginData {
   email: string;
@@ -28,6 +30,9 @@ const validatePwd = (password: string) => {
     .toLowerCase()
     .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/);
 };
+const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
+const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -45,10 +50,9 @@ const Login = () => {
     else if (!password.length) setWaring(2);
     else if (!(isEmailValid && isPwdValid)) setWaring(3);
   };
-  const REST_API_KEY = process.env.KAKAO_REST_API_KEY;
-  const REDIRECT_URL = process.env.KAKAO_REDIRECT_URL;
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
-  console.log(KAKAO_AUTH_URL);
+
+ 
+ 
   return (
     <LoginLayout>
       <div className="inner">
@@ -103,7 +107,7 @@ const Login = () => {
               
             </li>
             <li>
-              <button>네이버</button>
+              <Naver/>
               <span>네이버</span>
             </li>
           </ul>
