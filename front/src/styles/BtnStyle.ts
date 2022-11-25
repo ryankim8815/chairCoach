@@ -62,6 +62,7 @@ export const InputBtn = styled.button<BtnStyle>`
   width: 400px;
   height: 40px;
   ${check}
+  cursor: ${({ check }) => (check === "true" ? "cursor" : "default")};
 `;
 
 // 네, 아니오 / 다시하기, 나가기

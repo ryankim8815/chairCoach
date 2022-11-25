@@ -23,19 +23,20 @@ const basicsInputText = css`
 export const InputText = styled.input<InputStyle>`
   ${basicsInputText}
   width: ${({ length }) => length === "small" ? 'auto' : '400px'};
-  margin-bottom: ${({ length }) => length === "small" ? 0 : '8px'};
+  margin-bottom: 4px;
 `;
 
 export const CheckInputCon = styled.div`
   display: grid;
   grid-template-columns: 1fr 120px;
-  gap: 4px;
+  gap: 0 4px;
+  margin-bottom: 4px;
 `
 
 export const WarningText = styled.span<InputStyle>`
   display: block;
   margin-left: 8px;
-  margin-bottom: ${({ lineHeight }) => (lineHeight === "true" ? '-35px' : '-14px')};
+  margin-bottom: ${({ lineHeight }) => (lineHeight === "true" ? '-39px' : '-18px')};
   font-weight: 300;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.warning};
