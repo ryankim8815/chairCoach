@@ -504,15 +504,12 @@ const signupNickname = async (
  *     summary: nickname 중복확인
  *     description:  nickname 중복확인
  *     tags: ["userRouter"]
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 example: example@gmail.com
+ *     parameters:
+ *       - in: path
+ *         name: nickname
+ *         schema:
+ *           type: string
+ *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -529,10 +526,7 @@ const signupNickname = async (
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
- *                 code:
- *                   type: number
- *                   example: 0000
+ *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
  */
 
 // api index
