@@ -15,7 +15,7 @@ import AboutNeck from "./pages/aboutNeck/AboutNeck";
 import NeckGuide from "./pages/neckGuide/NeckGuide";
 import NeckInspection from "./pages/neckInspection/NeckInspection";
 import InspectionResult from "./pages/inspectionResult/InspectionResult";
-import SingUp from './pages/signUp/SignUp';
+import SignUp from './pages/signUp/SignUp';
 import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
 import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 
@@ -33,7 +33,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
-            <Route path='/singup' element={<SingUp/>}/>
+            <Route path='/signup' element={<SignUp/>}/>
             <Route path='/necksurvey' element={<NeckSurvey/>}/>
             <Route path='/chaircoach' element={<ChairCoach/>}/>
             <Route path="/surveyresult" element={<SurveyResult />} />

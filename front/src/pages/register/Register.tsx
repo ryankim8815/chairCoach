@@ -20,7 +20,7 @@ const Register = () => {
               <span>CHAIR COACH</span>
             </h2>
 
-            <S.MiddleBtn onClick={()=>navigate('/singup')}>이메일로 시작하기</S.MiddleBtn>
+            <S.MiddleBtn onClick={()=>navigate('/signup')}>이메일로 시작하기</S.MiddleBtn>
           </TopWrap>
 
           <BottomWrap>

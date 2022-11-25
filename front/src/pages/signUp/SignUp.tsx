@@ -28,7 +28,7 @@ const validatePwd = (password:string) => {
       .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/);
 };
 
-const SingUp = () => {
+const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [nickname, setNickname]= useState("");
@@ -39,7 +39,7 @@ const SingUp = () => {
    
 
   return (
-    <S.SingUpLayout>
+    <S.SignUpLayout>
       <h2>회원가입</h2>
 
       <S.FormCon>
@@ -97,8 +97,8 @@ const SingUp = () => {
           </fieldset>
         </form>
       </S.FormCon>
-    </S.SingUpLayout>
+    </S.SignUpLayout>
   );
 };
 
-export default SingUp;
+export default SignUp;
