@@ -6,13 +6,13 @@ import * as B from '../../styles/BtnStyle';
 import * as F from '../../styles/InputStyle';
 import * as Api from '../../api/api'
 
-interface LoginData {
+interface SignUp {
   email: string;
   password: string;
 	nickname: string;
-  code: number;
   [key: string]: string | number;
 }
+
 
 // 이메일 : regex(정규식) 확인 (예시: abc@example.com).
 const validateEmail = (email:string) => {
@@ -45,14 +45,21 @@ const SingUp = () => {
     const [code2, setCode2] = useState(0);
     const [checkCode, setCheckCode] = useState(true);
 
-    const [password, setPassword] = useState("");
     const [pwDisabled, setpwDisabled] = useState(true);
+    const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const isPwdValid = validatePwd(password);
 
     const [nickname, setNickname]= useState("");
-    const [checkNickname, setCheckNickname]= useState(true);
     const isNicknameValid = validateNickname(nickname);
+
+    const [signUp, setSignUp] = useState<SignUp>(
+      {
+        email: "",
+        password: "",
+        nickname: ""
+      }
+    )
 
     useEffect(()=>{
       Api.get('users').then((res)=>{
@@ -70,11 +77,9 @@ const SingUp = () => {
       const res:any = await Api.post('user/mail',{
         email: email
       });
-      console.log(res)
-      // console.log(res.data.code); //number
-      setCode(res.data.code);
+      console.log(res.code)
+      setCode(res.code);
     }
-
 
     const handlerCheckCodeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -86,12 +91,39 @@ const SingUp = () => {
       console.log(code === code2 ? 'Yes' : 'No');
     }
 
+    const handlerSignUpSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      // let newData = {...signUp}
+      // newData.email = email;
+      // newData.password = password;
+      // newData.nickname = nickname;
+
+      // setSignUp(newData);
+
+      const res = await Api.post('signup', {
+        email: email,
+        password: password,
+        nickname: nickname
+      });
+
+      console.log(res)
+    }
+    // console.log(signUp)
+
+    // disabled 해제여부
+    // 닉네임 
+    const nicknameDisabled = password2.length > 0 && password === password2 ? false : true;
+    // 가입버튼
+    const onSubmitDisabled = isNicknameValid ? false : true;
+
+
+
   return (
     <S.SingUpLayout>
       <h2>회원가입</h2>
 
       <S.FormCon>
-        <form action="">
+        <form onSubmit={handlerSignUpSubmit}>
           <fieldset>
             <legend>회원가입</legend>
 
@@ -103,6 +135,7 @@ const SingUp = () => {
                 {
                   email.length === 0 || isEmailValid ? null : <F.WarningText>이메일 형식이 아닙니다.</F.WarningText>
                 }
+                {/* <F.WarningText>중복된 이메일 입니다.</F.WarningText> */}
               </F.CheckInputCon>
 
               <F.CheckInputCon>
@@ -134,7 +167,7 @@ const SingUp = () => {
 
             <S.InputWrap>
               <p>닉네임</p>
-              <F.InputText type="text" value={nickname} disabled={false} placeholder='닉네임을 입력해주세요.' onChange={e => setNickname(e.target.value)} />
+              <F.InputText type="text" value={nickname} disabled={nicknameDisabled} placeholder='닉네임을 입력해주세요.' onChange={e => setNickname(e.target.value)} />
               {
                 nickname.length === 0 || isNicknameValid ? null : 
                 <F.WarningText lineHeight='true'>
@@ -146,7 +179,7 @@ const SingUp = () => {
               {/* <F.WarningText>중복된 닉네임 입니다.</F.WarningText> */}
             </S.InputWrap>
 
-            <B.InputBtn disabled={true}>가입하기</B.InputBtn>
+            <B.InputBtn type='submit' disabled={onSubmitDisabled} check={String(!onSubmitDisabled)}>가입하기</B.InputBtn>
           </fieldset>
         </form>
       </S.FormCon>
