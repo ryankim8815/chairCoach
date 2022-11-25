@@ -132,7 +132,7 @@ def detect(opt):
                         kpts_arr = np.array(kpts)
                         kpts_xy = extract(kpts_arr, 3)
                         answer = XGBClassifierModel([kpts_xy])
-                        print(answer)
+                        print("This action is {0}".format(answer))
                     
                         print("det_index: ", det_index)
                         plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=opt.line_thickness, kpt_label=kpt_label, kpts=kpts, steps=3, orig_shape=im0.shape[:2])
@@ -155,6 +155,10 @@ def detect(opt):
             # Stream results
             if view_img:
                 cv2.imshow(str(p), im0)
+                # write class
+                info = "{0}".format(answer)
+                cv2.putText(im0, text=info, org=(30,60), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=0.5, color=(0,255,0), thickness=2)
                 cv2.waitKey(1)  # 1 millisecond
 
             # Save results (image with detections)

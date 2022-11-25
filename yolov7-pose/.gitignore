@@ -1,5 +1,5 @@
 # data
-/data/images
+/data/images/*
 *.jpg
 
 
@@ -13,3 +13,6 @@
 *.log
 *.csv
 *.json
+
+__pycache__/
+*.py[cod]
