@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // style
-import * as S from './SingUpStyle';
+import * as S from './SignUpStyle';
 import * as B from '../../styles/BtnStyle';
 import * as F from '../../styles/InputStyle';
 import * as Api from '../../api/api'
