@@ -3,5 +3,6 @@
 
 # csv 
 *.csv
+*.json
 
 Logs/train

@@ -62,9 +62,9 @@ def extract(kpts, steps):
             conf = kpts[steps * kid + 2]
             if conf < 0.5:
                 x_coord, y_coord = 0.0, 0.0
-                temp.extend([x_coord, y_coord, conf])
+                temp.extend([x_coord, y_coord])
                 continue
-            temp.extend([x_coord, y_coord, conf])
+            temp.extend([x_coord, y_coord])
 
     return temp
 
@@ -74,12 +74,17 @@ def process(img_in_folder, img_out_folder, csv_out_path):
     )
     label_map = {label:num for num, label in enumerate(pose_class_names)} # label_map {'hands_up': 0, 'neck_down': 1, 'neck_side': 2}
 
+
     # write csv train_data
     with open(csv_out_path, 'w', newline='') as csv_out_file:
         csv_out_writer = csv.writer(csv_out_file,
                                     delimiter=',',
                                     quoting=csv.QUOTE_MINIMAL)
-
+        
+        # header_list = ['N_X', 'N_Y', 'LY_X', 'LY_Y', 'RY_X','RY_Y', 'LER_X','LER_Y', 'RER_X','RER_Y',\
+        #     'LS_X','LS_Y', 'RS_X','RS_Y', 'LEB_X','LEB_Y', 'REB_X','REB_Y', 'LW_X','LW_Y', 'RW_X', 'RW_Y', 'Target']
+        # csv_out_writer.writerow(header_list)
+        
         for pose_class_name in pose_class_names:
             print("Preprocessing", pose_class_name)
 
@@ -106,14 +111,15 @@ def process(img_in_folder, img_out_folder, csv_out_path):
                 kpnt_array.extend([label_map[pose_class_name]])
                 kpnt_values.append(kpnt_array)
 
+            
             for i in kpnt_values:
                 csv_out_writer.writerow(i)
 
 
 
-img_in_train_folder = os.path.join('./data/images', 'test')
-img_out_train_folder = 'image_out_test'
-csv_out_train_path = 'test_data.csv'
+img_in_train_folder = os.path.join('./data/images', 'train')
+img_out_train_folder = 'image_out_train'
+csv_out_train_path = 'train_data.csv'
 process(img_in_train_folder, img_out_train_folder, csv_out_train_path)
 
 
