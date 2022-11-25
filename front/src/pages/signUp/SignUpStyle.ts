@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SingUpLayout = styled.div`
+export const SignUpLayout = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
   ${({ theme }) => theme.common.flexCenter};
   padding: 120px 0;

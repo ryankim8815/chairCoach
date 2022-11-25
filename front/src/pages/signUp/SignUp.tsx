@@ -109,7 +109,7 @@ const SingUp = () => {
   const onSubmitDisabled = isNicknameValid ? false : true;
 
   return (
-    <S.SingUpLayout>
+    <S.SignUpLayout>
       <h2>회원가입</h2>
 
       <S.FormCon>
@@ -213,7 +213,7 @@ const SingUp = () => {
           </fieldset>
         </form>
       </S.FormCon>
-    </S.SingUpLayout>
+    </S.SignUpLayout>
   );
 };
 

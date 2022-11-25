@@ -1,10 +1,10 @@
-import * as S from "../signup/SignUpStyle";
+import * as S from "../signUp/SignUpStyle";
 import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
 
 const UserInfoChange = () => {
   return (
-    <S.SingUpLayout>
+    <S.SignUpLayout>
       <h2>회원정보 변경</h2>
 
       <S.FormCon>
@@ -66,7 +66,7 @@ const UserInfoChange = () => {
           </fieldset>
         </form>
       </S.FormCon>
-    </S.SingUpLayout>
+    </S.SignUpLayout>
   );
 };
 
