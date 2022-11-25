@@ -88,6 +88,7 @@ const userCurrent = async (
     const user_id = req.body.user_id;
     const currentUser = await userService.getCurrentUser({ user_id });
     console.log(currentUser);
+    logger.error(currentUser); // test
     return res.status(200).json(currentUser);
   } catch (err) {
     const result_err = {
@@ -95,6 +96,7 @@ const userCurrent = async (
       cause: "api",
       message: "userCurrent api에서 오류가 발생했습니다.",
     };
+    logger.error(result_err); // test
     console.log(result_err);
     return res.status(200).json(result_err);
   }
