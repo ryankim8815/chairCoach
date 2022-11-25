@@ -6,7 +6,7 @@ export const SignUpLayout = styled.div`
   padding: 120px 0;
   flex-direction: column;
 
-  h2{
+  h2 {
     font-size: ${({ theme }) => theme.fontSize.title};
   }
 `;
@@ -14,26 +14,26 @@ export const SignUpLayout = styled.div`
 export const FormCon = styled.div`
   margin-top: 40px;
 
-  legend{
+  legend {
     text-indent: -9999px;
   }
-`
+`;
 
 export const InputWrap = styled.div`
-  & + *{
+  & + * {
     margin-top: 64px;
   }
 
-  div + div{
+  div + div {
     margin-top: 40px;
   }
 
-  p{
+  p {
     font-weight: 500;
     margin-bottom: 8px;
   }
 
-  input:nth-of-type(2){
+  input:nth-of-type(2) {
     margin-top: 40px;
   }
 `;

@@ -50,7 +50,7 @@ var Code = /** @class */ (function () {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
                             //   sql: "INSERT INTO codes (email, code) VALUES (?, ?)",
-                            sql: "REPLACE INTO codes (email, code) VALUES (?, ?)",
+                            sql: "REPLACE INTO codes (email, code, created_at) VALUES (?, ?, NOW())",
                             values: [email, code],
                         })];
                     case 1:

@@ -1,26 +1,34 @@
-import { useNavigate, Link } from 'react-router-dom';
-
+import { useNavigate, Link } from "react-router-dom";
 
 // style
-import { RegisterLayout, LeftCon, TopWrap, BottomWrap, RightCon } from './RegisterStyle'
-import * as S from '../../styles/BtnStyle';
+import {
+  RegisterLayout,
+  LeftCon,
+  TopWrap,
+  BottomWrap,
+  RightCon,
+} from "./RegisterStyle";
+import * as S from "../../styles/BtnStyle";
 
 const Register = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   return (
     <RegisterLayout>
-      <div className='inner'>
+      <div className="inner">
         <LeftCon>
           <TopWrap>
             <p>회원 가입</p>
 
             <h2>
-              오늘부터,<br />
+              오늘부터,
+              <br />
               <span>CHAIR COACH</span>
             </h2>
 
-            <S.MiddleBtn onClick={()=>navigate('/signup')}>이메일로 시작하기</S.MiddleBtn>
+            <S.MiddleBtn onClick={() => navigate("/signup")}>
+              이메일로 시작하기
+            </S.MiddleBtn>
           </TopWrap>
 
           <BottomWrap>
@@ -41,16 +49,16 @@ const Register = () => {
               </li>
             </ul>
 
-            <p className='loginText'>이미 회원이시라면, <Link to='/login'>로그인</Link> 하세요!</p>
+            <p className="loginText">
+              이미 회원이시라면, <Link to="/login">로그인</Link> 하세요!
+            </p>
           </BottomWrap>
         </LeftCon>
 
-        <RightCon>
-          이미지
-        </RightCon>
+        <RightCon>이미지</RightCon>
       </div>
     </RegisterLayout>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

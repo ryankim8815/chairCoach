@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import * as S from "./MainStyle";
 import * as B from "../../styles/BtnStyle";
 import stretching from "../../assets/image/main_stretching.png";
 import neck from "../../assets/image/main_neck.png";
-import { useNavigate } from "react-router-dom";
 
 export interface SelectStyledProps {
   image: string;
@@ -50,7 +50,7 @@ const Text = styled(S.Text)`
   margin-left: 40px;
 `;
 const SelectLayout = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   return (
     <SectionLayout>
       <S.Text fontWeight={400} fontSize={32} lineHeight={40}>
@@ -64,7 +64,7 @@ const SelectLayout = () => {
       </S.Text>
 
       <ContentLayout>
-        <ContentBox>
+        <ContentBox onClick={() => navigate("/chaircoach")}>
           <Image image={stretching} />
           <TitleText fontSize={24} fontWeight={500}>
             체어코치와 함께하는 AI 스트레칭
@@ -75,9 +75,7 @@ const SelectLayout = () => {
           </Text>
         </ContentBox>
 
-        <ContentBox onClick={()=>{
-          navigate('/aboutneck')
-        }}>
+        <ContentBox onClick={() => navigate("/aboutneck")}>
           <Image image={neck} />
           <TitleText fontSize={24} fontWeight={500}>
             자가설문과 AI를 통한 거북목 진단

@@ -122,7 +122,7 @@ var userService = /** @class */ (function () {
     userService.getUser = function (_a) {
         var email = _a.email, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var user, userString, userObject, result_errEmail, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, secretKey, token, result_success;
+            var user, userString, userObject, result_errEmail, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, user_id, withdrawnUser, withdrawnUserString, withdrawnUserObject, result_err, secretKey, token, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
@@ -151,6 +151,26 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_errPassword];
                         }
+                        if (!(userObject[0].status == "pending")) return [3 /*break*/, 4];
+                        user_id = thisUser.user_id;
+                        return [4 /*yield*/, User_1.default.undoWithdraw({ user_id: user_id })];
+                    case 3:
+                        withdrawnUser = _b.sent();
+                        withdrawnUserString = JSON.stringify(withdrawnUser);
+                        withdrawnUserObject = JSON.parse(withdrawnUserString);
+                        if (withdrawnUserObject.affectedRows === 0) {
+                            result_err = {
+                                result: false,
+                                cause: "status",
+                                message: "탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다.",
+                            };
+                            return [2 /*return*/, result_err];
+                        }
+                        else {
+                            thisUser.status = null;
+                        }
+                        _b.label = 4;
+                    case 4:
                         secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
                         token = jsonwebtoken_1.default.sign({ user_id: thisUser.user_id }, secretKey);
                         delete thisUser.password;
@@ -170,7 +190,7 @@ var userService = /** @class */ (function () {
     userService.addUser = function (_a) {
         var email = _a.email, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, deleteCode, deleteCodeString, deleteCodeObject, result_success;
+            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, user_id, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
@@ -222,24 +242,16 @@ var userService = /** @class */ (function () {
                         checkNewUser = _b.sent();
                         checkNewUserString = JSON.stringify(checkNewUser);
                         checkNewUserObject = JSON.parse(checkNewUserString);
-                        if (!(newUserObject.affectedRows == 1 && checkNewUserObject.length == 1)) return [3 /*break*/, 7];
-                        return [4 /*yield*/, Code_1.default.delete({
-                                email: email,
-                            })];
-                    case 6:
-                        deleteCode = _b.sent();
-                        deleteCodeString = JSON.stringify(deleteCode);
-                        deleteCodeObject = JSON.parse(deleteCodeString);
-                        if (deleteCodeObject.affectedRows == 1) {
+                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
                             result_success = {
                                 result: true,
                                 cause: "success",
                                 message: "".concat(nickname, "\uB2D8\uC758 \uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
                             };
                             return [2 /*return*/, result_success];
+                            // }
                         }
-                        _b.label = 7;
-                    case 7: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -319,11 +331,11 @@ var userService = /** @class */ (function () {
             });
         });
     };
-    //// 회원정보 삭제
+    //// 회원정보 삭제 -> 탈퇴
     userService.deleteUser = function (_a) {
         var user_id = _a.user_id, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var checkUserId, checkUserIdString, checkUserIdObject, result_errUserId, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, updatedUser, updatedUserString, updatedUserObject, checkUpdatedUser, checkUpdatedUserString, checkUpdatedUserObject, result_errDelete, result_success;
+            var checkUserId, checkUserIdString, checkUserIdObject, result_errUserId, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, updatedUser, updatedUserString, updatedUserObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
@@ -352,33 +364,19 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_errPassword];
                         }
-                        return [4 /*yield*/, User_1.default.delete({
+                        return [4 /*yield*/, User_1.default.withdraw({
                                 user_id: user_id,
                             })];
                     case 3:
                         updatedUser = _b.sent();
                         updatedUserString = JSON.stringify(updatedUser);
                         updatedUserObject = JSON.parse(updatedUserString);
-                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
-                    case 4:
-                        checkUpdatedUser = _b.sent();
-                        checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
-                        checkUpdatedUserObject = JSON.parse(checkUpdatedUserString);
-                        if (updatedUserObject.affectedRows !== 1 &&
-                            checkUpdatedUserObject.length !== 0) {
-                            result_errDelete = {
-                                result: true,
-                                cause: "delete",
-                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uB97C \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."),
-                            };
-                            return [2 /*return*/, result_errDelete];
-                        }
-                        else if (updatedUserObject.affectedRows == 1 &&
-                            checkUpdatedUserObject.length == 0) {
+                        if (updatedUserObject.affectedRows == 1) {
                             result_success = {
                                 result: true,
                                 cause: "success",
-                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD68C\uC6D0\uC815\uBCF4 \uC0AD\uC81C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
+                                message: "".concat(checkUserIdObject[0].nickname, "\uB2D8\uC758 \uD0C8\uD1F4\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4. 30\uC77C \uD6C4 \uD68C\uC6D0 \uC815\uBCF4\uAC00 \uC0AD\uC81C\uB429\uB2C8\uB2E4."),
+                                // withdraw_at: updatedUser,
                             };
                             return [2 /*return*/, result_success];
                         }
@@ -387,7 +385,6 @@ var userService = /** @class */ (function () {
             });
         });
     };
-    /////////////////////////////////
     //// 회원가입 전 이메일 인증
     // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
     userService.sendCode = function (_a) {
@@ -419,6 +416,39 @@ var userService = /** @class */ (function () {
                                 cause: "success",
                                 message: "code \uC7AC\uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                                 code: code,
+                            };
+                            return [2 /*return*/, result_success];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //// 회원가입 전 nickname 중복확인
+    userService.nicknameDuplicateCheck = function (_a) {
+        var nickname = _a.nickname;
+        return __awaiter(this, void 0, void 0, function () {
+            var checkNickname, checkNicknameString, checkNicknameObject, result_errNickname, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_1.default.findByNickname({ nickname: nickname })];
+                    case 1:
+                        checkNickname = _b.sent();
+                        checkNicknameString = JSON.stringify(checkNickname);
+                        checkNicknameObject = JSON.parse(checkNicknameString);
+                        if (checkNicknameObject.length !== 0) {
+                            result_errNickname = {
+                                result: false,
+                                cause: "nickname",
+                                message: "입력하신 nickname로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
+                            };
+                            return [2 /*return*/, result_errNickname];
+                        }
+                        else {
+                            result_success = {
+                                result: true,
+                                cause: "success",
+                                message: "\uC911\uBCF5\uB41C nickname\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uAC00\uC785\uC744 \uC9C4\uD589\uD574\uC8FC\uC138\uC694.",
                             };
                             return [2 /*return*/, result_success];
                         }

@@ -94,6 +94,23 @@ class userService {
       };
       return result_errPassword;
     }
+    // 탈퇴한 사용자가 30일 이내 로그인 시도 시
+    if (userObject[0].status == "pending") {
+      const user_id = thisUser.user_id;
+      const withdrawnUser = await User.undoWithdraw({ user_id });
+      const withdrawnUserString = JSON.stringify(withdrawnUser);
+      const withdrawnUserObject = JSON.parse(withdrawnUserString);
+      if (withdrawnUserObject.affectedRows === 0) {
+        const result_err = {
+          result: false,
+          cause: "status",
+          message: "탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다.",
+        };
+        return result_err;
+      } else {
+        thisUser.status = null;
+      }
+    }
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
     const token = jwt.sign({ user_id: thisUser.user_id }, secretKey);
     delete thisUser.password;
@@ -155,19 +172,19 @@ class userService {
     const checkNewUserString = JSON.stringify(checkNewUser);
     const checkNewUserObject = JSON.parse(checkNewUserString);
     if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
-      const deleteCode = await Code.delete({
-        email,
-      });
-      const deleteCodeString = JSON.stringify(deleteCode);
-      const deleteCodeObject = JSON.parse(deleteCodeString);
-      if (deleteCodeObject.affectedRows == 1) {
-        const result_success = {
-          result: true,
-          cause: "success",
-          message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
-        };
-        return result_success;
-      }
+      // const deleteCode = await Code.delete({
+      //   email,
+      // });
+      // const deleteCodeString = JSON.stringify(deleteCode);
+      // const deleteCodeObject = JSON.parse(deleteCodeString);
+      // if (deleteCodeObject.affectedRows == 1) {
+      const result_success = {
+        result: true,
+        cause: "success",
+        message: `${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.`,
+      };
+      return result_success;
+      // }
     }
   }
 
@@ -238,7 +255,7 @@ class userService {
     }
   }
 
-  //// 회원정보 삭제
+  //// 회원정보 삭제 -> 탈퇴
   static async deleteUser({ user_id, password }) {
     const checkUserId = await User.findByUserId({ user_id });
     const checkUserIdString = JSON.stringify(checkUserId);
@@ -268,37 +285,22 @@ class userService {
       };
       return result_errPassword;
     }
-    const updatedUser = await User.delete({
+    const updatedUser = await User.withdraw({
       user_id,
     });
     const updatedUserString = JSON.stringify(updatedUser);
     const updatedUserObject = JSON.parse(updatedUserString);
-    const checkUpdatedUser = await User.findByUserId({ user_id });
-    const checkUpdatedUserString = JSON.stringify(checkUpdatedUser);
-    const checkUpdatedUserObject = JSON.parse(checkUpdatedUserString);
-    if (
-      updatedUserObject.affectedRows !== 1 &&
-      checkUpdatedUserObject.length !== 0
-    ) {
-      const result_errDelete = {
-        result: true,
-        cause: "delete",
-        message: `${checkUserIdObject[0].nickname}님의 회원정보 삭제를 실패했습니다.`,
-      };
-      return result_errDelete;
-    } else if (
-      updatedUserObject.affectedRows == 1 &&
-      checkUpdatedUserObject.length == 0
-    ) {
+    if (updatedUserObject.affectedRows == 1) {
       const result_success = {
         result: true,
         cause: "success",
-        message: `${checkUserIdObject[0].nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.`,
+        message: `${checkUserIdObject[0].nickname}님의 탈퇴가 성공적으로 이뤄졌습니다. 30일 후 회원 정보가 삭제됩니다.`,
+        // withdraw_at: updatedUser,
       };
       return result_success;
     }
   }
-  /////////////////////////////////
+
   //// 회원가입 전 이메일 인증
   // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
   static async sendCode({ email, code }) {
@@ -322,6 +324,29 @@ class userService {
         cause: "success",
         message: `code 재발급이 성공적으로 이뤄졌습니다.`,
         code: code,
+      };
+      return result_success;
+    }
+  }
+
+  //// 회원가입 전 nickname 중복확인
+  static async nicknameDuplicateCheck({ nickname }) {
+    const checkNickname = await User.findByNickname({ nickname });
+    const checkNicknameString = JSON.stringify(checkNickname);
+    const checkNicknameObject = JSON.parse(checkNicknameString);
+    if (checkNicknameObject.length !== 0) {
+      const result_errNickname = {
+        result: false,
+        cause: "nickname",
+        message:
+          "입력하신 nickname로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
+      };
+      return result_errNickname;
+    } else {
+      const result_success = {
+        result: true,
+        cause: "success",
+        message: `중복된 nickname이 없습니다. 가입을 진행해주세요.`,
       };
       return result_success;
     }
