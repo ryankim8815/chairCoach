@@ -8,6 +8,7 @@ import cv2
 import torch
 import torch.backends.cudnn as cudnn
 from numpy import random
+import numpy as np
 
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
@@ -15,7 +16,9 @@ from utils.general import check_img_size, check_requirements, check_imshow, non_
     scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path, save_one_box
 from utils.plots import colors, plot_one_box, output_to_keypoint
 from utils.torch_utils import select_device, load_classifier, time_synchronized
-
+from yolov7_keypoints import extract
+from models.test_xgb import XGBClassifierModel
+from xgboost import XGBClassifier
 
 def detect(opt):
     source, weights, view_img, save_txt, imgsz, save_txt_tidl, kpt_label = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size, opt.save_txt_tidl, opt.kpt_label
@@ -124,6 +127,13 @@ def detect(opt):
                         kpts = det[det_index, 6:]
                         print("kpts: ", kpts)
                         print("kpts.shape: ", kpts.shape)
+                        
+                        # model test
+                        kpts_arr = np.array(kpts)
+                        kpts_xy = extract(kpts_arr, 3)
+                        answer = XGBClassifierModel([kpts_xy])
+                        print(answer)
+                    
                         print("det_index: ", det_index)
                         plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=opt.line_thickness, kpt_label=kpt_label, kpts=kpts, steps=3, orig_shape=im0.shape[:2])
                         if opt.save_crop:

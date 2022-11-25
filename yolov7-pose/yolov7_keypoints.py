@@ -42,10 +42,11 @@ def predict_keypoints(image, image_size=640, conf_thresh=0.25, iou_thresh=0.65):
         nc=model.yaml['nc'], nkpt=model.yaml['nkpt'], kpt_label=True
     )
     pred = output_to_keypoint(pred)
-
+    
     # Drop
     pred = pred[:, 7:]
-
+    
+    
     # Resize boxes to the original image size
     pred[:, 0::3] *= ori_w / image_size
     pred[:, 1::3] *= ori_h / image_size
@@ -117,12 +118,16 @@ def process(img_in_folder, img_out_folder, csv_out_path):
 
 
 
-img_in_train_folder = os.path.join('./data/images', 'train')
-img_out_train_folder = 'image_out_train'
-csv_out_train_path = 'train_data.csv'
-process(img_in_train_folder, img_out_train_folder, csv_out_train_path)
+# img_in_train_folder = os.path.join('./data/images', 'train')
+# img_out_train_folder = 'image_out_train'
+# csv_out_train_path = 'train_data.csv'
+# process(img_in_train_folder, img_out_train_folder, csv_out_train_path)
 
-
+image = Image.open('./data/images/test/hands_up/11.jpg')
+pred = predict_keypoints(image, image_size=IMAGE_SIZE)
+print(pred)
+kpnt_array = extract(pred[0].T, 3)
+print(kpnt_array)
 # show skeleton line and image
 # image = np.asarray(image)
 # for idx in range(pred.shape[0]):
