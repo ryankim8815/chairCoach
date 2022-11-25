@@ -157,14 +157,40 @@ var User = /** @class */ (function () {
             });
         });
     };
-    // (FE요청) 삭제
-    // static async updateFilename({ email, new_filename }) {
-    //   const [rows, fields] = await promisePool.query({
-    //     sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
-    //     values: [new_filename, email],
-    //   });
-    //   return rows;
-    // }
+    User.withdraw = function (_a) {
+        var user_id = _a.user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "UPDATE users SET `withdraw_at` = NOW(), `status` = 'pending' WHERE `user_id` = ?",
+                            values: [user_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    User.undoWithdraw = function (_a) {
+        var user_id = _a.user_id;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "UPDATE users SET `withdraw_at` = null, `status` = null WHERE `user_id` = ?",
+                            values: [user_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
     User.delete = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {

@@ -8,6 +8,7 @@ export const ResultContainer = styled.div`
   .inner {
     ${({ theme }) => theme.common.inner};
     padding: 120px 0;
+  }
 `;
 
 export const Title = styled.span`

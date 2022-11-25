@@ -59,14 +59,22 @@ class User {
     });
     return rows;
   }
-  // (FE요청) 삭제
-  // static async updateFilename({ email, new_filename }) {
-  //   const [rows, fields] = await promisePool.query({
-  //     sql: "UPDATE users SET `profile_image` = ? WHERE `email` = ?",
-  //     values: [new_filename, email],
-  //   });
-  //   return rows;
-  // }
+
+  static async withdraw({ user_id }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "UPDATE users SET `withdraw_at` = NOW(), `status` = 'pending' WHERE `user_id` = ?",
+      values: [user_id],
+    });
+    return rows;
+  }
+
+  static async undoWithdraw({ user_id }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "UPDATE users SET `withdraw_at` = null, `status` = null WHERE `user_id` = ?",
+      values: [user_id],
+    });
+    return rows;
+  }
 
   static async delete({ user_id }) {
     const [rows, fields] = await promisePool.query({

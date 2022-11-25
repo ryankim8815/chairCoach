@@ -65,6 +65,7 @@ var express = __importStar(require("express"));
 var neckService_1 = __importDefault(require("../services/neckService"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 var uploadMiddleware_1 = __importDefault(require("../middlewares/uploadMiddleware"));
+var validation = __importStar(require("../middlewares/neckValidationMiddleware"));
 var neckRouter = express.Router();
 // GET: 전체 거북목 테스트 결과 조회 기능
 var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -77,8 +78,7 @@ var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0
             case 1:
                 allNecks = _a.sent();
                 console.log(allNecks);
-                res.status(200).json(allNecks);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(allNecks)];
             case 2:
                 err_1 = _a.sent();
                 result_err = {
@@ -87,8 +87,7 @@ var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0
                     message: "neckResultList api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -152,13 +151,12 @@ var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, v
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
             case 1:
                 Necks = _a.sent();
                 console.log(Necks);
-                res.status(200).json(Necks);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(Necks)];
             case 2:
                 err_2 = _a.sent();
                 result_err = {
@@ -167,8 +165,7 @@ var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, v
                     message: "neckResults api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -234,7 +231,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 filename = req.file.filename;
                 result = req.body.result;
                 score = req.body.score;
@@ -247,8 +244,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 allUsers = _a.sent();
                 console.log(allUsers);
-                res.status(200).json(allUsers);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(allUsers)];
             case 2:
                 err_3 = _a.sent();
                 result_err = {
@@ -257,8 +253,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "neckCreate api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -303,7 +298,7 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
  */
-neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
-neckRouter.get("/neck", authMiddleware_1.default, neckResults); // 특정 유저의 거북목 테스트 결과 조회
-neckRouter.post("/neck", authMiddleware_1.default, uploadMiddleware_1.default.single("file"), neckCreate); // 거북목 테스트 결과 기록
+neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능, 개발 시 편의용으로 사용처가 없다면 삭제 예정
+neckRouter.get("/neck", authMiddleware_1.default, validation.validateNeckResults, neckResults); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.post("/neck", uploadMiddleware_1.default, authMiddleware_1.default, validation.validateNeckResult, neckCreate); // 거북목 테스트 결과 기록
 module.exports = neckRouter;

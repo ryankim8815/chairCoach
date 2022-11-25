@@ -234,6 +234,100 @@ var socialLoginService = /** @class */ (function () {
             });
         });
     };
+    ////////////////////////////////////////
+    /////////////   구   글   ///////////////
+    ////////////////////////////////////////
+    //// 네이버 간편로그인 가입 & 로그인
+    socialLoginService.google = function (_a) {
+        var email = _a.email, refresh_token = _a.refresh_token;
+        return __awaiter(this, void 0, void 0, function () {
+            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, thisUser, secretKey, token, result_success, result_errDB, user_id, password, nickname, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, thisUser, secretKey, token, result_success, result_errDB;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    case 1:
+                        checkEmail = _b.sent();
+                        checkEmailString = JSON.stringify(checkEmail);
+                        checkEmailObject = JSON.parse(checkEmailString);
+                        if (checkEmailObject.length !== 0 &&
+                            checkEmailObject[0].provider !== "google") {
+                            result_errEmail = {
+                                result: false,
+                                cause: "email",
+                                message: "google 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
+                            };
+                            return [2 /*return*/, result_errEmail];
+                        }
+                        else if (checkEmailObject.length == 1 &&
+                            checkEmailObject[0].provider == "google") {
+                            thisUser = checkEmailObject[0];
+                            secretKey = process.env.JWT_SECRET_KEY;
+                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            delete thisUser.password;
+                            delete thisUser.user_id;
+                            result_success = Object.assign({
+                                result: true,
+                                cause: "success",
+                                message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
+                            }, { token: token }, thisUser);
+                            return [2 /*return*/, result_success];
+                        }
+                        else if (checkEmailObject.length > 1) {
+                            result_errDB = Object.assign({
+                                result: false,
+                                cause: "DB",
+                                message: "[\uD655\uC778\uC694\uB9DD]: DB\uC5D0 \uD574\uB2F9 \uC774\uBA54\uC77C(".concat(email, ")\uB85C \uAC00\uC785\uB41C \uC0AC\uC6A9\uC790\uAC00 1\uBA85 \uC774\uC0C1\uC785\uB2C8\uB2E4. \uC815\uCC45\uC0C1 \uC774\uBA54\uC77C \uD558\uB098\uB85C \uACC4\uC815 \uD558\uB098\uB9CC \uC0DD\uC131 \uAC00\uB2A5 \uD569\uB2C8\uB2E4."),
+                            });
+                            return [2 /*return*/, result_errDB];
+                        }
+                        user_id = (0, uuid_1.v4)();
+                        password = refresh_token;
+                        nickname = "".concat(email, "_google");
+                        provider = "google";
+                        created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        return [4 /*yield*/, User_1.default.create({
+                                user_id: user_id,
+                                email: email,
+                                password: password,
+                                nickname: nickname,
+                                provider: provider,
+                                created_at: created_at,
+                            })];
+                    case 2:
+                        newUser = _b.sent();
+                        newUserString = JSON.stringify(newUser);
+                        newUserObject = JSON.parse(newUserString);
+                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    case 3:
+                        checkNewUser = _b.sent();
+                        checkNewUserString = JSON.stringify(checkNewUser);
+                        checkNewUserObject = JSON.parse(checkNewUserString);
+                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
+                            thisUser = checkNewUserObject[0];
+                            secretKey = process.env.JWT_SECRET_KEY;
+                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            delete thisUser.password;
+                            delete thisUser.user_id;
+                            result_success = Object.assign({
+                                result: true,
+                                cause: "success",
+                                message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
+                            }, { token: token }, thisUser);
+                            return [2 /*return*/, result_success];
+                        }
+                        else {
+                            result_errDB = {
+                                result: false,
+                                cause: "DB",
+                                message: "[\uD655\uC778\uC694\uB9DD]: \uC0AC\uC6A9\uC790 \uC815\uBCF4\uB97C DB\uC5D0 \uC800\uC7A5 \uC911 \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4.",
+                            };
+                            return [2 /*return*/, result_errDB];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     return socialLoginService;
 }());
 module.exports = socialLoginService;

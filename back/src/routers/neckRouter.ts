@@ -1,8 +1,10 @@
 import * as express from "express";
 import neckService from "../services/neckService";
 import authMiddleware from "../middlewares/authMiddleware";
-import upload from "../middlewares/uploadMiddleware";
+import uploadMiddleware from "../middlewares/uploadMiddleware";
+import * as validation from "../middlewares/neckValidationMiddleware";
 import type { MulterFile } from "../customType/multer.d";
+
 const neckRouter = express.Router();
 
 // GET: 전체 거북목 테스트 결과 조회 기능
@@ -14,7 +16,7 @@ const neckResultList = async (
   try {
     const allNecks = await neckService.getAllNecks();
     console.log(allNecks);
-    res.status(200).json(allNecks);
+    return res.status(200).json(allNecks);
   } catch (err) {
     const result_err = {
       result: false,
@@ -22,7 +24,7 @@ const neckResultList = async (
       message: "neckResultList api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -84,10 +86,10 @@ const neckResults = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const Necks = await neckService.getNecks({ user_id });
     console.log(Necks);
-    res.status(200).json(Necks);
+    return res.status(200).json(Necks);
   } catch (err) {
     const result_err = {
       result: false,
@@ -95,7 +97,7 @@ const neckResults = async (
       message: "neckResults api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -160,7 +162,7 @@ const neckCreate = async (
   next: express.NextFunction
 ) => {
   try {
-    const user_id = req.user_id;
+    const user_id = req.body.user_id;
     const filename = req.file.filename;
     const result = req.body.result;
     const score = req.body.score;
@@ -171,7 +173,7 @@ const neckCreate = async (
       filename,
     });
     console.log(allUsers);
-    res.status(200).json(allUsers);
+    return res.status(200).json(allUsers);
   } catch (err) {
     const result_err = {
       result: false,
@@ -179,7 +181,7 @@ const neckCreate = async (
       message: "neckCreate api에서 오류가 발생했습니다.",
     };
     console.log(result_err);
-    res.status(200).json(result_err);
+    return res.status(200).json(result_err);
   }
 };
 /**
@@ -223,8 +225,19 @@ const neckCreate = async (
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
  */
 
-neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능
-neckRouter.get("/neck", authMiddleware, neckResults); // 특정 유저의 거북목 테스트 결과 조회
-neckRouter.post("/neck", authMiddleware, upload.single("file"), neckCreate); // 거북목 테스트 결과 기록
+neckRouter.get("/necks", neckResultList); // 전체 거북목 테스트 결과 조회 기능, 개발 시 편의용으로 사용처가 없다면 삭제 예정
+neckRouter.get(
+  "/neck",
+  authMiddleware,
+  validation.validateNeckResults,
+  neckResults
+); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.post(
+  "/neck",
+  uploadMiddleware,
+  authMiddleware,
+  validation.validateNeckResult,
+  neckCreate
+); // 거북목 테스트 결과 기록
 
 export = neckRouter;

@@ -35,44 +35,66 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var authMiddleware = function (req, res, next) {
-    var _a, _b;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateNeckResult = exports.validateNeckResults = void 0;
+var neckSchemas_joi_1 = require("../utils/neckSchemas.joi");
+var validateNeckResults = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
-        var userToken, result_errNoToken, secretKey, jwtDecoded, user_id, result_errInvalidToken;
-        return __generator(this, function (_c) {
-            userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
-            if (userToken === "null") {
-                result_errNoToken = {
-                    result: false,
-                    cause: "token",
-                    message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
-                };
-                console.log(result_errNoToken);
-                return [2 /*return*/, res.status(400).json(result_errNoToken)];
-                return [2 /*return*/];
+        var body, err_1, result_err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    body = req.body;
+                    return [4 /*yield*/, neckSchemas_joi_1.neckResultsSchema.validateAsync(body)];
+                case 1:
+                    _a.sent();
+                    next();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_1 = _a.sent();
+                    result_err = {
+                        result: false,
+                        cause: "type",
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                    };
+                    console.log(result_err);
+                    return [2 /*return*/, res.status(499).json(result_err)];
+                case 3: return [2 /*return*/];
             }
-            try {
-                secretKey = process.env.JWT_SECRET_KEY || "secret-key";
-                jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
-                user_id = jwtDecoded.user_id;
-                req.body.user_id = user_id;
-                next();
-            }
-            catch (error) {
-                result_errInvalidToken = {
-                    result: false,
-                    cause: "token",
-                    message: "정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.",
-                };
-                console.log(result_errInvalidToken);
-                return [2 /*return*/, res.status(400).json(result_errInvalidToken)];
-            }
-            return [2 /*return*/];
         });
     });
 };
-module.exports = authMiddleware;
+exports.validateNeckResults = validateNeckResults;
+var validateNeckResult = function (req, res, next) {
+    return __awaiter(this, void 0, void 0, function () {
+        var body, file, err_2, result_err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    body = req.body;
+                    file = req.file;
+                    return [4 /*yield*/, neckSchemas_joi_1.neckResultSchema.validateAsync(body)];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, neckSchemas_joi_1.fileSchema.validateAsync(file)];
+                case 2:
+                    _a.sent();
+                    next();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_2 = _a.sent();
+                    result_err = {
+                        result: false,
+                        cause: "type",
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                    };
+                    console.log(result_err, err_2);
+                    return [2 /*return*/, res.status(499).json(result_err)];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+};
+exports.validateNeckResult = validateNeckResult;

@@ -63,10 +63,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var express = __importStar(require("express"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
-// import upload from "../middlewares/uploadMiddleware";  // (FE요청) 삭제
+var nodemailerMiddleware_1 = __importDefault(require("../middlewares/nodemailerMiddleware"));
+var validation = __importStar(require("../middlewares/validationMiddleware"));
 var userService_1 = __importDefault(require("../services/userService"));
-// import asyncHandler from "../utils/asyncHandler";
-// import type { MulterFile } from "../customType/multer.d";  // (FE요청) 삭제
 var userRouter = express.Router();
 // GET: 사용자 리스트 조회 기능
 var userList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -79,8 +78,7 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
             case 1:
                 allUsers = _a.sent();
                 console.log(allUsers);
-                res.status(200).json(allUsers);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(allUsers)];
             case 2:
                 err_1 = _a.sent();
                 result_err = {
@@ -89,8 +87,7 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
                     message: "userList api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -150,13 +147,12 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 return [4 /*yield*/, userService_1.default.getCurrentUser({ user_id: user_id })];
             case 1:
                 currentUser = _a.sent();
                 console.log(currentUser);
-                res.status(200).json(currentUser);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(currentUser)];
             case 2:
                 err_2 = _a.sent();
                 result_err = {
@@ -165,8 +161,7 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
                     message: "userCurrent api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -225,8 +220,7 @@ var userRegister = function (req, res, next) { return __awaiter(void 0, void 0, 
             case 1:
                 newUser = _a.sent();
                 console.log(newUser);
-                res.status(200).json(newUser);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(newUser)];
             case 2:
                 err_3 = _a.sent();
                 result_err = {
@@ -235,8 +229,7 @@ var userRegister = function (req, res, next) { return __awaiter(void 0, void 0, 
                     message: "userRegister api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -294,8 +287,7 @@ var userSignin = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 signinUser = _a.sent();
                 console.log(signinUser);
-                res.status(200).json(signinUser);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(signinUser)];
             case 2:
                 err_4 = _a.sent();
                 result_err = {
@@ -304,8 +296,7 @@ var userSignin = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "userLogin api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -369,7 +360,7 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 currentPassword = req.body.currentPassword;
                 password = req.body.password;
                 nickname = req.body.nickname;
@@ -382,8 +373,7 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 updateUser = _a.sent();
                 console.log(updateUser);
-                res.status(200).json(updateUser);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(updateUser)];
             case 2:
                 err_5 = _a.sent();
                 result_err = {
@@ -392,8 +382,7 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "userUpdate api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -447,7 +436,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                user_id = req.user_id;
+                user_id = req.body.user_id;
                 password = req.body.password;
                 return [4 /*yield*/, userService_1.default.deleteUser({
                         user_id: user_id,
@@ -456,8 +445,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 deleteUser = _a.sent();
                 console.log(deleteUser);
-                res.status(200).json(deleteUser);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(deleteUser)];
             case 2:
                 err_6 = _a.sent();
                 result_err = {
@@ -466,8 +454,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     message: "userDelete api에서 오류가 발생했습니다.",
                 };
                 console.log(result_err);
-                res.status(200).json(result_err);
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
     });
@@ -508,75 +495,140 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: string
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
-// (FE요청) 삭제
-// //// POST: 프로필 사진 업로드
-// const userUploadImage = async (
-//   req: express.Request & { files: MulterFile[] },
-//   res: express.Response,
-//   next: express.NextFunction
-// ) => {
-//   try {
-//     const email = req.email;
-//     // const old_filename = req.filename;
-//     const new_filename = req.file.filename;
-//     console.log("new_filename: ", new_filename);
-//     const uploadUserImage = await userService.uploadUserImage({
-//       email,
-//       new_filename,
-//     });
-//     console.log(uploadUserImage);
-//     res.status(200).json(uploadUserImage);
-//   } catch (err) {
-//     const result_err = {
-//       result: false,
-//       cause: "api",
-//       message: "uploadUserImage api에서 오류가 발생했습니다.",
-//     };
-//     console.log(result_err);
-//     res.status(200).json(result_err);
-//   }
-// };
-// /**
-//  * @swagger
-//  * /u/upload_image:
-//  *   post:
-//  *     summary: 프로필 사진 업로드
-//  *     description: 확장자, 사이즈, 용량 제한에 대한 사항은 아직 미정입니다.
-//  *     tags: ["userRouter"]
-//  *     security:
-//  *       - bearerAuth: []
-//  *     requestBody:
-//  *       content:
-//  *        multipart/form-data:
-//  *           schema:
-//  *             type: object
-//  *             properties:
-//  *               file:
-//  *                type: string
-//  *                format: binary
-//  *     responses:
-//  *       200:
-//  *         description: successful operation
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 result:
-//  *                   type: boolean
-//  *                   example: true
-//  *                 cause:
-//  *                   type: string
-//  *                   example: success
-//  *                 message:
-//  *                   type: string
-//  *                   example: ${nickname}님의 프로필 사진 업데이트가 성공적으로 이뤄졌습니다.
-//  */
+/// POST: email 인증을 위한 코드 발송
+var signupEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var email, code, sendCodeToEmail, err_7, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                email = req.body.email;
+                code = req.body.code;
+                return [4 /*yield*/, userService_1.default.sendCode({
+                        // redis 활용 고려
+                        email: email,
+                        code: code,
+                    })];
+            case 1:
+                sendCodeToEmail = _a.sent();
+                console.log(sendCodeToEmail);
+                return [2 /*return*/, res.status(200).json(sendCodeToEmail)];
+            case 2:
+                err_7 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "signupEmail api에서 오류가 발생했습니다.",
+                };
+                console.log(result_err);
+                return [2 /*return*/, res.status(200).json(result_err)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /signup/email:
+ *   post:
+ *     summary: email 인증을 위한 코드 발송
+ *     description:  코드 발급전에 중복확인을 실시합니다. 재발급 가능하며, 회원 가입시 코드는 폐기됩니다.
+ *     tags: ["userRouter"]
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: example@gmail.com
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ *                 code:
+ *                   type: number
+ *                   example: 0000
+ */
+/// GET: nickname 중복확인
+var signupNickname = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var nickname, checkNickname, err_8, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                nickname = req.params.nickname;
+                return [4 /*yield*/, userService_1.default.nicknameDuplicateCheck({
+                        nickname: nickname,
+                    })];
+            case 1:
+                checkNickname = _a.sent();
+                console.log(checkNickname);
+                return [2 /*return*/, res.status(200).json(checkNickname)];
+            case 2:
+                err_8 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "signupNickname api에서 오류가 발생했습니다.",
+                };
+                console.log(result_err);
+                return [2 /*return*/, res.status(200).json(result_err)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /signup/nickname/{nickname}:
+ *   get:
+ *     summary: nickname 중복확인
+ *     description:  nickname 중복확인
+ *     tags: ["userRouter"]
+ *     parameters:
+ *       - in: path
+ *         name: nickname
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
+ */
 // api index
-userRouter.get("/users", userList); // 전체 사용자 검섹
-userRouter.get("/user", authMiddleware_1.default, userCurrent); // 현재 사용자 정보 조회
-userRouter.post("/signup", userRegister); // 자체 회원가입
-userRouter.post("/signin", userSignin); // 로그인
-userRouter.put("/user", authMiddleware_1.default, userUpdate); // 유저 정보 업데이트(pw & nickname)
-userRouter.delete("/user", authMiddleware_1.default, userDelete); // 유저 삭제
+userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
+userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회
+userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
+userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
+userRouter.put("/user", authMiddleware_1.default, validation.validateUserUpdate, userUpdate); // 유저 정보 업데이트(pw & nickname)
+userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDelete, userDelete); // 유저 삭제
+userRouter.post("/signup/email", nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
+userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
 module.exports = userRouter;

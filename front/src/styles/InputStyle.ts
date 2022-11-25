@@ -30,16 +30,12 @@ export const CheckInputCon = styled.div`
   display: grid;
   grid-template-columns: 1fr 120px;
   gap: 4px;
-  margin-bottom: 8px;
-  & + div{
-    margin-top: 40px;
-  }
 `
 
 export const WarningText = styled.span<InputStyle>`
   display: block;
   margin-left: 8px;
-  margin-bottom: ${({ lineHeight }) => (lineHeight === "true" ? '-35px' : '-15px')};
+  margin-bottom: ${({ lineHeight }) => (lineHeight === "true" ? '-35px' : '-14px')};
   font-weight: 300;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.warning};

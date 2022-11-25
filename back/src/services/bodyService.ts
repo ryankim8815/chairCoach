@@ -87,7 +87,6 @@ class bodyService {
           "patch를 요청한 body_id 정보와 일치하는 데이터가 없습니다. 다시 한 번 확인해 주세요.",
       };
       return result_errBody;
-      // } else if (checkBodyObject[0].end_time !== null) {
     } else if (checkBodyObject[0].end_time) {
       const result_errBody = {
         result: false,

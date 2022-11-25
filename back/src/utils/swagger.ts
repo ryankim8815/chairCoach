@@ -1,9 +1,6 @@
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
-// import path from "path";
-// import yaml from "yamljs";
-// import userRouter from "../routers/userRouter";
 import cors from "cors";
 require("dotenv").config();
 
@@ -65,10 +62,6 @@ const swaggerDefinition = {
           nickname: {
             type: "string",
           },
-          // (FE요청) 삭제
-          // profile_image: {
-          //   type: "string",
-          // },
           provider: {
             type: "string",
           },
@@ -77,22 +70,6 @@ const swaggerDefinition = {
           },
         },
       },
-      // (FE요청) 삭제
-      // attendances: {
-      //   type: "object",
-      //   properties: {
-      //     atnd_id: {
-      //       type: "string",
-      //       description: "PK, UUID",
-      //     },
-      //     user_id: {
-      //       type: "string",
-      //     },
-      //     created_at: {
-      //       type: "timstamp",
-      //     },
-      //   },
-      // },
       body: {
         type: "object",
         properties: {
@@ -138,28 +115,6 @@ const swaggerDefinition = {
           },
         },
       },
-      // (FE요청) 삭제
-      // self: {
-      //   type: "object",
-      //   properties: {
-      //     self_id: {
-      //       type: "string",
-      //       description: "PK, UUID",
-      //     },
-      //     user_id: {
-      //       type: "string",
-      //     },
-      //     filename: {
-      //       type: "string",
-      //     },
-      //     result: {
-      //       type: "string",
-      //     },
-      //     created_at: {
-      //       type: "timstamp",
-      //     },
-      //   },
-      // },
     },
   },
 };
@@ -169,8 +124,7 @@ const option = {
   //   swaggerPaths,
 };
 
-const swaggerSpec = swaggerJSDoc(option); // json
-// const swaggerSpec = yaml.load(path.join(__dirname, "./build.yarm")); // yaml
+const swaggerSpec = swaggerJSDoc(option);
 
 // Docs in Json format
 swagger.get("/swagger.json", (req, res) => {
