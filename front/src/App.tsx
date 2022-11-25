@@ -15,7 +15,7 @@ import AboutNeck from "./pages/aboutNeck/AboutNeck";
 import NeckGuide from "./pages/neckGuide/NeckGuide";
 import NeckInspection from "./pages/neckInspection/NeckInspection";
 import InspectionResult from "./pages/inspectionResult/InspectionResult";
-import SingUp from './pages/AsignUp/SignUp';
+import SingUp from './pages/signUp/SignUp';
 import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
 import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 

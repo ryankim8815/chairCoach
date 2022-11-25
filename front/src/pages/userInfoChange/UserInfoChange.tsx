@@ -1,4 +1,4 @@
-import * as S from '../AsignUp/SignUpStyle';
+import * as S from '../signUp/SignUpStyle';
 import * as B from '../../styles/BtnStyle';
 import * as F from '../../styles/InputStyle'
 
