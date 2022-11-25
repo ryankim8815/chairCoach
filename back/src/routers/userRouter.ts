@@ -505,17 +505,19 @@ const signupVerifyEmail = async (
  * /signup/email/{email}/code/{code}:
  *   get:
  *     summary: email 인증 코드 확인
- *     description:  코드 발급전에 중복확인을 실시합니다. 재발급 가능하며, 회원 가입시 코드는 폐기됩니다.
+ *     description: 인증 완료시 code는 삭제됩니다.
  *     tags: ["userRouter"]
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 example: example@gmail.com
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *       - in: path
+ *         name: code
+ *         schema:
+ *           type: string
+ *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -532,10 +534,7 @@ const signupVerifyEmail = async (
  *                   example: success
  *                 message:
  *                   type: string
- *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
- *                 code:
- *                   type: number
- *                   example: 0000
+ *                   example: email 인증을 위한 코드 인증
  */
 
 /// GET: nickname 중복확인
