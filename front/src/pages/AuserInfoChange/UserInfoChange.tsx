@@ -1,4 +1,4 @@
-import * as S from '../singUp/SingUpStyle';
+import * as S from '../AsingUp/SingUpStyle';
 import * as B from '../../styles/BtnStyle';
 import * as F from '../../styles/InputStyle'
 

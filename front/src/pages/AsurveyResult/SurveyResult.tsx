@@ -16,7 +16,6 @@ const SurveyResult = () => {
       color: #ffffff;
     }
   `;
-
   return (
     <S.ResultContainer>
       <div className="inner">

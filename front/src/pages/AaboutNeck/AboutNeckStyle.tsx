@@ -79,7 +79,6 @@ export const TextBox = styled.div`
   line-height: 1.25;
   padding:40px;
   background:#FFF;
-  transition: all .3s;
 `;
 
 export const ChioceBox = styled.div`
