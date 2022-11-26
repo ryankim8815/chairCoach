@@ -9,6 +9,14 @@ class Code {
     return rows;
   }
 
+  static async findByEmail({ email }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "SELECT code FROM codes WHERE `email` = ?",
+      values: [email],
+    });
+    return rows;
+  }
+
   static async delete({ email }) {
     const [rows, fields] = await promisePool.query({
       sql: "DELETE FROM codes WHERE `email` = ?",

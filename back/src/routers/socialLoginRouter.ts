@@ -160,8 +160,8 @@ const naverOauth = async (
   const redirectURI = process.env.NAVER_REDIRECT_URL;
   const encoded = encodeURIComponent(redirectURI);
   const url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${encoded}&code=${code}&state=${state}`;
-  //   const FE_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${encoded}&state=${state}`;
-  //   console.log("FE_url: ", FE_url);
+  // const FE_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${encoded}&state=${state}`;
+  // console.log("FE_url: ", FE_url);
   try {
     let naverToken: any = "";
     await axios({

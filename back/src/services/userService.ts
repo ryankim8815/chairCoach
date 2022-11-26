@@ -302,7 +302,6 @@ class userService {
   }
 
   //// 회원가입 전 이메일 인증
-  // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
   static async sendCode({ email, code }) {
     const saveCode = await Code.create({
       email,
@@ -315,7 +314,7 @@ class userService {
         result: true,
         cause: "success",
         message: `code 발급이 성공적으로 이뤄졌습니다.`,
-        code: code,
+        // code: code,
       };
       return result_success;
     } else if (saveCodeObject.affectedRows == 2) {
@@ -323,9 +322,57 @@ class userService {
         result: true,
         cause: "success",
         message: `code 재발급이 성공적으로 이뤄졌습니다.`,
-        code: code,
+        // code: code,
       };
       return result_success;
+    }
+  }
+  //// 이메일 인증 코드 확인 절차
+  static async verifyCode({ email, code }) {
+    // console.log("시작점");
+
+    const checkCode = await Code.findByEmail({
+      email,
+    });
+    const checkCodeString = JSON.stringify(checkCode);
+    const checkCodeObject = JSON.parse(checkCodeString);
+    if (checkCodeObject.length !== 1) {
+      const result_err = {
+        result: false,
+        cause: "code",
+        message: `email 인증에 실패했습니다.`,
+      };
+      return result_err;
+    } else {
+      const correctCode = checkCodeObject[0];
+      if (code == correctCode.code) {
+        const deleteCode = await Code.delete({
+          email,
+        });
+        const deleteCodeString = JSON.stringify(deleteCode);
+        const deleteCodeObject = JSON.parse(deleteCodeString);
+        if (deleteCodeObject.affectedRows !== 1) {
+          const result_err = {
+            result: false,
+            cause: "code",
+            message: `email 인증에 실패했습니다.`,
+          };
+          return result_err;
+        }
+        const result_success = {
+          result: true,
+          cause: "success",
+          message: `email 인증에 성공했습니다.`,
+        };
+        return result_success;
+      } else {
+        const result_err = {
+          result: false,
+          cause: "code",
+          message: `email 인증에 실패했습니다.`,
+        };
+        return result_err;
+      }
     }
   }
 

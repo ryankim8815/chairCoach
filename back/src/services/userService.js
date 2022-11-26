@@ -386,7 +386,6 @@ var userService = /** @class */ (function () {
         });
     };
     //// 회원가입 전 이메일 인증
-    // [추가기능 고민 사항]: 1) 회원가입 여부 확인 고민,    2) 코드 expire period 지정 기능
     userService.sendCode = function (_a) {
         var email = _a.email, code = _a.code;
         return __awaiter(this, void 0, void 0, function () {
@@ -406,7 +405,7 @@ var userService = /** @class */ (function () {
                                 result: true,
                                 cause: "success",
                                 message: "code \uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                code: code,
+                                // code: code,
                             };
                             return [2 /*return*/, result_success];
                         }
@@ -415,11 +414,67 @@ var userService = /** @class */ (function () {
                                 result: true,
                                 cause: "success",
                                 message: "code \uC7AC\uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                code: code,
+                                // code: code,
                             };
                             return [2 /*return*/, result_success];
                         }
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //// 이메일 인증 코드 확인 절차
+    userService.verifyCode = function (_a) {
+        var email = _a.email, code = _a.code;
+        return __awaiter(this, void 0, void 0, function () {
+            var checkCode, checkCodeString, checkCodeObject, result_err, correctCode, deleteCode, deleteCodeString, deleteCodeObject, result_err, result_success, result_err;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Code_1.default.findByEmail({
+                            email: email,
+                        })];
+                    case 1:
+                        checkCode = _b.sent();
+                        checkCodeString = JSON.stringify(checkCode);
+                        checkCodeObject = JSON.parse(checkCodeString);
+                        if (!(checkCodeObject.length !== 1)) return [3 /*break*/, 2];
+                        result_err = {
+                            result: false,
+                            cause: "code",
+                            message: "email \uC778\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_err];
+                    case 2:
+                        correctCode = checkCodeObject[0];
+                        if (!(code == correctCode.code)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, Code_1.default.delete({
+                                email: email,
+                            })];
+                    case 3:
+                        deleteCode = _b.sent();
+                        deleteCodeString = JSON.stringify(deleteCode);
+                        deleteCodeObject = JSON.parse(deleteCodeString);
+                        if (deleteCodeObject.affectedRows !== 1) {
+                            result_err = {
+                                result: false,
+                                cause: "code",
+                                message: "email \uC778\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.",
+                            };
+                            return [2 /*return*/, result_err];
+                        }
+                        result_success = {
+                            result: true,
+                            cause: "success",
+                            message: "email \uC778\uC99D\uC5D0 \uC131\uACF5\uD588\uC2B5\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_success];
+                    case 4:
+                        result_err = {
+                            result: false,
+                            cause: "code",
+                            message: "email \uC778\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_err];
                 }
             });
         });
