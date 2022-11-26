@@ -60,6 +60,23 @@ var Code = /** @class */ (function () {
             });
         });
     };
+    Code.findByEmail = function (_a) {
+        var email = _a.email;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT code FROM codes WHERE `email` = ?",
+                            values: [email],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
     Code.delete = function (_a) {
         var email = _a.email;
         return __awaiter(this, void 0, void 0, function () {
