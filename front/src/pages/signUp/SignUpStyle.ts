@@ -17,11 +17,6 @@ export const FormCon = styled.div`
   legend {
     text-indent: -9999px;
   }
-
-  /* form fieldset > button{
-    margin-top: 68px;
-    margin-bottom: -4px;
-  } */
 `;
 
 export const InputWrap = styled.div`
