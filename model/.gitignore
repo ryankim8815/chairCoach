@@ -5,4 +5,5 @@
 *.csv
 *.json
 
+*.sav
 Logs/train
