@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+
+import * as RegExp from "./RegExp"
 
 // style
 import * as S from "./SignUpStyle";
@@ -10,34 +13,12 @@ interface SignUp {
   email: string;
   password: string;
   nickname: string;
-  [key: string]: string | number;
 }
 
-// 이메일 : regex(정규식) 확인 (예시: abc@example.com).
-const validateEmail = (email: string) => {
-  return email
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-};
-
-// 비밀번호 : 숫자+영문자+특수문자 조합으로 8자리 이상 입력
-const validatePwd = (password: string) => {
-  return password
-    .toLowerCase()
-    .match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/);
-};
-
-// 닉네임 : 한글+숫자 2~8, 영어+숫자 2~12이여야 합니다.
-const validateNickname = (nickname: string) => {
-  return nickname.match(/^([가-힣0-9]{2,8}|[A-Za-z0-9]{2,12})$/);
-};
-
 const SingUp = () => {
-  const [email, setEmail] = useState("");
-  const isEmailValid = validateEmail(email);
+  const navigate = useNavigate(); 
 
+  const [email, setEmail] = useState("");
   const [codeDisabled, setCodeDisabled] = useState(true);
   const [code, setCode] = useState(0);
   const [code2, setCode2] = useState(0);
@@ -46,32 +27,53 @@ const SingUp = () => {
   const [pwDisabled, setpwDisabled] = useState(true);
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const isPwdValid = validatePwd(password);
 
   const [nickname, setNickname] = useState("");
-  const isNicknameValid = validateNickname(nickname);
 
-  useEffect(() => {
-    Api.get("users")
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
+  
+  const isEmailValid = RegExp.validateEmail(email);
+  const isPwdValid = RegExp.validatePwd(password);
+  const isNicknameValid = RegExp.validateNickname(nickname);  
+
+
+  // useEffect(() => {
+  //   Api.get("users")
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  useEffect(()=> {
+    Api.get(`signup/nickname/${nickname}`).then(res => {
+      console.log(res);
+      const data:any = res;
+      
+      if(!data.result) alert('중복된 닉네임 입니다.')
+      data.result && isNicknameValid ? setSubmitDisabled(false) : setSubmitDisabled(true);
+
+    }).catch((err)=> {
+      console.log(err);
+    });
+  }, [nickname])
+  
+  // 인증번호 요청
   const handlerCodeClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setCodeDisabled(false);
-
     const res: any = await Api.post("signup/email", {
       email: email,
     });
     console.log(res.code);
+
+    res.result ? setCodeDisabled(false) : alert('중복된 이메일 입니다.');
     setCode(res.code);
   };
 
+  // 인증번호 확인
   const handlerCheckCodeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (code === code2) {
@@ -82,31 +84,23 @@ const SingUp = () => {
     console.log(code === code2 ? "Yes" : "No");
   };
 
+  // 가입하기
   const handlerSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // let newData = {...signUp}
-    // newData.email = email;
-    // newData.password = password;
-    // newData.nickname = nickname;
 
-    // setSignUp(newData);
-    console.log("..");
-    const res = await Api.post("signup", {
+    const res:any = await Api.post("signup", {
       email: email,
       password: password,
       nickname: nickname,
     });
 
     console.log(res);
+    console.log(res.result);
+    if(res.result) navigate('/login');
   };
-  // console.log(signUp)
 
-  // disabled 해제여부
-  // 닉네임
-  const nicknameDisabled =
-    password2.length > 0 && password === password2 ? false : true;
-  // 가입버튼
-  const onSubmitDisabled = isNicknameValid ? false : true;
+  // 닉네임 disabled 해제여부
+  const nicknameDisabled = password2.length > 0 && password === password2 ? false : true;
 
   return (
     <S.SignUpLayout>
@@ -122,7 +116,7 @@ const SingUp = () => {
               <F.CheckInputCon>
                 <F.InputText
                   length="small"
-                  type="text"
+                  type="email"
                   value={email}
                   placeholder="이메일을 입력해주세요."
                   onChange={(e) => setEmail(e.target.value)}
@@ -133,7 +127,6 @@ const SingUp = () => {
                 {email.length === 0 || isEmailValid ? null : (
                   <F.WarningText>이메일 형식이 아닙니다.</F.WarningText>
                 )}
-                {/* <F.WarningText>중복된 이메일 입니다.</F.WarningText> */}
               </F.CheckInputCon>
 
               <F.CheckInputCon>
@@ -160,12 +153,13 @@ const SingUp = () => {
                   type="password"
                   value={password}
                   disabled={pwDisabled}
-                  placeholder="영문, 숫자, 특수문자 포함 8자 이상입력해주세요."
+                  placeholder="비밀번호를 입력해주세요."
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 {password.length === 0 || isPwdValid ? null : (
-                  <F.WarningText>
-                    영어,숫자,특수문자를 포함한 8글자 이상이여야 합니다.
+                  <F.WarningText lineHeight="true">
+                    영어 대문자, 소문자, 숫자, 특수문자를 포함한<br />
+                    8글자 이상이여야 합니다.
                   </F.WarningText>
                 )}
               </div>
@@ -194,19 +188,17 @@ const SingUp = () => {
                 onChange={(e) => setNickname(e.target.value)}
               />
               {nickname.length === 0 || isNicknameValid ? null : (
-                <F.WarningText lineHeight="true">
+                <F.WarningText lineHeight="true" style={{paddingTop: '4px'}}>
                   영어+숫자로 2~12자 구성 <br />
                   한글, 한글+숫자로 2~8자 구성 (초성 및 모음은 허가하지 않음)
                 </F.WarningText>
               )}
-
-              {/* <F.WarningText>중복된 닉네임 입니다.</F.WarningText> */}
             </S.InputWrap>
 
             <B.InputBtn
               type="submit"
-              disabled={onSubmitDisabled}
-              check={String(!onSubmitDisabled)}
+              disabled={submitDisabled}
+              check={String(!submitDisabled)}
             >
               가입하기
             </B.InputBtn>
