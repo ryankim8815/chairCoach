@@ -46,13 +46,10 @@ var sendEmail = function (req, res, next) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("email checking: ", req.body.email);
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 4, , 5]);
+                    _a.trys.push([0, 3, , 4]);
                     email = req.body.email;
                     return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
-                case 2:
+                case 1:
                     checkEmail = _a.sent();
                     checkEmailString = JSON.stringify(checkEmail);
                     checkEmailObject = JSON.parse(checkEmailString);
@@ -79,11 +76,11 @@ var sendEmail = function (req, res, next) {
                             subject: "ChairCoach에서 메일 확인을 위해 보내드립니다. ✔",
                             html: "<b>Hello world?</b>\n            <h1>".concat(code, "</h1> \n            <h3>\uC704\uC758 \uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.</h3>\n      "),
                         })];
-                case 3:
+                case 2:
                     info = _a.sent();
                     next();
-                    return [3 /*break*/, 5];
-                case 4:
+                    return [3 /*break*/, 4];
+                case 3:
                     err_1 = _a.sent();
                     result_err = {
                         result: false,
@@ -92,7 +89,7 @@ var sendEmail = function (req, res, next) {
                     };
                     console.log(result_err);
                     return [2 /*return*/, res.status(499).json(result_err)];
-                case 5: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     });

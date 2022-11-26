@@ -66,6 +66,8 @@ var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"))
 var nodemailerMiddleware_1 = __importDefault(require("../middlewares/nodemailerMiddleware"));
 var validation = __importStar(require("../middlewares/validationMiddleware"));
 var userService_1 = __importDefault(require("../services/userService"));
+// import logger from "../../config/logger";
+var logger = require("../../config/logger");
 var userRouter = express.Router();
 // GET: 사용자 리스트 조회 기능
 var userList = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -77,6 +79,7 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
                 return [4 /*yield*/, userService_1.default.getAllUsers()];
             case 1:
                 allUsers = _a.sent();
+                logger.info(allUsers);
                 console.log(allUsers);
                 return [2 /*return*/, res.status(200).json(allUsers)];
             case 2:
@@ -152,6 +155,7 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
             case 1:
                 currentUser = _a.sent();
                 console.log(currentUser);
+                logger.error(currentUser); // test
                 return [2 /*return*/, res.status(200).json(currentUser)];
             case 2:
                 err_2 = _a.sent();
@@ -160,6 +164,7 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
                     cause: "api",
                     message: "userCurrent api에서 오류가 발생했습니다.",
                 };
+                logger.error(result_err); // test
                 console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];

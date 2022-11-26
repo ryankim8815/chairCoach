@@ -6,6 +6,7 @@ import * as F from "../../styles/InputStyle";
 import { LoginLayout, TopCon, BottomCon } from "./LoginStyle";
 import { useState } from "react";
 import Naver from "../../components/naverLogin/Naver";
+import NaverLogin from "../../components/naverLogin/Naver";
 
 
 interface LoginData {
@@ -107,7 +108,11 @@ const Login = () => {
               
             </li>
             <li>
-              <Naver/>
+              <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=Dt28WJ6epJdScamNFflN&redirect_uri=http%3A%2F%2Flocalhost:3000%2Flogin%2Foauth2%2Fcode%2Fnaver&state=chaircoach">
+              <button>네이버</button>
+              </a>
+              
+          
               <span>네이버</span>
             </li>
           </ul>

@@ -7,7 +7,7 @@ const sendEmail = async function (
   res: express.Response,
   next: express.NextFunction
 ) {
-  console.log("email checking: ", req.body.email);
+  // console.log("email checking: ", req.body.email);
   try {
     const email = req.body.email;
     // 이메일 중복 확인

@@ -31,6 +31,7 @@ const KakaoAuth = () => {
             navigate("/");
         };
         const getPermissonCode = () => {
+
             const params = new URL(window.location.href).searchParams;
             console.log(params)
             const _code:any = params.get("code");
