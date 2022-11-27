@@ -13,6 +13,7 @@
 *.log
 *.csv
 *.json
+*.sav
 
 __pycache__/
 *.py[cod]

@@ -17,7 +17,7 @@ from utils.general import check_img_size, check_requirements, check_imshow, non_
 from utils.plots import colors, plot_one_box, output_to_keypoint
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 from yolov7_keypoints import extract
-from models.test_xgb import XGBClassifierModel
+from models.xgb import XGBClassifierModel
 
 
 def detect(opt):
