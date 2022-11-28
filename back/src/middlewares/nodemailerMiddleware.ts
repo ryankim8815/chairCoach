@@ -27,7 +27,7 @@ const sendEmail = async function (
     const code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
     req.body.code = code;
 
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_ACCOUNT,
