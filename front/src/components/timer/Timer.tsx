@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import * as S from './TimerStyle'
-const Timer = ({time,setTime}:any) => {
+
+interface propsType{
+  time: number,
+}
+
+const Timer = ({time}:propsType) => {
   return (
     <S.OutTimer>
         <S.InnerTimer>

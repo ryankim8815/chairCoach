@@ -4,14 +4,7 @@ import kakao from "../../assets/img/kakaoIcon.png";
 import result1 from "../../assets/img/result1.png";
 import logo from "../../assets/img/logo.svg";
 export function notifyMe() {
-  // Let's check if the browser supports notifications
-  if (!("Notification" in window)) {
-    alert("This browser does not support desktop notification");
-  }
-
-  // Let's check whether notification permissions have already been granted
-  else if (Notification.permission === "granted") {
-    // If it's okay let's create a notification
+  const sendNotification=()=>{
     var notification = new Notification("CHAIR COACH", {
       icon: result1,
       body: "Time to Stretching!",
@@ -19,18 +12,23 @@ export function notifyMe() {
       image: logo,
     });
   }
+  // push alaram 가능한지 체크
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
 
-  // Otherwise, we need to ask the user for permission
+  // 승인되었다면
+  else if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+    sendNotification()
+  }
+
+  // 승인안되어있는경우
   else if (Notification.permission !== "denied") {
     Notification.requestPermission(function (permission) {
-      // If the user accepts, let's create a notification
+      // 승인하면,보냄.
       if (permission === "granted") {
-        var notification = new Notification("CHAIR COACH", {
-          icon: result1,
-          body: "Time to Stretching!",
-          requireInteraction: true,
-          image: logo,
-        });
+       sendNotification()
       }
     });
   }
