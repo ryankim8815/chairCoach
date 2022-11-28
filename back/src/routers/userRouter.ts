@@ -596,8 +596,21 @@ userRouter.delete(
   validation.validateUserDelete,
   userDelete
 ); // 유저 삭제
-userRouter.post("/signup/email", nodemailerMiddleware, signupEmail); // email로 코드 발송
-userRouter.get("/signup/email/:email/code/:code", signupVerifyEmail); // email 인증
-userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
+userRouter.post(
+  "/signup/email",
+  validation.validateSignupEmail,
+  nodemailerMiddleware,
+  signupEmail
+); // email로 코드 발송
+userRouter.get(
+  "/signup/email/:email/code/:code",
+  validation.validateVerifyEmail,
+  signupVerifyEmail
+); // email 인증
+userRouter.get(
+  "/signup/nickname/:nickname",
+  validation.validateSignupNickname,
+  signupNickname
+); // nickname 중복확인
 
 export = userRouter;

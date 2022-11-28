@@ -679,7 +679,7 @@ userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자�
 userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
 userRouter.put("/user", authMiddleware_1.default, validation.validateUserUpdate, userUpdate); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDelete, userDelete); // 유저 삭제
-userRouter.post("/signup/email", nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
-userRouter.get("/signup/email/:email/code/:code", signupVerifyEmail); // email 인증
-userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
+userRouter.post("/signup/email", validation.validateSignupEmail, nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
+userRouter.get("/signup/email/:email/code/:code", validation.validateVerifyEmail, signupVerifyEmail); // email 인증
+userRouter.get("/signup/nickname/:nickname", validation.validateSignupNickname, signupNickname); // nickname 중복확인
 module.exports = userRouter;
