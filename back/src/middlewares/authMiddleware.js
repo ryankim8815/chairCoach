@@ -51,9 +51,7 @@ var authMiddleware = function (req, res, next) {
                     cause: "token",
                     message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
                 };
-                console.log(result_errNoToken);
                 return [2 /*return*/, res.status(400).json(result_errNoToken)];
-                return [2 /*return*/];
             }
             try {
                 secretKey = process.env.JWT_SECRET_KEY || "secret-key";
@@ -68,7 +66,6 @@ var authMiddleware = function (req, res, next) {
                     cause: "token",
                     message: "정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.",
                 };
-                console.log(result_errInvalidToken);
                 return [2 /*return*/, res.status(400).json(result_errInvalidToken)];
             }
             return [2 /*return*/];

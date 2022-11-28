@@ -87,7 +87,6 @@ var sendEmail = function (req, res, next) {
                         cause: "mail",
                         message: "mail 발송에 실패했습니다.",
                     };
-                    console.log(result_err);
                     return [2 /*return*/, res.status(499).json(result_err)];
                 case 4: return [2 /*return*/];
             }
