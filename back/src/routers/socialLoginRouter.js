@@ -64,6 +64,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express = __importStar(require("express"));
 var axios_1 = __importDefault(require("axios"));
 var socialLoginService_1 = __importDefault(require("../services/socialLoginService"));
+var socialLoginValidationMiddleware_1 = require("../middlewares/socialLoginValidationMiddleware");
 var qs_1 = __importDefault(require("qs"));
 var urlencode_1 = __importDefault(require("urlencode"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -270,9 +271,6 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *               code:
  *                 type: string
  *                 example: wsh2rwe87iu2gwef9u3rwdft23wes87y13qref97yi
- *               state:
- *                 type: string
- *                 example: state
  *     responses:
  *       200:
  *         description: successful operation
@@ -428,7 +426,7 @@ var googleOauth = function (req, res, next) { return __awaiter(void 0, void 0, v
  *                   type: timestamp
  *                   example: 2022-11-01T01:01:01.000Z
  */
-socialLoginRouter.post("/kakao", kakaoOauth);
-socialLoginRouter.post("/naver", naverOauth);
-socialLoginRouter.post("/google", googleOauth);
+socialLoginRouter.post("/kakao", socialLoginValidationMiddleware_1.validateCode, kakaoOauth);
+socialLoginRouter.post("/naver", socialLoginValidationMiddleware_1.validateCode, naverOauth);
+socialLoginRouter.post("/google", socialLoginValidationMiddleware_1.validateCode, googleOauth);
 module.exports = socialLoginRouter;
