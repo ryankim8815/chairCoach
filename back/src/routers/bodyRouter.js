@@ -76,7 +76,6 @@ var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, bodyService_1.default.getAllBodies()];
             case 1:
                 allBodies = _a.sent();
-                console.log(allBodies);
                 return [2 /*return*/, res.status(200).json(allBodies)];
             case 2:
                 err_1 = _a.sent();
@@ -85,7 +84,6 @@ var bodyRecordlist = function (req, res, next) { return __awaiter(void 0, void 0
                     cause: "api",
                     message: "bodyRecordlist api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -150,7 +148,6 @@ var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, bodyService_1.default.getBodies({ user_id: user_id })];
             case 1:
                 Bodies = _a.sent();
-                console.log(Bodies);
                 return [2 /*return*/, res.status(200).json(Bodies)];
             case 2:
                 err_2 = _a.sent();
@@ -159,7 +156,6 @@ var bodyRecords = function (req, res, next) { return __awaiter(void 0, void 0, v
                     cause: "api",
                     message: "bodyRecords api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -230,7 +226,6 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     })];
             case 1:
                 body = _a.sent();
-                console.log(body);
                 return [2 /*return*/, res.status(200).json(body)];
             case 2:
                 err_3 = _a.sent();
@@ -239,7 +234,6 @@ var bodyCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     cause: "api",
                     message: "bodyCreate api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -300,7 +294,6 @@ req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
                     })];
             case 1:
                 body = _a.sent();
-                console.log(body);
                 return [2 /*return*/, res.status(200).json(body)];
             case 2:
                 err_4 = _a.sent();
@@ -309,7 +302,6 @@ req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
                     cause: "api",
                     message: "bodyUpdate api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }

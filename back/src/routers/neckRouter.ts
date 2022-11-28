@@ -15,7 +15,6 @@ const neckResultList = async (
 ) => {
   try {
     const allNecks = await neckService.getAllNecks();
-    console.log(allNecks);
     return res.status(200).json(allNecks);
   } catch (err) {
     const result_err = {
@@ -23,7 +22,6 @@ const neckResultList = async (
       cause: "api",
       message: "neckResultList api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -88,7 +86,6 @@ const neckResults = async (
   try {
     const user_id = req.body.user_id;
     const Necks = await neckService.getNecks({ user_id });
-    console.log(Necks);
     return res.status(200).json(Necks);
   } catch (err) {
     const result_err = {
@@ -96,7 +93,6 @@ const neckResults = async (
       cause: "api",
       message: "neckResults api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -172,7 +168,6 @@ const neckCreate = async (
       score,
       filename,
     });
-    console.log(allUsers);
     return res.status(200).json(allUsers);
   } catch (err) {
     const result_err = {
@@ -180,7 +175,6 @@ const neckCreate = async (
       cause: "api",
       message: "neckCreate api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
