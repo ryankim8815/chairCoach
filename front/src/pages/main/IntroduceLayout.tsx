@@ -4,12 +4,11 @@ import * as S from "./MainStyle";
 import illustration from "../../assets/image/main_illustration.png";
 
 const Image = styled.div`
-  width: 435px;
+  width: 100%;
   height: 320px;
   margin: 100px auto;
-  background-image: url(${illustration});
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: url(${illustration}) no-repeat center;
+  background-size: contain;
 `;
 
 const TextBox = styled.span`

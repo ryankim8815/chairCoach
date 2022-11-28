@@ -7,20 +7,6 @@ import * as B from "../../styles/BtnStyle";
 import bannerImg from "../../assets/image/main_banner.jpg";
 
 const MainBanner = styled.div`
-  /* height: 640px;
-  background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(241, 237, 252, 0) 30%,
-      rgba(194, 172, 255, 1) 100%
-    ),
-    url(${bannerImg});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
-  display: flex;
-  flex-direction: column; */
-
   position: relative;
   height: 640px;
   background: linear-gradient(
@@ -51,6 +37,7 @@ const BannerContent = styled.div`
 `;
 const BannerText = styled(S.MediumText)`
   margin-bottom: 20px;
+  line-height: 1.25;
 `;
 
 const BannerButton = styled(B.MiddleBtn)`
@@ -62,13 +49,16 @@ const Banner = () => {
   const navigate = useNavigate();
   return (
     <MainBanner>
-      <BannerContent>
-        <BannerText>오늘도 근무 중인 당신에게,</BannerText>
-        <BannerText>CHAIR COACH</BannerText>
-        <BannerButton hover="true" onClick={(e) => navigate("/chaircoach")}>
-          체어코치 하러가기
-        </BannerButton>
-      </BannerContent>
+      <div>
+        <BannerContent>
+          <BannerText>
+            오늘도 근무 중인 당신에게, <br /> CHAIR COACH
+          </BannerText>
+          <BannerButton hover="true" onClick={(e) => navigate("/chaircoach")}>
+            체어코치 하러가기
+          </BannerButton>
+        </BannerContent>
+      </div>
     </MainBanner>
   );
 };
