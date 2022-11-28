@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import * as RegExp from "./RegExp"
 
-// style
 import * as S from "./SignUpStyle";
 import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
@@ -34,18 +33,18 @@ const SingUp = () => {
   const isNicknameValid = RegExp.validateNickname(nickname);
 
   // 인증번호 확인 타이머
-  const [count, setCount] = useState(30);
+  const [time, setTime] = useState(0);
   const intervalId:any = useRef(null);
 
   const startTimer = () => {
-    setCount(30);
+    setTime(30);
 
     intervalId.current = setInterval(() => {
-      setCount((count) => count - 1);
+      setTime((time) => time - 1);
     },1000);
     setTimeout(()=> {
       clearInterval(intervalId.current);
-      alert('인증번호 유효시간이 지났습니다. \n 인증번호를 다시 발급해주세요.');
+      alert('인증번호 유효시간이 지났습니다. \n인증번호를 다시 발급해주세요.');
     }, 30000);
   };
 
@@ -59,10 +58,11 @@ const SingUp = () => {
 
     stopTimer();
 
+    if(email.length===0) alert('이메일을 입력해주세요.')
+
     const res: any = await Api.post("signup/email", {
       email: email,
     });
-    console.log(res);
 
     if(res.result){
       setCodeDisabled(false)
@@ -134,6 +134,7 @@ const SingUp = () => {
         <form onSubmit={handlerSignUpSubmit}>
           <fieldset>
             <legend>회원가입</legend>
+            <span></span>
 
             <S.InputWrap>
               <p>이메일</p>
@@ -161,7 +162,7 @@ const SingUp = () => {
                   placeholder="인증번호를 입력해주세요."
                   onChange={(e) => setCode(e.target.value)}
                 />
-                <span className="time">{count}</span>
+                <span className="time">{Math.floor(time/60)}:{time%60 < 10 ? `0${time%60}` : time%60}</span>
                 <B.InputCheckBtn onClick={handlerCheckCodeClick}>
                   인증번호 확인
                 </B.InputCheckBtn>
