@@ -56,6 +56,9 @@ const SingUp = () => {
   // 인증번호 요청
   const handlerCodeClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    stopTimer();
+
     const res: any = await Api.post("signup/email", {
       email: email,
     });
@@ -64,7 +67,7 @@ const SingUp = () => {
     if(res.result){
       setCodeDisabled(false)
       setCode(res.result);
-      startTimer(); // 카운트
+      startTimer();
     }else{
       alert('중복된 이메일 입니다.');
       setCodeDisabled(true);
@@ -82,7 +85,7 @@ const SingUp = () => {
 
       if(data.result){
         setpwDisabled(false);
-        stopTimer(); // 카운트
+        stopTimer();
       }else alert('인증번호가 틀렸습니다.');
     }).catch((err)=> {
       console.log(err);
