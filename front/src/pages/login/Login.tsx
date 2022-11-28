@@ -51,6 +51,7 @@ const Login = () => {
     else if (!password.length) setWaring(2);
     else if (!(isEmailValid && isPwdValid)) setWaring(3);
   };
+  const naverUrl=process.env.REACT_APP_NAVER_URL
 
  
  
@@ -108,7 +109,7 @@ const Login = () => {
               
             </li>
             <li>
-              <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=Dt28WJ6epJdScamNFflN&redirect_uri=http%3A%2F%2Flocalhost:3000%2Flogin%2Foauth2%2Fcode%2Fnaver&state=chaircoach">
+              <a href={naverUrl}>
               <button>네이버</button>
               </a>
               

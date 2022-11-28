@@ -4,17 +4,17 @@ import { useLocation } from 'react-router-dom';
 import * as Api from '../../api/api'
 const NaverLogin = () => {
     const getNaverToken = async () => {
-      console.log(1)
-        const token = window.location.href.split('=')[1].split('&')[0];
-        const state= window.location.href.split('=')[2]
-        console.log('네이버코드',token);
+        const params = new URL(window.location.href).searchParams;
+        const code = params.get('code')
+        const state= params.get('state')
+        console.log('네이버코드',code);
         console.log('보낼스테이트',state);
         console.log('req',{
-          code:token,
+          code:code,
           state:state
         })
        const res=await Api.post('naver',{
-        code:token,
+        code:code,
         state:state
        })
        console.log('res',res)

@@ -17,9 +17,6 @@ export const SubTitle = styled.span`
   font-size: ${({ theme }) => theme.fontSize.subTitle};
   font-weight: 500;
 `;
-export const Text = styled.span`
-  margin-top: 20px;
-`;
 export const MainCont= styled.div`
 width:1180px;
 height:560px;

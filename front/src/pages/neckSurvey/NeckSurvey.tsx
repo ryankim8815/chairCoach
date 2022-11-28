@@ -7,10 +7,10 @@ const NeckSurvey = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [point, setPoint] = useState(0);
-  const handlePage = () => {
+  const increasePage = () => {
     setPage((prev) => prev + 1);
   };
-  const handlePoint = () => {
+  const increasePoint = () => {
     setPoint((prev) => prev + 1);
   };
   useEffect(() => {
@@ -34,21 +34,21 @@ const NeckSurvey = () => {
           <S.TextBox>
             <S.SubTitle style={{ fontWeight: 700 }}>Q{page}</S.SubTitle>
             <S.SubTitle style={{ marginTop: 16 }}>
-              {page === 11 ? null : Data[page - 1].question}
+              {page === 11 ? null : Data[page - 1].questions}
             </S.SubTitle>
           </S.TextBox>
           {page === 11 ? null : <S.Img src={Data[page - 1].img} />}
           <S.Btn
             onClick={() => {
-              handlePoint();
-              handlePage();
+              increasePoint();
+              increasePage();
             }}
           >
             네
           </S.Btn>
           <S.Btn
             onClick={() => {
-              handlePage();
+              increasePage();
             }}
             style={{ marginTop: 24 }}
           >
