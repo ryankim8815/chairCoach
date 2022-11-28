@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useRef  } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import * as RegExp from "./RegExp"
 
-// style
 import * as S from "./SignUpStyle";
 import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
@@ -13,42 +12,90 @@ interface SignUp {
   email: string;
   password: string;
   nickname: string;
+  code: string;
 }
 
 const SingUp = () => {
   const navigate = useNavigate(); 
 
   const [email, setEmail] = useState("");
-  const [codeDisabled, setCodeDisabled] = useState(true);
-  const [code, setCode] = useState(0);
-  const [code2, setCode2] = useState(0);
-  const [checkCode, setCheckCode] = useState(true);
-
-  const [pwDisabled, setpwDisabled] = useState(true);
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-
   const [nickname, setNickname] = useState("");
-
+  
+  const [codeDisabled, setCodeDisabled] = useState(true);
+  const [pwDisabled, setpwDisabled] = useState(true);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  
   const isEmailValid = RegExp.validateEmail(email);
   const isPwdValid = RegExp.validatePwd(password);
-  const isNicknameValid = RegExp.validateNickname(nickname);  
+  const isNicknameValid = RegExp.validateNickname(nickname);
 
+  // 인증번호 확인 타이머
+  const [time, setTime] = useState(0);
+  const intervalId:any = useRef(null);
 
-  // useEffect(() => {
-  //   Api.get("users")
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  const startTimer = () => {
+    setTime(30);
 
-  useEffect(()=> {
+    intervalId.current = setInterval(() => {
+      setTime((time) => time - 1);
+    },1000);
+    setTimeout(()=> {
+      clearInterval(intervalId.current);
+      alert('인증번호 유효시간이 지났습니다. \n인증번호를 다시 발급해주세요.');
+    }, 30000);
+  };
+
+  const stopTimer = () => {
+    clearInterval(intervalId.current);
+  };
+  
+  // 인증번호 요청
+  const handlerCodeClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    stopTimer();
+
+    if(email.length===0) alert('이메일을 입력해주세요.')
+
+    const res: any = await Api.post("signup/email", {
+      email: email,
+    });
+
+    if(res.result){
+      setCodeDisabled(false)
+      setCode(res.result);
+      startTimer();
+    }else{
+      alert('중복된 이메일 입니다.');
+      setCodeDisabled(true);
+    }
+  };
+
+  // 인증번호 확인
+  const handlerCheckCodeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    Api.get(`signup/email/${email}/code/${code}`).then(res => {
+      console.log(res);
+      const data:any = res;
+      data.result ? setpwDisabled(false) : alert('인증번호가 틀렸습니다.');
+
+      if(data.result){
+        setpwDisabled(false);
+        stopTimer();
+      }else alert('인증번호가 틀렸습니다.');
+    }).catch((err)=> {
+      console.log(err);
+    });
+  };
+
+  // 닉네임 중복 확인
+  const handlerCheckNicknameClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
     Api.get(`signup/nickname/${nickname}`).then(res => {
       console.log(res);
       const data:any = res;
@@ -59,30 +106,7 @@ const SingUp = () => {
     }).catch((err)=> {
       console.log(err);
     });
-  }, [nickname])
-  
-  // 인증번호 요청
-  const handlerCodeClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const res: any = await Api.post("signup/email", {
-      email: email,
-    });
-    console.log(res.code);
-
-    res.result ? setCodeDisabled(false) : alert('중복된 이메일 입니다.');
-    setCode(res.code);
-  };
-
-  // 인증번호 확인
-  const handlerCheckCodeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (code === code2) {
-      setCheckCode(true);
-      setpwDisabled(false);
-    } else setCheckCode(false);
-
-    console.log(code === code2 ? "Yes" : "No");
-  };
+  }
 
   // 가입하기
   const handlerSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -110,6 +134,7 @@ const SingUp = () => {
         <form onSubmit={handlerSignUpSubmit}>
           <fieldset>
             <legend>회원가입</legend>
+            <span></span>
 
             <S.InputWrap>
               <p>이메일</p>
@@ -135,14 +160,12 @@ const SingUp = () => {
                   type="text"
                   disabled={codeDisabled}
                   placeholder="인증번호를 입력해주세요."
-                  onChange={(e) => setCode2(Number(e.target.value))}
+                  onChange={(e) => setCode(e.target.value)}
                 />
+                <span className="time">{Math.floor(time/60)}:{time%60 < 10 ? `0${time%60}` : time%60}</span>
                 <B.InputCheckBtn onClick={handlerCheckCodeClick}>
                   인증번호 확인
                 </B.InputCheckBtn>
-                {checkCode ? null : (
-                  <F.WarningText>인증번호가 틀렸습니다.</F.WarningText>
-                )}
               </F.CheckInputCon>
             </S.InputWrap>
 
@@ -180,13 +203,19 @@ const SingUp = () => {
 
             <S.InputWrap>
               <p>닉네임</p>
-              <F.InputText
-                type="text"
-                value={nickname}
-                disabled={nicknameDisabled}
-                placeholder="닉네임을 입력해주세요."
-                onChange={(e) => setNickname(e.target.value)}
-              />
+              <F.CheckInputCon>
+                <F.InputText
+                  length="small"
+                  type="text"
+                  value={nickname}
+                  disabled={nicknameDisabled}
+                  placeholder="닉네임을 입력해주세요."
+                  onChange={(e) => setNickname(e.target.value)}
+                />
+                <B.InputCheckBtn onClick={handlerCheckNicknameClick}>
+                  중복 확인
+                </B.InputCheckBtn>
+              </F.CheckInputCon>
               {nickname.length === 0 || isNicknameValid ? null : (
                 <F.WarningText lineHeight="true" style={{paddingTop: '4px'}}>
                   영어+숫자로 2~12자 구성 <br />

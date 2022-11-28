@@ -31,6 +31,17 @@ export const CheckInputCon = styled.div`
   grid-template-columns: 1fr 120px;
   gap: 0 4px;
   margin-bottom: 4px;
+
+  position: relative;
+
+  .time{
+    position: absolute;
+    top: 49%;
+    right: 134px;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: ${({ theme }) => theme.colors.greyText};
+  }
 `
 
 export const WarningText = styled.span<InputStyle>`

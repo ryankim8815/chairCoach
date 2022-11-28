@@ -13,7 +13,7 @@ const colors = {
   greyBtnBg: "#F6F6F7", // 회색버튼배경
 
   // the rest
-  warning: "#E57683", // input경고
+  warning: "#EE7281", // input경고
 };
 
 const fontSize = {
