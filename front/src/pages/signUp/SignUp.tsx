@@ -60,9 +60,11 @@ const SingUp = () => {
 
     if(email.length===0) alert('이메일을 입력해주세요.')
 
-    const res: any = await Api.post("signup/email", {
+    const res:any = await Api.post("signup/email", {
       email: email,
     });
+
+    console.log(typeof res.result);
 
     if(res.result){
       setCodeDisabled(false)
