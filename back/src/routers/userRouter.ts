@@ -17,7 +17,6 @@ const userList = async (
   try {
     const allUsers = await userService.getAllUsers();
     logger.info(allUsers);
-    console.log(allUsers);
     return res.status(200).json(allUsers);
   } catch (err) {
     const result_err = {
@@ -25,7 +24,6 @@ const userList = async (
       cause: "api",
       message: "userList api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -87,7 +85,6 @@ const userCurrent = async (
   try {
     const user_id = req.body.user_id;
     const currentUser = await userService.getCurrentUser({ user_id });
-    console.log(currentUser);
     logger.error(currentUser); // test
     return res.status(200).json(currentUser);
   } catch (err) {
@@ -97,7 +94,6 @@ const userCurrent = async (
       message: "userCurrent api에서 오류가 발생했습니다.",
     };
     logger.error(result_err); // test
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -153,7 +149,6 @@ const userRegister = async (
     const password = req.body.password;
     const nickname = req.body.nickname;
     const newUser = await userService.addUser({ email, password, nickname });
-    console.log(newUser);
     return res.status(200).json(newUser);
   } catch (err) {
     const result_err = {
@@ -161,7 +156,6 @@ const userRegister = async (
       cause: "api",
       message: "userRegister api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -216,7 +210,6 @@ const userSignin = async (
     const email = req.body.email;
     const password = req.body.password;
     const signinUser = await userService.getUser({ email, password });
-    console.log(signinUser);
     return res.status(200).json(signinUser);
   } catch (err) {
     const result_err = {
@@ -224,7 +217,6 @@ const userSignin = async (
       cause: "api",
       message: "userLogin api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -298,7 +290,6 @@ const userUpdate = async (
       password,
       nickname,
     });
-    console.log(updateUser);
     return res.status(200).json(updateUser);
   } catch (err) {
     const result_err = {
@@ -306,7 +297,6 @@ const userUpdate = async (
       cause: "api",
       message: "userUpdate api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -366,7 +356,6 @@ const userDelete = async (
       user_id,
       password,
     });
-    console.log(deleteUser);
     return res.status(200).json(deleteUser);
   } catch (err) {
     const result_err = {
@@ -374,7 +363,6 @@ const userDelete = async (
       cause: "api",
       message: "userDelete api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -429,7 +417,6 @@ const signupEmail = async (
       email,
       code,
     });
-    console.log(sendCodeToEmail);
     return res.status(200).json(sendCodeToEmail);
   } catch (err) {
     const result_err = {
@@ -437,7 +424,6 @@ const signupEmail = async (
       cause: "api",
       message: "signupEmail api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -488,7 +474,6 @@ const signupVerifyEmail = async (
       email,
       code,
     });
-    console.log(verifyEmailCode);
     return res.status(200).json(verifyEmailCode);
   } catch (err) {
     const result_err = {
@@ -496,7 +481,6 @@ const signupVerifyEmail = async (
       cause: "api",
       message: "signupVerifyEmail api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -548,7 +532,6 @@ const signupNickname = async (
     const checkNickname = await userService.nicknameDuplicateCheck({
       nickname,
     });
-    console.log(checkNickname);
     return res.status(200).json(checkNickname);
   } catch (err) {
     const result_err = {
@@ -556,7 +539,6 @@ const signupNickname = async (
       cause: "api",
       message: "signupNickname api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };

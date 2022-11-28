@@ -13,7 +13,6 @@ axios.interceptors.response.use(
     return res.data;
   },
   (err) => {
-    console.log(err);
     throw new Error("(!) axios error");
   }
 );
@@ -67,7 +66,6 @@ const kakaoOauth = async (
     // 로그인 & 회원가입
     const email = resultAccountObject.email;
     const logedinUser = await socialLoginService.kakao({ email, access_token });
-    console.log(logedinUser);
     return res.status(200).json(logedinUser);
   } catch (err) {
     const result_err = {
@@ -75,7 +73,6 @@ const kakaoOauth = async (
       cause: "api",
       message: "kakaoOauth api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -174,7 +171,6 @@ const naverOauth = async (
     const naverUserResult = resultAccountObject.response;
     const email = naverUserResult.email;
     const logedinUser = await socialLoginService.naver({ email, access_token });
-    console.log(logedinUser);
     return res.status(200).json(logedinUser);
   } catch (err) {
     const result_err = {
@@ -182,7 +178,6 @@ const naverOauth = async (
       cause: "api",
       message: "naverOauth api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };
@@ -293,7 +288,6 @@ const googleOauth = async (
       email,
       refresh_token,
     });
-    console.log(logedinUser);
     return res.status(200).json(logedinUser);
   } catch (err) {
     const result_err = {
@@ -301,7 +295,6 @@ const googleOauth = async (
       cause: "api",
       message: "googleOauth api에서 오류가 발생했습니다.",
     };
-    console.log(result_err);
     return res.status(200).json(result_err);
   }
 };

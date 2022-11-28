@@ -7,7 +7,6 @@ const sendEmail = async function (
   res: express.Response,
   next: express.NextFunction
 ) {
-  // console.log("email checking: ", req.body.email);
   try {
     const email = req.body.email;
     // 이메일 중복 확인
@@ -50,7 +49,6 @@ const sendEmail = async function (
       cause: "mail",
       message: "mail 발송에 실패했습니다.",
     };
-    console.log(result_err);
     return res.status(499).json(result_err);
   }
 };

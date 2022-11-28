@@ -225,9 +225,9 @@ class userService {
       checkNicknameObject.length == 1 &&
       checkNicknameObject[0].user_id == user_id
     ) {
-      console.log(
-        "안내: 입력된 nickname은 기존 nickname과 동일하며, 회원정보 수정이 계속 진행됩니다."
-      );
+      // console.log(
+      //   "안내: 입력된 nickname은 기존 nickname과 동일하며, 회원정보 수정이 계속 진행됩니다."
+      // );
     } else if (checkNicknameObject.length !== 0) {
       const result_errNickname = {
         result: false,
@@ -329,8 +329,6 @@ class userService {
   }
   //// 이메일 인증 코드 확인 절차
   static async verifyCode({ email, code }) {
-    // console.log("시작점");
-
     const checkCode = await Code.findByEmail({
       email,
     });

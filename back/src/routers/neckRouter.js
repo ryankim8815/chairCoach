@@ -77,7 +77,6 @@ var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, neckService_1.default.getAllNecks()];
             case 1:
                 allNecks = _a.sent();
-                console.log(allNecks);
                 return [2 /*return*/, res.status(200).json(allNecks)];
             case 2:
                 err_1 = _a.sent();
@@ -86,7 +85,6 @@ var neckResultList = function (req, res, next) { return __awaiter(void 0, void 0
                     cause: "api",
                     message: "neckResultList api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -155,7 +153,6 @@ var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
             case 1:
                 Necks = _a.sent();
-                console.log(Necks);
                 return [2 /*return*/, res.status(200).json(Necks)];
             case 2:
                 err_2 = _a.sent();
@@ -164,7 +161,6 @@ var neckResults = function (req, res, next) { return __awaiter(void 0, void 0, v
                     cause: "api",
                     message: "neckResults api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -243,7 +239,6 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     })];
             case 1:
                 allUsers = _a.sent();
-                console.log(allUsers);
                 return [2 /*return*/, res.status(200).json(allUsers)];
             case 2:
                 err_3 = _a.sent();
@@ -252,7 +247,6 @@ var neckCreate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     cause: "api",
                     message: "neckCreate api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
