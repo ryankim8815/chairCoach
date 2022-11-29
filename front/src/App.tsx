@@ -21,35 +21,35 @@ import SignUp from "./pages/signUp/SignUp";
 import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
 import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 import NaverLogin from "./components/naverLogin/Naver";
+import GoogleLogin from "./components/googleLogin/GoogleLogin";
 
 function App() {
   return (
     <>
-      <RecoilRoot>
-        <BrowserRouter>
-          <GlobalStyles />
-          <ThemeProvider theme={theme}>
-            <Header />
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/necksurvey" element={<NeckSurvey />} />
-              <Route path="/chaircoach" element={<ChairCoach />} />
-              <Route path="/surveyresult" element={<SurveyResult />} />
-              <Route path="/aboutneck" element={<AboutNeck />} />
-              <Route path="/neckguide" element={<NeckGuide />} />
-              <Route path="/neckinspection" element={<NeckInspection />} />
-              <Route path="/inspectionresult" element={<InspectionResult />} />
-              <Route path="/userInfoChange" element={<UserInfoChange />} />
-              <Route path="login/oauth2/code/kakao" element={<KakaoAuth />} />
-              <Route path='login/oauth2/code/naver' element={<NaverLogin/>}/>
-            </Routes>
-            <Footer />
-          </ThemeProvider>
-        </BrowserRouter>
-      </RecoilRoot>
+      <BrowserRouter>
+        <GlobalStyles />
+        <ThemeProvider theme={theme}>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/necksurvey" element={<NeckSurvey />} />
+            <Route path="/chaircoach" element={<ChairCoach />} />
+            <Route path="/surveyresult" element={<SurveyResult />} />
+            <Route path="/aboutneck" element={<AboutNeck />} />
+            <Route path="/neckguide" element={<NeckGuide />} />
+            <Route path="/neckinspection" element={<NeckInspection />} />
+            <Route path="/inspectionresult" element={<InspectionResult />} />
+            <Route path="/userInfoChange" element={<UserInfoChange />} />
+            <Route path="login/oauth2/code/kakao" element={<KakaoAuth />} />
+            <Route path='login/oauth2/code/naver' element={<NaverLogin/>}/>
+          <Route path='login/oauth2/code/google' element={<GoogleLogin/>}/>
+          </Routes>
+          <Footer />
+        </ThemeProvider>
+      </BrowserRouter>
     </>
   );
 }
