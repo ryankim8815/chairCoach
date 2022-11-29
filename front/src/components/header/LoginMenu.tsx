@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import userState from './../../atoms/user';
 
@@ -9,7 +10,6 @@ import { LoginMenuCon } from './HeaderStyle';
 // react-icons
 import { AiFillCaretDown } from "react-icons/ai";
 import { AiFillCaretUp } from "react-icons/ai";
-import { useRecoilState } from 'recoil';
 
 const LoginMenu = () => {
   const [user, setUser] = useRecoilState(userState);
