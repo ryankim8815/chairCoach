@@ -6,16 +6,17 @@ import result3 from "../../assets/img/result3.png";
 import * as CS from "../../styles/BtnStyle";
 import styled from "styled-components";
 
-const SurveyResult = () => {
-  const location = useLocation();
-  const point: number = location.state.point;
-  const navigate = useNavigate();
-  const RecommendButton = styled(CS.CheckBtn)`
+const RecommendButton = styled(CS.CheckBtn)`
     &:hover {
       background: ${({ theme }) => theme.colors.main};
       color: #ffffff;
     }
   `;
+
+const SurveyResult = () => {
+  const location = useLocation();
+  const point: number = location.state.point;
+  const navigate=useNavigate();
   return (
     <S.ResultContainer>
       <div className="inner">

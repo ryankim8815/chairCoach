@@ -81,7 +81,6 @@ var uploadMiddleware = function (req, res, next) { return __awaiter(void 0, void
                     cause: "file",
                     message: "파일 업로드 중 오류가 발생했습니다. 파일 제한 조건을 확인해주세요.",
                 };
-                console.log(result_err);
                 return res.status(200).json(result_err);
             }
             // Everything went fine.

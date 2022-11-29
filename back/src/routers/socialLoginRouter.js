@@ -72,7 +72,6 @@ var socialLoginRouter = express.Router();
 axios_1.default.interceptors.response.use(function (res) {
     return res.data;
 }, function (err) {
-    console.log(err);
     throw new Error("(!) axios error");
 });
 // formdata 포멧으로 만들어 줌
@@ -88,7 +87,7 @@ var makeFormData = function (params) {
 ////////////////////////////////////////
 // POST: kakao api 회원가입 & 로그인
 var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var code, REST_API_KEY, REDIRECT_URI, kakaoToken_1, kakaoUser_1, access_token, email, logedinUser, err_1, result_err;
+    var code, REST_API_KEY, REDIRECT_URI, resultToken, resultTokenString, resultTokenObject, access_token, resultAccount, resultAccountString, resultAccountObject, email, logedinUser, err_1, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -98,7 +97,6 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 5, , 6]);
-                kakaoToken_1 = "";
                 return [4 /*yield*/, (0, axios_1.default)({
                         method: "POST",
                         headers: {
@@ -111,37 +109,27 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                             redirect_uri: REDIRECT_URI,
                             code: code,
                         }),
-                    })
-                        .then(function (res) {
-                        kakaoToken_1 = res;
-                    })
-                        .catch(function (err) {
-                        console.log(err);
                     })];
             case 2:
-                _a.sent();
-                kakaoUser_1 = "";
-                access_token = kakaoToken_1.access_token;
+                resultToken = _a.sent();
+                resultTokenString = JSON.stringify(resultToken);
+                resultTokenObject = JSON.parse(resultTokenString);
+                access_token = resultTokenObject.access_token;
                 return [4 /*yield*/, (0, axios_1.default)({
                         method: "GET",
                         headers: {
                             Authorization: "bearer ".concat(access_token),
                         },
                         url: "https://kapi.kakao.com/v1/oidc/userinfo",
-                    })
-                        .then(function (res) {
-                        kakaoUser_1 = res;
-                    })
-                        .catch(function (err) {
-                        console.log(err);
                     })];
             case 3:
-                _a.sent();
-                email = kakaoUser_1.email;
+                resultAccount = _a.sent();
+                resultAccountString = JSON.stringify(resultAccount);
+                resultAccountObject = JSON.parse(resultAccountString);
+                email = resultAccountObject.email;
                 return [4 /*yield*/, socialLoginService_1.default.kakao({ email: email, access_token: access_token })];
             case 4:
                 logedinUser = _a.sent();
-                console.log(logedinUser);
                 return [2 /*return*/, res.status(200).json(logedinUser)];
             case 5:
                 err_1 = _a.sent();
@@ -150,7 +138,6 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     cause: "api",
                     message: "kakaoOauth api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 6: return [2 /*return*/];
         }
@@ -215,7 +202,7 @@ var kakaoOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
 /////////////  네  이  버  ///////////////
 ////////////////////////////////////////
 var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var code, state, client_id, client_secret, redirectURI, encoded, url, naverToken_1, naverUser_1, access_token, naverUserRes, email, logedinUser, err_2, result_err;
+    var code, state, client_id, client_secret, redirectURI, encoded, url, resultToken, resultTokenString, resultTokenObject, access_token, resultAccount, resultAccountString, resultAccountObject, naverUserResult, email, logedinUser, err_2, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -229,42 +216,31 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 5, , 6]);
-                naverToken_1 = "";
                 return [4 /*yield*/, (0, axios_1.default)({
                         method: "GET",
                         url: url,
-                    })
-                        .then(function (res) {
-                        naverToken_1 = res;
-                    })
-                        .catch(function (err) {
-                        console.log(err);
                     })];
             case 2:
-                _a.sent();
-                naverUser_1 = "";
-                access_token = naverToken_1.access_token;
+                resultToken = _a.sent();
+                resultTokenString = JSON.stringify(resultToken);
+                resultTokenObject = JSON.parse(resultTokenString);
+                access_token = resultTokenObject.access_token;
                 return [4 /*yield*/, (0, axios_1.default)({
                         method: "GET",
                         headers: {
                             Authorization: "bearer ".concat(access_token),
                         },
                         url: "https://openapi.naver.com/v1/nid/me",
-                    })
-                        .then(function (res) {
-                        naverUser_1 = res;
-                    })
-                        .catch(function (err) {
-                        console.log(err);
                     })];
             case 3:
-                _a.sent();
-                naverUserRes = naverUser_1.response;
-                email = naverUserRes.email;
+                resultAccount = _a.sent();
+                resultAccountString = JSON.stringify(resultAccount);
+                resultAccountObject = JSON.parse(resultAccountString);
+                naverUserResult = resultAccountObject.response;
+                email = naverUserResult.email;
                 return [4 /*yield*/, socialLoginService_1.default.naver({ email: email, access_token: access_token })];
             case 4:
                 logedinUser = _a.sent();
-                console.log(logedinUser);
                 return [2 /*return*/, res.status(200).json(logedinUser)];
             case 5:
                 err_2 = _a.sent();
@@ -273,7 +249,6 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     cause: "api",
                     message: "naverOauth api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 6: return [2 /*return*/];
         }
@@ -341,7 +316,7 @@ var naverOauth = function (req, res, next) { return __awaiter(void 0, void 0, vo
 /////////////   구   글   ///////////////
 ////////////////////////////////////////
 var googleOauth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, googleToken_1, data, jwtDecoded, jwtDecodedString, jwtDecodedObject, email, refresh_token, logedinUser, err_3, result_err;
+    var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, data, resultToken, resultTokenString, resultTokenObject, jwtDecoded, jwtDecodedString, jwtDecodedObject, email, refresh_token, logedinUser, err_3, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -357,7 +332,6 @@ var googleOauth = function (req, res, next) { return __awaiter(void 0, void 0, v
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 4, , 5]);
-                googleToken_1 = "";
                 data = {
                     code: code,
                     client_id: client_id,
@@ -370,27 +344,22 @@ var googleOauth = function (req, res, next) { return __awaiter(void 0, void 0, v
                         headers: { "content-type": "application/x-www-form-urlencoded" },
                         data: qs_1.default.stringify(data),
                         url: "https://oauth2.googleapis.com/token",
-                    })
-                        .then(function (res) {
-                        googleToken_1 = res;
-                    })
-                        .catch(function (err) {
-                        console.log(err);
                     })];
             case 2:
-                _a.sent();
-                jwtDecoded = jsonwebtoken_1.default.decode(googleToken_1.id_token);
+                resultToken = _a.sent();
+                resultTokenString = JSON.stringify(resultToken);
+                resultTokenObject = JSON.parse(resultTokenString);
+                jwtDecoded = jsonwebtoken_1.default.decode(resultTokenObject.id_token);
                 jwtDecodedString = JSON.stringify(jwtDecoded);
                 jwtDecodedObject = JSON.parse(jwtDecodedString);
                 email = jwtDecodedObject.email;
-                refresh_token = googleToken_1.refresh_token;
+                refresh_token = resultTokenObject.refresh_token;
                 return [4 /*yield*/, socialLoginService_1.default.google({
                         email: email,
                         refresh_token: refresh_token,
                     })];
             case 3:
                 logedinUser = _a.sent();
-                console.log(logedinUser);
                 return [2 /*return*/, res.status(200).json(logedinUser)];
             case 4:
                 err_3 = _a.sent();
@@ -399,7 +368,6 @@ var googleOauth = function (req, res, next) { return __awaiter(void 0, void 0, v
                     cause: "api",
                     message: "googleOauth api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 5: return [2 /*return*/];
         }

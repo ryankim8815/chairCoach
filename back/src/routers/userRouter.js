@@ -80,7 +80,6 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
             case 1:
                 allUsers = _a.sent();
                 logger.info(allUsers);
-                console.log(allUsers);
                 return [2 /*return*/, res.status(200).json(allUsers)];
             case 2:
                 err_1 = _a.sent();
@@ -89,7 +88,6 @@ var userList = function (req, res, next) { return __awaiter(void 0, void 0, void
                     cause: "api",
                     message: "userList api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -154,7 +152,6 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, userService_1.default.getCurrentUser({ user_id: user_id })];
             case 1:
                 currentUser = _a.sent();
-                console.log(currentUser);
                 logger.error(currentUser); // test
                 return [2 /*return*/, res.status(200).json(currentUser)];
             case 2:
@@ -165,7 +162,6 @@ var userCurrent = function (req, res, next) { return __awaiter(void 0, void 0, v
                     message: "userCurrent api에서 오류가 발생했습니다.",
                 };
                 logger.error(result_err); // test
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -224,7 +220,6 @@ var userRegister = function (req, res, next) { return __awaiter(void 0, void 0, 
                 return [4 /*yield*/, userService_1.default.addUser({ email: email, password: password, nickname: nickname })];
             case 1:
                 newUser = _a.sent();
-                console.log(newUser);
                 return [2 /*return*/, res.status(200).json(newUser)];
             case 2:
                 err_3 = _a.sent();
@@ -233,7 +228,6 @@ var userRegister = function (req, res, next) { return __awaiter(void 0, void 0, 
                     cause: "api",
                     message: "userRegister api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -291,7 +285,6 @@ var userSignin = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 return [4 /*yield*/, userService_1.default.getUser({ email: email, password: password })];
             case 1:
                 signinUser = _a.sent();
-                console.log(signinUser);
                 return [2 /*return*/, res.status(200).json(signinUser)];
             case 2:
                 err_4 = _a.sent();
@@ -300,7 +293,6 @@ var userSignin = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     cause: "api",
                     message: "userLogin api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -377,7 +369,6 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     })];
             case 1:
                 updateUser = _a.sent();
-                console.log(updateUser);
                 return [2 /*return*/, res.status(200).json(updateUser)];
             case 2:
                 err_5 = _a.sent();
@@ -386,7 +377,6 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     cause: "api",
                     message: "userUpdate api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -449,7 +439,6 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     })];
             case 1:
                 deleteUser = _a.sent();
-                console.log(deleteUser);
                 return [2 /*return*/, res.status(200).json(deleteUser)];
             case 2:
                 err_6 = _a.sent();
@@ -458,7 +447,6 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     cause: "api",
                     message: "userDelete api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -516,7 +504,6 @@ var signupEmail = function (req, res, next) { return __awaiter(void 0, void 0, v
                     })];
             case 1:
                 sendCodeToEmail = _a.sent();
-                console.log(sendCodeToEmail);
                 return [2 /*return*/, res.status(200).json(sendCodeToEmail)];
             case 2:
                 err_7 = _a.sent();
@@ -525,7 +512,6 @@ var signupEmail = function (req, res, next) { return __awaiter(void 0, void 0, v
                     cause: "api",
                     message: "signupEmail api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -580,7 +566,6 @@ var signupVerifyEmail = function (req, res, next) { return __awaiter(void 0, voi
                     })];
             case 1:
                 verifyEmailCode = _a.sent();
-                console.log(verifyEmailCode);
                 return [2 /*return*/, res.status(200).json(verifyEmailCode)];
             case 2:
                 err_8 = _a.sent();
@@ -589,7 +574,6 @@ var signupVerifyEmail = function (req, res, next) { return __awaiter(void 0, voi
                     cause: "api",
                     message: "signupVerifyEmail api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }
@@ -644,7 +628,6 @@ var signupNickname = function (req, res, next) { return __awaiter(void 0, void 0
                     })];
             case 1:
                 checkNickname = _a.sent();
-                console.log(checkNickname);
                 return [2 /*return*/, res.status(200).json(checkNickname)];
             case 2:
                 err_9 = _a.sent();
@@ -653,7 +636,6 @@ var signupNickname = function (req, res, next) { return __awaiter(void 0, void 0
                     cause: "api",
                     message: "signupNickname api에서 오류가 발생했습니다.",
                 };
-                console.log(result_err);
                 return [2 /*return*/, res.status(200).json(result_err)];
             case 3: return [2 /*return*/];
         }

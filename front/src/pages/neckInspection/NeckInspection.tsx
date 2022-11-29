@@ -27,9 +27,7 @@ const NeckInspection = () => {
         <Timer time={time} />
         {step === 0 ? (
           <S.Btn
-            onClick={() => {
-              startTimer();
-            }}
+            onClick={startTimer}
           >
             촬영 시작
           </S.Btn>

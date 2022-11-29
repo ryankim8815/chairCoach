@@ -1,6 +1,6 @@
 import * as Img from "../../assets/img/index";
 
-const question = [
+const questions = [
   "사무실에서 컴퓨터를 하루 6시간 이상 사용한다.",
   "목을 뒤로 젖히면 아프다",
   "자주 목과 어깨가 결리고 딱딱하게 굳는다.",
@@ -28,43 +28,43 @@ const imgContents = [
 
 export const Data= [
     {
-        question: question[0],
+        questions: questions[0],
         img: imgContents[0]
     },
     {
-        question: question[1],
+        questions: questions[1],
         img: imgContents[1]
     },
     {
-        question: question[2],
+        questions: questions[2],
         img: imgContents[2]
     },
     {
-        question: question[3],
+        questions: questions[3],
         img: imgContents[3]
     },
     {
-        question: question[4],
+        questions: questions[4],
         img: imgContents[4]
     },
     {
-        question: question[5],
+        questions: questions[5],
         img: imgContents[5]
     },
     {
-        question: question[6],
+        questions: questions[6],
         img: imgContents[6]
     },
     {
-        question: question[7],
+        questions: questions[7],
         img: imgContents[7]
     },
     {
-        question: question[8],
+        questions: questions[8],
         img: imgContents[8]
     },
     {
-        question: question[9],
+        questions: questions[9],
         img: imgContents[9]
     },
 ]
