@@ -1,6 +1,7 @@
 import * as express from "express";
 import axios from "axios";
 import socialLoginService from "../services/socialLoginService";
+import { validateCode } from "../middlewares/socialLoginValidationMiddleware";
 import qs from "qs";
 import urlencode from "urlencode";
 import jwt from "jsonwebtoken";
@@ -197,9 +198,6 @@ const naverOauth = async (
  *               code:
  *                 type: string
  *                 example: wsh2rwe87iu2gwef9u3rwdft23wes87y13qref97yi
- *               state:
- *                 type: string
- *                 example: state
  *     responses:
  *       200:
  *         description: successful operation
@@ -354,8 +352,8 @@ const googleOauth = async (
  *                   example: 2022-11-01T01:01:01.000Z
  */
 
-socialLoginRouter.post("/kakao", kakaoOauth);
-socialLoginRouter.post("/naver", naverOauth);
-socialLoginRouter.post("/google", googleOauth);
+socialLoginRouter.post("/kakao", validateCode, kakaoOauth);
+socialLoginRouter.post("/naver", validateCode, naverOauth);
+socialLoginRouter.post("/google", validateCode, googleOauth);
 
 export = socialLoginRouter;
