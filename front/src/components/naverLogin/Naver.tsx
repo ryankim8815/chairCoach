@@ -15,7 +15,6 @@ const NaverLogin = () => {
         })
        const res=await Api.post('naver',{
         code:code,
-        state:state
        })
        console.log('res',res)
     };
