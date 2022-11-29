@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/img/logo.svg'
+import { useRecoilValue } from 'recoil';
+import userState from './../../atoms/user';
 
 import Nav from './Nav';
 import LogoutMenu from './LogoutMenu';
 import LoginMenu from './LoginMenu';
 
-// style
+import logo from '../../assets/img/logo.svg'
 import { HeaderLayout } from './HeaderStyle';
 
 
 const Header = () => {
   const navigate = useNavigate(); 
+  const user = useRecoilValue(userState);
   return (
     <HeaderLayout>
       <div className='inner'>
@@ -19,8 +21,9 @@ const Header = () => {
           <Nav/>
         </div>
 
-        <LoginMenu/>
-        <LogoutMenu/>
+        {
+          user ? <LoginMenu/> : <LogoutMenu/>
+        }
       </div>
     </HeaderLayout>
   )

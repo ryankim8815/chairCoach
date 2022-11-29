@@ -26,6 +26,10 @@ export const TopCon = styled.div`
 
   form{
     margin-top: 40px;
+
+    input:last-of-type{
+      margin-top: 8px;
+    }
     
     button{
       margin-top: 64px;
