@@ -1,6 +1,7 @@
 import{ useRef, useEffect, useState } from "react";
 import * as S from "./NeckVideoStyle";
-
+import * as Api from '../../api/api'
+import axios from "axios";
 
 const NeckVideo = ({ time,step,setStep }: any) => {
   const videoRef = useRef(null);
@@ -20,7 +21,7 @@ const NeckVideo = ({ time,step,setStep }: any) => {
         alert('비디오 접근을 허용해주세요.')
       });
   };
-  const takePhoto = () => {
+  const takePhoto = async() => {
     const width = 414;
     const height = width / (16 / 9);
     let video: HTMLVideoElement|null = videoRef.current;
@@ -37,11 +38,16 @@ const NeckVideo = ({ time,step,setStep }: any) => {
 
     ctx.drawImage(video, 0, 0, width, height);
     const data=photo.toDataURL('image/jpeg');
-    console.warn(data);
-    const link=document.createElement('a');
-    link.href=data;
-    link.innerHTML = `<img src='${data}' alt='thumbnail'/>`;
-
+    let file: File;
+    const blob= photo.toBlob((blob)=>{
+      if(!blob) return;
+      file= new File([blob],'screenshot')
+      console.log(file)
+      const formData=new FormData();
+      formData.append('file',file);
+      console.log(formData)
+    })
+    console.log(blob)
     setHasPhoto(true);
   };
   useEffect(() => {
