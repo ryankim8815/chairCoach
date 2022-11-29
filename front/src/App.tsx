@@ -19,6 +19,7 @@ import SignUp from "./pages/signUp/SignUp";
 import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
 import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 import NaverLogin from "./components/naverLogin/Naver";
+import GoogleLogin from "./components/googleLogin/GoogleLogin";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <Route path="/userInfoChange" element={<UserInfoChange />} />
             <Route path="login/oauth2/code/kakao" element={<KakaoAuth />} />
             <Route path='login/oauth2/code/naver' element={<NaverLogin/>}/>
+          <Route path='login/oauth2/code/google' element={<GoogleLogin/>}/>
           </Routes>
           <Footer />
         </ThemeProvider>

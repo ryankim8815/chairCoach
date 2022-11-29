@@ -52,7 +52,7 @@ const Login = () => {
     else if (!(isEmailValid && isPwdValid)) setWaring(3);
   };
   const naverUrl=process.env.REACT_APP_NAVER_URL
-
+  const googleUrl=process.env.REACT_APP_GOOGLE_URL
  
  
   return (
@@ -98,7 +98,9 @@ const Login = () => {
           <p>간편로그인</p>
           <ul>
             <li>
+              <a href={googleUrl}>
               <button>구글</button>
+              </a>
               <span>구글</span>
             </li>
             <li>
