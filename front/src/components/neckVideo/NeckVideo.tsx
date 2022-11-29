@@ -3,6 +3,7 @@ import * as S from "./NeckVideoStyle";
 import * as Api from '../../api/api'
 import axios from "axios";
 
+
 const NeckVideo = ({ time,step,setStep }: any) => {
   const videoRef = useRef(null);
   const photoRef = useRef<HTMLCanvasElement|null>(null);
@@ -37,17 +38,25 @@ const NeckVideo = ({ time,step,setStep }: any) => {
     if(!ctx) return;
 
     ctx.drawImage(video, 0, 0, width, height);
-    const data=photo.toDataURL('image/jpeg');
     let file: File;
-    const blob= photo.toBlob((blob)=>{
+    const blob= photo.toBlob(async(blob)=>{
       if(!blob) return;
-      file= new File([blob],'screenshot')
+      file= new File([blob],'screenshot',{
+        type: 'image/jpeg'
+      } )
       console.log(file)
       const formData=new FormData();
       formData.append('file',file);
-      console.log(formData)
-    })
-    console.log(blob)
+      const res=await axios({
+        method: "post",
+        url: `http://localhost:5003/neck`,
+        data: formData,
+        headers:{
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      console.log(res)
+    },'image/png')
     setHasPhoto(true);
   };
   useEffect(() => {
