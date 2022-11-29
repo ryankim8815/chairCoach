@@ -47,6 +47,7 @@ const NeckVideo = ({ time,step,setStep }: any) => {
       console.log(file)
       const formData=new FormData();
       formData.append('file',file);
+      console.log(formData)
       const res=await axios({
         method: "post",
         url: `http://localhost:5003/neck`,
@@ -56,7 +57,7 @@ const NeckVideo = ({ time,step,setStep }: any) => {
         }
       })
       console.log(res)
-    },'image/png')
+    })
     setHasPhoto(true);
   };
   useEffect(() => {
