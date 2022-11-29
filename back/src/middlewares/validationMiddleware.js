@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateSignupNickname = exports.validateVerifyEmail = exports.validateSignupEmail = exports.validateUserDelete = exports.validateUserUpdate = exports.validateUserLogin = exports.validateUserCreate = exports.validateUserCurrent = void 0;
+exports.validateCheckPassword = exports.validateSignupNickname = exports.validateVerifyEmail = exports.validateSignupEmail = exports.validateUserDelete = exports.validateUserUpdate = exports.validateUserLogin = exports.validateUserCreate = exports.validateUserCurrent = void 0;
 var schemas_joi_1 = require("../utils/schemas.joi");
 var validateUserCurrent = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
@@ -254,3 +254,30 @@ var validateSignupNickname = function (req, res, next) {
     });
 };
 exports.validateSignupNickname = validateSignupNickname;
+var validateCheckPassword = function (req, res, next) {
+    return __awaiter(this, void 0, void 0, function () {
+        var body, err_9, result_err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    body = req.body;
+                    return [4 /*yield*/, schemas_joi_1.checkPasswordSchema.validateAsync(body)];
+                case 1:
+                    _a.sent();
+                    next();
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_9 = _a.sent();
+                    result_err = {
+                        result: false,
+                        cause: "type",
+                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                    };
+                    return [2 /*return*/, res.status(499).json(result_err)];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+};
+exports.validateCheckPassword = validateCheckPassword;

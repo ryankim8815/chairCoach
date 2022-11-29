@@ -350,9 +350,73 @@ var userSignin = function (req, res, next) { return __awaiter(void 0, void 0, vo
  *                   type: timestamp
  *                   example: 2022-11-01T01:01:01.000Z
  */
+// POST: 회원정보 수정을 위한 비밀번호 확인
+var userPassword = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, password, updateUser, err_5, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                user_id = req.body.user_id;
+                password = req.body.password;
+                return [4 /*yield*/, userService_1.default.passwordCheck({
+                        user_id: user_id,
+                        password: password,
+                    })];
+            case 1:
+                updateUser = _a.sent();
+                return [2 /*return*/, res.status(200).json(updateUser)];
+            case 2:
+                err_5 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "userPassword api에서 오류가 발생했습니다.",
+                };
+                return [2 /*return*/, res.status(200).json(result_err)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /user/password:
+ *   post:
+ *     summary: 회원정보 수정을 위한 비밀번호 확인
+ *     description: 회원정보 수정을 위한 비밀번호 확인
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 example: test1234
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: 입력하신 password가 일치합니다.
+ */
 // POST: 회원정보 수정
 var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, currentPassword, password, nickname, updateUser, err_5, result_err;
+    var user_id, currentPassword, password, nickname, updateUser, err_6, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -371,7 +435,7 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 updateUser = _a.sent();
                 return [2 /*return*/, res.status(200).json(updateUser)];
             case 2:
-                err_5 = _a.sent();
+                err_6 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
@@ -426,7 +490,7 @@ var userUpdate = function (req, res, next) { return __awaiter(void 0, void 0, vo
  */
 // DELETE: 회원정보 삭제
 var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_id, password, deleteUser, err_6, result_err;
+    var user_id, password, deleteUser, err_7, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -441,7 +505,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 deleteUser = _a.sent();
                 return [2 /*return*/, res.status(200).json(deleteUser)];
             case 2:
-                err_6 = _a.sent();
+                err_7 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
@@ -490,7 +554,7 @@ var userDelete = function (req, res, next) { return __awaiter(void 0, void 0, vo
  */
 /// POST: email 인증을 위한 코드 발송
 var signupEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, code, sendCodeToEmail, err_7, result_err;
+    var email, code, sendCodeToEmail, err_8, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -506,7 +570,7 @@ var signupEmail = function (req, res, next) { return __awaiter(void 0, void 0, v
                 sendCodeToEmail = _a.sent();
                 return [2 /*return*/, res.status(200).json(sendCodeToEmail)];
             case 2:
-                err_7 = _a.sent();
+                err_8 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
@@ -553,7 +617,7 @@ var signupEmail = function (req, res, next) { return __awaiter(void 0, void 0, v
  */
 /// GET: email 인증 코드 확인
 var signupVerifyEmail = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, code, verifyEmailCode, err_8, result_err;
+    var email, code, verifyEmailCode, err_9, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -568,7 +632,7 @@ var signupVerifyEmail = function (req, res, next) { return __awaiter(void 0, voi
                 verifyEmailCode = _a.sent();
                 return [2 /*return*/, res.status(200).json(verifyEmailCode)];
             case 2:
-                err_8 = _a.sent();
+                err_9 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
@@ -617,7 +681,7 @@ var signupVerifyEmail = function (req, res, next) { return __awaiter(void 0, voi
  */
 /// GET: nickname 중복확인
 var signupNickname = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var nickname, checkNickname, err_9, result_err;
+    var nickname, checkNickname, err_10, result_err;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -630,7 +694,7 @@ var signupNickname = function (req, res, next) { return __awaiter(void 0, void 0
                 checkNickname = _a.sent();
                 return [2 /*return*/, res.status(200).json(checkNickname)];
             case 2:
-                err_9 = _a.sent();
+                err_10 = _a.sent();
                 result_err = {
                     result: false,
                     cause: "api",
@@ -677,6 +741,7 @@ userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의
 userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회
 userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
 userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
+userRouter.post("/user/password", authMiddleware_1.default, validation.validateCheckPassword, userPassword); // 유저 정보 업데이트를 위한 password 확인
 userRouter.put("/user", authMiddleware_1.default, validation.validateUserUpdate, userUpdate); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDelete, userDelete); // 유저 삭제
 userRouter.post("/signup/email", validation.validateSignupEmail, nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송

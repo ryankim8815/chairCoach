@@ -273,6 +273,66 @@ const userSignin = async (
  *                   example: 2022-11-01T01:01:01.000Z
  */
 
+// POST: 회원정보 수정을 위한 비밀번호 확인
+const userPassword = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const user_id = req.body.user_id;
+    const password = req.body.password;
+    const updateUser = await userService.passwordCheck({
+      user_id,
+      password,
+    });
+    return res.status(200).json(updateUser);
+  } catch (err) {
+    const result_err = {
+      result: false,
+      cause: "api",
+      message: "userPassword api에서 오류가 발생했습니다.",
+    };
+    return res.status(200).json(result_err);
+  }
+};
+/**
+ * @swagger
+ * /user/password:
+ *   post:
+ *     summary: 회원정보 수정을 위한 비밀번호 확인
+ *     description: 회원정보 수정을 위한 비밀번호 확인
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 example: test1234
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: 입력하신 password가 일치합니다.
+ */
+
 // POST: 회원정보 수정
 const userUpdate = async (
   req: express.Request,
@@ -584,6 +644,12 @@ userRouter.get(
 ); // 현재 사용자 정보 조회
 userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
 userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
+userRouter.post(
+  "/user/password",
+  authMiddleware,
+  validation.validateCheckPassword,
+  userPassword
+); // 유저 정보 업데이트를 위한 password 확인
 userRouter.put(
   "/user",
   authMiddleware,

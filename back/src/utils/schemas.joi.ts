@@ -97,3 +97,14 @@ export const signupNicknameSchema = Joi.object().keys({
     .pattern(new RegExp("^([가-힣0-9]{2,8}|[A-Za-z0-9]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
     .required(),
 });
+
+export const checkPasswordSchema = Joi.object().keys({
+  user_id: Joi.string().required(),
+  password: Joi.string()
+    .pattern(
+      new RegExp(
+        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"
+      )
+    )
+    .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+});
