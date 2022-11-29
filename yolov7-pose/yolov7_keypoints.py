@@ -73,7 +73,8 @@ def process(img_in_folder, img_out_folder, csv_out_path):
     pose_class_names = sorted(
         [n for n in os.listdir(img_in_folder) if not n.startswith('.')]
     )
-    label_map = {label:num for num, label in enumerate(pose_class_names)} # label_map {'hands_up': 0, 'neck_down': 1, 'neck_side': 2}
+    label_map = {label:num for num, label in enumerate(pose_class_names)} 
+    # label_map {'hands_up': 0, 'neck_down': 1, 'neck_side': 2}
 
 
     # write csv train_data
