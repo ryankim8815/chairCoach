@@ -18,6 +18,8 @@ from utils.plots import colors, plot_one_box, output_to_keypoint
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 from yolov7_keypoints import extract
 from models.xgb import XGBClassifierModel
+from models.svm import SVM
+
 
 
 def detect(opt):
@@ -128,11 +130,16 @@ def detect(opt):
                         print("kpts: ", kpts)
                         print("kpts.shape: ", kpts.shape)
                         
-                        # model test
+                        # XGBoost model
                         kpts_arr = np.array(kpts)
                         kpts_xy = extract(kpts_arr, 3)
-                        answer = XGBClassifierModel([kpts_xy])
-                        print("This action is {0}".format(answer))
+                        answer_xgb = XGBClassifierModel([kpts_xy])
+                        print("kpts_xy : ", kpts_xy)
+                        print("XGBoost : {0}".format(answer_xgb))
+                        
+                        # SVM model
+                        answer_svm = SVM([kpts_xy])
+                        print("SVM : {0}".format(answer_svm))
                     
                         print("det_index: ", det_index)
                         plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=opt.line_thickness, kpt_label=kpt_label, kpts=kpts, steps=3, orig_shape=im0.shape[:2])
@@ -157,9 +164,10 @@ def detect(opt):
                 cv2.imshow(str(p), im0)
                 
                 # display class
-                info = "This pose is {0}".format(answer)
-                cv2.putText(im0, text=info, org=(30,60), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                            fontScale=0.5, color=(0,255,0), thickness=2)
+                # info = "This pose is {0}".format(answer_xgb)
+                # cv2.putText(im0, text=info, org=(30,60), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                #             fontScale=0.5, color=(0,255,0), thickness=2)
+                
                 cv2.waitKey(1)  # 1 millisecond
 
             # Save results (image with detections)
