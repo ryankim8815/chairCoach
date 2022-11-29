@@ -56,12 +56,14 @@ export const LoginMenuCon = styled.div`
   button{
     padding: 4px 8px;
     font-size: ${({ theme }) => theme.fontSize.text};
+
     span{
       font-weight: 500;
-      color: #333;
+      color: ${({ theme }) => theme.colors.main};
     }
 
     svg{
+      margin-left: 4px;
       color: ${({ theme }) => theme.colors.greyText};
     }
   }

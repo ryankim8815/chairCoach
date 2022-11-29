@@ -40,31 +40,28 @@ const Login = () => {
   const isEmailValid = RegExp.validateEmail(email);
   const isPwdValid = RegExp.validatePwd(password);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!email.length) setWaring("email");
     else if (!password.length) setWaring("password");
     else if (!(isEmailValid && isPwdValid)) setWaring("invalidInput");
 
-    Api.post("signin", {
+    const res:any = await Api.post("signin", {
       email: email,
       password: password,
-    }).then(res => {
-      console.log(res);
-      const data:any = res;
+    });
+    console.log(res);
 
-      if(data.result){
-        setUser(data.nickname)
-        navigate('/');
-      }
-
-    }).catch((err)=> {
-      console.log(err);
+    if(res.data.result){
+      setUser(res.data.nickname);
+      navigate('/');
+    }else{
       setWaring("invalidInput");
       setUser(null);
-    });
+    }
   };
+
   const naverUrl=process.env.REACT_APP_NAVER_URL
 
   return (
@@ -107,7 +104,7 @@ const Login = () => {
         </TopCon>
 
         <BottomCon>
-          <p>간편로그인</p>
+          <p>간편 로그인</p>
           <ul>
             <li>
               <button>구글</button>
