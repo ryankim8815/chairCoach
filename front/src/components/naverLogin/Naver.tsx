@@ -10,12 +10,10 @@ const NaverLogin = () => {
         console.log('네이버코드',code);
         console.log('보낼스테이트',state);
         console.log('req',{
-          code:code,
-          state:state
+          code:code
         })
        const res=await Api.post('naver',{
         code:code,
-        state:state
        })
        console.log('res',res)
     };

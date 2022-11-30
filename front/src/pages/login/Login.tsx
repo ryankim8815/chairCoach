@@ -69,7 +69,9 @@ const Login = () => {
   };
 
   const naverUrl=process.env.REACT_APP_NAVER_URL
-
+  const googleUrl=process.env.REACT_APP_GOOGLE_URL
+ 
+ 
   return (
     <LoginLayout>
       <div className="inner">
@@ -113,7 +115,9 @@ const Login = () => {
           <p>간편 로그인</p>
           <ul>
             <li>
+              <a href={googleUrl}>
               <button>구글</button>
+              </a>
               <span>구글</span>
             </li>
             <li>

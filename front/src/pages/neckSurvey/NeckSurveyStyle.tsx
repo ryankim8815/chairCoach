@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 export const SurveyContainer = styled.div`
-${({ theme }) => theme.common.contentMinLayout};
-${({ theme }) => theme.common.flexCenter};
+  ${({ theme }) => theme.common.contentMinLayout};
+  ${({ theme }) => theme.common.flexCenter};
   background: ${({ theme }) => theme.colors.mainLight};
   flex-direction: column;
   .inner {
     ${({ theme }) => theme.common.inner};
     padding: 120px 0;
+  }
 `;
 
 export const ContentBox = styled.div`
@@ -37,7 +38,7 @@ export const SubTitle = styled.span`
 `;
 
 export const Page = styled.span`
-color: ${({ theme }) => theme.colors.main};
+  color: ${({ theme }) => theme.colors.main};
   font-weight: 600;
 `;
 
