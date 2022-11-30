@@ -17,7 +17,7 @@ interface SignUp {
 const BASIC_TIMEB = 30;
 
 const SingUp = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");

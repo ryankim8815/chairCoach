@@ -14,6 +14,11 @@ import { AiFillCaretUp } from "react-icons/ai";
 const LoginMenu = () => {
   const [user, setUser] = useRecoilState(userState);
   const [userMenu, setUserMenu] = useState(false);
+
+  const handlerlogoutClick = async() => {
+    setUser(null);
+    sessionStorage.removeItem('userToken');
+  }
   
   return (
     <LoginMenuCon>
@@ -25,7 +30,7 @@ const LoginMenu = () => {
         userMenu &&
         <ul>
           <li><Link to='/userInfoChange'>회원정보 변경</Link></li>
-          <li><Link to='/' onClick={()=>setUser(null)}>로그아웃</Link></li>
+          <li><Link to='/' onClick={handlerlogoutClick}>로그아웃</Link></li>
           <li><Link to='/'>회원 탈퇴</Link></li>
         </ul>
       }

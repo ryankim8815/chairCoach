@@ -30,8 +30,7 @@ const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST
 
 const Login = () => {
   const navigate = useNavigate(); 
-
-  const setUser = useSetRecoilState(userState)
+  const setUser = useSetRecoilState(userState);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
