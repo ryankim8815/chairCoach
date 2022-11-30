@@ -12,9 +12,14 @@ def load_model():
     model.load_model('first_model.json')
     return model
     
-def predict(model, coords):
+
+class ChairCouchModel:
+    def __init__(self):
+        self.actions = set_actions()
+        self.model = load_model()
     
-    pred = model.predict(coords)
-    actions = set_actions()
-    
-    return actions[np.argmax(pred)]
+    def predict(self, coords):
+        
+        pred = self.model.predict(coords)
+        action = self.actions[np.argmax(pred)]
+        return action
