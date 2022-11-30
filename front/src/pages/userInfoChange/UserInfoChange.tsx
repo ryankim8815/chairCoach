@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import * as S from "../signUp/SignUpStyle";
@@ -14,14 +14,15 @@ const UserInfoChange = () => {
   const currentNickname = String(useRecoilValue(userState));
 
   const [nickname, setNickname] = useState(currentNickname);
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [checkNewPassword, setCheckNewPassword] = useState("");
 
   const [checkNickname, setCheckNickname] = useState(true); // 중복체크버튼 클릭시 판별
 
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  const isPwdValid = RegExp.validatePwd(password);
+  // const isPwdValid = RegExp.validatePwd(password);
   const isNicknameValid = RegExp.validateNickname(nickname);
 
 
@@ -38,7 +39,7 @@ const UserInfoChange = () => {
     // 중복된 닉네임일 경우
     const res = await Api.get(`signup/nickname/${nickname}`);
     // res.data.result ? setCheckNickname(true) : alert('중복된 닉네임 입니다.');
-    console.log('닉네임중복여부', res.data.result)
+    // console.log('닉네임중복여부', res.data.result)
 
     if(res.data.result){
       setCheckNickname(true);
@@ -46,14 +47,22 @@ const UserInfoChange = () => {
     }else alert('중복된 닉네임 입니다.');
   }
 
-  // console.log('trueNickname:',trueNickname, 'checkNickname', checkNickname);
-  console.log('checkNickname', checkNickname);
+  // 비밀번호 확인
+  const handlerCheckCurrentPw = async() => {
+    const res = await Api.post("user/password", {
+      password: currentPassword,
+    });
+
+    console.log(res)
+  }
+
+
   return (
     <S.SignUpLayout>
       <h2>회원정보 변경</h2>
 
       <S.FormCon>
-        <form action="">
+        <form>
           <fieldset>
             <legend>회원정보 변경</legend>
 
@@ -85,15 +94,22 @@ const UserInfoChange = () => {
                 <F.WarningText>닉네임 중복 확인을 해주세요.</F.WarningText>
                 :null
               }
-
             </S.InputWrap>
 
             <S.InputWrap>
-                <p>현재 비밀번호</p>
+              <p>현재 비밀번호</p>
+              <F.CheckInputCon>
                 <F.InputText
-                  type="text"
+                  length="small"
+                  type="password"
+                  value={currentPassword}
                   placeholder="현재 비밀번호를 입력해주세요."
+                  onChange={(e)=>setCurrentPassword(e.target.value)}
                 />
+                <B.InputCheckBtn onClick={handlerCheckCurrentPw}>
+                  비밀번호 확인
+                </B.InputCheckBtn>
+              </F.CheckInputCon>
                 {/* <F.WarningText lineHeight="true">
                   영어 대문자, 소문자, 숫자, 특수문자를 포함한<br />
                   8글자 이상이여야 합니다.
@@ -104,9 +120,11 @@ const UserInfoChange = () => {
               <div>
                 <p>새 비밀번호</p>
                 <F.InputText
-                  type="text"
+                  type="password"
+                  value={newPassword}
                   placeholder="새로운 비밀번호를 입력해주세요."
                   disabled={true}
+                  onChange={(e)=>setNewPassword(e.target.value)}
                 />
                 <F.WarningText lineHeight="true">
                   영어 대문자, 소문자, 숫자, 특수문자를 포함한<br />
@@ -117,9 +135,11 @@ const UserInfoChange = () => {
               <div>
                 <p>새 비밀번호 확인</p>
                 <F.InputText
-                  type="text"
+                  type="password"
+                  value={checkNewPassword}
                   placeholder="비밀번호를 다시 입력해주세요."
                   disabled={true}
+                  onChange={(e)=>setCheckNewPassword(e.target.value)}
                 />
                 <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
               </div>
