@@ -7,7 +7,7 @@ const serverUrl =
 // axios 에러날때 잡아줌
 axios.interceptors.response.use(
   (res) => {
-    return res.data;
+    return res;
   },
   (err) => {
     console.log(err);

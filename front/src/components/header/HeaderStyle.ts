@@ -52,10 +52,18 @@ export const NavLayout = styled.nav`
 
 export const LoginMenuCon = styled.div`
   position: relative;
+  font-weight: 300;
   button{
     padding: 4px 8px;
     font-size: ${({ theme }) => theme.fontSize.text};
+
+    span{
+      font-weight: 500;
+      color: ${({ theme }) => theme.colors.main};
+    }
+
     svg{
+      margin-left: 4px;
       color: ${({ theme }) => theme.colors.greyText};
     }
   }
