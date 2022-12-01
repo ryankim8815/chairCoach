@@ -574,6 +574,71 @@ const signupNickname = async (
  *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
  */
 
+/// PATCH: 알람 설정
+const userSetAlert = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const user_id = req.body.user_id;
+    const alert = req.body.alert;
+    const timer = req.body.timer;
+    const setAlert = await userService.setAlert({
+      user_id,
+      alert,
+      timer,
+    });
+    return res.status(200).json(setAlert);
+  } catch (err) {
+    const result_err = {
+      result: false,
+      cause: "api",
+      message: "userSetAlert api에서 오류가 발생했습니다.",
+    };
+    return res.status(200).json(result_err);
+  }
+};
+/**
+ * @swagger
+ * /user/alert:
+ *   patch:
+ *     summary: 알람 설정
+ *     description:  알람 설정
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               alert:
+ *                 type: boolean
+ *                 example: true
+ *               timer:
+ *                 type: int
+ *                 example: 15
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Alert 업데이트가 성공적으로 이뤄졌습니다.
+ */
+
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
 userRouter.get(
@@ -599,5 +664,6 @@ userRouter.delete(
 userRouter.post("/signup/email", nodemailerMiddleware, signupEmail); // email로 코드 발송
 userRouter.get("/signup/email/:email/code/:code", signupVerifyEmail); // email 인증
 userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
+userRouter.patch("/user/alert", authMiddleware, userSetAlert); // 알람 설정
 
 export = userRouter;

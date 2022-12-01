@@ -157,6 +157,23 @@ var User = /** @class */ (function () {
             });
         });
     };
+    User.updateAlert = function (_a) {
+        var user_id = _a.user_id, alert = _a.alert, timer = _a.timer;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "UPDATE users SET `alert` = ?, `timer` = ? WHERE `user_id` = ?",
+                            values: [alert, timer, user_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
     User.withdraw = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
