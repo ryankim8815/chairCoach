@@ -1,7 +1,8 @@
 import * as express from "express";
 import authMiddleware from "../middlewares/authMiddleware";
 import nodemailerMiddleware from "../middlewares/nodemailerMiddleware";
-import * as validation from "../middlewares/validationMiddleware";
+import * as Validation from "../middlewares/validationMiddleware";
+import * as Schemas from "../utils/schemas.joi";
 import userService from "../services/userService";
 // import logger from "../../config/logger";
 const logger = require("../../config/logger");
@@ -704,49 +705,57 @@ userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의
 userRouter.get(
   "/user",
   authMiddleware,
-  validation.validateUserCurrent,
+  Validation.validateBody(Schemas.userCurrentSchema),
   userCurrent
 ); // 현재 사용자 정보 조회
-userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
-userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
+userRouter.post(
+  "/signup",
+  Validation.validateBody(Schemas.userCreateSchema),
+  userRegister
+); // 자체 회원가입
+userRouter.post(
+  "/signin",
+  Validation.validateBody(Schemas.userLoginSchema),
+  userSignin
+); // 로그인
 userRouter.post(
   "/user/password",
   authMiddleware,
-  validation.validateCheckPassword,
+  Validation.validateBody(Schemas.checkPasswordSchema),
   userPassword
 ); // 유저 정보 업데이트를 위한 password 확인
 userRouter.put(
   "/user",
   authMiddleware,
-  validation.validateUserUpdate,
+  Validation.validateBody(Schemas.userUpdateSchema),
   userUpdate
 ); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete(
   "/user",
   authMiddleware,
-  validation.validateUserDelete,
+  Validation.validateBody(Schemas.userDeleteSchema),
   userDelete
 ); // 유저 삭제
 userRouter.post(
   "/signup/email",
-  validation.validateSignupEmail,
+  Validation.validateBody(Schemas.signupEmailSchema),
   nodemailerMiddleware,
   signupEmail
 ); // email로 코드 발송
 userRouter.get(
   "/signup/email/:email/code/:code",
-  validation.validateVerifyEmail,
+  Validation.validateParams(Schemas.verifyEmailSchema),
   signupVerifyEmail
 ); // email 인증
 userRouter.get(
   "/signup/nickname/:nickname",
-  validation.validateSignupNickname,
+  Validation.validateParams(Schemas.signupNicknameSchema),
   signupNickname
 ); // nickname 중복확인
 userRouter.patch(
   "/user/alert",
   authMiddleware,
-  validation.validateUserSetAlert,
+  Validation.validateBody(Schemas.setAlertSchema),
   userSetAlert
 ); // 알람 설정
 

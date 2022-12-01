@@ -64,7 +64,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var express = __importStar(require("express"));
 var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 var nodemailerMiddleware_1 = __importDefault(require("../middlewares/nodemailerMiddleware"));
-var validation = __importStar(require("../middlewares/validationMiddleware"));
+var Validation = __importStar(require("../middlewares/validationMiddleware"));
+var Schemas = __importStar(require("../utils/schemas.joi"));
 var userService_1 = __importDefault(require("../services/userService"));
 // import logger from "../../config/logger";
 var logger = require("../../config/logger");
@@ -807,14 +808,14 @@ var userSetAlert = function (req, res, next) { return __awaiter(void 0, void 0, 
  */
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
-userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회
-userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
-userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
-userRouter.post("/user/password", authMiddleware_1.default, validation.validateCheckPassword, userPassword); // 유저 정보 업데이트를 위한 password 확인
-userRouter.put("/user", authMiddleware_1.default, validation.validateUserUpdate, userUpdate); // 유저 정보 업데이트(pw & nickname)
-userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDelete, userDelete); // 유저 삭제
-userRouter.post("/signup/email", validation.validateSignupEmail, nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
-userRouter.get("/signup/email/:email/code/:code", validation.validateVerifyEmail, signupVerifyEmail); // email 인증
-userRouter.get("/signup/nickname/:nickname", validation.validateSignupNickname, signupNickname); // nickname 중복확인
-userRouter.patch("/user/alert", authMiddleware_1.default, validation.validateUserSetAlert, userSetAlert); // 알람 설정
+userRouter.get("/user", authMiddleware_1.default, Validation.validateBody(Schemas.userCurrentSchema), userCurrent); // 현재 사용자 정보 조회
+userRouter.post("/signup", Validation.validateBody(Schemas.userCreateSchema), userRegister); // 자체 회원가입
+userRouter.post("/signin", Validation.validateBody(Schemas.userLoginSchema), userSignin); // 로그인
+userRouter.post("/user/password", authMiddleware_1.default, Validation.validateBody(Schemas.checkPasswordSchema), userPassword); // 유저 정보 업데이트를 위한 password 확인
+userRouter.put("/user", authMiddleware_1.default, Validation.validateBody(Schemas.userUpdateSchema), userUpdate); // 유저 정보 업데이트(pw & nickname)
+userRouter.delete("/user", authMiddleware_1.default, Validation.validateBody(Schemas.userDeleteSchema), userDelete); // 유저 삭제
+userRouter.post("/signup/email", Validation.validateBody(Schemas.signupEmailSchema), nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
+userRouter.get("/signup/email/:email/code/:code", Validation.validateParams(Schemas.verifyEmailSchema), signupVerifyEmail); // email 인증
+userRouter.get("/signup/nickname/:nickname", Validation.validateParams(Schemas.signupNicknameSchema), signupNickname); // nickname 중복확인
+userRouter.patch("/user/alert", authMiddleware_1.default, Validation.validateBody(Schemas.setAlertSchema), userSetAlert); // 알람 설정
 module.exports = userRouter;

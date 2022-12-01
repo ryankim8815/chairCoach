@@ -1,116 +1,92 @@
 import Joi from "joi";
+import * as Users from "./users.joi";
+import * as Necks from "./necks.joi";
+import * as Bodies from "./bodies.joi";
 
+// userRouter
 export const userCurrentSchema = Joi.object().keys({
-  user_id: Joi.string().required(),
+  user_id: Users.user_id.required(),
 });
 
 export const userCreateSchema = Joi.object().keys({
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: {
-        allow: ["com", "net"],
-      },
-    })
-    .required(),
-  password: Joi.string()
-    .pattern(
-      new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"
-      )
-    )
-    .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
-  nickname: Joi.string()
-    .pattern(new RegExp("^([가-힣0-9]{2,8}|[A-Za-z0-9]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
-    .required(),
+  email: Users.email.required(),
+  password: Users.password.required(),
+  nickname: Users.nickname.required(),
 });
 
 export const userLoginSchema = Joi.object().keys({
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: {
-        allow: ["com", "net"],
-      },
-    })
-    .required(),
-  password: Joi.string().required(),
+  email: Users.email.required(),
+  password: Users.password.required(),
 });
 
 export const userUpdateSchema = Joi.object().keys({
-  user_id: Joi.string().required(),
-  currentPassword: Joi.string()
-    .pattern(
-      new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"
-      )
-    )
-    .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
-  password: Joi.string()
-    .pattern(
-      new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"
-      )
-    )
-    .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
-  nickname: Joi.string()
-    .pattern(new RegExp("^([가-힣0-9]{2,8}|[A-Za-z0-9]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
-    .required(),
+  user_id: Users.user_id.required(),
+  currentPassword: Users.password.required(),
+  password: Users.password.required(),
+  nickname: Users.nickname.required(),
 });
 
 export const userDeleteSchema = Joi.object().keys({
-  user_id: Joi.string().required(),
-  password: Joi.string()
-    .pattern(
-      new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"
-      )
-    )
-    .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+  user_id: Users.user_id.required(),
+  password: Users.password.required(),
 });
 
 export const signupEmailSchema = Joi.object().keys({
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: {
-        allow: ["com", "net"],
-      },
-    })
-    .required(),
+  email: Users.email.required(),
 });
 
 export const verifyEmailSchema = Joi.object().keys({
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: {
-        allow: ["com", "net"],
-      },
-    })
-    .required(),
-  code: Joi.string().pattern(new RegExp("^[0-9]{4,4}$")).required(),
+  email: Users.email.required(),
+  code: Users.code.required(),
 });
 
 export const signupNicknameSchema = Joi.object().keys({
-  nickname: Joi.string()
-    .pattern(new RegExp("^([가-힣0-9]{2,8}|[A-Za-z0-9]{2,12})$")) // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
-    .required(),
+  nickname: Users.nickname.required(),
 });
 
 export const checkPasswordSchema = Joi.object().keys({
-  user_id: Joi.string().required(),
-  password: Joi.string()
-    .pattern(
-      new RegExp(
-        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"
-      )
-    )
-    .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+  user_id: Users.user_id.required(),
+  password: Users.password.required(),
 });
 
 export const setAlertSchema = Joi.object().keys({
-  user_id: Joi.string().required(),
-  alert: Joi.boolean().required(),
-  timer: Joi.number().integer().required(),
+  user_id: Users.user_id.required(),
+  alert: Users.alert.required(),
+  timer: Users.timer.required(),
+});
+
+// neckRouter
+export const neckResultsSchema = Joi.object().keys({
+  user_id: Users.user_id.required(),
+});
+
+export const neckResultSchema = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  result: Necks.neckResult.required(),
+  score: Necks.neckScore.required(),
+});
+export const fileSchema = Joi.object().keys({
+  fieldname: Necks.multerFieldname.required(),
+  originalname: Necks.multerOriginalname.required(),
+  encoding: Necks.multerEncoding.required(),
+  mimetype: Necks.multerMimetype.required(),
+  destination: Necks.multerDestination.required(),
+  filename: Necks.multerFilename.required(),
+  path: Necks.multerPath.required(),
+  size: Necks.multerSize.required(),
+});
+
+// bodyRouter
+export const bodyRecordsSchema = Joi.object().keys({
+  user_id: Users.user_id.required(),
+});
+
+export const bodyCreateSchema = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  tag: Bodies.bodyTag.required(),
+});
+
+export const bodyUpdateSchema = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  body_id: Bodies.body_id.required(),
 });
