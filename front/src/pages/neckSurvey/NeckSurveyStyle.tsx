@@ -23,7 +23,7 @@ export const TitleBox = styled.div`
   ${({ theme }) => theme.common.flexCenter};
   justify-content: space-between;
   font-weight: 700;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 export const Title = styled.span`
