@@ -12,5 +12,6 @@ var emailCode = /^[0-9]{4,4}$/;
 exports.emailCode = emailCode;
 // IMAGE FILENAME for multer
 // const imageFiltename = /^[\\S]+(\\.(png|jpg|jpeg|gif))$/;
-var imageFiltename = /^[가-힣A-Za-z0-9\_]+\.(png|jpg|jpeg|gif)$/; // 한국어?!
+// const imageFiltename = /^[가-힣A-Za-z0-9\_]+\.(png|jpg|jpeg|gif)$/; // 한국어?!
+var imageFiltename = /^[가-힣|A-Z|a-z|0-9|\_]+\.(png|jpg|jpeg|gif)$/; // 한국어?!
 exports.imageFiltename = imageFiltename;

@@ -10,6 +10,7 @@ const emailCode = /^[0-9]{4,4}$/;
 
 // IMAGE FILENAME for multer
 // const imageFiltename = /^[\\S]+(\\.(png|jpg|jpeg|gif))$/;
-const imageFiltename = /^[가-힣A-Za-z0-9\_]+\.(png|jpg|jpeg|gif)$/; // 한국어?!
+// const imageFiltename = /^[가-힣A-Za-z0-9\_]+\.(png|jpg|jpeg|gif)$/; // 한국어?!
+const imageFiltename = /^[가-힣|A-Z|a-z|0-9|\_]+\.(png|jpg|jpeg|gif)$/; // 한국어?!
 
 export { password, nickname, emailCode, imageFiltename };
