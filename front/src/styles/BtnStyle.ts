@@ -69,6 +69,13 @@ export const InputBtn = styled.button<BtnStyle>`
 export const CheckBtn = styled.button<BtnStyle>`
   width: ${({ size }) => (size === "big" ? "440px" : "200px")};
   height: 48px;
+
+  transition: ${({ size }) => (size === "big" && "all .3s")};
+  &:hover {
+    background: ${({ size }) => (size === "big" && theme.colors.main)};
+    color: ${({ size }) => (size === "big" && "#fff")};
+  }
+
   ${check}
 `;
 

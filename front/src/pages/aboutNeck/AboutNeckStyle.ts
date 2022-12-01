@@ -79,6 +79,10 @@ export const TextList = styled.ul`
   li{
     position: relative;
     padding-left: 12px;
+
+    &+li{
+      margin-top: 4px;
+    }
   }
 
   li::before{

@@ -4,29 +4,26 @@ export const SurveyContainer = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
   ${({ theme }) => theme.common.flexCenter};
   background: ${({ theme }) => theme.colors.mainLight};
-  flex-direction: column;
+
   .inner {
-    ${({ theme }) => theme.common.inner};
+    width: 800px;
+    margin: 0 auto;
     padding: 120px 0;
   }
 `;
 
 export const ContentBox = styled.div`
-  width: 800px;
-  height: 588px;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 64px 0;
+  border-radius: 4px;
+  background-color: #fff;
+  text-align: center;
 `;
 
 export const TitleBox = styled.div`
-  width: 800px;
-  height: auto;
-  display: flex;
+  ${({ theme }) => theme.common.flexCenter};
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-bottom: 40px;
 `;
 
 export const Title = styled.span`
@@ -42,27 +39,15 @@ export const Page = styled.span`
   font-weight: 600;
 `;
 
-export const TextBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 459px;
-  height: auto;
-  margin-top: 40px;
-`;
-
 export const Img = styled.img`
-  width: 320px;
+  margin: 48px 0;
+  width: 100%;
   height: 240px;
-  margin-top: 40px;
-  border: none;
+  object-fit: contain;
 `;
 
-export const Btn = styled.button`
-  width: 440px;
-  height: 48px;
-  background: ${({ theme }) => theme.colors.greyBtnBg};
-  margin-top: 48px;
-  &:hover {
-    background: ${({ theme }) => theme.colors.main};
+export const BtnWrap = styled.div`
+  button + button{
+    margin-top: 16px;
   }
 `;
