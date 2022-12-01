@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userDeleteSchema = exports.userUpdateSchema = exports.userLoginSchema = exports.userCreateSchema = exports.userCurrentSchema = void 0;
+exports.setAlertSchema = exports.userDeleteSchema = exports.userUpdateSchema = exports.userLoginSchema = exports.userCreateSchema = exports.userCurrentSchema = void 0;
 var joi_1 = __importDefault(require("joi"));
 exports.userCurrentSchema = joi_1.default.object().keys({
     user_id: joi_1.default.string().required(),
@@ -52,4 +52,9 @@ exports.userDeleteSchema = joi_1.default.object().keys({
     password: joi_1.default.string()
         .pattern(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"))
         .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+});
+exports.setAlertSchema = joi_1.default.object().keys({
+    user_id: joi_1.default.string().required(),
+    alert: joi_1.default.boolean().required(),
+    timer: joi_1.default.number().integer().required(),
 });

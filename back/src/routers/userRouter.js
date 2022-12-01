@@ -751,5 +751,5 @@ userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDele
 userRouter.post("/signup/email", nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
 userRouter.get("/signup/email/:email/code/:code", signupVerifyEmail); // email 인증
 userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
-userRouter.patch("/user/alert", authMiddleware_1.default, userSetAlert); // 알람 설정
+userRouter.patch("/user/alert", authMiddleware_1.default, validation.validateUserSetAlert, userSetAlert); // 알람 설정
 module.exports = userRouter;

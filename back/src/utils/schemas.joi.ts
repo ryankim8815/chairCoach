@@ -68,3 +68,9 @@ export const userDeleteSchema = Joi.object().keys({
     )
     .required(), // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
 });
+
+export const setAlertSchema = Joi.object().keys({
+  user_id: Joi.string().required(),
+  alert: Joi.boolean().required(),
+  timer: Joi.number().integer().required(),
+});
