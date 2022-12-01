@@ -273,66 +273,6 @@ const userSignin = async (
  *                   example: 2022-11-01T01:01:01.000Z
  */
 
-// POST: 회원정보 수정을 위한 비밀번호 확인
-const userPassword = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const user_id = req.body.user_id;
-    const password = req.body.password;
-    const updateUser = await userService.passwordCheck({
-      user_id,
-      password,
-    });
-    return res.status(200).json(updateUser);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userPassword api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
-/**
- * @swagger
- * /user/password:
- *   post:
- *     summary: 회원정보 수정을 위한 비밀번호 확인
- *     description: 회원정보 수정을 위한 비밀번호 확인
- *     tags: ["userRouter"]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               password:
- *                 type: string
- *                 example: test1234
- *     responses:
- *       200:
- *         description: successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 result:
- *                   type: boolean
- *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
- *                 message:
- *                   type: string
- *                   example: 입력하신 password가 일치합니다.
- */
-
 // POST: 회원정보 수정
 const userUpdate = async (
   req: express.Request,
@@ -634,6 +574,71 @@ const signupNickname = async (
  *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
  */
 
+/// PATCH: 알람 설정
+const userSetAlert = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const user_id = req.body.user_id;
+    const alert = req.body.alert;
+    const timer = req.body.timer;
+    const setAlert = await userService.setAlert({
+      user_id,
+      alert,
+      timer,
+    });
+    return res.status(200).json(setAlert);
+  } catch (err) {
+    const result_err = {
+      result: false,
+      cause: "api",
+      message: "userSetAlert api에서 오류가 발생했습니다.",
+    };
+    return res.status(200).json(result_err);
+  }
+};
+/**
+ * @swagger
+ * /user/alert:
+ *   patch:
+ *     summary: 알람 설정
+ *     description:  알람 설정
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               alert:
+ *                 type: boolean
+ *                 example: true
+ *               timer:
+ *                 type: int
+ *                 example: 15
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Alert 업데이트가 성공적으로 이뤄졌습니다.
+ */
+
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
 userRouter.get(
@@ -644,12 +649,6 @@ userRouter.get(
 ); // 현재 사용자 정보 조회
 userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
 userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
-userRouter.post(
-  "/user/password",
-  authMiddleware,
-  validation.validateCheckPassword,
-  userPassword
-); // 유저 정보 업데이트를 위한 password 확인
 userRouter.put(
   "/user",
   authMiddleware,
@@ -662,21 +661,14 @@ userRouter.delete(
   validation.validateUserDelete,
   userDelete
 ); // 유저 삭제
-userRouter.post(
-  "/signup/email",
-  validation.validateSignupEmail,
-  nodemailerMiddleware,
-  signupEmail
-); // email로 코드 발송
-userRouter.get(
-  "/signup/email/:email/code/:code",
-  validation.validateVerifyEmail,
-  signupVerifyEmail
-); // email 인증
-userRouter.get(
-  "/signup/nickname/:nickname",
-  validation.validateSignupNickname,
-  signupNickname
-); // nickname 중복확인
+userRouter.post("/signup/email", nodemailerMiddleware, signupEmail); // email로 코드 발송
+userRouter.get("/signup/email/:email/code/:code", signupVerifyEmail); // email 인증
+userRouter.get("/signup/nickname/:nickname", signupNickname); // nickname 중복확인
+userRouter.patch(
+  "/user/alert",
+  authMiddleware,
+  validation.validateUserSetAlert,
+  userSetAlert
+); // 알람 설정
 
 export = userRouter;

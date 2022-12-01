@@ -514,60 +514,35 @@ var userService = /** @class */ (function () {
             });
         });
     };
-    //// 회원가입 전 password 중복확인
-    userService.passwordCheck = function (_a) {
-        var user_id = _a.user_id, password = _a.password;
+    //// 알람 설정
+    userService.setAlert = function (_a) {
+        var user_id = _a.user_id, alert = _a.alert, timer = _a.timer;
         return __awaiter(this, void 0, void 0, function () {
-            var checkPassword, checkPasswordString, checkPasswordObject, result_err, thisUser, hashedCorrectPassword, isPasswordCorrect, result_errPassword, result_success, error_1, result_err;
+            var setAlert, setAlertString, setAlertObject, result_err, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 5, , 6]);
-                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
+                    case 0: return [4 /*yield*/, User_1.default.updateAlert({ user_id: user_id, alert: alert, timer: timer })];
                     case 1:
-                        checkPassword = _b.sent();
-                        checkPasswordString = JSON.stringify(checkPassword);
-                        checkPasswordObject = JSON.parse(checkPasswordString);
-                        if (!(checkPasswordObject.length == 0)) return [3 /*break*/, 2];
-                        result_err = {
-                            result: false,
-                            cause: "user_id",
-                            message: "요청하신 계정으로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.",
-                        };
-                        return [2 /*return*/, result_err];
-                    case 2:
-                        thisUser = checkPasswordObject[0];
-                        hashedCorrectPassword = thisUser.password;
-                        return [4 /*yield*/, bcrypt_1.default.compare(password, hashedCorrectPassword)];
-                    case 3:
-                        isPasswordCorrect = _b.sent();
-                        if (!isPasswordCorrect) {
-                            result_errPassword = {
+                        setAlert = _b.sent();
+                        setAlertString = JSON.stringify(setAlert);
+                        setAlertObject = JSON.parse(setAlertString);
+                        if (setAlertObject.affectedRows !== 1) {
+                            result_err = {
                                 result: false,
-                                cause: "password",
-                                message: "입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.",
+                                cause: "DB",
+                                message: "요청 처리에 실패했습니다. 요청값을 다시 한 번 확인해 주세요.",
                             };
-                            return [2 /*return*/, result_errPassword];
+                            return [2 /*return*/, result_err];
                         }
                         else {
                             result_success = {
                                 result: true,
                                 cause: "success",
-                                message: "\uC785\uB825\uD558\uC2E0 password\uAC00 \uC77C\uCE58\uD569\uB2C8\uB2E4.",
+                                message: "Alert \uC5C5\uB370\uC774\uD2B8\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             };
                             return [2 /*return*/, result_success];
                         }
-                        _b.label = 4;
-                    case 4: return [3 /*break*/, 6];
-                    case 5:
-                        error_1 = _b.sent();
-                        result_err = {
-                            result: false,
-                            cause: "service",
-                            message: "[확인요망]: userPassword api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, result_err];
-                    case 6: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });
