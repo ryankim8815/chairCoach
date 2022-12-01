@@ -42,7 +42,7 @@ export const MiddleBtn = styled.button<BtnStyle>`
   background: ${({ hover }) =>
     hover === "true" ? theme.colors.mainDark : theme.colors.main};
   color: #fff;
-  transition: 0.3s;
+  transition: all 0.3s;
 
   &:hover {
     background: ${({ theme }) => theme.colors.main};

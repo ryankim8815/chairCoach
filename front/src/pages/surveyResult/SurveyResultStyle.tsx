@@ -28,7 +28,7 @@ export const SubTitle2 = styled.p`
 export const ResultBox = styled.div`
   ${({ theme }) => theme.common.flexCenter};
   justify-content: space-between;
-  padding: 64px 120px;
+  padding: 64px 160px;
   background-color: #ffffff;
   margin-top: 20px;
   border-radius: 4px;

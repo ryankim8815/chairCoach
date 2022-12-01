@@ -18,10 +18,8 @@ const SurveyResult = () => {
           <div>
             <S.TextBox>
               <S.SubTitle1>
-                설문 조항 결과에 따르면,<br />
-                abcdefghijkl님의 거북목 위험도는{" "}<br />
-                <S.Percent>{point * 10}%</S.Percent>
-                입니다!
+                당신의 거북목 위험도는<br />
+                <S.Percent>{point * 10}%</S.Percent>입니다!
               </S.SubTitle1>
             </S.TextBox>
           </div>
