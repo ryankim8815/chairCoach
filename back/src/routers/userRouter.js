@@ -736,6 +736,75 @@ var signupNickname = function (req, res, next) { return __awaiter(void 0, void 0
  *                   type: string
  *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
  */
+/// PATCH: 알람 설정
+var userSetAlert = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, alert_1, timer, setAlert, err_11, result_err;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                user_id = req.body.user_id;
+                alert_1 = req.body.alert;
+                timer = req.body.timer;
+                return [4 /*yield*/, userService_1.default.setAlert({
+                        user_id: user_id,
+                        alert: alert_1,
+                        timer: timer,
+                    })];
+            case 1:
+                setAlert = _a.sent();
+                return [2 /*return*/, res.status(200).json(setAlert)];
+            case 2:
+                err_11 = _a.sent();
+                result_err = {
+                    result: false,
+                    cause: "api",
+                    message: "userSetAlert api에서 오류가 발생했습니다.",
+                };
+                return [2 /*return*/, res.status(200).json(result_err)];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+/**
+ * @swagger
+ * /user/alert:
+ *   patch:
+ *     summary: 알람 설정
+ *     description:  알람 설정
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               alert:
+ *                 type: boolean
+ *                 example: true
+ *               timer:
+ *                 type: int
+ *                 example: 15
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Alert 업데이트가 성공적으로 이뤄졌습니다.
+ */
 // api index
 userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
 userRouter.get("/user", authMiddleware_1.default, validation.validateUserCurrent, userCurrent); // 현재 사용자 정보 조회
@@ -747,4 +816,5 @@ userRouter.delete("/user", authMiddleware_1.default, validation.validateUserDele
 userRouter.post("/signup/email", validation.validateSignupEmail, nodemailerMiddleware_1.default, signupEmail); // email로 코드 발송
 userRouter.get("/signup/email/:email/code/:code", validation.validateVerifyEmail, signupVerifyEmail); // email 인증
 userRouter.get("/signup/nickname/:nickname", validation.validateSignupNickname, signupNickname); // nickname 중복확인
+userRouter.patch("/user/alert", authMiddleware_1.default, validation.validateUserSetAlert, userSetAlert); // 알람 설정
 module.exports = userRouter;
