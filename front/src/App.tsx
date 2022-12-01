@@ -52,6 +52,7 @@ function App() {
                 path="login/oauth2/code/google"
                 element={<GoogleLogin />}
               />
+               <Route path="/chaircoach" element={<ChairCoach />} />
             </Routes>
             <Footer />
           </ThemeProvider>
