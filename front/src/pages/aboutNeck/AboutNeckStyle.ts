@@ -6,7 +6,7 @@ import aboutNeck3 from "../../assets/img/aboutneck3.png";
 export const WholePage = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
   background: ${({ theme }) => theme.colors.mainLight};
-  flex-direction: column;
+
   .inner {
     ${({ theme }) => theme.common.inner};
     padding: 120px 0;
@@ -14,20 +14,19 @@ export const WholePage = styled.div`
 `;
 
 export const TitleBox = styled.div`
-  margin: 0 auto;
   text-align: center;
 `;
 
 export const Title = styled.p`
   font-size: ${({ theme }) => theme.fontSize.title};
+  margin-bottom: 40px;
 `;
 
-export const SubTitle = styled.span`
+export const SubTitle = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.subTitle};
   font-weight: 500;
 `;
 export const Text = styled.span`
-  font-size: 16px;
   margin-top: 20px;
   line-height:1.25;
 `;
@@ -37,71 +36,86 @@ export const Bold = styled.span`
 `;
 
 export const MainContents = styled.div`
+  margin: 0 auto;
   width: 960px;
-  height: 792px;
-  display: flex;
-  flex-direction: column;
-  margin: 40px auto;
-  background-color: #ffffff;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.mainMoreLight};
+  overflow: hidden;
 `;
 
 export const Content = styled.div`
-  width: 960px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
   height: 264px;
-  display: flex;
 `;
 
 export const SizedImg1 = styled.div`
-  width: 50%;
-  height: 264px;
   background-image: url(${aboutNeck1});
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 export const SizedImg2 = styled.div`
-  width: 50%;
-  height: 264px;
   background-image: url(${aboutNeck2});
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 export const SizedImg3 = styled.div`
-  width: 50%;
-  height: 264px;
   background-image: url(${aboutNeck3});
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
 
 export const TextBox = styled.div`
-  width: 50%;
-  height: 264px;
   line-height: 1.25;
   padding:40px;
-  background:#FFF;
+`;
+
+export const TextList = styled.ul`
+  margin-bottom: 4px;
+  li{
+    position: relative;
+    padding-left: 12px;
+  }
+
+  li::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #333;
+  }
 `;
 
 export const ChioceBox = styled.div`
-  width: 1180px;
-  height: 234px;
-  display: flex;
-  flex-direction: column;
-  margin: 120px auto 0 auto;
+  margin-top: 120px;
 `;
 export const BtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 40px;
 `;
 export const ChoiceBtn = styled.div`
-  width: 570px;
-  height: 156px;
-  margin-top: 20px;
-  background: ${({ theme }) => theme.colors.greyBtnBg};
+  padding: 32px 40px;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: all .3s;
+
+  p{
+    margin-top: 20px;
+    line-height: 1.25;
+  }
+
   &:hover {
     background: ${({ theme }) => theme.colors.main};
     color: #ffffff;
   }
-`;
-export const BtnText = styled.div`
-  margin: 20px auto auto 40px;
 `;
