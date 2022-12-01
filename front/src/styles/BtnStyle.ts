@@ -80,3 +80,15 @@ export const InputCheckBtn = styled.button`
   border-radius: 2px;
   font-size: ${({ theme }) => theme.fontSize.text};
 `;
+
+// 알람 버튼
+export const AlarmBtn = styled.button<BtnStyle>`
+  width: 88px;
+  height: 60px;
+  border: 1px solid ${({ check }) => (check === "true" ? theme.colors.main : theme.colors.greyBorder)};
+  border-radius: 30px;
+  background: ${({ check }) => (check === "true" ? theme.colors.main : "#fff")};;
+  font-weight: 500;
+  font-size: 20px;
+  color: ${({ check }) => (check === "true" ? "#fff" : theme.colors.greyText)};
+`;
