@@ -40,7 +40,7 @@ import * as posenet from "@tensorflow-models/posenet";
      if (keypoint.score < minConfidence) {
        continue;
      }
-     const x = videoWidth - keypoint.x;
+     const x = videoWidth-(videoWidth - keypoint.x);
      const y = keypoint.y;
      drawPoint(ctx, y * scale, x * scale, r, color, videoWidth);
    }
