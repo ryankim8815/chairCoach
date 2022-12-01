@@ -5,7 +5,7 @@ import Webcam from 'react-webcam';
 import {drawKeypoints, drawSkeleton} from './util'
 import * as poseDetection from '@tensorflow-models/pose-detection';
 
-
+let count = 0;
 require('@tensorflow/tfjs')
 const ChairCoach = () => {
   const webcamRef=useRef(null);
@@ -22,9 +22,13 @@ const ChairCoach = () => {
       const videoHeight = (webcamRef.current as any).video.videoHeight;
       (webcamRef.current as any).video.width = videoWidth;
       (webcamRef.current as any).video.height = videoHeight;
-      const pose = await detector.estimatePoses(video);
+      const pose = await detector.estimatePoses(video, {
+      });
       console.log('좌표값',pose[0].keypoints.slice(0,11))
+      console.log(count++)
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
+
+      requestAnimationFrame(() => {detectWebCamFeed(detector)})
     }
   };
 
@@ -37,10 +41,10 @@ const ChairCoach = () => {
       detectorConfig
     );
 
-    setInterval(() => {
-      detectWebCamFeed(detector);
-    }, 100);
-
+    requestAnimationFrame(() => detectWebCamFeed(detector))
+    // setInterval(() => {
+    //   detectWebCamFeed(detector)
+    // }, 100)
   };
   runMovenet();
 
@@ -51,6 +55,7 @@ const ChairCoach = () => {
     drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
     drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
+
   return (
     <div>
       <Webcam
