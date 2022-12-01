@@ -9,11 +9,12 @@ import pandas as pd
 app = FastAPI(title="ChairCouchModel", description="API for Pose classification", version="1.0")
 
 class xyCoods(BaseModel):
-    xy_coord: list
+    xy_coord: list[float]
 
 model = XGBClassifier()
-model = model.load_model('first_model.json')
+model.load_model('first_model.json')
 
+actions = np.array(['hands_up', 'neck_down', 'neck_side'])
 
 @app.get("/")
 async def root():
@@ -21,6 +22,7 @@ async def root():
 
 @app.post('/predict', tags=["predictions"])
 async def get_prediction(coords:xyCoods):
-    df = np.array([coords.dict().values])
-    # prediction = model.predict(df)
-    return {"prediction": df}
+    df = list(coords.dict().values())
+    pred = model.predict(df)
+    action = actions[np.argmax(pred)]
+    return {"prediction": action}
