@@ -73,8 +73,8 @@ import * as posenet from "@tensorflow-models/posenet";
  
    adjacentKeyPoints.forEach((keypoints) => {
      drawSegment(
-       toTuple((keypoints[0]as any).y, videoWidth - (keypoints[0]as any).x),
-       toTuple((keypoints[1]as any).y, videoWidth - (keypoints[1]as any).x),
+       toTuple((keypoints[0]as any).y, videoWidth-(videoWidth - (keypoints[0]as any).x)),
+       toTuple((keypoints[1]as any).y, videoWidth-(videoWidth - (keypoints[1]as any).x)),
        color,
        scale,
        ctx
