@@ -35,129 +35,98 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateBodyMulter = exports.validateBodyParams = exports.validateParams = exports.validateBody = void 0;
-var validateBody = function (Schema) {
-    return function (req, res, next) {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var neckService_1 = __importDefault(require("../services/neckService"));
+var userController = /** @class */ (function () {
+    function userController() {
+    }
+    // GET: 전체 거북목 테스트 결과 조회 기능
+    userController.neckResultList = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var body, err_1, result_err;
+            var allNecks, err_1, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        body = req.body;
-                        return [4 /*yield*/, Schema.validateAsync(body)];
+                        return [4 /*yield*/, neckService_1.default.getAllNecks()];
                     case 1:
-                        _a.sent();
-                        next();
-                        return [3 /*break*/, 3];
+                        allNecks = _a.sent();
+                        return [2 /*return*/, res.status(200).json(allNecks)];
                     case 2:
                         err_1 = _a.sent();
                         result_err = {
                             result: false,
-                            cause: "type",
-                            message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                            cause: "api",
+                            message: "neckResultList api에서 오류가 발생했습니다.",
                         };
-                        return [2 /*return*/, res.status(499).json(result_err)];
+                        return [2 /*return*/, res.status(200).json(result_err)];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-};
-exports.validateBody = validateBody;
-var validateParams = function (Schema) {
-    return function (req, res, next) {
+    // GET: 특정 유저의 거북목 테스트 결과 조회
+    userController.neckResults = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var params, err_2, result_err;
+            var user_id, Necks, err_2, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        params = req.params;
-                        return [4 /*yield*/, Schema.validateAsync(params)];
+                        user_id = req.body.user_id;
+                        return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
                     case 1:
-                        _a.sent();
-                        next();
-                        return [3 /*break*/, 3];
+                        Necks = _a.sent();
+                        return [2 /*return*/, res.status(200).json(Necks)];
                     case 2:
                         err_2 = _a.sent();
                         result_err = {
                             result: false,
-                            cause: "type",
-                            message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                            cause: "api",
+                            message: "neckResults api에서 오류가 발생했습니다.",
                         };
-                        return [2 /*return*/, res.status(499).json(result_err)];
+                        return [2 /*return*/, res.status(200).json(result_err)];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-};
-exports.validateParams = validateParams;
-var validateBodyParams = function (bodySchema, paramsSchema) {
-    return function (req, res, next) {
+    // POST: 거북목 테스트 결과 기록
+    userController.neckCreate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var body, params, err_3, result_err;
+            var user_id, filename, result, score, allUsers, err_3, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        body = req.body;
-                        params = req.params;
-                        return [4 /*yield*/, bodySchema.validateAsync(body)];
+                        _a.trys.push([0, 2, , 3]);
+                        user_id = req.body.user_id;
+                        filename = req.file.filename;
+                        result = req.body.result;
+                        score = req.body.score;
+                        return [4 /*yield*/, neckService_1.default.addNeck({
+                                user_id: user_id,
+                                result: result,
+                                score: score,
+                                filename: filename,
+                            })];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, paramsSchema.validateAsync(params)];
+                        allUsers = _a.sent();
+                        return [2 /*return*/, res.status(200).json(allUsers)];
                     case 2:
-                        _a.sent();
-                        next();
-                        return [3 /*break*/, 4];
-                    case 3:
                         err_3 = _a.sent();
                         result_err = {
                             result: false,
-                            cause: "type",
-                            message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                            cause: "api",
+                            message: "neckCreate api에서 오류가 발생했습니다.",
                         };
-                        return [2 /*return*/, res.status(499).json(result_err)];
-                    case 4: return [2 /*return*/];
+                        return [2 /*return*/, res.status(200).json(result_err)];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
-};
-exports.validateBodyParams = validateBodyParams;
-var validateBodyMulter = function (bodySchema, multerSchema) {
-    return function (req, res, next) {
-        return __awaiter(this, void 0, void 0, function () {
-            var body, file, err_4, result_err;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        body = req.body;
-                        file = req.file;
-                        return [4 /*yield*/, bodySchema.validateAsync(body)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, multerSchema.validateAsync(file)];
-                    case 2:
-                        _a.sent();
-                        next();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        err_4 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "type",
-                            message: "api 요청시 잘못된 type이 첨부되었습니다.",
-                        };
-                        return [2 /*return*/, res.status(499).json(result_err)];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-};
-exports.validateBodyMulter = validateBodyMulter;
+    return userController;
+}());
+module.exports = userController;
