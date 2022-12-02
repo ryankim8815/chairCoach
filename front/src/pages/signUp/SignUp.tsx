@@ -22,7 +22,7 @@ const SingUp = () => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [passwordConfirm , setPasswordConfirm ] = useState("");
   const [nickname, setNickname] = useState("");
   
   const [codeDisabled, setCodeDisabled] = useState(true);
@@ -98,7 +98,7 @@ const SingUp = () => {
   };
 
   // 닉네임 disabled 해제여부
-  const nicknameDisabled = password2.length > 0 && password === password2 ? false : true;
+  const nicknameDisabled = passwordConfirm.length > 0 && password === passwordConfirm ? false : true;
 
   // 닉네임 중복 확인
   const handlerCheckNicknameClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -197,9 +197,9 @@ const SingUp = () => {
                   type="password"
                   disabled={!isPwdValid}
                   placeholder="비밀번호를 다시 입력해주세요."
-                  onChange={(e) => setPassword2(e.target.value)}
+                  onChange={(e) => setPasswordConfirm(e.target.value)}
                 />
-                {password2.length === 0 || password === password2 ? null : (
+                {passwordConfirm.length === 0 || password === passwordConfirm ? null : (
                   <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
                 )}
               </div>

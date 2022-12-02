@@ -28,6 +28,7 @@ export const StretchingItem = styled.li`
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
+  transform: translateY(0);
   transition: all .3s;
 
   &:nth-child(1){
@@ -84,7 +85,8 @@ export const StretchingItem = styled.li`
   }
 
   &:hover{
-    animation: upDown .8s infinite linear alternate;
+    /* animation: upDown .6s infinite linear alternate; */
+    transform: translateY(-6px);
   }
 
   @keyframes  upDown {
@@ -92,7 +94,7 @@ export const StretchingItem = styled.li`
       transform: translateY(0);
     }
     25%{
-      transform: translateY(2px);
+      transform: translateY(-2px);
     }
     100%{
       transform: translateY(0);

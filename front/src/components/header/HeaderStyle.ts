@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const HeaderLayout = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -50,7 +50,7 @@ export const NavLayout = styled.nav`
   }
 `;
 
-export const LoginMenuCon = styled.div`
+export const LoginMenuContent = styled.div`
   position: relative;
   font-weight: 300;
   button{
@@ -88,7 +88,7 @@ export const LoginMenuCon = styled.div`
   }
 `;
 
-export const LogoutMenuCon = styled.div`
+export const LogoutMenuContent = styled.div`
   ul{
     ${({ theme }) => theme.common.flexCenter};
     justify-content: space-between;
