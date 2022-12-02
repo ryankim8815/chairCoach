@@ -397,25 +397,52 @@ class userService {
     }
   }
 
-  //// 알람 설정
-  static async setAlert({ user_id, alert, timer }) {
-    const setAlert = await User.updateAlert({ user_id, alert, timer });
-    const setAlertString = JSON.stringify(setAlert);
-    const setAlertObject = JSON.parse(setAlertString);
-    if (setAlertObject.affectedRows !== 1) {
+  //// 회원가입 전 password 중복확인
+  static async passwordCheck({ user_id, password }) {
+    try {
+      const checkPassword = await User.findByUserId({ user_id });
+      const checkPasswordString = JSON.stringify(checkPassword);
+      const checkPasswordObject = JSON.parse(checkPasswordString);
+      if (checkPasswordObject.length == 0) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message:
+            "요청하신 계정으로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.",
+        };
+        return result_err;
+      } else {
+        const thisUser = checkPasswordObject[0];
+        const hashedCorrectPassword = thisUser.password;
+
+        const isPasswordCorrect = await bcrypt.compare(
+          password,
+          hashedCorrectPassword
+        );
+        if (!isPasswordCorrect) {
+          const result_errPassword = {
+            result: false,
+            cause: "password",
+            message:
+              "입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.",
+          };
+          return result_errPassword;
+        } else {
+          const result_success = {
+            result: true,
+            cause: "success",
+            message: `입력하신 password가 일치합니다.`,
+          };
+          return result_success;
+        }
+      }
+    } catch (error) {
       const result_err = {
         result: false,
-        cause: "DB",
-        message: "요청 처리에 실패했습니다. 요청값을 다시 한 번 확인해 주세요.",
+        cause: "service",
+        message: "[확인요망]: userPassword api에서 오류가 발생했습니다.",
       };
       return result_err;
-    } else {
-      const result_success = {
-        result: true,
-        cause: "success",
-        message: `Alert 업데이트가 성공적으로 이뤄졌습니다.`,
-      };
-      return result_success;
     }
   }
 
