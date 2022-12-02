@@ -55,8 +55,17 @@ class Body {
   // 기록 종료
   static async patch({ body_id, end_time }) {
     const [rows, fields] = await promisePool.query({
-      sql: "UPDATE bodies SET `end_time` = ? WHERE `body_id` = ?",
-      values: [end_time, body_id],
+      sql: "UPDATE bodies SET `end_time` = ?, `duration` = TIMESTAMPDIFF(MINUTE, `start_time`, ?) WHERE `body_id` = ?",
+      values: [end_time, end_time, body_id],
+    });
+    return rows;
+  }
+
+  // 특정 유저의 기록 조회 - monthly
+  static async findByUserIdMonth({ user_id, year }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "SELECT * FROM bodies WHERE DATE_FORMAT(`start_time`, '%Y') = ? AND `user_id` = ? GROUP BY DATE_FORMAT(`start_time`, '%Y-%m')",
+      values: [year, user_id],
     });
     return rows;
   }

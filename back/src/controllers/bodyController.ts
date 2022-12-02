@@ -89,6 +89,27 @@ class bodyController {
       return res.status(200).json(result_err);
     }
   }
+
+  // GET: 특정 유저의 운동 기록 조회
+  static async bodyRecordsMonthly(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const user_id = req.body.user_id;
+      const year = req.body.year;
+      const Bodies = await bodyService.getBodiesByMonth({ user_id, year });
+      return res.status(200).json(Bodies);
+    } catch (err) {
+      const result_err = {
+        result: false,
+        cause: "api",
+        message: "bodyRecords api에서 오류가 발생했습니다.",
+      };
+      return res.status(200).json(result_err);
+    }
+  }
 }
 
 export = bodyController;

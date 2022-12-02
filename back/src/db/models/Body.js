@@ -154,8 +154,26 @@ var Body = /** @class */ (function () {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "UPDATE bodies SET `end_time` = ? WHERE `body_id` = ?",
-                            values: [end_time, body_id],
+                            sql: "UPDATE bodies SET `end_time` = ?, `duration` = TIMESTAMPDIFF(MINUTE, `start_time`, ?) WHERE `body_id` = ?",
+                            values: [end_time, end_time, body_id],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
+    // 특정 유저의 기록 조회 - monthly
+    Body.findByUserIdMonth = function (_a) {
+        var user_id = _a.user_id, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT * FROM bodies WHERE DATE_FORMAT(`start_time`, '%Y') = ? AND `user_id` = ? GROUP BY DATE_FORMAT(`start_time`, '%Y-%m')",
+                            values: [year, user_id],
                         })];
                     case 1:
                         _b = _c.sent(), rows = _b[0], fields = _b[1];
