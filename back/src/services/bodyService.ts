@@ -113,6 +113,42 @@ class bodyService {
     });
     return result_success;
   }
+
+  //// 특정 유저의 운동 기록 조회 - monthly
+  static async getBodiesByMonth({ user_id, year }) {
+    const Bodies = await Body.findByUserIdMonth({ user_id, year });
+    const BodiesString = JSON.stringify(Bodies);
+    const BodiesObject = JSON.parse(BodiesString);
+    const result_success = Object.assign(
+      {
+        result: true,
+        cause: "success",
+        message: `해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.`,
+      },
+      { list: BodiesObject }
+    );
+    return result_success;
+  }
+
+  //// 특정 유저의 운동 기록 조회 - daily
+  static async getBodiesByDaily({ user_id, week }) {
+    console.log("아이디: ", user_id);
+    console.log("주차: ", week);
+    const Bodies = await Body.findByUserIdDaily({ user_id, week });
+    console.log("sql result: ", Bodies);
+
+    const BodiesString = JSON.stringify(Bodies);
+    const BodiesObject = JSON.parse(BodiesString);
+    const result_success = Object.assign(
+      {
+        result: true,
+        cause: "success",
+        message: `해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.`,
+      },
+      { list: BodiesObject }
+    );
+    return result_success;
+  }
 }
 
 export = bodyService;

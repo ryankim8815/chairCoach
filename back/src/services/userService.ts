@@ -445,5 +445,27 @@ class userService {
       return result_err;
     }
   }
+
+  //// 알람 설정
+  static async setAlert({ user_id, alert, timer }) {
+    const setAlert = await User.updateAlert({ user_id, alert, timer });
+    const setAlertString = JSON.stringify(setAlert);
+    const setAlertObject = JSON.parse(setAlertString);
+    if (setAlertObject.affectedRows !== 1) {
+      const result_err = {
+        result: false,
+        cause: "DB",
+        message: "요청 처리에 실패했습니다. 요청값을 다시 한 번 확인해 주세요.",
+      };
+      return result_err;
+    } else {
+      const result_success = {
+        result: true,
+        cause: "success",
+        message: `Alert 업데이트가 성공적으로 이뤄졌습니다.`,
+      };
+      return result_success;
+    }
+  }
 }
 export = userService;

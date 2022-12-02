@@ -55,8 +55,26 @@ class Body {
   // 기록 종료
   static async patch({ body_id, end_time }) {
     const [rows, fields] = await promisePool.query({
-      sql: "UPDATE bodies SET `end_time` = ? WHERE `body_id` = ?",
-      values: [end_time, body_id],
+      sql: "UPDATE bodies SET `end_time` = ?, `duration` = TIMESTAMPDIFF(MINUTE, `start_time`, ?) WHERE `body_id` = ?",
+      values: [end_time, end_time, body_id],
+    });
+    return rows;
+  }
+
+  // 특정 유저의 기록 조회 - monthly
+  static async findByUserIdMonth({ user_id, year }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "SELECT DATE_FORMAT(`start_time`,'%Y-%m') AS month, tag, COUNT(`user_id`) AS count, SUM(duration) AS duration FROM bodies WHERE NOT `duration` IS NULL AND `user_id` = ? AND DATE_FORMAT(`start_time`, '%Y') = ? GROUP BY tag, DATE_FORMAT(`start_time`, '%Y-%m')",
+      values: [user_id, year],
+    });
+    return rows;
+  }
+
+  // 특정 유저의 기록 조회 - daily
+  static async findByUserIdDaily({ user_id, week }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "SELECT DATE_FORMAT(`start_time`,'%Y-%m-%d') AS date, tag, COUNT(`user_id`) AS count, SUM(duration) AS duration FROM bodies WHERE NOT `duration` IS NULL AND `user_id` = ? AND DATE_FORMAT(`start_time`, '%u') = ? GROUP BY tag, DATE_FORMAT(`start_time`, '%Y-%m-%d')",
+      values: [user_id, week],
     });
     return rows;
   }
