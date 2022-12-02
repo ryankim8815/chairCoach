@@ -182,6 +182,24 @@ var Body = /** @class */ (function () {
             });
         });
     };
+    // 특정 유저의 기록 조회 - daily
+    Body.findByUserIdDaily = function (_a) {
+        var user_id = _a.user_id, week = _a.week;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT DATE_FORMAT(`start_time`,'%Y-%m-%d') AS date, tag, COUNT(`user_id`) AS count, SUM(duration) AS duration FROM bodies WHERE NOT `duration` IS NULL AND `user_id` = ? AND DATE_FORMAT(`start_time`, '%u') = ? GROUP BY tag, DATE_FORMAT(`start_time`, '%Y-%m-%d')",
+                            values: [user_id, week],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
     return Body;
 }());
 module.exports = Body;

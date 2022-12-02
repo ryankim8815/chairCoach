@@ -37,6 +37,7 @@ bodyRouter.get("/body", authMiddleware_1.default, validation.validateBodyRecords
 bodyRouter.post("/body", authMiddleware_1.default, validation.validateBodyCreate, bodyController_1.default.bodyCreate); // 특정 유저의 운동 기록 시작
 bodyRouter.patch("/body", authMiddleware_1.default, validation.validateBodyUpdate, bodyController_1.default.bodyUpdate); // 특정 유저의 운동 기록 종료
 bodyRouter.get("/body/year/:year", authMiddleware_1.default, Validation.validateBodyParams(Schemas.bodyRecordsSchema, Schemas.bodyRecordsFindByYear), bodyController_1.default.bodyRecordsMonthly); // 특정 유저의 운동 기록 조회 - 월간
+bodyRouter.get("/body/week/:week", authMiddleware_1.default, Validation.validateBodyParams(Schemas.bodyRecordsSchema, Schemas.bodyRecordsFindByWeek), bodyController_1.default.bodyRecordsDaily); // 특정 유저의 운동 기록 조회 - 일간
 module.exports = bodyRouter;
 /**
  * @swagger
@@ -172,6 +173,55 @@ module.exports = bodyRouter;
  *                   type: object
  *                   properties:
  *                     month:
+ *                       type: string
+ *                     tag:
+ *                       type: string
+ *                     count:
+ *                       type: int
+ *                     duration:
+ *                       type: int
+ *                   example:
+ *                     - month: 2022-11
+ *                       tag: neck
+ *                       count: 5
+ *                       duration: 10
+ */
+/**
+ * @swagger
+ * /body/week/{week}:
+ *   get:
+ *     summary: 특정 유저의 운동 기록 조회 - 특정연도의 일간
+ *     description: 로그인한 사용자만 이용 가능합니다.
+ *     tags: ["bodyRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: week
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: 해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.
+ *                 list:
+ *                   type: object
+ *                   properties:
+ *                     date:
  *                       type: string
  *                     tag:
  *                       type: string
