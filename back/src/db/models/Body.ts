@@ -64,8 +64,8 @@ class Body {
   // 특정 유저의 기록 조회 - monthly
   static async findByUserIdMonth({ user_id, year }) {
     const [rows, fields] = await promisePool.query({
-      sql: "SELECT * FROM bodies WHERE DATE_FORMAT(`start_time`, '%Y') = ? AND `user_id` = ? GROUP BY DATE_FORMAT(`start_time`, '%Y-%m')",
-      values: [year, user_id],
+      sql: "SELECT DATE_FORMAT(`start_time`,'%Y-%m') AS month, tag, COUNT(`user_id`) AS count, SUM(duration) AS duration FROM bodies WHERE NOT `duration` IS NULL AND `user_id` = ? AND DATE_FORMAT(`start_time`, '%Y') = ? GROUP BY tag, DATE_FORMAT(`start_time`, '%Y-%m')",
+      values: [user_id, year],
     });
     return rows;
   }

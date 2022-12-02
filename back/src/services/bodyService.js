@@ -191,7 +191,7 @@ var bodyService = /** @class */ (function () {
     bodyService.getBodiesByMonth = function (_a) {
         var user_id = _a.user_id, year = _a.year;
         return __awaiter(this, void 0, void 0, function () {
-            var Bodies, BodiesString, BodiesObject, i, countBodies, countBodiesString, countBodiesObject, result_success;
+            var Bodies, BodiesString, BodiesObject, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, Body_1.default.findByUserIdMonth({ user_id: user_id, year: year })];
@@ -199,19 +199,11 @@ var bodyService = /** @class */ (function () {
                         Bodies = _b.sent();
                         BodiesString = JSON.stringify(Bodies);
                         BodiesObject = JSON.parse(BodiesString);
-                        for (i = 0; i < BodiesObject.length; i++) {
-                            delete BodiesObject[i].user_id;
-                        }
-                        return [4 /*yield*/, Body_1.default.countByUserId({ user_id: user_id })];
-                    case 2:
-                        countBodies = _b.sent();
-                        countBodiesString = JSON.stringify(countBodies);
-                        countBodiesObject = JSON.parse(countBodiesString);
                         result_success = Object.assign({
                             result: true,
                             cause: "success",
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { count: countBodiesObject[0].cnt, list: BodiesObject });
+                        }, { list: BodiesObject });
                         return [2 /*return*/, result_success];
                 }
             });

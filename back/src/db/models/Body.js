@@ -172,8 +172,8 @@ var Body = /** @class */ (function () {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "SELECT * FROM bodies WHERE DATE_FORMAT(`start_time`, '%Y') = ? AND `user_id` = ? GROUP BY DATE_FORMAT(`start_time`, '%Y-%m')",
-                            values: [year, user_id],
+                            sql: "SELECT DATE_FORMAT(`start_time`,'%Y-%m') AS month, tag, COUNT(`user_id`) AS count, SUM(duration) AS duration FROM bodies WHERE NOT `duration` IS NULL AND `user_id` = ? AND DATE_FORMAT(`start_time`, '%Y') = ? GROUP BY tag, DATE_FORMAT(`start_time`, '%Y-%m')",
+                            values: [user_id, year],
                         })];
                     case 1:
                         _b = _c.sent(), rows = _b[0], fields = _b[1];

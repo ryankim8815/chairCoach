@@ -163,7 +163,7 @@ var bodyController = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
-                        year = req.body.year;
+                        year = req.params.year;
                         return [4 /*yield*/, bodyService_1.default.getBodiesByMonth({ user_id: user_id, year: year })];
                     case 1:
                         Bodies = _a.sent();

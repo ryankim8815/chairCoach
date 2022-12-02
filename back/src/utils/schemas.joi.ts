@@ -90,3 +90,7 @@ export const bodyUpdateSchema = Joi.object().keys({
   user_id: Users.user_id.required(),
   body_id: Bodies.body_id.required(),
 });
+
+export const bodyRecordsFindByYear = Joi.object().keys({
+  year: Bodies.year.required(),
+});

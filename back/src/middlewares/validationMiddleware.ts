@@ -41,6 +41,31 @@ const validateParams = (Schema: Joi.ObjectSchema<any>) =>
     }
   };
 
+const validateBodyParams = (
+  bodySchema: Joi.ObjectSchema<any>,
+  paramsSchema: Joi.ObjectSchema<any>
+) =>
+  async function (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const body = req.body;
+      const params = req.params;
+      await bodySchema.validateAsync(body);
+      await paramsSchema.validateAsync(params);
+      next();
+    } catch (err) {
+      const result_err = {
+        result: false,
+        cause: "type",
+        message: "api 요청시 잘못된 type이 첨부되었습니다.",
+      };
+      return res.status(499).json(result_err);
+    }
+  };
+
 const validateBodyMulter = (
   bodySchema: Joi.ObjectSchema<any>,
   multerSchema: Joi.ObjectSchema<any>
@@ -60,10 +85,10 @@ const validateBodyMulter = (
       const result_err = {
         result: false,
         cause: "type",
-        message: "api 요청시 잘못된 type이 첨부되었습니다." + err,
+        message: "api 요청시 잘못된 type이 첨부되었습니다.",
       };
       return res.status(499).json(result_err);
     }
   };
 
-export { validateBody, validateParams, validateBodyMulter };
+export { validateBody, validateParams, validateBodyParams, validateBodyMulter };

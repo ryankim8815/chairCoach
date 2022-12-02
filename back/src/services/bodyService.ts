@@ -119,19 +119,13 @@ class bodyService {
     const Bodies = await Body.findByUserIdMonth({ user_id, year });
     const BodiesString = JSON.stringify(Bodies);
     const BodiesObject = JSON.parse(BodiesString);
-    for (let i = 0; i < BodiesObject.length; i++) {
-      delete BodiesObject[i].user_id;
-    }
-    const countBodies = await Body.countByUserId({ user_id });
-    const countBodiesString = JSON.stringify(countBodies);
-    const countBodiesObject = JSON.parse(countBodiesString);
     const result_success = Object.assign(
       {
         result: true,
         cause: "success",
         message: `해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.`,
       },
-      { count: countBodiesObject[0].cnt, list: BodiesObject }
+      { list: BodiesObject }
     );
     return result_success;
   }

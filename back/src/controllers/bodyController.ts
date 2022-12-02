@@ -98,7 +98,7 @@ class bodyController {
   ) {
     try {
       const user_id = req.body.user_id;
-      const year = req.body.year;
+      const year = req.params.year;
       const Bodies = await bodyService.getBodiesByMonth({ user_id, year });
       return res.status(200).json(Bodies);
     } catch (err) {
