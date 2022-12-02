@@ -14,7 +14,7 @@
  * limitations under the License.
  * =============================================================================
  */
-import * as posenet from "@tensorflow-models/posenet";
+ import * as posenet from "@tensorflow-models/posenet";
 
  const color = "purple";
  const lineWidth = 3;

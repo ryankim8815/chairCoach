@@ -23,6 +23,7 @@ import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 import NaverLogin from "./components/naverLogin/Naver";
 import MyPage from "./pages/myPage/MyPage";
 import GoogleLogin from "./components/googleLogin/GoogleLogin";
+import AiStretching from "./pages/aiStretching/AiStretching";
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
                 path="login/oauth2/code/google"
                 element={<GoogleLogin />}
               />
-               <Route path="/chaircoach" element={<ChairCoach />} />
+               <Route path="/aistretching" element={<AiStretching />} />
             </Routes>
             <Footer />
           </ThemeProvider>
