@@ -60,6 +60,14 @@ class User {
     return rows;
   }
 
+  static async updateAlert({ user_id, alert, timer }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "UPDATE users SET `alert` = ?, `timer` = ? WHERE `user_id` = ?",
+      values: [alert, timer, user_id],
+    });
+    return rows;
+  }
+
   static async withdraw({ user_id }) {
     const [rows, fields] = await promisePool.query({
       sql: "UPDATE users SET `withdraw_at` = NOW(), `status` = 'pending' WHERE `user_id` = ?",
