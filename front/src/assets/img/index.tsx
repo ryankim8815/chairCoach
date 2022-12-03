@@ -1,0 +1,10 @@
+export { default as survey1 } from "./survey1.png";
+export { default as survey2 } from "./survey2.png";
+export { default as survey3 } from "./survey3.png";
+export { default as survey4 } from "./survey4.png";
+export { default as survey5 } from "./survey5.png";
+export { default as survey6 } from "./survey6.png";
+export { default as survey7 } from "./survey7.png";
+export { default as survey8 } from "./survey8.png";
+export { default as survey9 } from "./survey9.png";
+export { default as survey10 } from "./survey10.png";

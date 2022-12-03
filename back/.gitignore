@@ -1,0 +1,9 @@
+node_modules
+build
+uploads
+logs
+*.env
+*.sh
+*.plist
+*.sql
+.DS_Store
