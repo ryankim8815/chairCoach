@@ -138,8 +138,8 @@ def detect(opt):
                         print("XGBoost : {0}".format(answer_xgb))
                         
                         # SVM model
-                        answer_svm = SVM([kpts_xy])
-                        print("SVM : {0}".format(answer_svm))
+                        # answer_svm = SVM([kpts_xy])
+                        # print("SVM : {0}".format(answer_svm))
                     
                         print("det_index: ", det_index)
                         plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_thickness=opt.line_thickness, kpt_label=kpt_label, kpts=kpts, steps=3, orig_shape=im0.shape[:2])
