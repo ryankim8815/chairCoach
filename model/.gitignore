@@ -1,9 +1,0 @@
-# data
-/data/images
-
-# csv 
-*.csv
-*.json
-
-*.sav
-Logs/train
