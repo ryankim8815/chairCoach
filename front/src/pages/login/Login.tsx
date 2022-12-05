@@ -30,8 +30,7 @@ const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST
 
 const Login = () => {
   const navigate = useNavigate(); 
-
-  const setUser = useSetRecoilState(userState)
+  const setUser = useSetRecoilState(userState);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,18 +46,25 @@ const Login = () => {
     else if (!password.length) setWaring("password");
     else if (!(isEmailValid && isPwdValid)) setWaring("invalidInput");
 
-    const res:any = await Api.post("signin", {
-      email: email,
-      password: password,
-    });
-    console.log(res);
-
-    if(res.data.result){
-      setUser(res.data.nickname);
-      navigate('/');
-    }else{
-      setWaring("invalidInput");
-      setUser(null);
+    try{
+      const res = await Api.post("signin", {
+        email: email,
+        password: password,
+      });
+      console.log(res);
+      
+      const jwtToken = res.data.token;
+      if(res.data.result){
+        // 토큰 저장
+        sessionStorage.setItem("userToken", jwtToken);
+        setUser(res.data.nickname);
+        navigate('/');
+      }else{
+        setWaring("invalidInput");
+        setUser(null);
+      }
+    }catch(err){
+      console.log(err)
     }
   };
 

@@ -71,7 +71,7 @@ export const LoginMenuCon = styled.div`
   ul{
     position: absolute;
     right: 0;
-    top: 46px;
+    top: 47px;
     padding: 8px 0;
     width: 120px;
     border: 1px solid ${({ theme }) => theme.colors.greyBorder};
