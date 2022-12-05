@@ -1,16 +1,12 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { forwardRef } from "react";
 import * as S from "./MainStyle";
-import * as B from "../../styles/BtnStyle";
 
-
-const ExplainLayout = () => {
-  const navigate = useNavigate();
+const ExplainLayout = forwardRef((props, ref:any) => {
 
   return (
     <S.ExplainLayout>
       <div className="inner">
-        <S.ExplainContent>
+        <S.ExplainContent ref={elem => ref.current[2] = elem}>
           <div>
             <S.ExplainTextWrap>
               <p>STRETCH</p>
@@ -19,14 +15,11 @@ const ExplainLayout = () => {
                 정확한 자세를 알려드려요.
               </h3>
             </S.ExplainTextWrap>
-            {/* <B.MiddleBtn hover="true" onClick={() => navigate("/chaircoach")}>
-              체어코치 하러가기
-            </B.MiddleBtn> */}
           </div>
           <S.ExplainImage1/>
         </S.ExplainContent>
 
-        <S.ExplainContent>
+        <S.ExplainContent id="1" ref={elem => ref.current[3] = elem}>
           <div>
             <S.ExplainTextWrap>
               <p>DIAGNOSE</p>
@@ -35,14 +28,11 @@ const ExplainLayout = () => {
               체크해줍니다.
               </h3>
             </S.ExplainTextWrap>
-            {/* <B.MiddleBtn hover="true" onClick={() => navigate("/aboutneck")}>
-              거북목 진단하러 가기
-            </B.MiddleBtn> */}
           </div>
           <S.ExplainImage2/>
         </S.ExplainContent>
 
-        <S.ExplainContent>
+        <S.ExplainContent ref={elem => ref.current[4] = elem}>
           <div>
             <S.ExplainTextWrap>
               <p>ALARM</p>
@@ -51,15 +41,12 @@ const ExplainLayout = () => {
               스트레칭 시간을 알려드려요!
               </h3>
             </S.ExplainTextWrap>
-            {/* <B.MiddleBtn hover="true" onClick={() => navigate("/chaircoach")}>
-              알람설정하러 가기
-            </B.MiddleBtn> */}
           </div>
           <S.ExplainImage3/>
         </S.ExplainContent>
       </div>
     </S.ExplainLayout>
   );
-};
+});
 
 export default ExplainLayout;

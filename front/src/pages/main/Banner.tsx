@@ -1,14 +1,15 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./MainStyle";
 import * as B from "../../styles/BtnStyle";
 
-const Banner = () => {
+const Banner = forwardRef((props, ref:any) => {
   const navigate = useNavigate();
+
   return (
     <S.MainBanner>
       <div className="inner">
-        <S.BannerContent>
+        <S.BannerContent ref={elem => ref.current[0] = elem}>
           <h2>
             오늘도 근무 중인 당신에게,<br />
             <span>CHAIR COACH</span>
@@ -20,6 +21,6 @@ const Banner = () => {
       </div>
     </S.MainBanner>
   );
-};
+});
 
 export default Banner;

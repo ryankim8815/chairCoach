@@ -14,6 +14,16 @@ export interface MainStyledProps {
   lineHeight?: boolean;
 }
 
+const animationBefore = css`
+  transform: translateY(30px);
+  opacity: 0;
+`;
+
+const animationAfter = css`
+  transform: translateY(0);
+  opacity: 1;
+`;
+
 export const MainLayout = styled.main`
   section + section{
     padding: 120px 0;
@@ -33,6 +43,8 @@ export const TitleText = styled.h2<MainStyledProps>`
   span{
     font-weight: 700;
   }
+
+  ${animationBefore}
 `;
 
 // 베너
@@ -75,20 +87,50 @@ export const BannerContent = styled.div`
     font-weight: 500;
     font-size: 40px;
     line-height: 1.25;
+
+    transition: all .5s;
+    ${animationBefore}
+
     span{
       font-weight: 700;
+    }
+  }
+
+  button{
+    transition: all .5s .2s;
+    ${animationBefore}
+  }
+
+  &.active{
+    h2, button{
+      ${animationAfter}
     }
   }
 `;
 
 
 // Introduce
+export const IntroduceLayout = styled.section`
+  h2{ transition: all .5s;}
+  & > div{ transition: all .5s .2s; }
+  p{ transition: all .5s 1s; }
+
+  &.active{
+    h2, &>div, p{
+      ${animationAfter}
+    }
+  }
+`;
+
+
 export const IntroduceImage = styled.div`
   width: 100%;
   height: 320px;
   margin: 80px 0 40px 0;
   background: url(${illustration}) no-repeat center;
   background-size: contain;
+
+  ${animationBefore}
 `;
 
 export const IntroduceText = styled.p`
@@ -98,19 +140,24 @@ export const IntroduceText = styled.p`
   span{
     font-weight: 700;
   }
-`;
 
+  ${animationBefore}
+`;
 
 // ImportantText
 export const ImportantTextLayout = styled.section`
   background: ${({ theme }) => theme.colors.greyBtnBg};
+  h2{
+    ${animationAfter}
+  }
 `;
 
 
 // ExplainLayout
 export const ExplainLayout = styled.section`
+  margin: 240px 0;
   .inner > div + div{
-    margin-top: 240px;
+    margin-top: 480px;
   }
 `;
 
@@ -120,8 +167,6 @@ export const ExplainContent = styled.div`
   height: 400px;
 
   & > div:first-of-type{
-    /* display: grid;
-    align-content: space-between; */
     padding-top: 40px;
   }
 
@@ -132,6 +177,28 @@ export const ExplainContent = styled.div`
       text-align: right;
     }
   }
+
+
+  // 애니메이션 설정
+  & > div:first-of-type{
+    ${animationBefore}
+    transition: all .5s;
+  }
+
+  & > div:last-of-type{
+    ${animationBefore}
+    transition: all .5s .3s;
+  }
+  
+  &.active{
+    & > div:first-of-type{
+      ${animationAfter}
+    }
+  
+    & > div:last-of-type{
+      ${animationAfter}
+    }
+  } 
 `;
 
 export const ExplainTextWrap = styled.div`
@@ -173,6 +240,25 @@ export const ExplainImage3 = styled.div`
 // SelectLayout
 export const SelectLayout = styled.section`
   background: ${({ theme }) => theme.colors.mainLight};
+
+  // 애니메이션
+  .inner{
+    & > div:first-of-type{
+      ${animationBefore}
+      transition: all .5s;
+    }
+  
+    & > div:last-of-type{
+      ${animationBefore}
+      transition: all .5s .3s;
+    }
+  }
+
+  &.active .inner{
+    & > div, h2{
+      ${animationAfter}
+    }
+  }
 `;
 
 

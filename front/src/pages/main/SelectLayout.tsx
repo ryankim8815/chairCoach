@@ -1,14 +1,12 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./MainStyle";
 
-export interface SelectStyledProps {
-  image: string;
-}
-const SelectLayout = () => {
+const SelectLayout = forwardRef((props, ref:any) => {
   const navigate = useNavigate();
+
   return (
-    <S.SelectLayout>
+    <S.SelectLayout ref={elem => ref.current[5] = elem}>
       <div className="inner">
         <S.TitleText>오늘부터 <span>CHAIR COACH</span>를 시작해보세요!</S.TitleText>
 
@@ -44,6 +42,6 @@ const SelectLayout = () => {
       </div>
     </S.SelectLayout>
   );
-};
+});
 
 export default SelectLayout;
