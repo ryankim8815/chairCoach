@@ -6,10 +6,11 @@ import ExplainLayout from "./ExplainLayout";
 import SelectLayout from "./SelectLayout";
 import { notifyMe } from "../../components/alarm/Alarm";
 const Main = () => {
+  const minutes = 60 * 1000;
   useEffect(() => {
     setInterval(() => {
       notifyMe();
-    }, 1800000);
+    }, 30 * minutes);
   }, []);
   return (
     <S.MainLayout>

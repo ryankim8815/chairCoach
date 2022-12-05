@@ -5,6 +5,7 @@ import result2 from "../../assets/img/result2.png";
 import result3 from "../../assets/img/result3.png";
 import * as CS from "../../styles/BtnStyle";
 import styled from "styled-components";
+import { MutableRefObject } from "react";
 
 const RecommendButton = styled(CS.CheckBtn)`
     &:hover {
@@ -15,7 +16,8 @@ const RecommendButton = styled(CS.CheckBtn)`
 
 const SurveyResult = () => {
   const location = useLocation();
-  const point: number = location.state.point;
+  const pointRef:MutableRefObject<number>  = location.state.pointRef;
+  console.log(pointRef)
   const navigate=useNavigate();
   return (
     <S.ResultContainer>
@@ -28,15 +30,15 @@ const SurveyResult = () => {
             <S.TextBox>
               <S.SubTitle>
                 설문 조항 결과에 따르면, abcdefghijkl님의 거북목 위험도는{" "}
-                <S.Percent>{point * 10}%</S.Percent>
+                <S.Percent>{pointRef.current * 10}%</S.Percent>
                 입니다!
               </S.SubTitle>
             </S.TextBox>
           </S.HalfBox>
           <S.HalfBox style={{ marginRight: 129 }}>
-            {point >= 7 ? (
+            {pointRef.current >= 7 ? (
               <S.IconImg src={result3} />
-            ) : point >= 4 ? (
+            ) : pointRef.current >= 4 ? (
               <S.IconImg src={result2} />
             ) : (
               <S.IconImg src={result1} />
