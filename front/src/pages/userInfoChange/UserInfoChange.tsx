@@ -1,28 +1,30 @@
 import { useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 
 import userState from './../../atoms/user';
 import * as S from "../signUp/SignUpStyle";
 import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
-import * as RegExp from "../signUp/RegExp"
+import * as RegExp from "../../utils/RegExp"
 import * as Api from "../../api/api";
 
 
 const UserInfoChange = () => {
   const navigate = useNavigate(); 
-  const [user, setUser]:any = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
 
-  const [nickname, setNickname] = useState(user);
+  const [nickname, setNickname] = useState<any>(user?.nickname);
+  // const [nickname, setNickname] = useState(user?.nickname);
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
-  const [checkNewPw, setCheckNewPw] = useState("");
+  const [confirmNewPw, setConfirmNewPw] = useState("");
 
   const [checkNickname, setCheckNickname] = useState(false); // 닉네임 중복체크버튼 클릭시 판별
   const [newPwDisabled, setNewPwDisabled] = useState(true);
 
   const isNicknameValid = RegExp.validateNickname(nickname);
+  // const isNicknameValid = nickname ? RegExp.validateNickname(nickname) : false;
 
   // 닉네임 중복 확인
   const handlerCheckNicknameClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,7 +69,7 @@ const UserInfoChange = () => {
 
   const nicknameSame = nickname.length > 0 && user === nickname ? true : false;
   const currentPwDisabled = (checkNickname || nicknameSame) ? false : true;
-  const newPwSame = checkNewPw.length > 0 && newPw === checkNewPw ? true : false;
+  const newPwSame = confirmNewPw.length > 0 && newPw === confirmNewPw ? true : false;
 
   return (
     <S.SignUpLayout>
@@ -160,12 +162,12 @@ const UserInfoChange = () => {
                 <p>새 비밀번호 확인</p>
                 <F.InputText
                   type="password"
-                  value={checkNewPw}
+                  value={confirmNewPw}
                   placeholder="비밀번호를 다시 입력해주세요."
                   disabled={!RegExp.validatePwd(newPw)}
-                  onChange={(e)=>setCheckNewPw(e.target.value)}
+                  onChange={(e)=>setConfirmNewPw(e.target.value)}
                 />
-                {checkNewPw.length === 0 || newPw === checkNewPw ? null : (
+                {confirmNewPw.length === 0 || newPw === confirmNewPw ? null : (
                   <F.WarningText style={{paddingTop: '4px'}}>비밀번호를 다시 확인해주세요.</F.WarningText>
                 )}
               </div>

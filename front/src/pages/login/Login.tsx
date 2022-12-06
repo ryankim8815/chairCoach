@@ -11,7 +11,7 @@ import { useState } from "react";
 import Naver from "../../components/naverLogin/Naver";
 import NaverLogin from "../../components/naverLogin/Naver";
 
-import * as RegExp from "../signUp/RegExp"
+import * as RegExp from "../../utils/RegExp"
 
 import { useSetRecoilState } from "recoil";
 import userState from './../../atoms/user';

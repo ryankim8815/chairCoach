@@ -69,7 +69,7 @@ const GlobalStyles = createGlobalStyle`
       transform: translate(-50%, -50%);
       background: url(${lock}) no-repeat center;
       background-size: contain;
-      filter: invert(51%) sepia(95%) saturate(4443%) hue-rotate(234deg) brightness(99%) contrast(103%);
+      filter: invert(37%) sepia(9%) saturate(1372%) hue-rotate(206deg) brightness(92%) contrast(87%);
     }
     
   }
