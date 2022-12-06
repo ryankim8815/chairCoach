@@ -1,8 +1,16 @@
-from fastapi import FastAPI, WebSocket
+from typing import Any
+from fastapi import FastAPI
+import uvicorn
+from fastapi_socketio import SocketManager
 from fastapi.responses import HTMLResponse
+import socketio
 
 import numpy as np
 from xgboost import XGBClassifier
+
+# socket_manager = SocketManager(app=app)
+sio: Any = socketio.AsyncServer(async_mode="asgi")
+socket_app = socketio.ASGIApp(sio)
 
 app = FastAPI()
 
@@ -47,17 +55,25 @@ actions = np.array(['hands_up', 'neck_down', 'neck_side'])
 
 
 
-@app.get("/")
+@app.get("/test")
 async def get():
-    return HTMLResponse(html)
+    return "Hello World"
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        data = await websocket.receive_json()
-        df = list(data.values())
-        pred = model.predict(df)
-        action = actions[np.argmax(pred)]
-        await websocket.send_text(f"{action}")
+app.mount("/", socket_app)
+@sio.on("connect")
+async def connect():
+    print("Connected")
+    
+@sio.on("model")
+async def model(data):
+    df = list(data.values())
+    pred = model.predict(df)
+    action = actions[np.argmax(pred)]
+    await sio.emit("model", action)
+
+
+if __name__ == "__main__":
+    kwargs = {"host": "0.0.0.0", "port": 8000}
+    kwargs.update({"reload":True})
+    uvicorn.run("run:app", **kwargs)

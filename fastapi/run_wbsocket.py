@@ -1,6 +1,9 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 
+import numpy as np
+from xgboost import XGBClassifier
+
 app = FastAPI()
 
 html = """
@@ -18,7 +21,7 @@ html = """
         <ul id='messages'>
         </ul>
         <script>
-            var ws = new WebSocket("ws://localhost:8000/ws");
+            var ws = new WebSocket("ws://34.64.95.214:8000/ws");
             ws.onmessage = function(event) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -37,6 +40,13 @@ html = """
 </html>
 """
 
+model = XGBClassifier()
+model.load_model('first_model.json')
+
+actions = np.array(['hands_up', 'neck_down', 'neck_side'])
+
+
+
 @app.get("/")
 async def get():
     return HTMLResponse(html)
@@ -46,5 +56,8 @@ async def get():
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
-        data = await websocket.receive_text()
-        await websocket.send_text(f"{data}")
+        data = await websocket.receive_json()
+        df = list(data.values())
+        pred = model.predict(df)
+        action = actions[np.argmax(pred)]
+        await websocket.send_text(f"{action}")
