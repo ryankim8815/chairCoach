@@ -38,7 +38,7 @@ userRouter.post(
   userController.userPassword
 ); // 유저 정보 업데이트를 위한 password 확인
 userRouter.put(
-  "/users/:user_id", /////
+  "/users/:user_id",
   authMiddleware,
   Validation.validateBodyParams(
     Schemas.userUpdateSchema,
@@ -47,7 +47,7 @@ userRouter.put(
   userController.userUpdate
 ); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete(
-  "/users/:user_id", /////
+  "/users/:user_id",
   authMiddleware,
   Validation.validateBodyParams(
     Schemas.userDeleteSchema,
@@ -72,7 +72,7 @@ userRouter.get(
   userController.signupNickname
 ); // nickname 중복확인
 userRouter.patch(
-  "/users/:user_id/alert", /////
+  "/users/:user_id/alert",
   authMiddleware,
   Validation.validateBodyParams(
     Schemas.setAlertSchema,
