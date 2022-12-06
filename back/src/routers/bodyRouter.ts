@@ -208,7 +208,7 @@ export = bodyRouter;
  *                 list:
  *                   type: object
  *                   properties:
- *                     month:
+ *                     date:
  *                       type: string
  *                     tag:
  *                       type: string
@@ -217,7 +217,7 @@ export = bodyRouter;
  *                     duration:
  *                       type: int
  *                   example:
- *                     - month: 2022-11
+ *                     - date: 2022-12-02
  *                       tag: neck
  *                       count: 5
  *                       duration: 10
