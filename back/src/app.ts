@@ -5,6 +5,7 @@ import socialLoginRouter from "./routers/socialLoginRouter";
 import neckRouter from "./routers/neckRouter";
 import bodyRouter from "./routers/bodyRouter";
 import swagger from "./utils/swagger";
+import { errorHandler } from "./middlewares/errorMiddleware";
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,9 @@ app.use(socialLoginRouter);
 app.use(neckRouter);
 app.use(bodyRouter);
 app.use(swagger);
+
+// errorHandlers
+app.use(errorHandler);
 
 app.get("/", (req, res) => {
   res.send("안녕하세요, 4팀 backend 서버입니다.");

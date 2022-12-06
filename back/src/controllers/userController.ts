@@ -11,16 +11,16 @@ class userController {
     next: express.NextFunction
   ) {
     try {
-      const allUsers = await userService.getAllUsers();
-      logger.info(allUsers);
-      return res.status(200).json(allUsers);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userList api에서 오류가 발생했습니다.",
+      const { count, list } = await userService.getAllUsers();
+      const result = {
+        result: true,
+        count,
+        list,
       };
-      return res.status(200).json(result_err);
+      logger.info(result);
+      return res.status(200).json(result);
+    } catch (error) {
+      next(error);
     }
   }
 

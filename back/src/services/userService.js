@@ -52,23 +52,19 @@ var userService = /** @class */ (function () {
     //// 모든 사용자 조회
     userService.getAllUsers = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var allUsers, allUsersObject, countUsers, countUsersObject, result_success;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findAll()];
+            var allUsers, _a, countUsers, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, User_1.default.findAll()];
                     case 1:
-                        allUsers = _a.sent();
-                        allUsersObject = (0, nullPrototypeHandler_1.nullPrototypeHandler)(allUsers);
+                        allUsers = _a.apply(void 0, [_c.sent()]);
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.countAll()];
                     case 2:
-                        countUsers = _a.sent();
-                        countUsersObject = (0, nullPrototypeHandler_1.nullPrototypeHandler)(countUsers);
-                        result_success = Object.assign({
-                            result: true,
-                            cause: "success",
-                            message: "\uBAA8\uB4E0 \uC0AC\uC6A9\uC790 \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { count: countUsersObject[0].cnt, list: allUsersObject });
-                        return [2 /*return*/, result_success];
+                        countUsers = _b.apply(void 0, [_c.sent()]);
+                        return [2 /*return*/, { count: countUsers[0].cnt, list: allUsers }];
                 }
             });
         });
@@ -77,20 +73,18 @@ var userService = /** @class */ (function () {
     userService.getCurrentUser = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var currentUser, currentUserString, currentUserObject, i, result_errUserId, result_errUserId, thisUser, result_success;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
+            var currentUser, _b, result_errUserId, result_errUserId, thisUser, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
                     case 1:
-                        currentUser = _b.sent();
-                        currentUserString = JSON.stringify(currentUser);
-                        currentUserObject = JSON.parse(currentUserString);
-                        // 쿼리문의 SELECT로 대체
-                        for (i = 0; i < currentUserObject.length; i++) {
-                            delete currentUserObject[i].password;
-                            // delete currentUserObject[i].user_id;
-                        }
-                        if (currentUserObject.length === 0) {
+                        currentUser = _b.apply(void 0, [_c.sent()]);
+                        // for (let i = 0; i < currentUser.length; i++) {
+                        //   delete currentUser[i].password;
+                        // }
+                        if (currentUser.length === 0) {
                             result_errUserId = {
                                 result: false,
                                 cause: "user_id",
@@ -98,7 +92,7 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_errUserId];
                         }
-                        else if (currentUserObject.length > 1) {
+                        else if (currentUser.length > 1) {
                             result_errUserId = {
                                 result: false,
                                 cause: "user_id",
@@ -106,7 +100,7 @@ var userService = /** @class */ (function () {
                             };
                             return [2 /*return*/, result_errUserId];
                         }
-                        thisUser = currentUserObject[0];
+                        thisUser = currentUser[0];
                         result_success = Object.assign({
                             result: true,
                             cause: "success",

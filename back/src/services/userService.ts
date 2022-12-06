@@ -10,37 +10,20 @@ moment.tz.setDefault("Asia/Seoul");
 class userService {
   //// 모든 사용자 조회
   static async getAllUsers() {
-    const allUsers = await User.findAll();
-    // const allUsersString = JSON.stringify(allUsers);
-    // const allUsersObject = JSON.parse(allUsersString);
-    const allUsersObject = nullPrototypeHandler(allUsers);
-    const countUsers = await User.countAll();
-    // const countUsersString = JSON.stringify(countUsers);
-    // const countUsersObject = JSON.parse(countUsersString);
-    const countUsersObject = nullPrototypeHandler(countUsers);
-
-    const result_success = Object.assign(
-      {
-        result: true,
-        cause: "success",
-        message: `모든 사용자 조회가 성공적으로 이뤄졌습니다.`,
-      },
-      { count: countUsersObject[0].cnt, list: allUsersObject }
-    );
-    return result_success;
+    const allUsers = nullPrototypeHandler(await User.findAll());
+    const countUsers = nullPrototypeHandler(await User.countAll());
+    return { count: countUsers[0].cnt, list: allUsers };
   }
 
   //// 현재 사용자 조회
   static async getCurrentUser({ user_id }) {
-    const currentUser = await User.findByUserId({ user_id });
-    const currentUserString = JSON.stringify(currentUser);
-    const currentUserObject = JSON.parse(currentUserString);
-    // 쿼리문의 SELECT로 대체
-    for (let i = 0; i < currentUserObject.length; i++) {
-      delete currentUserObject[i].password;
-      // delete currentUserObject[i].user_id;
-    }
-    if (currentUserObject.length === 0) {
+    const currentUser = nullPrototypeHandler(
+      await User.findByUserId({ user_id })
+    );
+    // for (let i = 0; i < currentUser.length; i++) {
+    //   delete currentUser[i].password;
+    // }
+    if (currentUser.length === 0) {
       const result_errUserId = {
         result: false,
         cause: "user_id",
@@ -48,7 +31,7 @@ class userService {
           "입력하신 user_id로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.",
       };
       return result_errUserId;
-    } else if (currentUserObject.length > 1) {
+    } else if (currentUser.length > 1) {
       const result_errUserId = {
         result: false,
         cause: "user_id",
@@ -57,7 +40,7 @@ class userService {
       };
       return result_errUserId;
     }
-    const thisUser = currentUserObject[0];
+    const thisUser = currentUser[0];
     const result_success = Object.assign(
       {
         result: true,

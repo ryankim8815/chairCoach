@@ -79,7 +79,7 @@ var User = /** @class */ (function () {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0: return [4 /*yield*/, database_1.default.query({
-                            sql: "SELECT * FROM users WHERE `user_id` = ?",
+                            sql: "SELECT user_id, email, nickname, provider, created_at, withdraw_at, status, alert, timer  FROM users WHERE `user_id` = ?",
                             values: [user_id],
                         })];
                     case 1:

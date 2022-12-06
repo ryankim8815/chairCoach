@@ -47,24 +47,25 @@ var userController = /** @class */ (function () {
     // GET: 사용자 리스트 조회 기능
     userController.userList = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var allUsers, err_1, result_err;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, count, list, result, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _b.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, userService_1.default.getAllUsers()];
                     case 1:
-                        allUsers = _a.sent();
-                        logger.info(allUsers);
-                        return [2 /*return*/, res.status(200).json(allUsers)];
-                    case 2:
-                        err_1 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "userList api에서 오류가 발생했습니다.",
+                        _a = _b.sent(), count = _a.count, list = _a.list;
+                        result = {
+                            result: true,
+                            count: count,
+                            list: list,
                         };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        logger.info(result);
+                        return [2 /*return*/, res.status(200).json(result)];
+                    case 2:
+                        error_1 = _b.sent();
+                        next(error_1);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -73,7 +74,7 @@ var userController = /** @class */ (function () {
     // GET: 현재 사용자 정보 조회 기능
     userController.userCurrent = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, currentUser, err_2, result_err;
+            var user_id, result_err, currentUser, err_1, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -93,7 +94,7 @@ var userController = /** @class */ (function () {
                         logger.error(currentUser); // test
                         return [2 /*return*/, res.status(200).json(currentUser)];
                     case 2:
-                        err_2 = _a.sent();
+                        err_1 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -109,7 +110,7 @@ var userController = /** @class */ (function () {
     // POST: 회원가입 기능
     userController.userRegister = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, nickname, newUser, err_3, result_err;
+            var email, password, nickname, newUser, err_2, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -122,7 +123,7 @@ var userController = /** @class */ (function () {
                         newUser = _a.sent();
                         return [2 /*return*/, res.status(200).json(newUser)];
                     case 2:
-                        err_3 = _a.sent();
+                        err_2 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -137,7 +138,7 @@ var userController = /** @class */ (function () {
     // POST: 로그인
     userController.userSignin = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, signinUser, err_4, result_err;
+            var email, password, signinUser, err_3, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -149,7 +150,7 @@ var userController = /** @class */ (function () {
                         signinUser = _a.sent();
                         return [2 /*return*/, res.status(200).json(signinUser)];
                     case 2:
-                        err_4 = _a.sent();
+                        err_3 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -164,7 +165,7 @@ var userController = /** @class */ (function () {
     // POST: 회원정보 수정을 위한 비밀번호 확인
     userController.userPassword = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, password, updateUser, err_5, result_err;
+            var user_id, result_err, password, updateUser, err_4, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -187,7 +188,7 @@ var userController = /** @class */ (function () {
                         updateUser = _a.sent();
                         return [2 /*return*/, res.status(200).json(updateUser)];
                     case 2:
-                        err_5 = _a.sent();
+                        err_4 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -202,7 +203,7 @@ var userController = /** @class */ (function () {
     // POST: 회원정보 수정
     userController.userUpdate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, currentPassword, password, nickname, updateUser, err_6, result_err;
+            var user_id, result_err, currentPassword, password, nickname, updateUser, err_5, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -229,7 +230,7 @@ var userController = /** @class */ (function () {
                         updateUser = _a.sent();
                         return [2 /*return*/, res.status(200).json(updateUser)];
                     case 2:
-                        err_6 = _a.sent();
+                        err_5 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -244,7 +245,7 @@ var userController = /** @class */ (function () {
     // DELETE: 회원정보 삭제
     userController.userDelete = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, password, deleteUser, err_7, result_err;
+            var user_id, result_err, password, deleteUser, err_6, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -267,7 +268,7 @@ var userController = /** @class */ (function () {
                         deleteUser = _a.sent();
                         return [2 /*return*/, res.status(200).json(deleteUser)];
                     case 2:
-                        err_7 = _a.sent();
+                        err_6 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -282,7 +283,7 @@ var userController = /** @class */ (function () {
     /// POST: email 인증을 위한 코드 발송
     userController.signupEmail = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, code, sendCodeToEmail, err_8, result_err;
+            var email, code, sendCodeToEmail, err_7, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -298,7 +299,7 @@ var userController = /** @class */ (function () {
                         sendCodeToEmail = _a.sent();
                         return [2 /*return*/, res.status(200).json(sendCodeToEmail)];
                     case 2:
-                        err_8 = _a.sent();
+                        err_7 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -313,7 +314,7 @@ var userController = /** @class */ (function () {
     /// GET: email 인증 코드 확인
     userController.signupVerifyEmail = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, code, verifyEmailCode, err_9, result_err;
+            var email, code, verifyEmailCode, err_8, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -328,7 +329,7 @@ var userController = /** @class */ (function () {
                         verifyEmailCode = _a.sent();
                         return [2 /*return*/, res.status(200).json(verifyEmailCode)];
                     case 2:
-                        err_9 = _a.sent();
+                        err_8 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -343,7 +344,7 @@ var userController = /** @class */ (function () {
     /// GET: nickname 중복확인
     userController.signupNickname = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var nickname, checkNickname, err_10, result_err;
+            var nickname, checkNickname, err_9, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -356,7 +357,7 @@ var userController = /** @class */ (function () {
                         checkNickname = _a.sent();
                         return [2 /*return*/, res.status(200).json(checkNickname)];
                     case 2:
-                        err_10 = _a.sent();
+                        err_9 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
@@ -371,7 +372,7 @@ var userController = /** @class */ (function () {
     /// PATCH: 알람 설정
     userController.userSetAlert = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, alert_1, timer, setAlert, err_11, result_err;
+            var user_id, result_err, alert_1, timer, setAlert, err_10, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -396,7 +397,7 @@ var userController = /** @class */ (function () {
                         setAlert = _a.sent();
                         return [2 /*return*/, res.status(200).json(setAlert)];
                     case 2:
-                        err_11 = _a.sent();
+                        err_10 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",
