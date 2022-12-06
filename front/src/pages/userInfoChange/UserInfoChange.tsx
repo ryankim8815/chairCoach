@@ -14,8 +14,7 @@ const UserInfoChange = () => {
   const navigate = useNavigate(); 
   const [user, setUser] = useRecoilState(userState);
 
-  const [nickname, setNickname] = useState<any>(user?.nickname);
-  // const [nickname, setNickname] = useState(user?.nickname);
+  const [nickname, setNickname] = useState(user?.nickname);
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
   const [confirmNewPw, setConfirmNewPw] = useState("");
@@ -23,8 +22,7 @@ const UserInfoChange = () => {
   const [checkNickname, setCheckNickname] = useState(false); // 닉네임 중복체크버튼 클릭시 판별
   const [newPwDisabled, setNewPwDisabled] = useState(true);
 
-  const isNicknameValid = RegExp.validateNickname(nickname);
-  // const isNicknameValid = nickname ? RegExp.validateNickname(nickname) : false;
+  const isNicknameValid = nickname ? RegExp.validateNickname(nickname) : false;
 
   // 닉네임 중복 확인
   const handlerCheckNicknameClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,20 +52,25 @@ const UserInfoChange = () => {
   const handlerInfoChangeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await Api.put("user", {
-      password: newPw,
-      currentPassword: currentPw,
-      nickname: nickname
-    })
-
-    console.log(res.data.result);
-    if(res.data.result){
-      navigate('/');
-      setUser(nickname);
+    if(nickname){
+      const res = await Api.put("user", {
+        password: newPw,
+        currentPassword: currentPw,
+        nickname: nickname
+      });
+  
+      console.log(res.data.result);
+      if(res.data.result){
+        navigate('/');
+        setUser({
+          nickname : nickname
+        });
+      }
     }
+
   };
 
-  const nicknameSame = nickname.length > 0 && user === nickname ? true : false;
+  const nicknameSame = String(nickname).length > 0 && user === nickname ? true : false;
   const currentPwDisabled = (checkNickname || nicknameSame) ? false : true;
   const newPwSame = confirmNewPw.length > 0 && newPw === confirmNewPw ? true : false;
 
@@ -86,7 +89,7 @@ const UserInfoChange = () => {
                 <F.InputText
                   length="small"
                   type="text"
-                  value={nickname}
+                  value={String(nickname)}
                   placeholder="닉네임을 입력해주세요."
                   onChange={(e) => {
                     setNickname(e.target.value);

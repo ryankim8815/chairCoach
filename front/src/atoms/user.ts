@@ -2,8 +2,8 @@ import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 interface User {
-  email: string | null;
-  password: string | null;
+  // email: string | null;
+  // password: string | null;
   nickname: string | null;
 }
 

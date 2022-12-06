@@ -37,6 +37,10 @@ const Main = () => {
     observer.observe(domRef.current[3]);
     observer.observe(domRef.current[4]);
     observer.observe(domRef.current[5]);
+
+    return () => {
+      observer.disconnect();
+    }
   }, []);
 
   return (
