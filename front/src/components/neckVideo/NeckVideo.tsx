@@ -4,7 +4,6 @@ import * as S from "./NeckVideoStyle";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "../../pages/aiStretching/util";
 import * as poseDetection from "@tensorflow-models/pose-detection";
-import { Socket, io } from "socket.io-client";
 import axios from "axios";
 
 require("@tensorflow/tfjs");
@@ -35,7 +34,7 @@ const NeckVideo = ({ time, step, setStep }: any) => {
           dataArr.push(item.score);
         });
       }
-      console.log(dataToSend[2].y - dataToSend[6].y);
+      // console.log(dataToSend[2].y - dataToSend[6].y);
       const getInclination = () => {
         (dataToSend[1].score as number) < 0.4 &&
         (dataToSend[5].score as number) < 0.4
@@ -48,8 +47,14 @@ const NeckVideo = ({ time, step, setStep }: any) => {
                 (dataToSend[1].x - dataToSend[5].x)
             );
       };
-      getInclination();
-      // console.log(inclination);
+      // useEffect(()=>{
+      //   getInclination();
+      //   console.log(inclination);
+      // },[step])
+      if(step===1){
+        getInclination();
+        console.log(inclination);
+      }
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
 
       requestAnimationFrame(() => {
@@ -57,6 +62,7 @@ const NeckVideo = ({ time, step, setStep }: any) => {
       });
     }
   };
+  console.log(webcamRef.current);
   const takePhoto = async () => {
     const width = 640;
     const height = 480;
