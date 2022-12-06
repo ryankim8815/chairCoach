@@ -32,6 +32,14 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+        };
+        return res.status(200).json(result_err);
+      }
       const currentUser = await userService.getCurrentUser({ user_id });
       logger.error(currentUser); // test
       return res.status(200).json(currentUser);
@@ -97,6 +105,14 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+        };
+        return res.status(200).json(result_err);
+      }
       const password = req.body.password;
       const updateUser = await userService.passwordCheck({
         user_id,
@@ -121,6 +137,14 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+        };
+        return res.status(200).json(result_err);
+      }
       const currentPassword = req.body.currentPassword;
       const password = req.body.password;
       const nickname = req.body.nickname;
@@ -149,6 +173,14 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+        };
+        return res.status(200).json(result_err);
+      }
       const password = req.body.password;
       const deleteUser = await userService.deleteUser({
         user_id,
@@ -244,6 +276,14 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+        };
+        return res.status(200).json(result_err);
+      }
       const alert = req.body.alert;
       const timer = req.body.timer;
       const setAlert = await userService.setAlert({

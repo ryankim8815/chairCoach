@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateBodyMulter = exports.validateBodyParams = exports.validateParams = exports.validateBody = void 0;
+exports.validateBodyParamsMulter = exports.validateBodyMulter = exports.validateBodyParams = exports.validateParams = exports.validateBody = void 0;
 var validateBody = function (Schema) {
     return function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
@@ -161,3 +161,40 @@ var validateBodyMulter = function (bodySchema, multerSchema) {
     };
 };
 exports.validateBodyMulter = validateBodyMulter;
+var validateBodyParamsMulter = function (bodySchema, paramsSchema, multerSchema) {
+    return function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var body, params, file, err_5, result_err;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        body = req.body;
+                        params = req.params;
+                        file = req.file;
+                        return [4 /*yield*/, bodySchema.validateAsync(body)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, paramsSchema.validateAsync(params)];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, multerSchema.validateAsync(file)];
+                    case 3:
+                        _a.sent();
+                        next();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        err_5 = _a.sent();
+                        result_err = {
+                            result: false,
+                            cause: "type",
+                            message: "api 요청시 잘못된 type이 첨부되었습니다.",
+                        };
+                        return [2 /*return*/, res.status(499).json(result_err)];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+};
+exports.validateBodyParamsMulter = validateBodyParamsMulter;

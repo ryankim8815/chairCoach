@@ -34,7 +34,7 @@ class userService {
     // 쿼리문의 SELECT로 대체
     for (let i = 0; i < currentUserObject.length; i++) {
       delete currentUserObject[i].password;
-      delete currentUserObject[i].user_id;
+      // delete currentUserObject[i].user_id;
     }
     if (currentUserObject.length === 0) {
       const result_errUserId = {
@@ -114,7 +114,7 @@ class userService {
     const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
     const token = jwt.sign({ user_id: thisUser.user_id }, secretKey);
     delete thisUser.password;
-    delete thisUser.user_id;
+    // delete thisUser.user_id;
     const result_success = Object.assign(
       {
         result: true,
