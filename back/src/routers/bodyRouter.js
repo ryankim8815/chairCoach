@@ -146,7 +146,7 @@ module.exports = bodyRouter;
  * @swagger
  * /bodies/{user_id}/{year}/{week}:
  *   get:
- *     summary: 특정 유저의 운동 기록 조회 - 특정연도의 월간
+ *     summary: 특정 유저의 운동 기록 조회 - 특정연도의 주단위 일간 기록
  *     description: 로그인한 사용자만 이용 가능합니다.
  *     tags: ["bodyRouter"]
  *     security:
@@ -205,7 +205,7 @@ module.exports = bodyRouter;
  * @swagger
  * /bodies/{user_id}/{year}:
  *   get:
- *     summary: 특정 유저의 운동 기록 조회 - 특정연도의 월간
+ *     summary: 특정 유저의 운동 기록 조회 - 특정연도의 월간 기록
  *     description: 로그인한 사용자만 이용 가능합니다.
  *     tags: ["bodyRouter"]
  *     security:
