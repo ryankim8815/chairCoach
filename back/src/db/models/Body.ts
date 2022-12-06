@@ -52,10 +52,10 @@ class Body {
     return rows;
   }
 
-  // 기록 종료
+  // 기록 종료(sec)
   static async patch({ body_id, end_time }) {
     const [rows, fields] = await promisePool.query({
-      sql: "UPDATE bodies SET `end_time` = ?, `duration` = TIMESTAMPDIFF(MINUTE, `start_time`, ?) WHERE `body_id` = ?",
+      sql: "UPDATE bodies SET `end_time` = ?, `duration` = TIMESTAMPDIFF(SECOND, `start_time`, ?) WHERE `body_id` = ?",
       values: [end_time, end_time, body_id],
     });
     return rows;
