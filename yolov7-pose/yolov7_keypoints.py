@@ -46,11 +46,11 @@ def predict_keypoints(image, image_size=640, conf_thresh=0.25, iou_thresh=0.65):
     # Drop
     pred = pred[:, 7:]
     
-    
     # Resize boxes to the original image size
-    pred[:, 0::3] *= ori_w / image_size
-    pred[:, 1::3] *= ori_h / image_size
+    # pred[:, 0::3] *= ori_w / image_size
+    # pred[:, 1::3] *= ori_h / image_size
 
+    
     return pred
 
 
@@ -83,10 +83,6 @@ def process(img_in_folder, img_out_folder, csv_out_path):
                                     delimiter=',',
                                     quoting=csv.QUOTE_MINIMAL)
         
-        # header_list = ['N_X', 'N_Y', 'LY_X', 'LY_Y', 'RY_X','RY_Y', 'LER_X','LER_Y', 'RER_X','RER_Y',\
-        #     'LS_X','LS_Y', 'RS_X','RS_Y', 'LEB_X','LEB_Y', 'REB_X','REB_Y', 'LW_X','LW_Y', 'RW_X', 'RW_Y', 'Target']
-        # csv_out_writer.writerow(header_list)
-        
         for pose_class_name in pose_class_names:
             print("Preprocessing", pose_class_name)
 
@@ -98,7 +94,6 @@ def process(img_in_folder, img_out_folder, csv_out_path):
 
             print('img_in: ', img_in)
             print('img_out: ', img_out)
-            # print('image_names: ', image_names)
 
             kpnt_values = []
             for image_name in tqdm.tqdm(image_names):
@@ -118,17 +113,20 @@ def process(img_in_folder, img_out_folder, csv_out_path):
                 csv_out_writer.writerow(i)
 
 
+# train or test dataset load & save csv
+img_in_train_folder = os.path.join('./data/images', 'train')
+img_out_train_folder = 'image_out_train'
+csv_out_train_path = 'train_data_nor.csv'
+process(img_in_train_folder, img_out_train_folder, csv_out_train_path)
 
-# img_in_train_folder = os.path.join('./data/images', 'train')
-# img_out_train_folder = 'image_out_train'
-# csv_out_train_path = 'train_data.csv'
-# process(img_in_train_folder, img_out_train_folder, csv_out_train_path)
+# test code
+# image = Image.open('./data/images/3.jpg')
+# pred = predict_keypoints(image, image_size=IMAGE_SIZE)
+# print("pred: ", pred)
+# kpnt_array = extract(pred[0].T, 3)
+# print("kpnt_array: ", kpnt_array)
 
-image = Image.open('./data/images/test/hands_up/11.jpg')
-pred = predict_keypoints(image, image_size=IMAGE_SIZE)
-print(pred)
-kpnt_array = extract(pred[0].T, 3)
-print(kpnt_array)
+
 # show skeleton line and image
 # image = np.asarray(image)
 # for idx in range(pred.shape[0]):
