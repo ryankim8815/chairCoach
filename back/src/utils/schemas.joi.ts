@@ -91,6 +91,13 @@ export const bodyUpdateSchema = Joi.object().keys({
   body_id: Bodies.body_id.required(),
 });
 
+export const bodyRecordsFindByWeek = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  week: Bodies.week.required(),
+  year: Bodies.year.required(),
+});
+
 export const bodyRecordsFindByYear = Joi.object().keys({
+  user_id: Users.user_id.required(),
   year: Bodies.year.required(),
 });

@@ -70,12 +70,20 @@ var userController = /** @class */ (function () {
     // GET: 특정 유저의 거북목 테스트 결과 조회
     userController.neckResults = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, Necks, err_2, result_err;
+            var user_id, result_err, Necks, err_2, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            result_err = {
+                                result: false,
+                                cause: "user_id",
+                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+                            };
+                            return [2 /*return*/, res.status(200).json(result_err)];
+                        }
                         return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
                     case 1:
                         Necks = _a.sent();
@@ -96,12 +104,20 @@ var userController = /** @class */ (function () {
     // POST: 거북목 테스트 결과 기록
     userController.neckCreate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, filename, result, score, allUsers, err_3, result_err;
+            var user_id, result_err, filename, result, score, allUsers, err_3, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            result_err = {
+                                result: false,
+                                cause: "user_id",
+                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+                            };
+                            return [2 /*return*/, res.status(200).json(result_err)];
+                        }
                         filename = req.file.filename;
                         result = req.body.result;
                         score = req.body.score;

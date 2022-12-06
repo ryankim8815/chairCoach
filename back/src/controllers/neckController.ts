@@ -30,6 +30,14 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+        };
+        return res.status(200).json(result_err);
+      }
       const Necks = await neckService.getNecks({ user_id });
       return res.status(200).json(Necks);
     } catch (err) {
@@ -50,6 +58,14 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        const result_err = {
+          result: false,
+          cause: "user_id",
+          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+        };
+        return res.status(200).json(result_err);
+      }
       const filename = req.file.filename;
       const result = req.body.result;
       const score = req.body.score;
