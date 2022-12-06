@@ -90,5 +90,38 @@ const validateBodyMulter = (
       return res.status(499).json(result_err);
     }
   };
+const validateBodyParamsMulter = (
+  bodySchema: Joi.ObjectSchema<any>,
+  paramsSchema: Joi.ObjectSchema<any>,
+  multerSchema: Joi.ObjectSchema<any>
+) =>
+  async function (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const body = req.body;
+      const params = req.params;
+      const file = req.file;
+      await bodySchema.validateAsync(body);
+      await paramsSchema.validateAsync(params);
+      await multerSchema.validateAsync(file);
+      next();
+    } catch (err) {
+      const result_err = {
+        result: false,
+        cause: "type",
+        message: "api 요청시 잘못된 type이 첨부되었습니다.",
+      };
+      return res.status(499).json(result_err);
+    }
+  };
 
-export { validateBody, validateParams, validateBodyParams, validateBodyMulter };
+export {
+  validateBody,
+  validateParams,
+  validateBodyParams,
+  validateBodyMulter,
+  validateBodyParamsMulter,
+};

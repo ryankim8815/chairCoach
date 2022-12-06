@@ -70,12 +70,20 @@ var bodyController = /** @class */ (function () {
     // GET: 특정 유저의 운동 기록 조회
     bodyController.bodyRecords = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, Bodies, err_2, result_err;
+            var user_id, result_err, Bodies, err_2, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            result_err = {
+                                result: false,
+                                cause: "user_id",
+                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+                            };
+                            return [2 /*return*/, res.status(200).json(result_err)];
+                        }
                         return [4 /*yield*/, bodyService_1.default.getBodies({ user_id: user_id })];
                     case 1:
                         Bodies = _a.sent();
@@ -96,12 +104,20 @@ var bodyController = /** @class */ (function () {
     // POST: 특정 유저의 운동 기록 시작
     bodyController.bodyCreate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, tag, body, err_3, result_err;
+            var user_id, result_err, tag, body, err_3, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            result_err = {
+                                result: false,
+                                cause: "user_id",
+                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+                            };
+                            return [2 /*return*/, res.status(200).json(result_err)];
+                        }
                         tag = req.body.tag;
                         return [4 /*yield*/, bodyService_1.default.addBody({
                                 user_id: user_id,
@@ -128,12 +144,20 @@ var bodyController = /** @class */ (function () {
     // req: express.Request & { files: MulterFile[] },
     req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, body_id, body, err_4, result_err;
+            var user_id, result_err, body_id, body, err_4, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            result_err = {
+                                result: false,
+                                cause: "user_id",
+                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+                            };
+                            return [2 /*return*/, res.status(200).json(result_err)];
+                        }
                         body_id = req.body.body_id;
                         return [4 /*yield*/, bodyService_1.default.updateBody({
                                 body_id: body_id,
@@ -154,15 +178,23 @@ var bodyController = /** @class */ (function () {
             });
         });
     };
-    // GET: 특정 유저의 운동 기록 조회
+    // GET: 특정 유저의 운동 기록 조회 week
     bodyController.bodyRecordsWeek = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, year, week, Bodies, err_5, result_err;
+            var user_id, result_err, year, week, Bodies, err_5, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            result_err = {
+                                result: false,
+                                cause: "user_id",
+                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+                            };
+                            return [2 /*return*/, res.status(200).json(result_err)];
+                        }
                         year = req.params.year;
                         week = req.params.week;
                         return [4 /*yield*/, bodyService_1.default.getBodiesByWeek({ user_id: user_id, year: year, week: week })];
@@ -182,15 +214,23 @@ var bodyController = /** @class */ (function () {
             });
         });
     };
-    // GET: 특정 유저의 운동 기록 조회
+    // GET: 특정 유저의 운동 기록 조회 year
     bodyController.bodyRecordsYear = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, year, Bodies, err_6, result_err;
+            var user_id, result_err, year, Bodies, err_6, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            result_err = {
+                                result: false,
+                                cause: "user_id",
+                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
+                            };
+                            return [2 /*return*/, res.status(200).json(result_err)];
+                        }
                         year = req.params.year;
                         return [4 /*yield*/, bodyService_1.default.getBodiesByYear({ user_id: user_id, year: year })];
                     case 1:

@@ -1,7 +1,6 @@
 import * as express from "express";
 import bodyController from "../controllers/bodyController";
 import authMiddleware from "../middlewares/authMiddleware";
-import * as validation from "../middlewares/bodyValidationMiddleware";
 import * as Validation from "../middlewares/validationMiddleware";
 import * as Schemas from "../utils/schemas.joi";
 
