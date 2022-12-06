@@ -11,9 +11,9 @@ const AiStretching = () => {
   const deviceId = useState("");
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  
-  const socketUrl=process.env.REACT_APP_SOCKET_URL
-  const socket= io(socketUrl as string)
+
+  const socketUrl = process.env.REACT_APP_SOCKET_URL;
+  const socket = io(socketUrl as string);
   //user media device select할 때 일단 콘솔.. 이걸 적용시켜야함
   navigator.mediaDevices
     .enumerateDevices()
@@ -32,19 +32,18 @@ const AiStretching = () => {
       (webcamRef.current as any).video.width = videoWidth;
       (webcamRef.current as any).video.height = videoHeight;
       const pose = await detector.estimatePoses(video, {});
-      let dataArr:any=[];
-      const dataToSend=pose[0].keypoints.slice(0, 11)
-      // console.log("좌표값", dataToSend);
-      // console.log(JSON.stringify(dataToSend))
-      // dataToSend.filter((item)=>console.log([item.x,item.y]))
-      if(dataToSend){dataToSend.forEach((item)=>{
-        dataArr.push(item.x);
-        dataArr.push(item.y);
-        dataArr.push(item.score)
-      });
-    }
-      console.log( dataArr)
-      socket.emit('stretching',dataArr)
+      let dataArr: any = [];
+      const dataToSend = pose[0].keypoints.slice(0, 11);
+      if (dataToSend) {
+        dataToSend.forEach((item) => {
+          dataArr.push(item.x);
+          dataArr.push(item.y);
+          dataArr.push(item.score);
+        });
+      }
+      console.log(dataArr);
+      socket.emit("stretching", dataArr);
+
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
 
       requestAnimationFrame(() => {
@@ -65,7 +64,6 @@ const AiStretching = () => {
     requestAnimationFrame(() => detectWebCamFeed(detector));
   };
   runMovenet();
-
   const drawResult = (
     pose: any,
     video: any,
