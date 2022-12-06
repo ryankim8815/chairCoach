@@ -10,29 +10,35 @@ export const WholePage = styled.div`
   .inner {
     ${({ theme }) => theme.common.inner};
     padding: 120px 0;
+
+    h2{
+      font-size: ${({ theme }) => theme.fontSize.title};
+      margin-bottom: 40px;
+    }
   }
-`;
-
-export const TitleBox = styled.div`
-  text-align: center;
-`;
-
-export const Title = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.title};
-  margin-bottom: 40px;
 `;
 
 export const SubTitle = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.subTitle};
   font-weight: 500;
 `;
-export const Text = styled.span`
+
+export const Text = styled.p`
   margin-top: 20px;
   line-height:1.25;
+  span{
+    font-weight: 700;
+  }
 `;
 
-export const Bold = styled.span`
-  font-weight: 700;
+// 거북목 증후군에 대해 알아보아요.
+export const neckInfoBox = styled.div`
+  h2{
+    text-align: center;
+    span{
+      font-weight: 700;
+    }
+  }
 `;
 
 export const MainContents = styled.div`
@@ -41,6 +47,10 @@ export const MainContents = styled.div`
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.mainMoreLight};
   overflow: hidden;
+
+  & > div:nth-child(2n) > div:first-of-type{
+    order: 2;
+  }
 `;
 
 export const Content = styled.div`
@@ -48,30 +58,23 @@ export const Content = styled.div`
   grid-template-columns: repeat(2, 1fr);
   width: 100%;
   height: 264px;
+
+  & > div:last-of-type{
+    padding: 40px;
+  }
 `;
 
 export const SizedImg1 = styled.div`
-  background-image: url(${aboutNeck1});
-  background-position: center;
+  background: url(${aboutNeck1}) no-repeat center;
   background-size: cover;
-  background-repeat: no-repeat;
 `;
 export const SizedImg2 = styled.div`
-  background-image: url(${aboutNeck2});
-  background-position: center;
+  background: url(${aboutNeck2}) no-repeat center;
   background-size: cover;
-  background-repeat: no-repeat;
 `;
 export const SizedImg3 = styled.div`
-  background-image: url(${aboutNeck3});
-  background-position: center;
+  background: url(${aboutNeck3}) no-repeat center;
   background-size: cover;
-  background-repeat: no-repeat;
-`;
-
-export const TextBox = styled.div`
-  line-height: 1.25;
-  padding:40px;
 `;
 
 export const TextList = styled.ul`
@@ -98,14 +101,20 @@ export const TextList = styled.ul`
   }
 `;
 
+// 거북목 진단
 export const ChioceBox = styled.div`
   margin-top: 120px;
+  h2{
+    font-weight: 700;
+  }
 `;
+
 export const BtnBox = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0 40px;
 `;
+
 export const ChoiceBtn = styled.div`
   padding: 32px 40px;
   border-radius: 4px;

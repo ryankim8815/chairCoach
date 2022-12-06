@@ -1,10 +1,14 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import userState from './../../atoms/user';
 import * as B from "../../styles/BtnStyle";
 import * as S from "./AlamStyle";
 
 const Alarm = () => {
+  const user = useRecoilValue(userState);
+
   return (
-    <S.AlarmCon>
+    <S.AlarmCon className={user ? '' : 'lock'}>
     <S.AlarmTextWrap>
       <h2>
       안심하고 일하세요!<br />

@@ -29,8 +29,8 @@ function App() {
     <>
       <RecoilRoot>
         <BrowserRouter>
-          <GlobalStyles />
           <ThemeProvider theme={theme}>
+          <GlobalStyles />
             <Header />
             <Routes>
               <Route path="/" element={<Main />} />

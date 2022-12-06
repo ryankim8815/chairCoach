@@ -1,10 +1,14 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import userState from './../../atoms/user';
 import * as S from './StretchingStyle';
 
 import { BsFillClockFill } from "react-icons/bs";
 import { BsFillLightningFill } from "react-icons/bs";
 
 const Stretching = () => {
+  const user = useRecoilValue(userState);
+
   return (
     <S.ChairCoachCon>
     <h2>chair coach</h2>
@@ -22,7 +26,7 @@ const Stretching = () => {
           </dl>
         </S.StretchingItem>
 
-        <S.StretchingItem>
+        <S.StretchingItem className={user ? '' : 'lock'}>
           <dl>
             <dt>기본 스트레칭</dt>
             <dd>
@@ -32,7 +36,7 @@ const Stretching = () => {
           </dl>
         </S.StretchingItem>
 
-        <S.StretchingItem>
+        <S.StretchingItem className={user ? '' : 'lock'}>
           <dl>
             <dt>심화 스트레칭</dt>
             <dd>
