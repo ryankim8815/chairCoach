@@ -89,7 +89,7 @@ var userService = /** @class */ (function () {
                         // 쿼리문의 SELECT로 대체
                         for (i = 0; i < currentUserObject.length; i++) {
                             delete currentUserObject[i].password;
-                            delete currentUserObject[i].user_id;
+                            // delete currentUserObject[i].user_id;
                         }
                         if (currentUserObject.length === 0) {
                             result_errUserId = {
@@ -174,7 +174,6 @@ var userService = /** @class */ (function () {
                         secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
                         token = jsonwebtoken_1.default.sign({ user_id: thisUser.user_id }, secretKey);
                         delete thisUser.password;
-                        delete thisUser.user_id;
                         result_success = Object.assign({
                             result: true,
                             cause: "success",

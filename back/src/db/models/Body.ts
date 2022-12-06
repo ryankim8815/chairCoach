@@ -61,8 +61,17 @@ class Body {
     return rows;
   }
 
-  // 특정 유저의 기록 조회 - monthly
-  static async findByUserIdMonth({ user_id, year }) {
+  // 특정 유저의 기록 조회 - week
+  static async findByUserIdWeek({ user_id, year, week }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "SELECT DATE_FORMAT(`start_time`,'%Y-%m-%d') AS date, tag, COUNT(`user_id`) AS count, SUM(duration) AS duration FROM bodies WHERE NOT `duration` IS NULL AND `user_id` = ? AND DATE_FORMAT(`start_time`, '%Y') = ? AND DATE_FORMAT(`start_time`, '%u') = ? GROUP BY tag, DATE_FORMAT(`start_time`, '%Y-%m-%d')",
+      values: [user_id, year, week],
+    });
+    return rows;
+  }
+
+  // 특정 유저의 기록 조회 - year
+  static async findByUserIdYear({ user_id, year }) {
     const [rows, fields] = await promisePool.query({
       sql: "SELECT DATE_FORMAT(`start_time`,'%Y-%m') AS month, tag, COUNT(`user_id`) AS count, SUM(duration) AS duration FROM bodies WHERE NOT `duration` IS NULL AND `user_id` = ? AND DATE_FORMAT(`start_time`, '%Y') = ? GROUP BY tag, DATE_FORMAT(`start_time`, '%Y-%m')",
       values: [user_id, year],

@@ -155,21 +155,49 @@ var bodyController = /** @class */ (function () {
         });
     };
     // GET: 특정 유저의 운동 기록 조회
-    bodyController.bodyRecordsMonthly = function (req, res, next) {
+    bodyController.bodyRecordsWeek = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, year, Bodies, err_5, result_err;
+            var user_id, year, week, Bodies, err_5, result_err;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
                         year = req.params.year;
-                        return [4 /*yield*/, bodyService_1.default.getBodiesByMonth({ user_id: user_id, year: year })];
+                        week = req.params.week;
+                        return [4 /*yield*/, bodyService_1.default.getBodiesByWeek({ user_id: user_id, year: year, week: week })];
                     case 1:
                         Bodies = _a.sent();
                         return [2 /*return*/, res.status(200).json(Bodies)];
                     case 2:
                         err_5 = _a.sent();
+                        result_err = {
+                            result: false,
+                            cause: "api",
+                            message: "bodyRecords api에서 오류가 발생했습니다.",
+                        };
+                        return [2 /*return*/, res.status(200).json(result_err)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // GET: 특정 유저의 운동 기록 조회
+    bodyController.bodyRecordsYear = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user_id, year, Bodies, err_6, result_err;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        user_id = req.body.user_id;
+                        year = req.params.year;
+                        return [4 /*yield*/, bodyService_1.default.getBodiesByYear({ user_id: user_id, year: year })];
+                    case 1:
+                        Bodies = _a.sent();
+                        return [2 /*return*/, res.status(200).json(Bodies)];
+                    case 2:
+                        err_6 = _a.sent();
                         result_err = {
                             result: false,
                             cause: "api",

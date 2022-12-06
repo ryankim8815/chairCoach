@@ -8,32 +8,51 @@ import * as Schemas from "../utils/schemas.joi";
 const bodyRouter = express.Router();
 bodyRouter.get("/bodies", bodyController.bodyRecordlist); // 전체 운동 기록 조회 기능, 개발시 편의를 위한 기능으로 사용처가 없다면 삭제 예정
 bodyRouter.get(
-  "/body",
+  "/bodies/:user_id",
   authMiddleware,
-  validation.validateBodyRecords,
+  Validation.validateBodyParams(
+    Schemas.userCurrentSchema,
+    Schemas.userCurrentSchema
+  ),
   bodyController.bodyRecords
 ); // 특정 유저의 운동 기록 조회
 bodyRouter.post(
-  "/body",
+  "/bodies/:user_id/recording",
   authMiddleware,
-  validation.validateBodyCreate,
+  Validation.validateBodyParams(
+    Schemas.bodyCreateSchema,
+    Schemas.userCurrentSchema
+  ),
   bodyController.bodyCreate
 ); // 특정 유저의 운동 기록 시작
 bodyRouter.patch(
-  "/body",
+  "/bodies/:user_id/terminating",
   authMiddleware,
-  validation.validateBodyUpdate,
+  Validation.validateBodyParams(
+    Schemas.bodyUpdateSchema,
+    Schemas.userCurrentSchema
+  ),
   bodyController.bodyUpdate
 ); // 특정 유저의 운동 기록 종료
 
 bodyRouter.get(
-  "/body/year/:year",
+  "/bodies/:user_id/:year/:week",
   authMiddleware,
   Validation.validateBodyParams(
-    Schemas.bodyRecordsSchema,
+    Schemas.userCurrentSchema,
+    Schemas.bodyRecordsFindByWeek
+  ),
+  bodyController.bodyRecordsWeek
+); // 특정 유저의 운동 기록 조회 - 일간
+
+bodyRouter.get(
+  "/bodies/:user_id/:year",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.userCurrentSchema,
     Schemas.bodyRecordsFindByYear
   ),
-  bodyController.bodyRecordsMonthly
+  bodyController.bodyRecordsYear
 ); // 특정 유저의 운동 기록 조회 - 월간
 
 export = bodyRouter;
@@ -89,13 +108,19 @@ export = bodyRouter;
 
 /**
  * @swagger
- * /body:
+ * /bodies/{user_id}:
  *   get:
  *     summary: 특정 유저의 운동 기록 조회
  *     description: 로그인한 사용자만 이용 가능합니다.
  *     tags: ["bodyRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -140,7 +165,7 @@ export = bodyRouter;
 
 /**
  * @swagger
- * /body/year/{year}:
+ * /bodies/{user_id}/{year}/{week}:
  *   get:
  *     summary: 특정 유저의 운동 기록 조회 - 특정연도의 월간
  *     description: 로그인한 사용자만 이용 가능합니다.
@@ -149,9 +174,19 @@ export = bodyRouter;
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: year
+ *         name: user_id
  *         schema:
  *           type: string
+ *         required: true
+ *       - in: path
+ *         name: year
+ *         schema:
+ *           type: number
+ *         required: true
+ *       - in: path
+ *         name: week
+ *         schema:
+ *           type: number
  *         required: true
  *     responses:
  *       200:
@@ -190,13 +225,74 @@ export = bodyRouter;
 
 /**
  * @swagger
- * /body:
+ * /bodies/{user_id}/{year}:
+ *   get:
+ *     summary: 특정 유저의 운동 기록 조회 - 특정연도의 월간
+ *     description: 로그인한 사용자만 이용 가능합니다.
+ *     tags: ["bodyRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *       - in: path
+ *         name: year
+ *         schema:
+ *           type: number
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: 해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.
+ *                 list:
+ *                   type: object
+ *                   properties:
+ *                     month:
+ *                       type: string
+ *                     tag:
+ *                       type: string
+ *                     count:
+ *                       type: int
+ *                     duration:
+ *                       type: int
+ *                   example:
+ *                     - month: 2022-11
+ *                       tag: neck
+ *                       count: 5
+ *                       duration: 10
+ */
+
+/**
+ * @swagger
+ * /bodies/{user_id}/recording:
  *   post:
  *     summary: 특정 유저의 운동 기록 시작
  *     description: AI 모델이 완성되면 수정이 필요합니다.
  *     tags: ["bodyRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -230,13 +326,19 @@ export = bodyRouter;
 
 /**
  * @swagger
- * /body:
+ * /bodies/{user_id}/terminating:
  *   patch:
  *     summary: 특정 유저의 운동 기록 종료
  *     description: AI 모델이 완성되면 수정이 필요합니다.
  *     tags: ["bodyRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:

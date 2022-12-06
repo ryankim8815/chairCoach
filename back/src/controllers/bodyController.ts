@@ -91,7 +91,7 @@ class bodyController {
   }
 
   // GET: 특정 유저의 운동 기록 조회
-  static async bodyRecordsMonthly(
+  static async bodyRecordsWeek(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -99,7 +99,29 @@ class bodyController {
     try {
       const user_id = req.body.user_id;
       const year = req.params.year;
-      const Bodies = await bodyService.getBodiesByMonth({ user_id, year });
+      const week = req.params.week;
+      const Bodies = await bodyService.getBodiesByWeek({ user_id, year, week });
+      return res.status(200).json(Bodies);
+    } catch (err) {
+      const result_err = {
+        result: false,
+        cause: "api",
+        message: "bodyRecords api에서 오류가 발생했습니다.",
+      };
+      return res.status(200).json(result_err);
+    }
+  }
+
+  // GET: 특정 유저의 운동 기록 조회
+  static async bodyRecordsYear(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const user_id = req.body.user_id;
+      const year = req.params.year;
+      const Bodies = await bodyService.getBodiesByYear({ user_id, year });
       return res.status(200).json(Bodies);
     } catch (err) {
       const result_err = {
