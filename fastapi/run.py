@@ -1,8 +1,6 @@
 from typing import Any
 from fastapi import FastAPI
 import uvicorn
-from fastapi_socketio import SocketManager
-from fastapi.responses import HTMLResponse
 import socketio
 
 import numpy as np
@@ -28,7 +26,7 @@ async def connect(sid, env, auth):
     await sio.emit("message", f"Backend has connected to using socket ID: {sid}")
     
 @sio.on("model")
-async def model(_, data):
+async def model_predict(_, data):
     df = list(data.values())
     pred = model.predict(df)
     action = actions[np.argmax(pred)]
