@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var User_1 = __importDefault(require("../db/models/User"));
 var Code_1 = __importDefault(require("../db/models/Code"));
+var nullPrototypeHandler_1 = require("../utils/nullPrototypeHandler");
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var uuid_1 = require("uuid");
@@ -51,19 +52,17 @@ var userService = /** @class */ (function () {
     //// 모든 사용자 조회
     userService.getAllUsers = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var allUsers, allUsersString, allUsersObject, countUsers, countUsersString, countUsersObject, result_success;
+            var allUsers, allUsersObject, countUsers, countUsersObject, result_success;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, User_1.default.findAll()];
                     case 1:
                         allUsers = _a.sent();
-                        allUsersString = JSON.stringify(allUsers);
-                        allUsersObject = JSON.parse(allUsersString);
+                        allUsersObject = (0, nullPrototypeHandler_1.nullPrototypeHandler)(allUsers);
                         return [4 /*yield*/, User_1.default.countAll()];
                     case 2:
                         countUsers = _a.sent();
-                        countUsersString = JSON.stringify(countUsers);
-                        countUsersObject = JSON.parse(countUsersString);
+                        countUsersObject = (0, nullPrototypeHandler_1.nullPrototypeHandler)(countUsers);
                         result_success = Object.assign({
                             result: true,
                             cause: "success",

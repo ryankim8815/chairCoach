@@ -1,5 +1,6 @@
 import User from "../db/models/User";
 import Code from "../db/models/Code";
+import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
@@ -10,11 +11,14 @@ class userService {
   //// 모든 사용자 조회
   static async getAllUsers() {
     const allUsers = await User.findAll();
-    const allUsersString = JSON.stringify(allUsers);
-    const allUsersObject = JSON.parse(allUsersString);
+    // const allUsersString = JSON.stringify(allUsers);
+    // const allUsersObject = JSON.parse(allUsersString);
+    const allUsersObject = nullPrototypeHandler(allUsers);
     const countUsers = await User.countAll();
-    const countUsersString = JSON.stringify(countUsers);
-    const countUsersObject = JSON.parse(countUsersString);
+    // const countUsersString = JSON.stringify(countUsers);
+    // const countUsersObject = JSON.parse(countUsersString);
+    const countUsersObject = nullPrototypeHandler(countUsers);
+
     const result_success = Object.assign(
       {
         result: true,
