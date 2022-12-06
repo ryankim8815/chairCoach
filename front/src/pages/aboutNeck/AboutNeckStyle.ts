@@ -121,5 +121,6 @@ export const ChoiceBtn = styled.div`
   &:hover {
     background: ${({ theme }) => theme.colors.main};
     color: #ffffff;
+    transform: translateY(-6px);
   }
 `;

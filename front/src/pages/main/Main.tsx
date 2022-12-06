@@ -14,25 +14,22 @@ const Main = () => {
     }, 1800000);
   }, []);
 
-  // const rootRef = useRef(null); 
+  const rootRef = useRef(null); 
   const domRef = useRef([]);
 
   useEffect(()=>{
-    // let options = {
-    //   root: rootRef.current,
-    //   rootMargin: '0px',
-    //   threshold: 1.0
-    // }
+    const options = {
+      root: rootRef.current,
+      rootMargin: '-120px',
+    }
 
-    let observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry  => {
-        console.log(entry.boundingClientRect);
         if(entry.isIntersecting){
-          console.log(entry.target);
           entry.target.classList.add('active');
         }
       });
-    });
+    }, options);
 
     observer.observe(domRef.current[0]);
     observer.observe(domRef.current[1]);
@@ -43,7 +40,7 @@ const Main = () => {
   }, []);
 
   return (
-    <S.MainLayout /* ref={rootRef} */>
+    <S.MainLayout>
       <Banner ref={domRef} />
       <IntroduceLayout ref={domRef} />
       <ImportantText/>

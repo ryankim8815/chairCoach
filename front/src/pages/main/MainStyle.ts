@@ -113,7 +113,7 @@ export const BannerContent = styled.div`
 export const IntroduceLayout = styled.section`
   h2{ transition: all .5s;}
   & > div{ transition: all .5s .2s; }
-  p{ transition: all .5s 1s; }
+  p{ transition: all .5s .8s; }
 
   &.active{
     h2, &>div, p{
@@ -155,9 +155,8 @@ export const ImportantTextLayout = styled.section`
 
 // ExplainLayout
 export const ExplainLayout = styled.section`
-  margin: 240px 0;
   .inner > div + div{
-    margin-top: 480px;
+    margin-top: 240px;
   }
 `;
 
@@ -191,11 +190,7 @@ export const ExplainContent = styled.div`
   }
   
   &.active{
-    & > div:first-of-type{
-      ${animationAfter}
-    }
-  
-    & > div:last-of-type{
+    & > div{
       ${animationAfter}
     }
   } 
@@ -243,19 +238,24 @@ export const SelectLayout = styled.section`
 
   // 애니메이션
   .inner{
-    & > div:first-of-type{
-      ${animationBefore}
+    h2{
       transition: all .5s;
     }
-  
-    & > div:last-of-type{
-      ${animationBefore}
-      transition: all .5s .3s;
+    & > div{
+      .stretching{
+        ${animationBefore}
+        transition: all .5s .3s;
+      }
+    
+      .neck{
+        ${animationBefore}
+        transition: all .5s .6s;
+      }
     }
   }
 
   &.active .inner{
-    & > div, h2{
+    & > div > div, h2{
       ${animationAfter}
     }
   }
@@ -310,5 +310,6 @@ export const SelectWrap = styled.div`
   &:hover dl{
     background: ${({ theme }) => theme.colors.main};
     color: #fff;
+    transform: translateY(-12px);
   }
 `;
