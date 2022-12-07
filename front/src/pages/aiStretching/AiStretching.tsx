@@ -33,6 +33,7 @@ const AiStretching = () => {
       (webcamRef.current as any).video.height = videoHeight;
       const pose = await detector.estimatePoses(video, {});
       let dataArr: any = [];
+      if(!pose[0].keypoints) return;
       const dataToSend = pose[0].keypoints.slice(0, 11);
       if (dataToSend) {
         dataToSend.forEach((item) => {
@@ -41,7 +42,7 @@ const AiStretching = () => {
           dataArr.push(item.score);
         });
       }
-      console.log(dataArr);
+      // console.log(dataArr);
       socket.emit("stretching", dataArr);
 
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);

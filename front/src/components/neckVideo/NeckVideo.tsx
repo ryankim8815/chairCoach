@@ -47,13 +47,11 @@ const NeckVideo = ({ time, step, setStep }: any) => {
                 (dataToSend[1].x - dataToSend[5].x)
             );
       };
-      // useEffect(()=>{
-      //   getInclination();
-      //   console.log(inclination);
-      // },[step])
       if(step===1){
         getInclination();
+        
         console.log(inclination);
+        if(inclination!==0) return;
       }
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
 
