@@ -15,7 +15,7 @@ class User {
 
   static async findByUserId({ user_id }) {
     const [rows, fields] = await promisePool.query({
-      sql: "SELECT user_id, email, nickname, provider, created_at, withdraw_at, status, alert, timer  FROM users WHERE `user_id` = ?",
+      sql: "SELECT user_id, password, email, nickname, provider, created_at, withdraw_at, status, alert, timer  FROM users WHERE `user_id` = ?",
       values: [user_id],
     });
     return rows;

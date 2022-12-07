@@ -73,7 +73,7 @@ var userService = /** @class */ (function () {
     userService.getCurrentUser = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var currentUser, _b, result_errUserId, result_errUserId, thisUser, result_success;
+            var currentUser, _b, i, result_errUserId, result_errUserId, thisUser, result_success;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -81,9 +81,9 @@ var userService = /** @class */ (function () {
                         return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
                     case 1:
                         currentUser = _b.apply(void 0, [_c.sent()]);
-                        // for (let i = 0; i < currentUser.length; i++) {
-                        //   delete currentUser[i].password;
-                        // }
+                        for (i = 0; i < currentUser.length; i++) {
+                            delete currentUser[i].password;
+                        }
                         if (currentUser.length === 0) {
                             result_errUserId = {
                                 result: false,

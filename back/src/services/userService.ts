@@ -20,9 +20,9 @@ class userService {
     const currentUser = nullPrototypeHandler(
       await User.findByUserId({ user_id })
     );
-    // for (let i = 0; i < currentUser.length; i++) {
-    //   delete currentUser[i].password;
-    // }
+    for (let i = 0; i < currentUser.length; i++) {
+      delete currentUser[i].password;
+    }
     if (currentUser.length === 0) {
       const result_errUserId = {
         result: false,
