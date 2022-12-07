@@ -11,6 +11,21 @@ def load_model():
     # load weight
     model.load_model('first_model.json')
     return model
+
+def extract_coord(kpts, steps):
+    num_kpts = len(kpts) // steps
+    temp = []
+    for kid in range(num_kpts):
+        x_coord, y_coord = kpts[steps * kid], kpts[steps * kid + 1]
+        if steps == 3:
+            conf = kpts[steps * kid + 2]
+            if conf < 0.5:
+                x_coord, y_coord = 0.0, 0.0
+                temp.extend([x_coord, y_coord])
+                continue
+            temp.extend([x_coord, y_coord])
+
+    return temp
     
 
 class ChairCouchModel:
@@ -18,7 +33,8 @@ class ChairCouchModel:
         self.actions = set_actions()
         self.model = load_model()
     
-    def predict(self, coords):
+    def predict(self, kpts):
+        coords = [extract_coord(kpts[0], 3)]
         pred = self.model.predict(coords)
         action = self.actions[np.argmax(pred)]
         return action
