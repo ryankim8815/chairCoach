@@ -15,4 +15,4 @@ const ChairCoach = () => {
   );
 };
 
-export default ChairCoach;
+export default ChairCoach

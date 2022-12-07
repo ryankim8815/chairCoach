@@ -1,32 +1,88 @@
 import * as express from "express";
 import authMiddleware from "../middlewares/authMiddleware";
 import nodemailerMiddleware from "../middlewares/nodemailerMiddleware";
-import * as validation from "../middlewares/validationMiddleware";
-import userService from "../services/userService";
-// import logger from "../../config/logger";
-const logger = require("../../config/logger");
+import * as Validation from "../middlewares/validationMiddleware";
+import * as Schemas from "../utils/schemas.joi";
+import userController from "../controllers/userController";
 
 const userRouter = express.Router();
 
-// GET: 사용자 리스트 조회 기능
-const userList = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const allUsers = await userService.getAllUsers();
-    logger.info(allUsers);
-    return res.status(200).json(allUsers);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userList api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
+// api index
+userRouter.get("/users", userController.userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
+userRouter.get(
+  "/users/:user_id",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.userCurrentSchema,
+    Schemas.userCurrentSchema
+  ),
+  userController.userCurrent
+); // 현재 사용자 정보 조회
+userRouter.post(
+  "/signup",
+  Validation.validateBody(Schemas.userCreateSchema),
+  userController.userRegister
+); // 자체 회원가입
+userRouter.post(
+  "/signin",
+  Validation.validateBody(Schemas.userLoginSchema),
+  userController.userSignin
+); // 로그인
+userRouter.post(
+  "/users/:user_id/password",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.checkPasswordSchema,
+    Schemas.userCurrentSchema
+  ),
+  userController.userPassword
+); // 유저 정보 업데이트를 위한 password 확인
+userRouter.put(
+  "/users/:user_id",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.userUpdateSchema,
+    Schemas.userCurrentSchema
+  ),
+  userController.userUpdate
+); // 유저 정보 업데이트(pw & nickname)
+userRouter.delete(
+  "/users/:user_id",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.userDeleteSchema,
+    Schemas.userCurrentSchema
+  ),
+  userController.userDelete
+); // 유저 삭제
+userRouter.post(
+  "/signup/email",
+  Validation.validateBody(Schemas.signupEmailSchema),
+  nodemailerMiddleware,
+  userController.signupEmail
+); // email로 코드 발송
+userRouter.get(
+  "/signup/email/:email/code/:code",
+  Validation.validateParams(Schemas.verifyEmailSchema),
+  userController.signupVerifyEmail
+); // email 인증
+userRouter.get(
+  "/signup/nickname/:nickname",
+  Validation.validateParams(Schemas.signupNicknameSchema),
+  userController.signupNickname
+); // nickname 중복확인
+userRouter.patch(
+  "/users/:user_id/alert",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.setAlertSchema,
+    Schemas.userCurrentSchema
+  ),
+  userController.userSetAlert
+); // 알람 설정
+
+export = userRouter;
+
 /**
  * @swagger
  * /users:
@@ -76,36 +132,21 @@ const userList = async (
  *                       created_at: 2022-11-01T01:01:01.000Z
  */
 
-// GET: 현재 사용자 정보 조회 기능
-const userCurrent = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const user_id = req.body.user_id;
-    const currentUser = await userService.getCurrentUser({ user_id });
-    logger.error(currentUser); // test
-    return res.status(200).json(currentUser);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userCurrent api에서 오류가 발생했습니다.",
-    };
-    logger.error(result_err); // test
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
- * /user:
+ * /users/{user_id}:
  *   get:
  *     summary: 현재 사용자 조회
  *     description: 현재 로그인된 사용자 정보를 조회합니다.
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -138,27 +179,6 @@ const userCurrent = async (
  *                     created_at: 2022-11-03T04:52:32.000Z
  */
 
-// POST: 회원가입 기능
-const userRegister = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const email = req.body.email;
-    const password = req.body.password;
-    const nickname = req.body.nickname;
-    const newUser = await userService.addUser({ email, password, nickname });
-    return res.status(200).json(newUser);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userRegister api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
  * /signup:
@@ -200,26 +220,6 @@ const userRegister = async (
  *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
  */
 
-// POST: 로그인
-const userSignin = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const email = req.body.email;
-    const password = req.body.password;
-    const signinUser = await userService.getUser({ email, password });
-    return res.status(200).json(signinUser);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userLogin api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
  * /signin:
@@ -273,38 +273,21 @@ const userSignin = async (
  *                   example: 2022-11-01T01:01:01.000Z
  */
 
-// POST: 회원정보 수정을 위한 비밀번호 확인
-const userPassword = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const user_id = req.body.user_id;
-    const password = req.body.password;
-    const updateUser = await userService.passwordCheck({
-      user_id,
-      password,
-    });
-    return res.status(200).json(updateUser);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userPassword api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
- * /user/password:
+ * /users/{user_id}/password:
  *   post:
  *     summary: 회원정보 수정을 위한 비밀번호 확인
  *     description: 회원정보 수정을 위한 비밀번호 확인
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -333,42 +316,21 @@ const userPassword = async (
  *                   example: 입력하신 password가 일치합니다.
  */
 
-// POST: 회원정보 수정
-const userUpdate = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const user_id = req.body.user_id;
-    const currentPassword = req.body.currentPassword;
-    const password = req.body.password;
-    const nickname = req.body.nickname;
-    const updateUser = await userService.updateUser({
-      user_id,
-      currentPassword,
-      password,
-      nickname,
-    });
-    return res.status(200).json(updateUser);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userUpdate api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
- * /user:
+ * /users/{user_id}:
  *   put:
  *     summary: 회원정보 수정
  *     description: 회원정보 수정 시에도 nickname은 중복 검사가 필요합니다.
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -403,38 +365,21 @@ const userUpdate = async (
  *                   example: ${nickname}님의 회원정보 수정이 성공적으로 이뤄졌습니다.
  */
 
-// DELETE: 회원정보 삭제
-const userDelete = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const user_id = req.body.user_id;
-    const password = req.body.password;
-    const deleteUser = await userService.deleteUser({
-      user_id,
-      password,
-    });
-    return res.status(200).json(deleteUser);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "userDelete api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
- * /user:
+ * /users/{user_id}:
  *   delete:
  *     summary: 회원정보 삭제
  *     description: 한번 삭제한 사용자는 복구할 수 없습니다.
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -463,30 +408,6 @@ const userDelete = async (
  *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
 
-/// POST: email 인증을 위한 코드 발송
-const signupEmail = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const email = req.body.email;
-    const code = req.body.code;
-    const sendCodeToEmail = await userService.sendCode({
-      // redis 활용 고려
-      email,
-      code,
-    });
-    return res.status(200).json(sendCodeToEmail);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "signupEmail api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
  * /signup/email:
@@ -521,29 +442,7 @@ const signupEmail = async (
  *                   type: string
  *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
  */
-/// GET: email 인증 코드 확인
-const signupVerifyEmail = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const email = req.params.email;
-    const code = req.params.code;
-    const verifyEmailCode = await userService.verifyCode({
-      email,
-      code,
-    });
-    return res.status(200).json(verifyEmailCode);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "signupVerifyEmail api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
+
 /**
  * @swagger
  * /signup/email/{email}/code/{code}:
@@ -581,27 +480,6 @@ const signupVerifyEmail = async (
  *                   example: email 인증을 위한 코드 인증
  */
 
-/// GET: nickname 중복확인
-const signupNickname = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  try {
-    const nickname = req.params.nickname;
-    const checkNickname = await userService.nicknameDuplicateCheck({
-      nickname,
-    });
-    return res.status(200).json(checkNickname);
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "api",
-      message: "signupNickname api에서 오류가 발생했습니다.",
-    };
-    return res.status(200).json(result_err);
-  }
-};
 /**
  * @swagger
  * /signup/nickname/{nickname}:
@@ -634,49 +512,48 @@ const signupNickname = async (
  *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
  */
 
-// api index
-userRouter.get("/users", userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
-userRouter.get(
-  "/user",
-  authMiddleware,
-  validation.validateUserCurrent,
-  userCurrent
-); // 현재 사용자 정보 조회
-userRouter.post("/signup", validation.validateUserCreate, userRegister); // 자체 회원가입
-userRouter.post("/signin", validation.validateUserLogin, userSignin); // 로그인
-userRouter.post(
-  "/user/password",
-  authMiddleware,
-  validation.validateCheckPassword,
-  userPassword
-); // 유저 정보 업데이트를 위한 password 확인
-userRouter.put(
-  "/user",
-  authMiddleware,
-  validation.validateUserUpdate,
-  userUpdate
-); // 유저 정보 업데이트(pw & nickname)
-userRouter.delete(
-  "/user",
-  authMiddleware,
-  validation.validateUserDelete,
-  userDelete
-); // 유저 삭제
-userRouter.post(
-  "/signup/email",
-  validation.validateSignupEmail,
-  nodemailerMiddleware,
-  signupEmail
-); // email로 코드 발송
-userRouter.get(
-  "/signup/email/:email/code/:code",
-  validation.validateVerifyEmail,
-  signupVerifyEmail
-); // email 인증
-userRouter.get(
-  "/signup/nickname/:nickname",
-  validation.validateSignupNickname,
-  signupNickname
-); // nickname 중복확인
-
-export = userRouter;
+/**
+ * @swagger
+ * /user/alerts/{user_id}:
+ *   patch:
+ *     summary: 알람 설정
+ *     description:  알람 설정
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               alert:
+ *                 type: boolean
+ *                 example: true
+ *               timer:
+ *                 type: int
+ *                 example: 15
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 cause:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Alert 업데이트가 성공적으로 이뤄졌습니다.
+ */

@@ -15,7 +15,7 @@ class User {
 
   static async findByUserId({ user_id }) {
     const [rows, fields] = await promisePool.query({
-      sql: "SELECT * FROM users WHERE `user_id` = ?",
+      sql: "SELECT user_id, email, nickname, provider, created_at, withdraw_at, status, alert, timer  FROM users WHERE `user_id` = ?",
       values: [user_id],
     });
     return rows;
@@ -56,6 +56,14 @@ class User {
     const [rows, fields] = await promisePool.query({
       sql: "UPDATE users SET `password` = ?, `nickname` = ? WHERE `user_id` = ?",
       values: [password, nickname, user_id],
+    });
+    return rows;
+  }
+
+  static async updateAlert({ user_id, alert, timer }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "UPDATE users SET `alert` = ?, `timer` = ? WHERE `user_id` = ?",
+      values: [alert, timer, user_id],
     });
     return rows;
   }
