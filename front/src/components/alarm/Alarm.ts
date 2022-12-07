@@ -1,6 +1,3 @@
-import React from "react";
-import styled from "styled-components";
-import kakao from "../../assets/img/kakaoIcon.png";
 import alarmImage from "../../assets/img/result1.png";
 import logo from "../../assets/img/logo.svg";
 export function notifyMe() {

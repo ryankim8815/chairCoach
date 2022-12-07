@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./util";
@@ -7,6 +7,16 @@ import { Socket, io } from "socket.io-client";
 
 require("@tensorflow/tfjs");
 const AiStretching = () => {
+  const [deviceId, setDeviceId] = useState({});
+  const [devices, setDevices] = useState([]);
+  const handleDevices = React.useCallback(
+    (mediaDevices:any)=>
+      setDevices(mediaDevices.filter(({ kind }:any) => kind === "videoinput")),
+    [setDevices]
+  );
+  React.useEffect(() => {
+    navigator.mediaDevices.enumerateDevices().then(handleDevices);
+  }, [handleDevices]);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const socketUrl = "ws://localhost:8000";
@@ -44,9 +54,7 @@ const AiStretching = () => {
       dataArr2.xy_coord = dataArr;
 
       // console.log(JSON.stringify(dataArr))
-      console.log(dataArr2);
       socket.emit("model", dataArr2);
-
       socket.on("model", (message) => {
         console.log(message);
       });
@@ -87,6 +95,8 @@ const AiStretching = () => {
     <div>
       <Webcam
         ref={webcamRef}
+        audio={false}
+        videoConstraints={{deviceId}}
         style={{
           position: "absolute",
           marginLeft: "auto",
@@ -113,6 +123,16 @@ const AiStretching = () => {
           height: 480,
         }}
       />
+      <div>
+      {devices.map((device, key) => (
+          <button
+            key={(device as any).deviceId}
+            onClick={() => setDeviceId((device as any).deviceId)}
+          >
+            {(device as any).label || `Device ${key + 1}`}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
