@@ -19,7 +19,7 @@ const LoginMenu = () => {
   return (
     <S.LoginMenuContent>
       <button onClick={()=>setIsMenuVisible(!isMenuVisible)}>
-        <span>{String(user)}</span>님
+        <span>{user?.nickname}</span>님
         {isMenuVisible ? <AiFillCaretUp/> : <AiFillCaretDown/>}
       </button>
       {

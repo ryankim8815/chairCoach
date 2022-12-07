@@ -14,7 +14,7 @@ const UserInfoChange = () => {
   const navigate = useNavigate(); 
   const [user, setUser] = useRecoilState(userState);
 
-  const [nickname, setNickname] = useState(user?.nickname);
+  const [nickname, setNickname] = useState(String(user?.nickname));
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
   const [confirmNewPw, setConfirmNewPw] = useState("");
@@ -23,6 +23,7 @@ const UserInfoChange = () => {
   const [newPwDisabled, setNewPwDisabled] = useState(true);
 
   const isNicknameValid = nickname ? RegExp.validateNickname(nickname) : false;
+
 
   // 닉네임 중복 확인
   const handlerCheckNicknameClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,19 +42,26 @@ const UserInfoChange = () => {
 
   // 비밀번호 확인
   const handlerCheckCurrentPwClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(currentPw)
     e.preventDefault();
-    const res = await Api.post("user/password", {
-      password: currentPw,
-    });
 
-    res.data.result ? setNewPwDisabled(false) : alert('입력하신 password가 일치하지 않습니다.\n다시 한 번 확인해 주세요.');
+    if(user){
+      const res = await Api.post(`users/${user.id}/password`, {
+        password: currentPw,
+      });
+
+      console.log(res);
+      
+      res.data.result ? setNewPwDisabled(false) : alert('입력하신 password가 일치하지 않습니다.\n다시 한 번 확인해 주세요.');
+    }
   }
 
   const handlerInfoChangeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(nickname){
-      const res = await Api.put("user", {
+    if(user){
+      console.log(user.id);
+      const res = await Api.put(`user/${user.id}`, {
         password: newPw,
         currentPassword: currentPw,
         nickname: nickname
@@ -63,14 +71,14 @@ const UserInfoChange = () => {
       if(res.data.result){
         navigate('/');
         setUser({
+          id: user.id,
           nickname : nickname
         });
       }
     }
-
   };
 
-  const nicknameSame = String(nickname).length > 0 && user === nickname ? true : false;
+  const nicknameSame = nickname.length > 0 && user?.nickname === nickname ? true : false;
   const currentPwDisabled = (checkNickname || nicknameSame) ? false : true;
   const newPwSame = confirmNewPw.length > 0 && newPw === confirmNewPw ? true : false;
 
