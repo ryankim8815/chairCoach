@@ -2,9 +2,8 @@ from typing import Any
 from fastapi import FastAPI
 import uvicorn
 import socketio
-
 import numpy as np
-from xgboost import XGBClassifier
+from load_model import ChairCouchModel
 
 CLIENT_URLS = ["http://localhost:3000", "ws://localhost:3000"]
 
@@ -13,10 +12,7 @@ socket_app = socketio.ASGIApp(sio)
 
 app = FastAPI()
 
-model = XGBClassifier()
-model.load_model('first_model.json')
-
-actions = np.array(['hands_up', 'neck_down', 'neck_side'])
+model = ChairCouchModel()
 
 app.mount("/", socket_app)
 
@@ -29,8 +25,7 @@ async def connect(sid, env, auth):
 async def model_predict(_, data):
     df = list(data.values())
     pred = model.predict(df)
-    action = actions[np.argmax(pred)]
-    await sio.emit("model", f"{action}")
+    await sio.emit("model", f"{pred}")
 
 @sio.event
 def disconnect(sid):

@@ -19,7 +19,6 @@ class ChairCouchModel:
         self.model = load_model()
     
     def predict(self, coords):
-        
         pred = self.model.predict(coords)
         action = self.actions[np.argmax(pred)]
         return action
