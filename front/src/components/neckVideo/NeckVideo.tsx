@@ -9,7 +9,7 @@ import axios from "axios";
 require("@tensorflow/tfjs");
 
 const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
-  console.log(playInspection)
+  console.log(playInspection);
   const webcamRef = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [inclination, setInclination] = useState(0);
@@ -37,24 +37,19 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       }
       // console.log(dataToSend[2].y - dataToSend[6].y);
       const getInclination = () => {
-        (dataToSend[1].score as number) < 0.4 &&
-        (dataToSend[5].score as number) < 0.4
+        (dataToSend[3].score as number) > (dataToSend[4].score as number)
           ? setInclination(
-              (dataToSend[2].y - dataToSend[6].y) /
-                (dataToSend[2].x - dataToSend[6].x)
+              (dataToSend[3].y - dataToSend[5].y) /
+                (dataToSend[3].x - dataToSend[5].y)
             )
           : setInclination(
-              (dataToSend[1].y - dataToSend[5].y) /
-                (dataToSend[1].x - dataToSend[5].x)
+              (dataToSend[4].y - dataToSend[6].y) /
+                (dataToSend[4].x - dataToSend[6].y)
             );
       };
-      if(playInspection.current===true){
-        console.log(dataToSend[2].y - dataToSend[6].y)
-        console.log(dataToSend[2].x - dataToSend[6].x)
+      if (playInspection.current === true) {
         getInclination();
-        console.log(2)
-        
-        playInspection.current=false
+        playInspection.current = false;
       }
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
 
@@ -63,7 +58,7 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       });
     }
   };
-  console.log(inclination)
+  console.log(inclination);
   const takePhoto = async () => {
     const width = 640;
     const height = 480;
@@ -126,9 +121,11 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     canvas.current.height = videoHeight;
     drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
     drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
+    console.log(pose[0]["keypoints"]);
   };
+
   useEffect(() => {
-    if(step===0) return;
+    if (step === 0) return;
     takePhoto();
   }, [step]);
   return (
