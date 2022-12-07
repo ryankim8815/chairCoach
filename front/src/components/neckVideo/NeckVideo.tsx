@@ -8,7 +8,8 @@ import axios from "axios";
 
 require("@tensorflow/tfjs");
 
-const NeckVideo = ({ time, step, setStep }: any) => {
+const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
+  console.log(playInspection)
   const webcamRef = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [inclination, setInclination] = useState(0);
@@ -47,11 +48,13 @@ const NeckVideo = ({ time, step, setStep }: any) => {
                 (dataToSend[1].x - dataToSend[5].x)
             );
       };
-      if(step===1){
+      if(playInspection.current===true){
+        console.log(dataToSend[2].y - dataToSend[6].y)
+        console.log(dataToSend[2].x - dataToSend[6].x)
         getInclination();
+        console.log(2)
         
-        console.log(inclination);
-        if(inclination!==0) return;
+        playInspection.current=false
       }
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
 
@@ -60,11 +63,11 @@ const NeckVideo = ({ time, step, setStep }: any) => {
       });
     }
   };
-  console.log(webcamRef.current);
+  console.log(inclination)
   const takePhoto = async () => {
     const width = 640;
     const height = 480;
-    let video: HTMLVideoElement | null = webcamRef.current;
+    let video: HTMLVideoElement | null = (webcamRef.current as any).video;
     let photo: HTMLCanvasElement | null = canvasRef.current;
     //null일 경우 대비해 return 처리
     if (!photo || !video) return;
@@ -125,6 +128,7 @@ const NeckVideo = ({ time, step, setStep }: any) => {
     drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
   useEffect(() => {
+    if(step===0) return;
     takePhoto();
   }, [step]);
   return (

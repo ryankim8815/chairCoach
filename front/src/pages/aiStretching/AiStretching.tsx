@@ -9,7 +9,7 @@ require("@tensorflow/tfjs");
 const AiStretching = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const socketUrl = process.env.REACT_APP_SOCKET_URL;
+  const socketUrl = "ws://localhost:8000";
   const socket = io(socketUrl as string);
   //user media device select할 때 일단 콘솔.. 이걸 적용시켜야함
   navigator.mediaDevices
@@ -31,7 +31,7 @@ const AiStretching = () => {
       (webcamRef.current as any).video.height = videoHeight;
       const pose = await detector.estimatePoses(video);
       let dataArr: any = [];
-      if(!pose[0].keypoints) return;
+      if (!pose[0].keypoints) return;
       const dataToSend = pose[0].keypoints.slice(0, 11);
       if (dataToSend) {
         dataToSend.forEach((item) => {
@@ -40,8 +40,17 @@ const AiStretching = () => {
           dataArr.push(item.score);
         });
       }
-      console.log(dataArr);
-      socket.emit("stretching", dataArr);
+      const dataArr2: { [name: string]: number[] } = {};
+      dataArr2.xy_coord = dataArr;
+
+      // console.log(JSON.stringify(dataArr))
+      console.log(dataArr2);
+      socket.emit("model", dataArr2);
+
+      socket.on("model", (message) => {
+        console.log(message);
+      });
+
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
     }
   };
