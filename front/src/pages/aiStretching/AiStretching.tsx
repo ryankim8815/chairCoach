@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./util";
@@ -6,12 +6,9 @@ import * as poseDetection from "@tensorflow-models/pose-detection";
 import { Socket, io } from "socket.io-client";
 
 require("@tensorflow/tfjs");
-
 const AiStretching = () => {
-  const deviceId = useState("");
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-
   const socketUrl = process.env.REACT_APP_SOCKET_URL;
   const socket = io(socketUrl as string);
   //user media device select할 때 일단 콘솔.. 이걸 적용시켜야함
@@ -20,6 +17,7 @@ const AiStretching = () => {
     .then((devices) =>
       console.log(devices.filter((x) => x.kind == "videoinput"))
     );
+
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -31,7 +29,7 @@ const AiStretching = () => {
       const videoHeight = (webcamRef.current as any).video.videoHeight;
       (webcamRef.current as any).video.width = videoWidth;
       (webcamRef.current as any).video.height = videoHeight;
-      const pose = await detector.estimatePoses(video, {});
+      const pose = await detector.estimatePoses(video);
       let dataArr: any = [];
       if(!pose[0].keypoints) return;
       const dataToSend = pose[0].keypoints.slice(0, 11);
@@ -42,14 +40,9 @@ const AiStretching = () => {
           dataArr.push(item.score);
         });
       }
-      // console.log(dataArr);
+      console.log(dataArr);
       socket.emit("stretching", dataArr);
-
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
-
-      requestAnimationFrame(() => {
-        detectWebCamFeed(detector);
-      });
     }
   };
 
@@ -62,9 +55,12 @@ const AiStretching = () => {
       detectorConfig
     );
 
-    requestAnimationFrame(() => detectWebCamFeed(detector));
+    setInterval(() => {
+      detectWebCamFeed(detector);
+    }, 100);
   };
   runMovenet();
+
   const drawResult = (
     pose: any,
     video: any,
