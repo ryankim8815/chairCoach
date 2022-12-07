@@ -9,6 +9,8 @@ import axios from "axios";
 require("@tensorflow/tfjs");
 
 const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
+  const today= new Date();
+  const currentTime= today.getHours() + ':' + today.getMinutes()+':'+today.getSeconds();
   console.log(playInspection);
   const webcamRef = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -78,7 +80,7 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       photo.toBlob(async (blob) => {
         if (!blob) return;
         resolve(
-          new File([blob], "screenshot", {
+          new File([blob], currentTime, {
             type: "image/jpeg",
           })
         );
@@ -90,8 +92,12 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     console.log(formData);
     const res = await axios({
       method: "post",
-      url: `http://localhost:5003/neck`,
-      data: formData,
+      url: `http://localhost:5003/necks`,
+      data: {
+        file: formData,
+        result: inclination,
+        score: 80,
+      },
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -121,7 +127,6 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     canvas.current.height = videoHeight;
     drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
     drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
-    console.log(pose[0]["keypoints"]);
   };
 
   useEffect(() => {
