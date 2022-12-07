@@ -47,7 +47,9 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 axios_1.default.interceptors.response.use(function (res) {
     return res.data;
 }, function (err) {
-    throw new Error("(!) axios error");
+    // console.log(err);
+    // throw new Error("(!) axios error");
+    throw new Error("(!) axios error: ".concat(err));
 });
 // formdata 포멧으로 만들어 줌
 var makeFormData = function (params) {
@@ -118,7 +120,7 @@ var socialLoginController = /** @class */ (function () {
                         result_err = {
                             result: false,
                             cause: "api",
-                            message: "kakaoOauth api에서 오류가 발생했습니다.",
+                            message: "kakaoOauth api\uC5D0\uC11C \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4. ".concat(err_1),
                         };
                         return [2 /*return*/, res.status(200).json(result_err)];
                     case 6: return [2 /*return*/];
@@ -179,7 +181,7 @@ var socialLoginController = /** @class */ (function () {
                         result_err = {
                             result: false,
                             cause: "api",
-                            message: "naverOauth api에서 오류가 발생했습니다.",
+                            message: "naverOauth api\uC5D0\uC11C \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4. ".concat(err_2),
                         };
                         return [2 /*return*/, res.status(200).json(result_err)];
                     case 6: return [2 /*return*/];
@@ -242,7 +244,7 @@ var socialLoginController = /** @class */ (function () {
                         result_err = {
                             result: false,
                             cause: "api",
-                            message: "googleOauth api에서 오류가 발생했습니다.",
+                            message: "googleOauth api\uC5D0\uC11C \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4. ".concat(err_3),
                         };
                         return [2 /*return*/, res.status(200).json(result_err)];
                     case 5: return [2 /*return*/];

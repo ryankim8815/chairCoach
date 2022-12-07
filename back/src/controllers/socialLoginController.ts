@@ -11,7 +11,9 @@ axios.interceptors.response.use(
     return res.data;
   },
   (err) => {
-    throw new Error("(!) axios error");
+    // console.log(err);
+    // throw new Error("(!) axios error");
+    throw new Error(`(!) axios error: ${err}`);
   }
 );
 // formdata 포멧으로 만들어 줌
@@ -74,7 +76,7 @@ class socialLoginController {
       const result_err = {
         result: false,
         cause: "api",
-        message: "kakaoOauth api에서 오류가 발생했습니다.",
+        message: `kakaoOauth api에서 오류가 발생했습니다. ${err}`,
       };
       return res.status(200).json(result_err);
     }
@@ -127,7 +129,7 @@ class socialLoginController {
       const result_err = {
         result: false,
         cause: "api",
-        message: "naverOauth api에서 오류가 발생했습니다.",
+        message: `naverOauth api에서 오류가 발생했습니다. ${err}`,
       };
       return res.status(200).json(result_err);
     }
@@ -186,7 +188,7 @@ class socialLoginController {
       const result_err = {
         result: false,
         cause: "api",
-        message: "googleOauth api에서 오류가 발생했습니다.",
+        message: `googleOauth api에서 오류가 발생했습니다. ${err}`,
       };
       return res.status(200).json(result_err);
     }

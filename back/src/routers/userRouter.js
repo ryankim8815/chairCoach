@@ -38,15 +38,12 @@ userRouter.get("/users/:user_id", authMiddleware_1.default, Validation.validateB
 userRouter.post("/signup", Validation.validateBody(Schemas.userCreateSchema), userController_1.default.userRegister); // 자체 회원가입
 userRouter.post("/signin", Validation.validateBody(Schemas.userLoginSchema), userController_1.default.userSignin); // 로그인
 userRouter.post("/users/:user_id/password", authMiddleware_1.default, Validation.validateBodyParams(Schemas.checkPasswordSchema, Schemas.userCurrentSchema), userController_1.default.userPassword); // 유저 정보 업데이트를 위한 password 확인
-userRouter.put("/users/:user_id", /////
-authMiddleware_1.default, Validation.validateBodyParams(Schemas.userUpdateSchema, Schemas.userCurrentSchema), userController_1.default.userUpdate); // 유저 정보 업데이트(pw & nickname)
-userRouter.delete("/users/:user_id", /////
-authMiddleware_1.default, Validation.validateBodyParams(Schemas.userDeleteSchema, Schemas.userCurrentSchema), userController_1.default.userDelete); // 유저 삭제
+userRouter.put("/users/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userUpdateSchema, Schemas.userCurrentSchema), userController_1.default.userUpdate); // 유저 정보 업데이트(pw & nickname)
+userRouter.delete("/users/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userDeleteSchema, Schemas.userCurrentSchema), userController_1.default.userDelete); // 유저 삭제
 userRouter.post("/signup/email", Validation.validateBody(Schemas.signupEmailSchema), nodemailerMiddleware_1.default, userController_1.default.signupEmail); // email로 코드 발송
 userRouter.get("/signup/email/:email/code/:code", Validation.validateParams(Schemas.verifyEmailSchema), userController_1.default.signupVerifyEmail); // email 인증
 userRouter.get("/signup/nickname/:nickname", Validation.validateParams(Schemas.signupNicknameSchema), userController_1.default.signupNickname); // nickname 중복확인
-userRouter.patch("/users/:user_id/alert", /////
-authMiddleware_1.default, Validation.validateBodyParams(Schemas.setAlertSchema, Schemas.userCurrentSchema), userController_1.default.userSetAlert); // 알람 설정
+userRouter.patch("/users/:user_id/alert", authMiddleware_1.default, Validation.validateBodyParams(Schemas.setAlertSchema, Schemas.userCurrentSchema), userController_1.default.userSetAlert); // 알람 설정
 module.exports = userRouter;
 /**
  * @swagger
