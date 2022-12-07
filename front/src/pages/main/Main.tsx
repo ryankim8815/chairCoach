@@ -15,12 +15,15 @@ const Main = () => {
   }, []);
 
   const rootRef = useRef(null); 
-  const domRef = useRef([]);
+  const bannerRef = useRef(null);
+  const introduceRef = useRef(null);
+  const explainRefs = useRef([]);
+  const selectRef = useRef(null);
 
   useEffect(()=>{
     const options = {
       root: rootRef.current,
-      rootMargin: '-120px',
+      rootMargin: '-130px',
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -31,12 +34,16 @@ const Main = () => {
       });
     }, options);
 
-    observer.observe(domRef.current[0]);
-    observer.observe(domRef.current[1]);
-    observer.observe(domRef.current[2]);
-    observer.observe(domRef.current[3]);
-    observer.observe(domRef.current[4]);
-    observer.observe(domRef.current[5]);
+    if(bannerRef.current && introduceRef.current && selectRef.current){
+      observer.observe(bannerRef.current);
+      observer.observe(introduceRef.current);
+      observer.observe(selectRef.current);
+    }
+    observer.observe(explainRefs.current[0]);
+    observer.observe(explainRefs.current[1]);
+    observer.observe(explainRefs.current[2]);
+
+
 
     return () => {
       observer.disconnect();
@@ -45,11 +52,11 @@ const Main = () => {
 
   return (
     <S.MainLayout>
-      <Banner ref={domRef} />
-      <IntroduceLayout ref={domRef} />
+      <Banner ref={bannerRef} />
+      <IntroduceLayout ref={introduceRef} />
       <ImportantText/>
-      <ExplainLayout ref={domRef} />
-      <SelectLayout ref={domRef} />
+      <ExplainLayout ref={explainRefs} />
+      <SelectLayout ref={selectRef} />
     </S.MainLayout>
   );
 };

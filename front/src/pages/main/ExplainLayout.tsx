@@ -2,11 +2,11 @@ import React, { forwardRef } from "react";
 import * as S from "./MainStyle";
 
 const ExplainLayout = forwardRef((props, ref:any) => {
-
+  
   return (
     <S.ExplainLayout>
       <div className="inner">
-        <S.ExplainContent ref={elem => ref.current[2] = elem}>
+        <S.ExplainContent ref={elem => ref.current[0] = elem}>
           <div>
             <S.ExplainTextWrap>
               <p>STRETCH</p>
@@ -19,7 +19,7 @@ const ExplainLayout = forwardRef((props, ref:any) => {
           <S.ExplainImage1/>
         </S.ExplainContent>
 
-        <S.ExplainContent id="1" ref={elem => ref.current[3] = elem}>
+        <S.ExplainContent id="1" ref={elem => ref.current[1] = elem}>
           <div>
             <S.ExplainTextWrap>
               <p>DIAGNOSE</p>
@@ -32,7 +32,7 @@ const ExplainLayout = forwardRef((props, ref:any) => {
           <S.ExplainImage2/>
         </S.ExplainContent>
 
-        <S.ExplainContent ref={elem => ref.current[4] = elem}>
+        <S.ExplainContent ref={elem => ref.current[2] = elem}>
           <div>
             <S.ExplainTextWrap>
               <p>ALARM</p>

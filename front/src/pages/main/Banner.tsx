@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import * as S from "./MainStyle";
 import * as B from "../../styles/BtnStyle";
 
-const Banner = forwardRef((props, ref:any) => {
+const Banner = forwardRef<HTMLDivElement>((props, ref) => {
   const navigate = useNavigate();
 
   return (
     <S.MainBanner>
       <div className="inner">
-        <S.BannerContent ref={elem => ref.current[0] = elem}>
+        <S.BannerContent ref={ref}>
           <h2>
             오늘도 근무 중인 당신에게,<br />
             <span>CHAIR COACH</span>

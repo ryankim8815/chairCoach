@@ -2,11 +2,11 @@ import React, { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./MainStyle";
 
-const SelectLayout = forwardRef((props, ref:any) => {
+const SelectLayout = forwardRef<HTMLDivElement>((props, ref) => {
   const navigate = useNavigate();
 
   return (
-    <S.SelectLayout ref={elem => ref.current[5] = elem}>
+    <S.SelectLayout ref={ref}>
       <div className="inner">
         <S.TitleText>오늘부터 <span>CHAIR COACH</span>를 시작해보세요!</S.TitleText>
 
