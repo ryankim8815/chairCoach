@@ -16,9 +16,9 @@
  */
  import * as posenet from "@tensorflow-models/posenet";
 
- const color = "purple";
+ const color = "#835DFE";
  const lineWidth = 3;
- const r = 6;
+ const r = 3;
  
  export function drawPoint(ctx:CanvasRenderingContext2D, y:number, x:number, r:number, color:string, videoWidth:number) {
    ctx.beginPath();

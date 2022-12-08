@@ -4,10 +4,11 @@ import result1 from "../../assets/img/result1.png";
 import result2 from "../../assets/img/result2.png";
 import result3 from "../../assets/img/result3.png";
 import * as B from "../../styles/BtnStyle";
-
+import { MutableRefObject } from "react";
 const SurveyResult = () => {
   const location = useLocation();
-  const point: number = location.state.point;
+  const pointRef:MutableRefObject<number>  = location.state.pointRef;
+  console.log(pointRef)
   const navigate=useNavigate();
   return (
     <S.ResultContainer>
@@ -19,14 +20,14 @@ const SurveyResult = () => {
             <S.TextBox>
               <S.SubTitle1>
                 당신의 거북목 위험도는<br />
-                <S.Percent>{point * 10}%</S.Percent>입니다!
+                <S.Percent>{pointRef.current * 10}%</S.Percent>입니다!
               </S.SubTitle1>
             </S.TextBox>
           </div>
           <div>
-            {point >= 7 ? (
+            {pointRef.current >= 7 ? (
               <S.IconImg src={result3} />
-            ) : point >= 4 ? (
+            ) : pointRef.current >= 4 ? (
               <S.IconImg src={result2} />
             ) : (
               <S.IconImg src={result1} />

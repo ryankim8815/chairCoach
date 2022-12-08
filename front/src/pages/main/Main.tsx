@@ -8,10 +8,11 @@ import { notifyMe } from "../../components/alarm/Alarm";
 import * as S from "./MainStyle";
 
 const Main = () => {
+  const minutes = 60 * 1000;
   useEffect(() => {
     setInterval(() => {
       notifyMe();
-    }, 1800000);
+    }, 30 * minutes);
   }, []);
 
   const rootRef = useRef(null); 

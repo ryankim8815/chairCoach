@@ -8,6 +8,7 @@ const NeckInspection = () => {
   const navigate = useNavigate();
   const [time, setTime] = useState(5);
   const [step, setStep] = useState(0);
+  const playInspection=useRef(false)
   const startTimer = () => {
     let timer = setInterval(() => {
       setTime((prev) => prev - 1);
@@ -15,11 +16,15 @@ const NeckInspection = () => {
     setTimeout(() => {
       clearInterval(timer);
       handleStep();
+      handleInspection()
     }, 5000);
   };
   const handleStep = () => {
     setStep((prev) => prev + 1);
   };
+  const handleInspection=()=>{
+    playInspection.current=true
+  }
 
   return (
     <S.InspectionLayout>
@@ -44,7 +49,7 @@ const NeckInspection = () => {
 
       <S.MainCont>
         <S.ImgCont />
-        <NeckVideo time={time} step={step} setStep={setStep} />
+        <NeckVideo time={time} step={step} setStep={setStep} playInspection={playInspection} />
       </S.MainCont>
     </S.InspectionLayout>
   );
