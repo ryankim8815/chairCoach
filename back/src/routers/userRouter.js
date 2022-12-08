@@ -433,7 +433,7 @@ module.exports = userRouter;
  */
 /**
  * @swagger
- * /user/alerts/{user_id}:
+ * /users/alerts/{user_id}:
  *   patch:
  *     summary: 알람 설정
  *     description:  알람 설정
