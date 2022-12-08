@@ -89,7 +89,7 @@ const chartData = {
   labels: month,
   datasets: [
     {
-      label: "Korea",
+      label: "평균 점수",
       data: [100, 200, 300, 200, 30, 380, 270, 20, 120, 100, 50, 70],
       backgroundColor: "#835DFE",
       borderColor: "#835DFE",
