@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import userState from "./../../atoms/user";
 import * as B from "../../styles/BtnStyle";
@@ -7,11 +7,26 @@ import * as Api from "../../api/api";
 const Alarm = () => {
   const user = useRecoilValue(userState);
   const [isChecked, setIsChecked] = useState(false);
+  const [alarmState, setAlarmState] = useState<{
+    timer: number;
+    alert: number;
+  } | null>(null);
+  const [alarmTimer, setAlarmTimer] = useState(0);
   const checkHandler = () => {
     setIsChecked(!isChecked);
   };
-
-  console.log(`users/${user?.id}/alert`);
+  useEffect(() => {
+    Api.get(`users/${user?.id}`).then((res) => setAlarmState(res.data));
+  }, []);
+  useEffect(() => {
+    alarmState !== null &&
+      setAlarmTimer((alarmState as { timer: number; alert: number })?.timer);
+    alarmState != null && alarmState.alert === 1
+      ? setIsChecked(true)
+      : setIsChecked(false);
+  }, [alarmState]);
+  console.log(alarmState);
+  console.log(alarmTimer);
   return (
     <S.AlarmCon className={user ? "" : "lock"}>
       <S.AlarmTextWrap>
@@ -36,14 +51,16 @@ const Alarm = () => {
             <input
               type="checkbox"
               id="toggle"
+              checked={isChecked}
               hidden
               onChange={async () => {
                 checkHandler();
+                console.log('먹히냐',isChecked)
                 const res = await Api.patch(`users/${user?.id}/alert`, {
                   alert: isChecked,
                   timer: 15,
                 });
-                console.log(res)
+                console.log(res);
               }}
             />
             <label htmlFor="toggle">
@@ -55,8 +72,9 @@ const Alarm = () => {
         <ul>
           <li>
             <B.AlarmBtn
-              check="true"
+              check={alarmTimer === 15 && isChecked === true ? "true" : "false"}
               onClick={async () => {
+                setAlarmTimer(15);
                 await Api.patch(`users/${user?.id}/alert`, {
                   alert: isChecked,
                   timer: 15,
@@ -68,8 +86,9 @@ const Alarm = () => {
           </li>
           <li>
             <B.AlarmBtn
-              check="false"
+              check={alarmTimer === 30 && isChecked === true ? "true" : "false"}
               onClick={async () => {
+                setAlarmTimer(30);
                 await Api.patch(`users/${user?.id}/alert`, {
                   alert: isChecked,
                   timer: 30,
@@ -81,8 +100,9 @@ const Alarm = () => {
           </li>
           <li>
             <B.AlarmBtn
-              check="false"
+              check={alarmTimer === 60 && isChecked === true ? "true" : "false"}
               onClick={async () => {
+                setAlarmTimer(60);
                 await Api.patch(`users/${user?.id}/alert`, {
                   alert: isChecked,
                   timer: 60,
