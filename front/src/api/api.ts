@@ -25,6 +25,7 @@ async function get(endpoint: string, params = "") {
     // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
     },
   });
 }
