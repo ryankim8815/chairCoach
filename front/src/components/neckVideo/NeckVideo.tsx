@@ -9,8 +9,9 @@ import axios from "axios";
 require("@tensorflow/tfjs");
 
 const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
-  const today= new Date();
-  const currentTime= today.getHours() + ':' + today.getMinutes()+':'+today.getSeconds();
+  const today = new Date();
+  const currentTime =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   console.log(playInspection);
   const webcamRef = useRef(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
