@@ -114,7 +114,7 @@ const MyChairReportChart = ({ chart, data }: MyChairReportProps) => {
   if (chart === "year") {
     chartData = yearChartData;
     chartData.datasets[0].data = data!;
-    console.log(chartData.datasets[0].data);
+    //console.log(chartData.datasets[0].data);
 
     //curData.datasets[0].data = data;
   } else if (chart === "week") {

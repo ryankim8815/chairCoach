@@ -10,8 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-//import koreaData from "../../../assets/data-analysis/json/1990-2019_Korea.json";
-
+import { TurtleNeckResultProps } from "./TurtleNeckResult";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -86,7 +85,7 @@ const month = [
 ];
 const day = ["월", "화", "수", "목", "금", "토", "일"];
 
-const data = {
+const chartData = {
   labels: month,
   datasets: [
     {
@@ -99,10 +98,10 @@ const data = {
   ],
 };
 
-function TurtleNeckResultChart() {
+function TurtleNeckResultChart({ data }: TurtleNeckResultProps) {
   return (
     <Container>
-      <Line options={options} data={data} />
+      <Line options={options} data={chartData} />
     </Container>
   );
 }

@@ -4,6 +4,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { BsFillClockFill } from "react-icons/bs";
 import MyChairReportChart from "./MyChairReportChart";
 import * as Api from "../../../../api/api";
+import { E } from "chart.js/dist/chunks/helpers.core";
 
 export interface MyChairReportProps {
   chart?: string;
@@ -12,9 +13,22 @@ export interface MyChairReportProps {
   data?: number[];
 }
 const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
-  const [chart, setChart] = useState<string>("year");
+  const initYearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const initWeekData = [0, 0, 0, 0, 0, 0, 0];
+  let curYearData = initYearData;
+  let curWeekData = initWeekData;
 
-  const onClickYearButton = () => {
+  useEffect(() => {
+    getYearData();
+    //getWeekData();
+  }, []);
+
+  const [chart, setChart] = useState<string>("year");
+  const [data, setData] = useState<number[]>(curYearData);
+
+  console.log(chart, data);
+
+  const onClickYearButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     setChart("year");
     getYearData();
   };
@@ -23,21 +37,17 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
     getWeekData();
   };
 
-  const initYearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  const initWeekData = [0, 0, 0, 0, 0, 0, 0];
-  const curYearData = initYearData;
-  const curWeekData = initWeekData;
-
   // 마이체어리포트 유저 운동기록 조회
   const getYearData = async () => {
     try {
       const res = await Api.get(`bodies/${user_id}/${year}`);
-      const data = res.data.list;
-      for (let obj of data) {
+      //console.log(data);
+      for (let obj of res.data.list) {
         const month = Number(obj.month.split("-")[1]);
         curYearData[month - 1] = Number(obj.duration);
         //console.log(curYearData);
       }
+      setData(curYearData);
     } catch (err) {
       console.error(err);
     }
@@ -49,18 +59,40 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
       const data = res.data.list;
       console.log(data);
       for (let obj of data) {
-        const month = Number(obj.month.split("-")[1]);
-        curYearData[month - 1] = Number(obj.duration);
-        //console.log(curYearData);
+        let dayOfWeek = new Date(obj.date).getDay();
+        console.log(dayOfWeek);
+        switch (dayOfWeek) {
+          // 일요일 ~ 월요일
+          case 0:
+            curWeekData[6] = obj.duration;
+            break;
+          case 1:
+            curWeekData[0] = obj.duration;
+            break;
+          case 2:
+            curWeekData[1] = obj.duration;
+            break;
+          case 3:
+            curWeekData[2] = obj.duration;
+            break;
+          case 4:
+            curWeekData[3] = obj.duration;
+            break;
+          case 5:
+            curWeekData[4] = obj.duration;
+            break;
+          case 6:
+            curWeekData[5] = obj.duration;
+            break;
+        }
+        //curWeekData[month - 1] = Number(obj.duration);
+        console.log(curWeekData);
       }
+      setData(curWeekData);
     } catch (err) {
       console.error(err);
     }
   };
-
-  useEffect(() => {
-    getYearData();
-  });
 
   return (
     <S.ReportLayout>
@@ -91,7 +123,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
             </S.YearText>
             <MdKeyboardArrowRight size={32} />
             <div className="graph">
-              <MyChairReportChart chart={chart} data={curYearData} />
+              <MyChairReportChart chart={chart} data={data} />
             </div>
           </S.GraphBox>
         </div>

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as S from "../myChairReport/MyChairReportStyle";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import TurtleNeckResultChart from "./TurtleNeckResultChart";
+import * as Api from "../../../../api/api";
 
 const ReportLayout = styled(S.ReportLayout)`
   padding-top: 64px;
@@ -25,7 +26,35 @@ const ContentLayout = styled(S.ContentLayout)`
   margin-top: 0;
 `;
 
-const TurtleNeckResult = () => {
+export interface TurtleNeckResultProps {
+  user_id?: string | null;
+  year?: number;
+  data?: number[];
+}
+const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
+  const initYearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  let curYearData = initYearData;
+
+  //const [data, setData] = useState<number[]>(curYearData);
+
+  const getData = async () => {
+    try {
+      const res = await Api.get(`necks/${user_id}`);
+      const data = res.data.list;
+      console.log(data);
+      // for (let obj of res.data.list) {
+      //   const month = Number(obj.month.split("-")[1]);
+      //   curYearData[month - 1] = Number(obj.duration);
+      //   //console.log(curYearData);
+      // }
+      // setData(curYearData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <ReportLayout>
       <S.Text fontSize={24} fontWeight={500}>
