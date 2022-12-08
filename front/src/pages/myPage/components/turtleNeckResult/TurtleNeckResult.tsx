@@ -38,7 +38,8 @@ export interface TurtleNeckResultProps {
   img?: string;
 }
 const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
-  const [data, setData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const temp = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const [data, setData] = useState(temp);
   //const initYearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   //let curYearData = initYearData;
@@ -48,7 +49,6 @@ const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
 
   const getData = async () => {
     try {
-      const temp = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       const res = await Api.get(`necks/${user_id}`);
       // const data = res.data.list;
       // console.log(data);
