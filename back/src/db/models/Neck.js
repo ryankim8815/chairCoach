@@ -128,6 +128,24 @@ var Neck = /** @class */ (function () {
             });
         });
     };
+    // 특정 유저의 기록 조회 - year
+    Neck.findByUserIdYear = function (_a) {
+        var user_id = _a.user_id, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var _b, rows, fields;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, database_1.default.query({
+                            sql: "SELECT DATE_FORMAT(`created_at`,'%Y-%m') AS month, COUNT(`user_id`) AS count, AVG(score) AS avg FROM necks WHERE NOT `score` IS NULL AND `user_id` = ? AND DATE_FORMAT(`created_at`, '%Y') = ? GROUP BY DATE_FORMAT(`created_at`, '%Y-%m')",
+                            values: [user_id, year],
+                        })];
+                    case 1:
+                        _b = _c.sent(), rows = _b[0], fields = _b[1];
+                        return [2 /*return*/, rows];
+                }
+            });
+        });
+    };
     return Neck;
 }());
 module.exports = Neck;

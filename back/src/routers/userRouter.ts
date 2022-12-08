@@ -325,9 +325,6 @@ export = userRouter;
  *               password:
  *                 type: string
  *                 example: new_password
- *               currentPassword:
- *                 type: string
- *                 example: current_password
  *               nickname:
  *                 type: string
  *                 example: new_nickname
@@ -484,7 +481,7 @@ export = userRouter;
 
 /**
  * @swagger
- * /user/alerts/{user_id}:
+ * /users/{user_id}/alert:
  *   patch:
  *     summary: 알람 설정
  *     description:  알람 설정

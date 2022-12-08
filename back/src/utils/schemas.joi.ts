@@ -74,6 +74,10 @@ export const fileSchema = Joi.object().keys({
   path: Necks.multerPath.required(),
   size: Necks.multerSize.required(),
 });
+export const neckRecordsFindByYear = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  year: Necks.year.required(),
+});
 
 // bodyRouter
 export const bodyRecordsSchema = Joi.object().keys({

@@ -63,6 +63,27 @@ class userController {
       next(e);
     }
   }
+
+  // GET: 특정 유저의 거북목 기록 조회 year
+  static async neckRecordsYear(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
+      const year = req.params.year;
+      const necks = await neckService.getNecksByYear({ user_id, year });
+      return res.status(200).json(necks);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export = userController;
