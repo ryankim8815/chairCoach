@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.multerSize = exports.multerPath = exports.multerFilename = exports.multerDestination = exports.multerMimetype = exports.multerEncoding = exports.multerOriginalname = exports.multerFieldname = exports.neckScore = exports.neckResult = void 0;
+exports.year = exports.multerSize = exports.multerPath = exports.multerFilename = exports.multerDestination = exports.multerMimetype = exports.multerEncoding = exports.multerOriginalname = exports.multerFieldname = exports.neckScore = exports.neckResult = void 0;
 var joi_1 = __importDefault(require("joi"));
 var regexp = __importStar(require("./regularExpression"));
 var neckResult = joi_1.default.number(); // 미정 - ai 모델이 나와야 확정 가능
@@ -49,3 +49,5 @@ var multerPath = joi_1.default.string(); // "uploads/file-1669021214727-43580897
 exports.multerPath = multerPath;
 var multerSize = joi_1.default.number().max(1024 * 1000 * 5); // 5mb 이하
 exports.multerSize = multerSize;
+var year = joi_1.default.number().integer();
+exports.year = year;

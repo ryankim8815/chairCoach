@@ -144,6 +144,32 @@ var userController = /** @class */ (function () {
             });
         });
     };
+    // GET: 특정 유저의 거북목 기록 조회 year
+    userController.neckRecordsYear = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user_id, year, necks, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
+                        }
+                        year = req.params.year;
+                        return [4 /*yield*/, neckService_1.default.getNecksByYear({ user_id: user_id, year: year })];
+                    case 1:
+                        necks = _a.sent();
+                        return [2 /*return*/, res.status(200).json(necks)];
+                    case 2:
+                        e_4 = _a.sent();
+                        next(e_4);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return userController;
 }());
 module.exports = userController;

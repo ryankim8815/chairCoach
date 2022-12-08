@@ -55,6 +55,19 @@ class neckService {
     });
     return result_success;
   }
+
+  //// 특정 유저의 거북목 기록 조회 - year
+  static async getNecksByYear({ user_id, year }) {
+    const Necks = nullPrototypeHandler(
+      await Neck.findByUserIdYear({ user_id, year })
+    );
+    const result_success = Object.assign({
+      result: true,
+      message: `해당 유저의 거북목 기록 조회가 성공적으로 이뤄졌습니다.`,
+      list: Necks,
+    });
+    return result_success;
+  }
 }
 
 export = neckService;
