@@ -25,8 +25,7 @@ const Alarm = () => {
       ? setIsChecked(true)
       : setIsChecked(false);
   }, [alarmState]);
-  console.log(alarmState);
-  console.log(alarmTimer);
+  console.log(!isChecked);
   return (
     <S.AlarmCon className={user ? "" : "lock"}>
       <S.AlarmTextWrap>
@@ -55,9 +54,8 @@ const Alarm = () => {
               hidden
               onChange={async () => {
                 checkHandler();
-                console.log('먹히냐',isChecked)
                 const res = await Api.patch(`users/${user?.id}/alert`, {
-                  alert: isChecked,
+                  alert: !isChecked,
                   timer: 15,
                 });
                 console.log(res);
