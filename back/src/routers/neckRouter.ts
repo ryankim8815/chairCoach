@@ -8,16 +8,23 @@ import * as Schemas from "../utils/schemas.joi";
 const neckRouter = express.Router();
 neckRouter.get("/necks", neckController.neckResultList); // 전체 거북목 테스트 결과 조회 기능, 개발 시 편의용으로 사용처가 없다면 삭제 예정
 neckRouter.get(
-  "/neck",
+  "/necks/:user_id",
   authMiddleware,
-  Validation.validateBody(Schemas.neckResultsSchema),
+  Validation.validateBodyParams(
+    Schemas.userCurrentSchema,
+    Schemas.userCurrentSchema
+  ),
   neckController.neckResults
 ); // 특정 유저의 거북목 테스트 결과 조회
 neckRouter.post(
-  "/neck",
+  "/necks/:user_id",
   uploadMiddleware,
   authMiddleware,
-  Validation.validateBodyMulter(Schemas.neckResultSchema, Schemas.fileSchema),
+  Validation.validateBodyParamsMulter(
+    Schemas.neckResultSchema,
+    Schemas.userCurrentSchema,
+    Schemas.fileSchema
+  ),
   neckController.neckCreate
 ); // 거북목 테스트 결과 기록
 
@@ -41,9 +48,6 @@ export = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 모든 거북목 결과 조회가 성공적으로 이뤄졌습니다.
@@ -78,13 +82,19 @@ export = neckRouter;
 
 /**
  * @swagger
- * /neck:
+ * /necks/{user_id}:
  *   get:
  *     summary: 특정 유저의 거북목 테스트 결과 조회
  *     description: 로그인한 사용자만 이용 가능합니다.
  *     tags: ["neckRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -96,9 +106,6 @@ export = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 거북목 결과 조회가 성공적으로 이뤄졌습니다.
@@ -133,13 +140,19 @@ export = neckRouter;
 
 /**
  * @swagger
- * /neck:
+ * /necks/{user_id}:
  *   post:
  *     summary: 거북목 테스트 결과 기록
  *     description: AI 모델이 완성되면 수정이 필요합니다.
  *     tags: ["neckRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *        multipart/form-data:
@@ -164,9 +177,6 @@ export = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.

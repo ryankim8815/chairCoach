@@ -1,6 +1,7 @@
 import * as express from "express";
 import axios from "axios";
 import socialLoginService from "../services/socialLoginService";
+import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
 import qs from "qs";
 import urlencode from "urlencode";
 import jwt from "jsonwebtoken";
@@ -11,7 +12,9 @@ axios.interceptors.response.use(
     return res.data;
   },
   (err) => {
-    throw new Error("(!) axios error");
+    // console.log(err);
+    // throw new Error("(!) axios error");
+    throw new Error(`(!) axios error: ${err}`);
   }
 );
 // formdata 포멧으로 만들어 줌
@@ -37,46 +40,41 @@ class socialLoginController {
     const REST_API_KEY = process.env.KAKAO_REST_API_KEY;
     const REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
     try {
-      const resultToken = await axios({
-        method: "POST",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-        url: "https://kauth.kakao.com/oauth/token",
-        data: makeFormData({
-          grant_type: "authorization_code",
-          client_id: REST_API_KEY,
-          redirect_uri: REDIRECT_URI,
-          code: code,
-        }),
-      });
-      const resultTokenString = JSON.stringify(resultToken);
-      const resultTokenObject = JSON.parse(resultTokenString);
+      const resultToken = nullPrototypeHandler(
+        await axios({
+          method: "POST",
+          headers: {
+            "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+          url: "https://kauth.kakao.com/oauth/token",
+          data: makeFormData({
+            grant_type: "authorization_code",
+            client_id: REST_API_KEY,
+            redirect_uri: REDIRECT_URI,
+            code: code,
+          }),
+        })
+      );
       ///////정보 받아오기///////
-      const access_token = resultTokenObject.access_token;
-      const resultAccount = await axios({
-        method: "GET",
-        headers: {
-          Authorization: `bearer ${access_token}`,
-        },
-        url: "https://kapi.kakao.com/v1/oidc/userinfo",
-      });
-      const resultAccountString = JSON.stringify(resultAccount);
-      const resultAccountObject = JSON.parse(resultAccountString);
+      const access_token = resultToken.access_token;
+      const resultAccount = nullPrototypeHandler(
+        await axios({
+          method: "GET",
+          headers: {
+            Authorization: `bearer ${access_token}`,
+          },
+          url: "https://kapi.kakao.com/v1/oidc/userinfo",
+        })
+      );
       // 로그인 & 회원가입
-      const email = resultAccountObject.email;
+      const email = resultAccount.email;
       const logedinUser = await socialLoginService.kakao({
         email,
         access_token,
       });
       return res.status(200).json(logedinUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "kakaoOauth api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -98,38 +96,35 @@ class socialLoginController {
     // const FE_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${encoded}&state=${state}`;
     // console.log("FE_url: ", FE_url);
     try {
-      const resultToken = await axios({
-        method: "GET",
-        url: url,
-      });
-      const resultTokenString = JSON.stringify(resultToken);
-      const resultTokenObject = JSON.parse(resultTokenString);
+      const resultToken = nullPrototypeHandler(
+        await axios({
+          method: "GET",
+          url: url,
+        })
+      );
       ///////정보 받아오기///////
-      const access_token = resultTokenObject.access_token;
-      const resultAccount = await axios({
-        method: "GET",
-        headers: {
-          Authorization: `bearer ${access_token}`,
-        },
-        url: "https://openapi.naver.com/v1/nid/me",
-      });
-      const resultAccountString = JSON.stringify(resultAccount);
-      const resultAccountObject = JSON.parse(resultAccountString);
+      const access_token = resultToken.access_token;
+      const resultAccount = nullPrototypeHandler(
+        await axios({
+          method: "GET",
+          headers: {
+            Authorization: `bearer ${access_token}`,
+          },
+          url: "https://openapi.naver.com/v1/nid/me",
+        })
+      );
       // 로그인 & 회원가입
-      const naverUserResult = resultAccountObject.response;
+      const naverUserResult = resultAccount.response;
       const email = naverUserResult.email;
-      const logedinUser = await socialLoginService.naver({
-        email,
-        access_token,
-      });
+      const logedinUser = nullPrototypeHandler(
+        await socialLoginService.naver({
+          email,
+          access_token,
+        })
+      );
       return res.status(200).json(logedinUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "naverOauth api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -162,33 +157,26 @@ class socialLoginController {
         redirect_uri: redirectURI,
         grant_type: "authorization_code",
       };
-      const resultToken = await axios({
-        method: "POST",
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-        data: qs.stringify(data),
-        url: "https://oauth2.googleapis.com/token",
-      });
-      const resultTokenString = JSON.stringify(resultToken);
-      const resultTokenObject = JSON.parse(resultTokenString);
+      const resultToken = nullPrototypeHandler(
+        await axios({
+          method: "POST",
+          headers: { "content-type": "application/x-www-form-urlencoded" },
+          data: qs.stringify(data),
+          url: "https://oauth2.googleapis.com/token",
+        })
+      );
       ///////정보 받아오기///////
-      const jwtDecoded = jwt.decode(resultTokenObject.id_token);
-      const jwtDecodedString = JSON.stringify(jwtDecoded);
-      const jwtDecodedObject = JSON.parse(jwtDecodedString);
-      const email = jwtDecodedObject.email;
-      const refresh_token = resultTokenObject.refresh_token;
+      const jwtDecoded = nullPrototypeHandler(jwt.decode(resultToken.id_token));
+      const email = jwtDecoded.email;
+      const refresh_token = resultToken.refresh_token;
       // 로그인 & 회원가입
       const logedinUser = await socialLoginService.google({
         email,
         refresh_token,
       });
       return res.status(200).json(logedinUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "googleOauth api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 }

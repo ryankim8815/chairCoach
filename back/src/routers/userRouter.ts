@@ -10,9 +10,12 @@ const userRouter = express.Router();
 // api index
 userRouter.get("/users", userController.userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
 userRouter.get(
-  "/user",
+  "/users/:user_id",
   authMiddleware,
-  Validation.validateBody(Schemas.userCurrentSchema),
+  Validation.validateBodyParams(
+    Schemas.userCurrentSchema,
+    Schemas.userCurrentSchema
+  ),
   userController.userCurrent
 ); // 현재 사용자 정보 조회
 userRouter.post(
@@ -26,21 +29,30 @@ userRouter.post(
   userController.userSignin
 ); // 로그인
 userRouter.post(
-  "/user/password",
+  "/users/:user_id/password",
   authMiddleware,
-  Validation.validateBody(Schemas.checkPasswordSchema),
+  Validation.validateBodyParams(
+    Schemas.checkPasswordSchema,
+    Schemas.userCurrentSchema
+  ),
   userController.userPassword
 ); // 유저 정보 업데이트를 위한 password 확인
 userRouter.put(
-  "/user",
+  "/users/:user_id",
   authMiddleware,
-  Validation.validateBody(Schemas.userUpdateSchema),
+  Validation.validateBodyParams(
+    Schemas.userUpdateSchema,
+    Schemas.userCurrentSchema
+  ),
   userController.userUpdate
 ); // 유저 정보 업데이트(pw & nickname)
 userRouter.delete(
-  "/user",
+  "/users/:user_id",
   authMiddleware,
-  Validation.validateBody(Schemas.userDeleteSchema),
+  Validation.validateBodyParams(
+    Schemas.userDeleteSchema,
+    Schemas.userCurrentSchema
+  ),
   userController.userDelete
 ); // 유저 삭제
 userRouter.post(
@@ -60,9 +72,12 @@ userRouter.get(
   userController.signupNickname
 ); // nickname 중복확인
 userRouter.patch(
-  "/user/alert",
+  "/users/:user_id/alert",
   authMiddleware,
-  Validation.validateBody(Schemas.setAlertSchema),
+  Validation.validateBodyParams(
+    Schemas.setAlertSchema,
+    Schemas.userCurrentSchema
+  ),
   userController.userSetAlert
 ); // 알람 설정
 
@@ -86,9 +101,6 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 모든 사용자 조회가 성공적으로 이뤄졌습니다.
@@ -119,13 +131,19 @@ export = userRouter;
 
 /**
  * @swagger
- * /user:
+ * /users/{user_id}:
  *   get:
  *     summary: 현재 사용자 조회
  *     description: 현재 로그인된 사용자 정보를 조회합니다.
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -137,9 +155,6 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 현재 사용자 정보 조회가 성공적으로 이뤄졌습니다.
@@ -191,12 +206,9 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
+ *                   example: 회원가입이 성공적으로 이뤄졌습니다.
  */
 
 /**
@@ -229,12 +241,9 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
+ *                   example: 로그인이 성공적으로 이뤄졌습니다.
  *                 token:
  *                   type: string
  *                   example: awj32ew86tgcvwstudggaiqa98yiqgdiqyas238ewyufdhjv29qiaedz87iyhvd
@@ -254,13 +263,19 @@ export = userRouter;
 
 /**
  * @swagger
- * /user/password:
+ * /users/{user_id}/password:
  *   post:
  *     summary: 회원정보 수정을 위한 비밀번호 확인
  *     description: 회원정보 수정을 위한 비밀번호 확인
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -281,9 +296,6 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 입력하신 password가 일치합니다.
@@ -291,13 +303,19 @@ export = userRouter;
 
 /**
  * @swagger
- * /user:
+ * /users/{user_id}:
  *   put:
  *     summary: 회원정보 수정
  *     description: 회원정보 수정 시에도 nickname은 중복 검사가 필요합니다.
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -324,23 +342,26 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원정보 수정이 성공적으로 이뤄졌습니다.
+ *                   example: 회원정보 수정이 성공적으로 이뤄졌습니다.
  */
 
 /**
  * @swagger
- * /user:
+ * /users/{user_id}:
  *   delete:
  *     summary: 회원정보 삭제
  *     description: 한번 삭제한 사용자는 복구할 수 없습니다.
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -361,12 +382,9 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
+ *                   example: 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
 
 /**
@@ -396,12 +414,9 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ *                   example: code (재)발급이 성공적으로 이뤄졌습니다.
  */
 
 /**
@@ -433,12 +448,9 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: email 인증을 위한 코드 인증
+ *                   example: email 인증에 성공했습니다.
  */
 
 /**
@@ -465,9 +477,6 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
@@ -475,13 +484,19 @@ export = userRouter;
 
 /**
  * @swagger
- * /user/alert:
+ * /user/alerts/{user_id}:
  *   patch:
  *     summary: 알람 설정
  *     description:  알람 설정
  *     tags: ["userRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *         application/json:
@@ -505,9 +520,6 @@ export = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: Alert 업데이트가 성공적으로 이뤄졌습니다.

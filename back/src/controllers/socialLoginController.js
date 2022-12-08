@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var axios_1 = __importDefault(require("axios"));
 var socialLoginService_1 = __importDefault(require("../services/socialLoginService"));
+var nullPrototypeHandler_1 = require("../utils/nullPrototypeHandler");
 var qs_1 = __importDefault(require("qs"));
 var urlencode_1 = __importDefault(require("urlencode"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -47,7 +48,9 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 axios_1.default.interceptors.response.use(function (res) {
     return res.data;
 }, function (err) {
-    throw new Error("(!) axios error");
+    // console.log(err);
+    // throw new Error("(!) axios error");
+    throw new Error("(!) axios error: ".concat(err));
 });
 // formdata 포멧으로 만들어 줌
 var makeFormData = function (params) {
@@ -66,16 +69,17 @@ var socialLoginController = /** @class */ (function () {
     // POST: kakao api 회원가입 & 로그인
     socialLoginController.kakaoOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, REST_API_KEY, REDIRECT_URI, resultToken, resultTokenString, resultTokenObject, access_token, resultAccount, resultAccountString, resultAccountObject, email, logedinUser, err_1, result_err;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var code, REST_API_KEY, REDIRECT_URI, resultToken, _a, access_token, resultAccount, _b, email, logedinUser, e_1;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         code = req.body.code;
                         REST_API_KEY = process.env.KAKAO_REST_API_KEY;
                         REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
-                        _a.label = 1;
+                        _c.label = 1;
                     case 1:
-                        _a.trys.push([1, 5, , 6]);
+                        _c.trys.push([1, 5, , 6]);
+                        _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "POST",
                                 headers: {
@@ -90,10 +94,9 @@ var socialLoginController = /** @class */ (function () {
                                 }),
                             })];
                     case 2:
-                        resultToken = _a.sent();
-                        resultTokenString = JSON.stringify(resultToken);
-                        resultTokenObject = JSON.parse(resultTokenString);
-                        access_token = resultTokenObject.access_token;
+                        resultToken = _a.apply(void 0, [_c.sent()]);
+                        access_token = resultToken.access_token;
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "GET",
                                 headers: {
@@ -102,25 +105,19 @@ var socialLoginController = /** @class */ (function () {
                                 url: "https://kapi.kakao.com/v1/oidc/userinfo",
                             })];
                     case 3:
-                        resultAccount = _a.sent();
-                        resultAccountString = JSON.stringify(resultAccount);
-                        resultAccountObject = JSON.parse(resultAccountString);
-                        email = resultAccountObject.email;
+                        resultAccount = _b.apply(void 0, [_c.sent()]);
+                        email = resultAccount.email;
                         return [4 /*yield*/, socialLoginService_1.default.kakao({
                                 email: email,
                                 access_token: access_token,
                             })];
                     case 4:
-                        logedinUser = _a.sent();
+                        logedinUser = _c.sent();
                         return [2 /*return*/, res.status(200).json(logedinUser)];
                     case 5:
-                        err_1 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "kakaoOauth api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_1 = _c.sent();
+                        next(e_1);
+                        return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }
             });
@@ -131,9 +128,9 @@ var socialLoginController = /** @class */ (function () {
     ////////////////////////////////////////
     socialLoginController.naverOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, state, client_id, client_secret, redirectURI, encoded, url, resultToken, resultTokenString, resultTokenObject, access_token, resultAccount, resultAccountString, resultAccountObject, naverUserResult, email, logedinUser, err_2, result_err;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var code, state, client_id, client_secret, redirectURI, encoded, url, resultToken, _a, access_token, resultAccount, _b, naverUserResult, email, logedinUser, _c, e_2;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         code = req.body.code;
                         state = process.env.NAVER_STATE;
@@ -142,18 +139,18 @@ var socialLoginController = /** @class */ (function () {
                         redirectURI = process.env.NAVER_REDIRECT_URL;
                         encoded = encodeURIComponent(redirectURI);
                         url = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=".concat(client_id, "&client_secret=").concat(client_secret, "&redirect_uri=").concat(encoded, "&code=").concat(code, "&state=").concat(state);
-                        _a.label = 1;
+                        _d.label = 1;
                     case 1:
-                        _a.trys.push([1, 5, , 6]);
+                        _d.trys.push([1, 5, , 6]);
+                        _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "GET",
                                 url: url,
                             })];
                     case 2:
-                        resultToken = _a.sent();
-                        resultTokenString = JSON.stringify(resultToken);
-                        resultTokenObject = JSON.parse(resultTokenString);
-                        access_token = resultTokenObject.access_token;
+                        resultToken = _a.apply(void 0, [_d.sent()]);
+                        access_token = resultToken.access_token;
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "GET",
                                 headers: {
@@ -162,26 +159,21 @@ var socialLoginController = /** @class */ (function () {
                                 url: "https://openapi.naver.com/v1/nid/me",
                             })];
                     case 3:
-                        resultAccount = _a.sent();
-                        resultAccountString = JSON.stringify(resultAccount);
-                        resultAccountObject = JSON.parse(resultAccountString);
-                        naverUserResult = resultAccountObject.response;
+                        resultAccount = _b.apply(void 0, [_d.sent()]);
+                        naverUserResult = resultAccount.response;
                         email = naverUserResult.email;
+                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, socialLoginService_1.default.naver({
                                 email: email,
                                 access_token: access_token,
                             })];
                     case 4:
-                        logedinUser = _a.sent();
+                        logedinUser = _c.apply(void 0, [_d.sent()]);
                         return [2 /*return*/, res.status(200).json(logedinUser)];
                     case 5:
-                        err_2 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "naverOauth api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_2 = _d.sent();
+                        next(e_2);
+                        return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }
             });
@@ -192,9 +184,9 @@ var socialLoginController = /** @class */ (function () {
     ////////////////////////////////////////
     socialLoginController.googleOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, data, resultToken, resultTokenString, resultTokenObject, jwtDecoded, jwtDecodedString, jwtDecodedObject, email, refresh_token, logedinUser, err_3, result_err;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, data, resultToken, _a, jwtDecoded, email, refresh_token, logedinUser, e_3;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         code = urlencode_1.default.decode(req.body.code);
                         login_hint = req.body.email || null;
@@ -205,9 +197,9 @@ var socialLoginController = /** @class */ (function () {
                         redirectURI = process.env.GOOGLE_REDIRECT_URL;
                         hd = process.env.GOOGLE_HD;
                         encoded = encodeURIComponent(redirectURI);
-                        _a.label = 1;
+                        _b.label = 1;
                     case 1:
-                        _a.trys.push([1, 4, , 5]);
+                        _b.trys.push([1, 4, , 5]);
                         data = {
                             code: code,
                             client_id: client_id,
@@ -215,6 +207,7 @@ var socialLoginController = /** @class */ (function () {
                             redirect_uri: redirectURI,
                             grant_type: "authorization_code",
                         };
+                        _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "POST",
                                 headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -222,29 +215,21 @@ var socialLoginController = /** @class */ (function () {
                                 url: "https://oauth2.googleapis.com/token",
                             })];
                     case 2:
-                        resultToken = _a.sent();
-                        resultTokenString = JSON.stringify(resultToken);
-                        resultTokenObject = JSON.parse(resultTokenString);
-                        jwtDecoded = jsonwebtoken_1.default.decode(resultTokenObject.id_token);
-                        jwtDecodedString = JSON.stringify(jwtDecoded);
-                        jwtDecodedObject = JSON.parse(jwtDecodedString);
-                        email = jwtDecodedObject.email;
-                        refresh_token = resultTokenObject.refresh_token;
+                        resultToken = _a.apply(void 0, [_b.sent()]);
+                        jwtDecoded = (0, nullPrototypeHandler_1.nullPrototypeHandler)(jsonwebtoken_1.default.decode(resultToken.id_token));
+                        email = jwtDecoded.email;
+                        refresh_token = resultToken.refresh_token;
                         return [4 /*yield*/, socialLoginService_1.default.google({
                                 email: email,
                                 refresh_token: refresh_token,
                             })];
                     case 3:
-                        logedinUser = _a.sent();
+                        logedinUser = _b.sent();
                         return [2 /*return*/, res.status(200).json(logedinUser)];
                     case 4:
-                        err_3 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "googleOauth api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_3 = _b.sent();
+                        next(e_3);
+                        return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
             });

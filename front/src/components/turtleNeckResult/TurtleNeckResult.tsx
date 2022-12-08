@@ -16,8 +16,6 @@ const ReportLayout = styled(S.ReportLayout)`
 const TurtleNeckResultImage = styled.div`
   width: 320px;
   height: 320px;
-  //background: url() no-repeat center;
-  //background-size: contain;
   background-color: gray;
   margin-right: 20px;
 `;

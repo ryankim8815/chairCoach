@@ -33,8 +33,8 @@ var Validation = __importStar(require("../middlewares/validationMiddleware"));
 var Schemas = __importStar(require("../utils/schemas.joi"));
 var neckRouter = express.Router();
 neckRouter.get("/necks", neckController_1.default.neckResultList); // 전체 거북목 테스트 결과 조회 기능, 개발 시 편의용으로 사용처가 없다면 삭제 예정
-neckRouter.get("/neck", authMiddleware_1.default, Validation.validateBody(Schemas.neckResultsSchema), neckController_1.default.neckResults); // 특정 유저의 거북목 테스트 결과 조회
-neckRouter.post("/neck", uploadMiddleware_1.default, authMiddleware_1.default, Validation.validateBodyMulter(Schemas.neckResultSchema, Schemas.fileSchema), neckController_1.default.neckCreate); // 거북목 테스트 결과 기록
+neckRouter.get("/necks/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), neckController_1.default.neckResults); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.post("/necks/:user_id", uploadMiddleware_1.default, authMiddleware_1.default, Validation.validateBodyParamsMulter(Schemas.neckResultSchema, Schemas.userCurrentSchema, Schemas.fileSchema), neckController_1.default.neckCreate); // 거북목 테스트 결과 기록
 module.exports = neckRouter;
 /**
  * @swagger
@@ -54,9 +54,6 @@ module.exports = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 모든 거북목 결과 조회가 성공적으로 이뤄졌습니다.
@@ -90,13 +87,19 @@ module.exports = neckRouter;
  */
 /**
  * @swagger
- * /neck:
+ * /necks/{user_id}:
  *   get:
  *     summary: 특정 유저의 거북목 테스트 결과 조회
  *     description: 로그인한 사용자만 이용 가능합니다.
  *     tags: ["neckRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     responses:
  *       200:
  *         description: successful operation
@@ -108,9 +111,6 @@ module.exports = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 거북목 결과 조회가 성공적으로 이뤄졌습니다.
@@ -144,13 +144,19 @@ module.exports = neckRouter;
  */
 /**
  * @swagger
- * /neck:
+ * /necks/{user_id}:
  *   post:
  *     summary: 거북목 테스트 결과 기록
  *     description: AI 모델이 완성되면 수정이 필요합니다.
  *     tags: ["neckRouter"]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
  *     requestBody:
  *       content:
  *        multipart/form-data:
@@ -175,9 +181,6 @@ module.exports = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
