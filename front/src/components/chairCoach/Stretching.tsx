@@ -5,10 +5,11 @@ import * as S from './StretchingStyle';
 
 import { BsFillClockFill } from "react-icons/bs";
 import { BsFillLightningFill } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
 
 const Stretching = () => {
   const user = useRecoilValue(userState);
-
+  const navigate=useNavigate();
   return (
     <S.ChairCoachCon>
     <h2>chair coach</h2>
@@ -16,7 +17,9 @@ const Stretching = () => {
 
     <S.StretchingCon>
       <ul>
-        <S.StretchingItem>
+        <S.StretchingItem onClick={()=>{
+          navigate('/aistretching')
+        }}>
           <dl>
             <dt>간단 스트레칭</dt>
             <dd>
