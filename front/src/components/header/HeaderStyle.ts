@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const HeaderLayout = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -50,10 +50,9 @@ export const NavLayout = styled.nav`
   }
 `;
 
-export const LoginMenuCon = styled.div`
+export const LoginMenuContent = styled.div`
   position: relative;
-  font-weight: 300;
-  button{
+  & > button{
     padding: 4px 8px;
     font-size: ${({ theme }) => theme.fontSize.text};
 
@@ -79,8 +78,9 @@ export const LoginMenuCon = styled.div`
     background: #fff;
 
     li{
-      padding: 8px 16px;
-      a{
+      padding: 8px 12px;
+      &>*{
+        font-weight: 300;
         font-size: ${({ theme }) => theme.fontSize.text};
         color: ${({ theme }) => theme.colors.greyText};
       }
@@ -88,7 +88,7 @@ export const LoginMenuCon = styled.div`
   }
 `;
 
-export const LogoutMenuCon = styled.div`
+export const LogoutMenuContent = styled.div`
   ul{
     ${({ theme }) => theme.common.flexCenter};
     justify-content: space-between;

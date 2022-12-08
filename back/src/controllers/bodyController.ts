@@ -1,5 +1,6 @@
 import * as express from "express";
 import bodyService from "../services/bodyService";
+import * as ClientError from "../responses/clientErrorResponse";
 import type { MulterFile } from "../customType/multer.d";
 
 class bodyController {
@@ -12,13 +13,8 @@ class bodyController {
     try {
       const allBodies = await bodyService.getAllBodies();
       return res.status(200).json(allBodies);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "bodyRecordlist api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -31,22 +27,14 @@ class bodyController {
     try {
       const user_id = req.body.user_id;
       if (user_id !== req.params.user_id) {
-        const result_err = {
-          result: false,
-          cause: "user_id",
-          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-        };
-        return res.status(200).json(result_err);
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
       }
       const Bodies = await bodyService.getBodies({ user_id });
       return res.status(200).json(Bodies);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "bodyRecords api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -59,12 +47,9 @@ class bodyController {
     try {
       const user_id = req.body.user_id;
       if (user_id !== req.params.user_id) {
-        const result_err = {
-          result: false,
-          cause: "user_id",
-          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-        };
-        return res.status(200).json(result_err);
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
       }
       const tag = req.body.tag;
       const body = await bodyService.addBody({
@@ -72,19 +57,13 @@ class bodyController {
         tag,
       });
       return res.status(200).json(body);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "bodyCreate api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
   // PATCH: 특정 유저의 운동 기록 종료
   static async bodyUpdate(
-    // req: express.Request & { files: MulterFile[] },
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -92,25 +71,17 @@ class bodyController {
     try {
       const user_id = req.body.user_id;
       if (user_id !== req.params.user_id) {
-        const result_err = {
-          result: false,
-          cause: "user_id",
-          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-        };
-        return res.status(200).json(result_err);
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
       }
       const body_id = req.body.body_id;
       const body = await bodyService.updateBody({
         body_id,
       });
       return res.status(200).json(body);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "bodyUpdate api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -123,24 +94,16 @@ class bodyController {
     try {
       const user_id = req.body.user_id;
       if (user_id !== req.params.user_id) {
-        const result_err = {
-          result: false,
-          cause: "user_id",
-          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-        };
-        return res.status(200).json(result_err);
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
       }
       const year = req.params.year;
       const week = req.params.week;
       const Bodies = await bodyService.getBodiesByWeek({ user_id, year, week });
       return res.status(200).json(Bodies);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "bodyRecords api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -153,23 +116,15 @@ class bodyController {
     try {
       const user_id = req.body.user_id;
       if (user_id !== req.params.user_id) {
-        const result_err = {
-          result: false,
-          cause: "user_id",
-          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-        };
-        return res.status(200).json(result_err);
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
       }
       const year = req.params.year;
       const Bodies = await bodyService.getBodiesByYear({ user_id, year });
       return res.status(200).json(Bodies);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "bodyRecords api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 }

@@ -63,9 +63,6 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 모든 사용자 조회가 성공적으로 이뤄졌습니다.
@@ -119,9 +116,6 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 현재 사용자 정보 조회가 성공적으로 이뤄졌습니다.
@@ -172,12 +166,9 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
+ *                   example: 회원가입이 성공적으로 이뤄졌습니다.
  */
 /**
  * @swagger
@@ -209,12 +200,9 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
+ *                   example: 로그인이 성공적으로 이뤄졌습니다.
  *                 token:
  *                   type: string
  *                   example: awj32ew86tgcvwstudggaiqa98yiqgdiqyas238ewyufdhjv29qiaedz87iyhvd
@@ -266,9 +254,6 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 입력하신 password가 일치합니다.
@@ -314,12 +299,9 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원정보 수정이 성공적으로 이뤄졌습니다.
+ *                   example: 회원정보 수정이 성공적으로 이뤄졌습니다.
  */
 /**
  * @swagger
@@ -356,12 +338,9 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: ${nickname}님의 회원정보 삭제가 성공적으로 이뤄졌습니다.
+ *                   example: 회원정보 삭제가 성공적으로 이뤄졌습니다.
  */
 /**
  * @swagger
@@ -390,12 +369,9 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: email 인증을 위한 코드 (재)발송이 성공적으로 이뤄졌습니다.
+ *                   example: code (재)발급이 성공적으로 이뤄졌습니다.
  */
 /**
  * @swagger
@@ -426,12 +402,9 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
- *                   example: email 인증을 위한 코드 인증
+ *                   example: email 인증에 성공했습니다.
  */
 /**
  * @swagger
@@ -457,9 +430,6 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 중복된 nickname이 없습니다. 가입을 진행해주세요.
@@ -502,9 +472,6 @@ module.exports = userRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: Alert 업데이트가 성공적으로 이뤄졌습니다.

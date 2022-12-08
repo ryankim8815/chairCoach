@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as S from "./NeckSurveyStyle";
+import * as B from "../../styles/BtnStyle"
 import { useNavigate } from "react-router-dom";
 import { Data } from "./Data";
 
@@ -35,29 +36,27 @@ const NeckSurvey = () => {
           <S.Page>{page + 1}/10</S.Page>
         </S.TitleBox>
         <S.ContentBox>
-          <S.TextBox>
-            <S.SubTitle style={{ fontWeight: 700 }}>Q{page + 1}</S.SubTitle>
-            <S.SubTitle style={{ marginTop: 16 }}>
-              {page === 10 ? null : Data[page].questions}
-            </S.SubTitle>
-          </S.TextBox>
+            <S.SubTitle>Q{page+1}. {page === 10 ? null : Data[page].questions}</S.SubTitle>
           {page === 10 ? null : <S.Img src={Data[page].img} />}
-          <S.Btn
-            onClick={() => {
-              increasePointRef();
-              increasePage();
-            }}
-          >
-            네
-          </S.Btn>
-          <S.Btn
-            onClick={() => {
-              increasePage();
-            }}
-            style={{ marginTop: 24 }}
-          >
-            아니오
-          </S.Btn>
+
+          <S.BtnWrap>
+            <B.CheckBtn size='big'
+              onClick={() => {
+                increasePointRef();
+                increasePage();
+              }}
+            >
+              네
+            </B.CheckBtn>
+            <B.CheckBtn size='big'
+              onClick={() => {
+                increasePage();
+              }}
+            >
+              아니오
+            </B.CheckBtn>
+          </S.BtnWrap>
+          
         </S.ContentBox>
       </div>
     </S.SurveyContainer>

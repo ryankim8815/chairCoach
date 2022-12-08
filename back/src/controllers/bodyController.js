@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,13 +62,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var bodyService_1 = __importDefault(require("../services/bodyService"));
+var ClientError = __importStar(require("../responses/clientErrorResponse"));
 var bodyController = /** @class */ (function () {
     function bodyController() {
     }
     // GET: 전체 운동 기록 조회 기능
     bodyController.bodyRecordlist = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var allBodies, err_1, result_err;
+            var allBodies, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -55,13 +79,9 @@ var bodyController = /** @class */ (function () {
                         allBodies = _a.sent();
                         return [2 /*return*/, res.status(200).json(allBodies)];
                     case 2:
-                        err_1 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "bodyRecordlist api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_1 = _a.sent();
+                        next(e_1);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -70,32 +90,23 @@ var bodyController = /** @class */ (function () {
     // GET: 특정 유저의 운동 기록 조회
     bodyController.bodyRecords = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, Bodies, err_2, result_err;
+            var user_id, Bodies, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
                         if (user_id !== req.params.user_id) {
-                            result_err = {
-                                result: false,
-                                cause: "user_id",
-                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-                            };
-                            return [2 /*return*/, res.status(200).json(result_err)];
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
                         return [4 /*yield*/, bodyService_1.default.getBodies({ user_id: user_id })];
                     case 1:
                         Bodies = _a.sent();
                         return [2 /*return*/, res.status(200).json(Bodies)];
                     case 2:
-                        err_2 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "bodyRecords api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_2 = _a.sent();
+                        next(e_2);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -104,19 +115,14 @@ var bodyController = /** @class */ (function () {
     // POST: 특정 유저의 운동 기록 시작
     bodyController.bodyCreate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, tag, body, err_3, result_err;
+            var user_id, tag, body, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
                         if (user_id !== req.params.user_id) {
-                            result_err = {
-                                result: false,
-                                cause: "user_id",
-                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-                            };
-                            return [2 /*return*/, res.status(200).json(result_err)];
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
                         tag = req.body.tag;
                         return [4 /*yield*/, bodyService_1.default.addBody({
@@ -127,36 +133,25 @@ var bodyController = /** @class */ (function () {
                         body = _a.sent();
                         return [2 /*return*/, res.status(200).json(body)];
                     case 2:
-                        err_3 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "bodyCreate api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_3 = _a.sent();
+                        next(e_3);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
     // PATCH: 특정 유저의 운동 기록 종료
-    bodyController.bodyUpdate = function (
-    // req: express.Request & { files: MulterFile[] },
-    req, res, next) {
+    bodyController.bodyUpdate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, body_id, body, err_4, result_err;
+            var user_id, body_id, body, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
                         if (user_id !== req.params.user_id) {
-                            result_err = {
-                                result: false,
-                                cause: "user_id",
-                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-                            };
-                            return [2 /*return*/, res.status(200).json(result_err)];
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
                         body_id = req.body.body_id;
                         return [4 /*yield*/, bodyService_1.default.updateBody({
@@ -166,13 +161,9 @@ var bodyController = /** @class */ (function () {
                         body = _a.sent();
                         return [2 /*return*/, res.status(200).json(body)];
                     case 2:
-                        err_4 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "bodyUpdate api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_4 = _a.sent();
+                        next(e_4);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -181,19 +172,14 @@ var bodyController = /** @class */ (function () {
     // GET: 특정 유저의 운동 기록 조회 week
     bodyController.bodyRecordsWeek = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, year, week, Bodies, err_5, result_err;
+            var user_id, year, week, Bodies, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
                         if (user_id !== req.params.user_id) {
-                            result_err = {
-                                result: false,
-                                cause: "user_id",
-                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-                            };
-                            return [2 /*return*/, res.status(200).json(result_err)];
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
                         year = req.params.year;
                         week = req.params.week;
@@ -202,13 +188,9 @@ var bodyController = /** @class */ (function () {
                         Bodies = _a.sent();
                         return [2 /*return*/, res.status(200).json(Bodies)];
                     case 2:
-                        err_5 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "bodyRecords api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_5 = _a.sent();
+                        next(e_5);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -217,19 +199,14 @@ var bodyController = /** @class */ (function () {
     // GET: 특정 유저의 운동 기록 조회 year
     bodyController.bodyRecordsYear = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, result_err, year, Bodies, err_6, result_err;
+            var user_id, year, Bodies, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
                         if (user_id !== req.params.user_id) {
-                            result_err = {
-                                result: false,
-                                cause: "user_id",
-                                message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-                            };
-                            return [2 /*return*/, res.status(200).json(result_err)];
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
                         year = req.params.year;
                         return [4 /*yield*/, bodyService_1.default.getBodiesByYear({ user_id: user_id, year: year })];
@@ -237,13 +214,9 @@ var bodyController = /** @class */ (function () {
                         Bodies = _a.sent();
                         return [2 /*return*/, res.status(200).json(Bodies)];
                     case 2:
-                        err_6 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "bodyRecords api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_6 = _a.sent();
+                        next(e_6);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });

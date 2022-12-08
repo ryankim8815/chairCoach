@@ -46,7 +46,6 @@ exports.userLoginSchema = joi_1.default.object().keys({
 });
 exports.userUpdateSchema = joi_1.default.object().keys({
     user_id: Users.user_id.required(),
-    currentPassword: Users.password.required(),
     password: Users.password.required(),
     nickname: Users.nickname.required(),
 });
