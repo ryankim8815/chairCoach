@@ -22,11 +22,12 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   console.log(chart, data);
 
   const onClickYearButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setChart("year");
     getYearData();
   };
-  const onClickWeekButton = () => {
-    setChart("week");
+  const onClickWeekButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     getWeekData();
   };
 
