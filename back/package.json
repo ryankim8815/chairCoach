@@ -26,6 +26,8 @@
     "nodemailer": "^6.8.0",
     "pm2": "^5.2.2",
     "qs": "^6.11.0",
+    "sequelize": "^6.26.0",
+    "sqlite3": "^5.1.2",
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.6.0",
     "typescript": "^4.9.3",

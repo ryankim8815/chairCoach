@@ -74,9 +74,6 @@ export = bodyRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 전체 운동 기록 조회가 성공적으로 이뤄졌습니다.
@@ -131,9 +128,6 @@ export = bodyRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.
@@ -198,9 +192,6 @@ export = bodyRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.
@@ -253,9 +244,6 @@ export = bodyRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 운동 기록 조회가 성공적으로 이뤄졌습니다.
@@ -312,9 +300,6 @@ export = bodyRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 운동 기록 시작이 성공적으로 이뤄졌습니다.
@@ -358,9 +343,6 @@ export = bodyRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 운동 기록 종료가 성공적으로 이뤄졌습니다.

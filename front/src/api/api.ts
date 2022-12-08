@@ -15,6 +15,11 @@ axios.interceptors.response.use(
   }
 );
 
+interface PostPayload{
+  [key: string]: string | null,
+}
+
+
 async function get(endpoint: string, params = "") {
   return axios.get(serverUrl + endpoint + "/" + params, {
     // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
@@ -25,7 +30,7 @@ async function get(endpoint: string, params = "") {
   });
 }
 
-async function post(endpoint: string, data?: any) {
+async function post(endpoint: string, data?: PostPayload) {
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);
@@ -38,7 +43,7 @@ async function post(endpoint: string, data?: any) {
   });
 }
 
-async function put(endpoint: string, data?: any) {
+async function put(endpoint: string, data?: PostPayload) {
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);

@@ -49,9 +49,6 @@ export = socialLoginRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
@@ -105,9 +102,6 @@ export = socialLoginRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.
@@ -161,9 +155,6 @@ export = socialLoginRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: ${nickname}님의 회원가입이 성공적으로 이뤄졌습니다.

@@ -7,14 +7,14 @@ import LogoutMenu from './LogoutMenu';
 import LoginMenu from './LoginMenu';
 
 import logo from '../../assets/img/logo.svg'
-import { HeaderLayout } from './HeaderStyle';
+import * as S from './HeaderStyle';
 
 
 const Header = () => {
   const navigate = useNavigate(); 
   const user = useRecoilValue(userState);
   return (
-    <HeaderLayout>
+    <S.HeaderLayout>
       <div className='inner'>
         <div className='left'>
           <h1 onClick={()=>navigate('/')}><img  src={logo} alt="chair coach" /></h1>
@@ -25,7 +25,7 @@ const Header = () => {
           user ? <LoginMenu/> : <LogoutMenu/>
         }
       </div>
-    </HeaderLayout>
+    </S.HeaderLayout>
   )
 }
 

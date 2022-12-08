@@ -42,7 +42,7 @@ export const MiddleBtn = styled.button<BtnStyle>`
   background: ${({ hover }) =>
     hover === "true" ? theme.colors.mainDark : theme.colors.main};
   color: #fff;
-  transition: 0.3s;
+  transition: all 0.3s;
 
   &:hover {
     background: ${({ theme }) => theme.colors.main};
@@ -69,6 +69,13 @@ export const InputBtn = styled.button<BtnStyle>`
 export const CheckBtn = styled.button<BtnStyle>`
   width: ${({ size }) => (size === "big" ? "440px" : "200px")};
   height: 48px;
+
+  transition: ${({ size }) => (size === "big" && "all .3s")};
+  &:hover {
+    background: ${({ size }) => (size === "big" && theme.colors.main)};
+    color: ${({ size }) => (size === "big" && "#fff")};
+  }
+
   ${check}
 `;
 
@@ -79,4 +86,16 @@ export const InputCheckBtn = styled.button`
   ${purple}
   border-radius: 2px;
   font-size: ${({ theme }) => theme.fontSize.text};
+`;
+
+// 알람 버튼
+export const AlarmBtn = styled.button<BtnStyle>`
+  width: 88px;
+  height: 60px;
+  border: 1px solid ${({ check }) => (check === "true" ? theme.colors.main : theme.colors.greyBorder)};
+  border-radius: 30px;
+  background: ${({ check }) => (check === "true" ? theme.colors.main : "#fff")};;
+  font-weight: 500;
+  font-size: 20px;
+  color: ${({ check }) => (check === "true" ? "#fff" : theme.colors.greyText)};
 `;

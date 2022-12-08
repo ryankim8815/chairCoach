@@ -35,8 +35,7 @@ const common = {
   `,
 
   contentMinLayout:`
-    min-height: calc(100vh - 64px - 172px);
-    margin-top: 64px;
+    min-height: calc(100vh - 64px - 172px); 
   `,
 };
 

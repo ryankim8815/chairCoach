@@ -11,18 +11,18 @@ import { useState } from "react";
 import Naver from "../../components/naverLogin/Naver";
 import NaverLogin from "../../components/naverLogin/Naver";
 
-import * as RegExp from "../signUp/RegExp"
+import * as RegExp from "../../utils/RegExp"
 
 import { useSetRecoilState } from "recoil";
 import userState from './../../atoms/user';
 import * as Api from "../../api/api";
 
 
-interface LoginData {
-  email: string;
-  password: string;
-  [key: string]: string;
-}
+// interface LoginData {
+//   email: string;
+//   password: string;
+//   [key: string]: string;
+// }
 
 const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
@@ -51,13 +51,19 @@ const Login = () => {
         email: email,
         password: password,
       });
-      console.log(res);
+      console.log(res.data);
+      console.log(res.data.user_id);
       
       const jwtToken = res.data.token;
       if(res.data.result){
         // 토큰 저장
         sessionStorage.setItem("userToken", jwtToken);
-        setUser(res.data.nickname);
+
+        const newUser = {
+          id: res.data.user_id,
+          nickname: res.data.nickname,
+        }
+        setUser(newUser);
         navigate('/');
       }else{
         setWaring("invalidInput");
