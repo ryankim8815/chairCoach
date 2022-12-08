@@ -28,6 +28,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   };
   const onClickWeekButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setChart("week");
     getWeekData();
   };
 
