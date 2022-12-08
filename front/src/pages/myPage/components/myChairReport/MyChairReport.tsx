@@ -13,18 +13,11 @@ export interface MyChairReportProps {
   data?: number[];
 }
 const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
-  const initYearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  const initWeekData = [0, 0, 0, 0, 0, 0, 0];
-  let curYearData = initYearData;
-  let curWeekData = initWeekData;
-
-  useEffect(() => {
-    getYearData();
-    //getWeekData();
-  }, []);
+  const yearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const weekData = [0, 0, 0, 0, 0, 0, 0];
 
   const [chart, setChart] = useState<string>("year");
-  const [data, setData] = useState<number[]>(curYearData);
+  const [data, setData] = useState<number[]>(yearData);
 
   console.log(chart, data);
 
@@ -37,6 +30,11 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
     getWeekData();
   };
 
+  useEffect(() => {
+    getYearData();
+    //getWeekData();
+  }, []);
+
   // 마이체어리포트 유저 운동기록 조회
   const getYearData = async () => {
     try {
@@ -44,10 +42,10 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
       //console.log(data);
       for (let obj of res.data.list) {
         const month = Number(obj.month.split("-")[1]);
-        curYearData[month - 1] = Number(obj.duration);
+        yearData[month - 1] = Number(obj.duration);
         //console.log(curYearData);
       }
-      setData(curYearData);
+      setData(yearData);
     } catch (err) {
       console.error(err);
     }
@@ -64,31 +62,31 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         switch (dayOfWeek) {
           // 일요일 ~ 월요일
           case 0:
-            curWeekData[6] = obj.duration;
+            weekData[6] = obj.duration;
             break;
           case 1:
-            curWeekData[0] = obj.duration;
+            weekData[0] = obj.duration;
             break;
           case 2:
-            curWeekData[1] = obj.duration;
+            weekData[1] = obj.duration;
             break;
           case 3:
-            curWeekData[2] = obj.duration;
+            weekData[2] = obj.duration;
             break;
           case 4:
-            curWeekData[3] = obj.duration;
+            weekData[3] = obj.duration;
             break;
           case 5:
-            curWeekData[4] = obj.duration;
+            weekData[4] = obj.duration;
             break;
           case 6:
-            curWeekData[5] = obj.duration;
+            weekData[5] = obj.duration;
             break;
         }
         //curWeekData[month - 1] = Number(obj.duration);
-        console.log(curWeekData);
+        console.log(weekData);
       }
-      setData(curWeekData);
+      setData(weekData);
     } catch (err) {
       console.error(err);
     }
