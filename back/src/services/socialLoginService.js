@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,6 +62,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var User_1 = __importDefault(require("../db/models/User"));
+var nullPrototypeHandler_1 = require("../utils/nullPrototypeHandler");
+var ClientError = __importStar(require("../responses/clientErrorResponse"));
+var ServerError = __importStar(require("../responses/serverErrorResponse"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var uuid_1 = require("uuid");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
@@ -53,50 +79,38 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.kakao = function (_a) {
         var email = _a.email, access_token = _a.access_token;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, thisUser, secretKey, token, result_success, result_errDB, user_id, password, nickname, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, thisUser, secretKey, token, result_success, result_errDB;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+            var checkEmail, _b, thisUser, secretKey, token, result_success, user_id, password, nickname, provider, created_at, newUser, _c, checkNewUser, _d, thisUser, secretKey, token, result_success;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
                     case 1:
-                        checkEmail = _b.sent();
-                        checkEmailString = JSON.stringify(checkEmail);
-                        checkEmailObject = JSON.parse(checkEmailString);
-                        if (checkEmailObject.length !== 0 &&
-                            checkEmailObject[0].provider !== "kakao") {
-                            result_errEmail = {
-                                result: false,
-                                cause: "email",
-                                message: "kakao 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
-                            };
-                            return [2 /*return*/, result_errEmail];
+                        checkEmail = _b.apply(void 0, [_e.sent()]);
+                        if (checkEmail.length !== 0 && checkEmail[0].provider !== "kakao") {
+                            throw ClientError.unauthorized("kakao 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         }
-                        else if (checkEmailObject.length == 1 &&
-                            checkEmailObject[0].provider == "kakao") {
-                            thisUser = checkEmailObject[0];
+                        else if (checkEmail.length == 1 && checkEmail[0].provider == "kakao") {
+                            thisUser = checkEmail[0];
                             secretKey = process.env.JWT_SECRET_KEY;
                             token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
                             delete thisUser.password;
-                            delete thisUser.user_id;
                             result_success = Object.assign({
                                 result: true,
-                                cause: "success",
                                 message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
-                            }, { token: token }, thisUser);
+                                token: token,
+                            }, thisUser);
                             return [2 /*return*/, result_success];
                         }
-                        else if (checkEmailObject.length > 1) {
-                            result_errDB = Object.assign({
-                                result: false,
-                                cause: "DB",
-                                message: "[\uD655\uC778\uC694\uB9DD]: DB\uC5D0 \uD574\uB2F9 \uC774\uBA54\uC77C(".concat(email, ")\uB85C \uAC00\uC785\uB41C \uC0AC\uC6A9\uC790\uAC00 1\uBA85 \uC774\uC0C1\uC785\uB2C8\uB2E4. \uC815\uCC45\uC0C1 \uC774\uBA54\uC77C \uD558\uB098\uB85C \uACC4\uC815 \uD558\uB098\uB9CC \uC0DD\uC131 \uAC00\uB2A5 \uD569\uB2C8\uB2E4."),
-                            });
-                            return [2 /*return*/, result_errDB];
+                        else if (checkEmail.length > 1) {
+                            throw ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.");
                         }
                         user_id = (0, uuid_1.v4)();
                         password = access_token;
                         nickname = "".concat(email, "_kakao");
                         provider = "kakao";
                         created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.create({
                                 user_id: user_id,
                                 email: email,
@@ -106,34 +120,22 @@ var socialLoginService = /** @class */ (function () {
                                 created_at: created_at,
                             })];
                     case 2:
-                        newUser = _b.sent();
-                        newUserString = JSON.stringify(newUser);
-                        newUserObject = JSON.parse(newUserString);
+                        newUser = _c.apply(void 0, [_e.sent()]);
+                        _d = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
                     case 3:
-                        checkNewUser = _b.sent();
-                        checkNewUserString = JSON.stringify(checkNewUser);
-                        checkNewUserObject = JSON.parse(checkNewUserString);
-                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
-                            thisUser = checkNewUserObject[0];
+                        checkNewUser = _d.apply(void 0, [_e.sent()]);
+                        if (newUser.affectedRows == 1 && checkNewUser.length == 1) {
+                            thisUser = checkNewUser[0];
                             secretKey = process.env.JWT_SECRET_KEY;
                             token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
                             delete thisUser.password;
-                            delete thisUser.user_id;
                             result_success = Object.assign({
                                 result: true,
-                                cause: "success",
-                                message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
-                            }, { token: token }, thisUser);
+                                message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                token: token,
+                            }, thisUser);
                             return [2 /*return*/, result_success];
-                        }
-                        else {
-                            result_errDB = {
-                                result: false,
-                                cause: "DB",
-                                message: "[\uD655\uC778\uC694\uB9DD]: \uC0AC\uC6A9\uC790 \uC815\uBCF4\uB97C DB\uC5D0 \uC800\uC7A5 \uC911 \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_errDB];
                         }
                         return [2 /*return*/];
                 }
@@ -147,50 +149,38 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.naver = function (_a) {
         var email = _a.email, access_token = _a.access_token;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, thisUser, secretKey, token, result_success, result_errDB, user_id, password, nickname, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, thisUser, secretKey, token, result_success, result_errDB;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+            var checkEmail, _b, thisUser, secretKey, token, result_success, user_id, password, nickname, provider, created_at, newUser, _c, checkNewUser, _d, thisUser, secretKey, token, result_success;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
                     case 1:
-                        checkEmail = _b.sent();
-                        checkEmailString = JSON.stringify(checkEmail);
-                        checkEmailObject = JSON.parse(checkEmailString);
-                        if (checkEmailObject.length !== 0 &&
-                            checkEmailObject[0].provider !== "naver") {
-                            result_errEmail = {
-                                result: false,
-                                cause: "email",
-                                message: "naver 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
-                            };
-                            return [2 /*return*/, result_errEmail];
+                        checkEmail = _b.apply(void 0, [_e.sent()]);
+                        if (checkEmail.length !== 0 && checkEmail[0].provider !== "naver") {
+                            throw ClientError.unauthorized("naver 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         }
-                        else if (checkEmailObject.length == 1 &&
-                            checkEmailObject[0].provider == "naver") {
-                            thisUser = checkEmailObject[0];
+                        else if (checkEmail.length == 1 && checkEmail[0].provider == "naver") {
+                            thisUser = checkEmail[0];
                             secretKey = process.env.JWT_SECRET_KEY;
                             token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
                             delete thisUser.password;
-                            delete thisUser.user_id;
                             result_success = Object.assign({
                                 result: true,
-                                cause: "success",
                                 message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
-                            }, { token: token }, thisUser);
+                                token: token,
+                            }, thisUser);
                             return [2 /*return*/, result_success];
                         }
-                        else if (checkEmailObject.length > 1) {
-                            result_errDB = Object.assign({
-                                result: false,
-                                cause: "DB",
-                                message: "[\uD655\uC778\uC694\uB9DD]: DB\uC5D0 \uD574\uB2F9 \uC774\uBA54\uC77C(".concat(email, ")\uB85C \uAC00\uC785\uB41C \uC0AC\uC6A9\uC790\uAC00 1\uBA85 \uC774\uC0C1\uC785\uB2C8\uB2E4. \uC815\uCC45\uC0C1 \uC774\uBA54\uC77C \uD558\uB098\uB85C \uACC4\uC815 \uD558\uB098\uB9CC \uC0DD\uC131 \uAC00\uB2A5 \uD569\uB2C8\uB2E4."),
-                            });
-                            return [2 /*return*/, result_errDB];
+                        else if (checkEmail.length > 1) {
+                            throw ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.");
                         }
                         user_id = (0, uuid_1.v4)();
                         password = access_token;
                         nickname = "".concat(email, "_naver");
                         provider = "naver";
                         created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.create({
                                 user_id: user_id,
                                 email: email,
@@ -200,34 +190,22 @@ var socialLoginService = /** @class */ (function () {
                                 created_at: created_at,
                             })];
                     case 2:
-                        newUser = _b.sent();
-                        newUserString = JSON.stringify(newUser);
-                        newUserObject = JSON.parse(newUserString);
+                        newUser = _c.apply(void 0, [_e.sent()]);
+                        _d = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
                     case 3:
-                        checkNewUser = _b.sent();
-                        checkNewUserString = JSON.stringify(checkNewUser);
-                        checkNewUserObject = JSON.parse(checkNewUserString);
-                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
-                            thisUser = checkNewUserObject[0];
+                        checkNewUser = _d.apply(void 0, [_e.sent()]);
+                        if (newUser.affectedRows == 1 && checkNewUser.length == 1) {
+                            thisUser = checkNewUser[0];
                             secretKey = process.env.JWT_SECRET_KEY;
                             token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
                             delete thisUser.password;
-                            delete thisUser.user_id;
                             result_success = Object.assign({
                                 result: true,
-                                cause: "success",
-                                message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
-                            }, { token: token }, thisUser);
+                                message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                token: token,
+                            }, thisUser);
                             return [2 /*return*/, result_success];
-                        }
-                        else {
-                            result_errDB = {
-                                result: false,
-                                cause: "DB",
-                                message: "[\uD655\uC778\uC694\uB9DD]: \uC0AC\uC6A9\uC790 \uC815\uBCF4\uB97C DB\uC5D0 \uC800\uC7A5 \uC911 \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_errDB];
                         }
                         return [2 /*return*/];
                 }
@@ -241,50 +219,38 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.google = function (_a) {
         var email = _a.email, refresh_token = _a.refresh_token;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, checkEmailString, checkEmailObject, result_errEmail, thisUser, secretKey, token, result_success, result_errDB, user_id, password, nickname, provider, created_at, newUser, newUserString, newUserObject, checkNewUser, checkNewUserString, checkNewUserObject, thisUser, secretKey, token, result_success, result_errDB;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+            var checkEmail, _b, thisUser, secretKey, token, result_success, user_id, password, nickname, provider, created_at, newUser, _c, checkNewUser, _d, thisUser, secretKey, token, result_success;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
                     case 1:
-                        checkEmail = _b.sent();
-                        checkEmailString = JSON.stringify(checkEmail);
-                        checkEmailObject = JSON.parse(checkEmailString);
-                        if (checkEmailObject.length !== 0 &&
-                            checkEmailObject[0].provider !== "google") {
-                            result_errEmail = {
-                                result: false,
-                                cause: "email",
-                                message: "google 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
-                            };
-                            return [2 /*return*/, result_errEmail];
+                        checkEmail = _b.apply(void 0, [_e.sent()]);
+                        if (checkEmail.length !== 0 && checkEmail[0].provider !== "google") {
+                            throw ClientError.unauthorized("google 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         }
-                        else if (checkEmailObject.length == 1 &&
-                            checkEmailObject[0].provider == "google") {
-                            thisUser = checkEmailObject[0];
+                        else if (checkEmail.length == 1 && checkEmail[0].provider == "google") {
+                            thisUser = checkEmail[0];
                             secretKey = process.env.JWT_SECRET_KEY;
                             token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
                             delete thisUser.password;
-                            delete thisUser.user_id;
                             result_success = Object.assign({
                                 result: true,
-                                cause: "success",
-                                message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
-                            }, { token: token }, thisUser);
+                                message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                token: token,
+                            }, thisUser);
                             return [2 /*return*/, result_success];
                         }
-                        else if (checkEmailObject.length > 1) {
-                            result_errDB = Object.assign({
-                                result: false,
-                                cause: "DB",
-                                message: "[\uD655\uC778\uC694\uB9DD]: DB\uC5D0 \uD574\uB2F9 \uC774\uBA54\uC77C(".concat(email, ")\uB85C \uAC00\uC785\uB41C \uC0AC\uC6A9\uC790\uAC00 1\uBA85 \uC774\uC0C1\uC785\uB2C8\uB2E4. \uC815\uCC45\uC0C1 \uC774\uBA54\uC77C \uD558\uB098\uB85C \uACC4\uC815 \uD558\uB098\uB9CC \uC0DD\uC131 \uAC00\uB2A5 \uD569\uB2C8\uB2E4."),
-                            });
-                            return [2 /*return*/, result_errDB];
+                        else if (checkEmail.length > 1) {
+                            throw ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.");
                         }
                         user_id = (0, uuid_1.v4)();
                         password = refresh_token;
                         nickname = "".concat(email, "_google");
                         provider = "google";
                         created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.create({
                                 user_id: user_id,
                                 email: email,
@@ -294,34 +260,22 @@ var socialLoginService = /** @class */ (function () {
                                 created_at: created_at,
                             })];
                     case 2:
-                        newUser = _b.sent();
-                        newUserString = JSON.stringify(newUser);
-                        newUserObject = JSON.parse(newUserString);
+                        newUser = _c.apply(void 0, [_e.sent()]);
+                        _d = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
                     case 3:
-                        checkNewUser = _b.sent();
-                        checkNewUserString = JSON.stringify(checkNewUser);
-                        checkNewUserObject = JSON.parse(checkNewUserString);
-                        if (newUserObject.affectedRows == 1 && checkNewUserObject.length == 1) {
-                            thisUser = checkNewUserObject[0];
+                        checkNewUser = _d.apply(void 0, [_e.sent()]);
+                        if (newUser.affectedRows == 1 && checkNewUser.length == 1) {
+                            thisUser = checkNewUser[0];
                             secretKey = process.env.JWT_SECRET_KEY;
                             token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
                             delete thisUser.password;
-                            delete thisUser.user_id;
                             result_success = Object.assign({
                                 result: true,
-                                cause: "success",
-                                message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
-                            }, { token: token }, thisUser);
+                                message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                token: token,
+                            }, thisUser);
                             return [2 /*return*/, result_success];
-                        }
-                        else {
-                            result_errDB = {
-                                result: false,
-                                cause: "DB",
-                                message: "[\uD655\uC778\uC694\uB9DD]: \uC0AC\uC6A9\uC790 \uC815\uBCF4\uB97C DB\uC5D0 \uC800\uC7A5 \uC911 \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_errDB];
                         }
                         return [2 /*return*/];
                 }

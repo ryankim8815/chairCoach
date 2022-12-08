@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,6 +62,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var Body_1 = __importDefault(require("../db/models/Body"));
+var nullPrototypeHandler_1 = require("../utils/nullPrototypeHandler");
+var ClientError = __importStar(require("../responses/clientErrorResponse"));
 var uuid_1 = require("uuid");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 moment_timezone_1.default.tz.setDefault("Asia/Seoul");
@@ -48,27 +73,24 @@ var bodyService = /** @class */ (function () {
     //// 전체 운동 기록 조회 기능
     bodyService.getAllBodies = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var allBodies, allBodiesString, allBodiesObject, i, countBodies, countBodiesString, countBodiesObject, result_success;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, Body_1.default.findAll()];
+            var allBodies, _a, countBodies, _b, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, Body_1.default.findAll()];
                     case 1:
-                        allBodies = _a.sent();
-                        allBodiesString = JSON.stringify(allBodies);
-                        allBodiesObject = JSON.parse(allBodiesString);
-                        for (i = 0; i < allBodiesObject.length; i++) {
-                            delete allBodiesObject[i].user_id;
-                        }
+                        allBodies = _a.apply(void 0, [_c.sent()]);
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, Body_1.default.countAll()];
                     case 2:
-                        countBodies = _a.sent();
-                        countBodiesString = JSON.stringify(countBodies);
-                        countBodiesObject = JSON.parse(countBodiesString);
+                        countBodies = _b.apply(void 0, [_c.sent()]);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uC804\uCCB4 \uC6B4\uB3D9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { count: countBodiesObject[0].cnt, list: allBodiesObject });
+                            count: countBodies[0].cnt,
+                            list: allBodies,
+                        });
                         return [2 /*return*/, result_success];
                 }
             });
@@ -78,27 +100,24 @@ var bodyService = /** @class */ (function () {
     bodyService.getBodies = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var Bodies, BodiesString, BodiesObject, i, countBodies, countBodiesString, countBodiesObject, result_success;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, Body_1.default.findByUserId({ user_id: user_id })];
+            var Bodies, _b, countBodies, _c, result_success;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, Body_1.default.findByUserId({ user_id: user_id })];
                     case 1:
-                        Bodies = _b.sent();
-                        BodiesString = JSON.stringify(Bodies);
-                        BodiesObject = JSON.parse(BodiesString);
-                        for (i = 0; i < BodiesObject.length; i++) {
-                            delete BodiesObject[i].user_id;
-                        }
+                        Bodies = _b.apply(void 0, [_d.sent()]);
+                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, Body_1.default.countByUserId({ user_id: user_id })];
                     case 2:
-                        countBodies = _b.sent();
-                        countBodiesString = JSON.stringify(countBodies);
-                        countBodiesObject = JSON.parse(countBodiesString);
+                        countBodies = _c.apply(void 0, [_d.sent()]);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { count: countBodiesObject[0].cnt, list: BodiesObject });
+                            count: countBodies[0].cnt,
+                            list: Bodies,
+                        });
                         return [2 /*return*/, result_success];
                 }
             });
@@ -108,12 +127,13 @@ var bodyService = /** @class */ (function () {
     bodyService.addBody = function (_a) {
         var user_id = _a.user_id, tag = _a.tag;
         return __awaiter(this, void 0, void 0, function () {
-            var body_id, start_time, newBody, newBodyString, newBodyObject, i, result_success;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var body_id, start_time, newBody, _b, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         body_id = (0, uuid_1.v4)();
                         start_time = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, Body_1.default.create({
                                 body_id: body_id,
                                 user_id: user_id,
@@ -121,17 +141,12 @@ var bodyService = /** @class */ (function () {
                                 start_time: start_time,
                             })];
                     case 1:
-                        newBody = _b.sent();
-                        newBodyString = JSON.stringify(newBody);
-                        newBodyObject = JSON.parse(newBodyString);
-                        for (i = 0; i < newBodyObject.length; i++) {
-                            delete newBodyObject[i].user_id;
-                        }
+                        newBody = _b.apply(void 0, [_c.sent()]);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC2DC\uC791\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { body_id: body_id });
+                            body_id: body_id,
+                        });
                         return [2 /*return*/, result_success];
                 }
             });
@@ -141,45 +156,30 @@ var bodyService = /** @class */ (function () {
     bodyService.updateBody = function (_a) {
         var body_id = _a.body_id;
         return __awaiter(this, void 0, void 0, function () {
-            var checkBody, checkBodyString, checkBodyObject, result_errBody, result_errBody, end_time, newBody, newBodyString, newBodyObject, i, result_success;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, Body_1.default.findByBodyId({ body_id: body_id })];
+            var checkBody, _b, end_time, newBody, _c, result_success;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, Body_1.default.findByBodyId({ body_id: body_id })];
                     case 1:
-                        checkBody = _b.sent();
-                        checkBodyString = JSON.stringify(checkBody);
-                        checkBodyObject = JSON.parse(checkBodyString);
-                        if (checkBodyObject.length == 0) {
-                            result_errBody = {
-                                result: false,
-                                cause: "DB",
-                                message: "patch를 요청한 body_id 정보와 일치하는 데이터가 없습니다. 다시 한 번 확인해 주세요.",
-                            };
-                            return [2 /*return*/, result_errBody];
+                        checkBody = _b.apply(void 0, [_d.sent()]);
+                        if (checkBody.length == 0) {
+                            throw ClientError.notFound("patch를 요청한 body_id 정보와 일치하는 데이터가 없습니다. 다시 한 번 확인해 주세요.");
                         }
-                        else if (checkBodyObject[0].end_time) {
-                            result_errBody = {
-                                result: false,
-                                cause: "end_time",
-                                message: "patch를 요청한 body_id의 end_time은 이미 업데이트 되어있습니다. 다시 한 번 확인해 주세요.",
-                            };
-                            return [2 /*return*/, result_errBody];
+                        else if (checkBody[0].end_time) {
+                            throw ClientError.conflict("patch를 요청한 body_id의 end_time은 이미 업데이트 되어있습니다. 다시 한 번 확인해 주세요.");
                         }
                         end_time = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, Body_1.default.patch({
                                 body_id: body_id,
                                 end_time: end_time,
                             })];
                     case 2:
-                        newBody = _b.sent();
-                        newBodyString = JSON.stringify(newBody);
-                        newBodyObject = JSON.parse(newBodyString);
-                        for (i = 0; i < newBodyObject.length; i++) {
-                            delete newBodyObject[i].user_id;
-                        }
+                        newBody = _c.apply(void 0, [_d.sent()]);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC885\uB8CC\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                         });
                         return [2 /*return*/, result_success];
@@ -191,19 +191,19 @@ var bodyService = /** @class */ (function () {
     bodyService.getBodiesByWeek = function (_a) {
         var user_id = _a.user_id, year = _a.year, week = _a.week;
         return __awaiter(this, void 0, void 0, function () {
-            var Bodies, BodiesString, BodiesObject, result_success;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, Body_1.default.findByUserIdWeek({ user_id: user_id, year: year, week: week })];
+            var Bodies, _b, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, Body_1.default.findByUserIdWeek({ user_id: user_id, year: year, week: week })];
                     case 1:
-                        Bodies = _b.sent();
-                        BodiesString = JSON.stringify(Bodies);
-                        BodiesObject = JSON.parse(BodiesString);
+                        Bodies = _b.apply(void 0, [_c.sent()]);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { list: BodiesObject });
+                            list: Bodies,
+                        });
                         return [2 /*return*/, result_success];
                 }
             });
@@ -213,19 +213,19 @@ var bodyService = /** @class */ (function () {
     bodyService.getBodiesByYear = function (_a) {
         var user_id = _a.user_id, year = _a.year;
         return __awaiter(this, void 0, void 0, function () {
-            var Bodies, BodiesString, BodiesObject, result_success;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, Body_1.default.findByUserIdYear({ user_id: user_id, year: year })];
+            var Bodies, _b, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, Body_1.default.findByUserIdYear({ user_id: user_id, year: year })];
                     case 1:
-                        Bodies = _b.sent();
-                        BodiesString = JSON.stringify(Bodies);
-                        BodiesObject = JSON.parse(BodiesString);
+                        Bodies = _b.apply(void 0, [_c.sent()]);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { list: BodiesObject });
+                            list: Bodies,
+                        });
                         return [2 /*return*/, result_success];
                 }
             });

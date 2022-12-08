@@ -1,5 +1,6 @@
 import * as express from "express";
 import neckService from "../services/neckService";
+import * as ClientError from "../responses/clientErrorResponse";
 import type { MulterFile } from "../customType/multer.d";
 
 class userController {
@@ -12,13 +13,8 @@ class userController {
     try {
       const allNecks = await neckService.getAllNecks();
       return res.status(200).json(allNecks);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "neckResultList api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -31,23 +27,13 @@ class userController {
     try {
       const user_id = req.body.user_id;
       if (user_id !== req.params.user_id) {
-        const result_err = {
-          result: false,
-          cause: "user_id",
-          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-        };
-        return res.status(200).json(result_err);
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
       }
       const Necks = await neckService.getNecks({ user_id });
       return res.status(200).json(Necks);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "neckResults api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
-    }
+    } catch (e) {}
   }
 
   // POST: 거북목 테스트 결과 기록
@@ -59,12 +45,9 @@ class userController {
     try {
       const user_id = req.body.user_id;
       if (user_id !== req.params.user_id) {
-        const result_err = {
-          result: false,
-          cause: "user_id",
-          message: "정상적으로 로그인된 사용자의 요청이 아닙니다.",
-        };
-        return res.status(200).json(result_err);
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
       }
       const filename = req.file.filename;
       const result = req.body.result;
@@ -76,13 +59,8 @@ class userController {
         filename,
       });
       return res.status(200).json(allUsers);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "neckCreate api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 }

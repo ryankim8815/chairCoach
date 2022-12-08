@@ -48,9 +48,6 @@ export = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 모든 거북목 결과 조회가 성공적으로 이뤄졌습니다.
@@ -109,9 +106,6 @@ export = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 해당 유저의 거북목 결과 조회가 성공적으로 이뤄졌습니다.
@@ -183,9 +177,6 @@ export = neckRouter;
  *                 result:
  *                   type: boolean
  *                   example: true
- *                 cause:
- *                   type: string
- *                   example: success
  *                 message:
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
