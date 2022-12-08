@@ -52,8 +52,7 @@ export const NavLayout = styled.nav`
 
 export const LoginMenuContent = styled.div`
   position: relative;
-  font-weight: 300;
-  button{
+  & > button{
     padding: 4px 8px;
     font-size: ${({ theme }) => theme.fontSize.text};
 
@@ -79,8 +78,9 @@ export const LoginMenuContent = styled.div`
     background: #fff;
 
     li{
-      padding: 8px 16px;
-      a{
+      padding: 8px 12px;
+      &>*{
+        font-weight: 300;
         font-size: ${({ theme }) => theme.fontSize.text};
         color: ${({ theme }) => theme.colors.greyText};
       }

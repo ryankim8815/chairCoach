@@ -23,7 +23,7 @@ const Main = () => {
   useEffect(()=>{
     const options = {
       root: rootRef.current,
-      rootMargin: '-130px',
+      rootMargin: '-120px',
     }
 
     const observer = new IntersectionObserver((entries) => {

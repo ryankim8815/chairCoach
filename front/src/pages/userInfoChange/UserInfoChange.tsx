@@ -42,17 +42,19 @@ const UserInfoChange = () => {
 
   // 비밀번호 확인
   const handlerCheckCurrentPwClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(currentPw)
     e.preventDefault();
 
     if(user){
       const res = await Api.post(`users/${user.id}/password`, {
         password: currentPw,
       });
-
-      console.log(res);
       
-      res.data.result ? setNewPwDisabled(false) : alert('입력하신 password가 일치하지 않습니다.\n다시 한 번 확인해 주세요.');
+      if(res.data.result){
+        setNewPwDisabled(false);
+      }else{
+        alert('입력하신 password가 일치하지 않습니다.\n다시 한 번 확인해 주세요.');
+        setCurrentPw('');
+      }
     }
   }
 
@@ -61,19 +63,19 @@ const UserInfoChange = () => {
 
     if(user){
       console.log(user.id);
-      const res = await Api.put(`user/${user.id}`, {
+      const res = await Api.put(`users/${user.id}`, {
         password: newPw,
         currentPassword: currentPw,
         nickname: nickname
       });
   
-      console.log(res.data.result);
       if(res.data.result){
-        navigate('/');
+        alert('회원정보가 변경되었습니다.');
         setUser({
           id: user.id,
           nickname : nickname
         });
+        navigate('/');
       }
     }
   };
