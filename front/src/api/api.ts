@@ -15,16 +15,16 @@ axios.interceptors.response.use(
   }
 );
 
-interface PostPayload{
-  [key: string]: string | null,
+interface PostPayload {
+  [key: string]: string | null;
 }
-
 
 async function get(endpoint: string, params = "") {
   return axios.get(serverUrl + endpoint + "/" + params, {
     // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
     },
   });
 }
