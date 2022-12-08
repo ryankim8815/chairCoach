@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import userState from './../../atoms/user';
 import * as B from "../../styles/BtnStyle";
 import * as S from "./AlamStyle";
-
+import * as Api from '../../api/api'
 const Alarm = () => {
   const user = useRecoilValue(userState);
-
+  const [isChecked,setIsChecked]=useState(false);
+  const checkHandler=()=>{
+    setIsChecked(!isChecked);
+  }
+  console.log(user)
   return (
     <S.AlarmCon className={user ? '' : 'lock'}>
     <S.AlarmTextWrap>
@@ -25,7 +29,14 @@ const Alarm = () => {
         <p>알람 설정</p>
 
         <S.ToggleBtnBox>
-          <input type="checkbox" id='toggle' hidden />
+          <input type="checkbox" id='toggle' hidden  onChange={()=>{
+            checkHandler()
+            const res=Api.patch(`users/alerts/${user?.id}`,{
+              alert: isChecked,
+              timer: 15
+            })
+            console.log(res)
+          }}/>
           <label htmlFor="toggle">
             <span></span>
           </label>
