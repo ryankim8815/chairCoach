@@ -481,7 +481,7 @@ export = userRouter;
 
 /**
  * @swagger
- * /users/alerts/{user_id}:
+ * /users/{user_id}/alert:
  *   patch:
  *     summary: 알람 설정
  *     description:  알람 설정
