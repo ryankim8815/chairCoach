@@ -325,9 +325,6 @@ export = userRouter;
  *               password:
  *                 type: string
  *                 example: new_password
- *               currentPassword:
- *                 type: string
- *                 example: current_password
  *               nickname:
  *                 type: string
  *                 example: new_nickname
