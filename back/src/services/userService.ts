@@ -241,36 +241,8 @@ class userService {
   }
 
   //// 회원 정보 수정
-  static async updateUser({ user_id, currentPassword, password, nickname }) {
-    const checkUserId = nullPrototypeHandler(
-      await User.findByUserId({ user_id })
-    );
-    if (checkUserId.length === 0) {
-      throw ClientError.unauthorized(
-        "요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요."
-      );
-    }
-    const thisUser = checkUserId[0];
-    const hashedCorrectPassword = thisUser.password;
-
-    const isPasswordCorrect = await bcrypt.compare(
-      currentPassword,
-      hashedCorrectPassword
-    );
-    if (!isPasswordCorrect) {
-      throw ClientError.unauthorized(
-        "입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요."
-      );
-    }
-    const checkNickname = nullPrototypeHandler(
-      await User.findByNickname({ nickname })
-    );
-    if (checkNickname.length !== 0) {
-      throw ClientError.conflict("입력하신 nickname은 이미 사용중입니다.");
-    }
-    console.log("pw확인1: ", password);
+  static async updateUser({ user_id, password, nickname }) {
     password = await bcrypt.hash(password, 10);
-    console.log("pw확인2: ", password);
     const updatedUser = nullPrototypeHandler(
       await User.update({
         user_id,

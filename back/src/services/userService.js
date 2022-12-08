@@ -367,47 +367,22 @@ var userService = /** @class */ (function () {
     };
     //// 회원 정보 수정
     userService.updateUser = function (_a) {
-        var user_id = _a.user_id, currentPassword = _a.currentPassword, password = _a.password, nickname = _a.nickname;
+        var user_id = _a.user_id, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var checkUserId, _b, thisUser, hashedCorrectPassword, isPasswordCorrect, checkNickname, _c, updatedUser, _d, result_success;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
+            var updatedUser, _b, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
                     case 1:
-                        checkUserId = _b.apply(void 0, [_e.sent()]);
-                        if (checkUserId.length === 0) {
-                            throw ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.");
-                        }
-                        thisUser = checkUserId[0];
-                        hashedCorrectPassword = thisUser.password;
-                        return [4 /*yield*/, bcrypt_1.default.compare(currentPassword, hashedCorrectPassword)];
-                    case 2:
-                        isPasswordCorrect = _e.sent();
-                        if (!isPasswordCorrect) {
-                            throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
-                        }
-                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByNickname({ nickname: nickname })];
-                    case 3:
-                        checkNickname = _c.apply(void 0, [_e.sent()]);
-                        if (checkNickname.length !== 0) {
-                            throw ClientError.conflict("입력하신 nickname은 이미 사용중입니다.");
-                        }
-                        console.log("pw확인1: ", password);
-                        return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
-                    case 4:
-                        password = _e.sent();
-                        console.log("pw확인2: ", password);
-                        _d = nullPrototypeHandler_1.nullPrototypeHandler;
+                        password = _c.sent();
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_1.default.update({
                                 user_id: user_id,
                                 password: password,
                                 nickname: nickname,
                             })];
-                    case 5:
-                        updatedUser = _d.apply(void 0, [_e.sent()]);
+                    case 2:
+                        updatedUser = _b.apply(void 0, [_c.sent()]);
                         if (updatedUser.affectedRows == 1) {
                             result_success = {
                                 result: true,

@@ -21,7 +21,6 @@ export const userLoginSchema = Joi.object().keys({
 
 export const userUpdateSchema = Joi.object().keys({
   user_id: Users.user_id.required(),
-  currentPassword: Users.password.required(),
   password: Users.password.required(),
   nickname: Users.nickname.required(),
 });

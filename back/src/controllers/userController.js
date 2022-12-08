@@ -199,7 +199,7 @@ var userController = /** @class */ (function () {
     // PUT: 회원정보 수정
     userController.userUpdate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, currentPassword, password, nickname, updateUser, e_6;
+            var user_id, password, nickname, updateUser, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -208,12 +208,10 @@ var userController = /** @class */ (function () {
                         if (user_id !== req.params.user_id) {
                             throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
-                        currentPassword = req.body.currentPassword;
                         password = req.body.password;
                         nickname = req.body.nickname;
                         return [4 /*yield*/, userService_1.default.updateUser({
                                 user_id: user_id,
-                                currentPassword: currentPassword,
                                 password: password,
                                 nickname: nickname,
                             })];

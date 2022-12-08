@@ -115,12 +115,10 @@ class userController {
           "정상적으로 로그인된 사용자의 요청이 아닙니다."
         );
       }
-      const currentPassword = req.body.currentPassword;
       const password = req.body.password;
       const nickname = req.body.nickname;
       const updateUser = await userService.updateUser({
         user_id,
-        currentPassword,
         password,
         nickname,
       });
