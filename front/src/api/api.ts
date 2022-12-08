@@ -47,7 +47,7 @@ async function patch(endpoint: string, data?: any) {
   // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);
 
-  return axios.post(serverUrl + endpoint, bodyData, {
+  return axios.patch(serverUrl + endpoint, bodyData, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
