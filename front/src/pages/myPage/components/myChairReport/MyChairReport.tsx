@@ -17,8 +17,9 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const weekData = [0, 0, 0, 0, 0, 0, 0];
 
   const [chart, setChart] = useState<string>("year");
-  const [data, setData] = useState<number[]>(yearData);
-
+  const [data, setData] = useState<number[] | null>(null);
+  const [total, setTotal] = useState<number | null>(null);
+  //const [data, setData] = useState<number[]>(yearData);
   console.log(chart, data);
 
   const onClickYearButton = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -34,20 +35,24 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
 
   useEffect(() => {
     getYearData();
-    //getWeekData();
   }, []);
 
   // 마이체어리포트 유저 운동기록 조회
   const getYearData = async () => {
     try {
       const res = await Api.get(`bodies/${user_id}/${year}`);
+      //res = res.data.list;
       //console.log(data);
       for (let obj of res.data.list) {
         const month = Number(obj.month.split("-")[1]);
         yearData[month - 1] = Number(obj.duration);
         //console.log(curYearData);
       }
+      let sum = yearData.reduce((sum, v) => {
+        return sum + v;
+      }, 0);
       setData(yearData);
+      setTotal(sum);
     } catch (err) {
       console.error(err);
     }
@@ -56,44 +61,43 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const getWeekData = async () => {
     try {
       const res = await Api.get(`bodies/${user_id}/${year}/48`);
-      const data = res.data.list;
-      console.log(data);
-      for (let obj of data) {
+      for (let obj of res.data.list) {
         let dayOfWeek = new Date(obj.date).getDay();
-        console.log(dayOfWeek);
         switch (dayOfWeek) {
           // 일요일 ~ 월요일
           case 0:
-            weekData[6] = obj.duration;
+            weekData[6] = Number(obj.duration);
             break;
           case 1:
-            weekData[0] = obj.duration;
+            weekData[0] = Number(obj.duration);
             break;
           case 2:
-            weekData[1] = obj.duration;
+            weekData[1] = Number(obj.duration);
             break;
           case 3:
-            weekData[2] = obj.duration;
+            weekData[2] = Number(obj.duration);
             break;
           case 4:
-            weekData[3] = obj.duration;
+            weekData[3] = Number(obj.duration);
             break;
           case 5:
-            weekData[4] = obj.duration;
+            weekData[4] = Number(obj.duration);
             break;
           case 6:
-            weekData[5] = obj.duration;
+            weekData[5] = Number(obj.duration);
             break;
         }
-        //curWeekData[month - 1] = Number(obj.duration);
-        console.log(weekData);
       }
+      let sum = weekData.reduce((sum, v) => {
+        return sum + v;
+      }, 0);
       setData(weekData);
+      setTotal(sum);
     } catch (err) {
       console.error(err);
     }
   };
-
+  //if(!data) return null;
   return (
     <S.ReportLayout>
       <S.Text fontSize={24} fontWeight={500}>
@@ -111,7 +115,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
               <S.TotalTimeIconBox>
                 <BsFillClockFill size={32} />
                 <S.TotalTimeNumber fontSize={24} fontWeight={700}>
-                  500
+                  {total}
                 </S.TotalTimeNumber>
               </S.TotalTimeIconBox>{" "}
             </div>
@@ -123,7 +127,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
             </S.YearText>
             <MdKeyboardArrowRight size={32} />
             <div className="graph">
-              <MyChairReportChart chart={chart} data={data} />
+              {data && <MyChairReportChart chart={chart} data={data} />}
             </div>
           </S.GraphBox>
         </div>
