@@ -99,6 +99,7 @@ const chartData = {
 };
 
 function TurtleNeckResultChart({ data }: TurtleNeckResultProps) {
+  chartData.datasets[0].data = data!;
   return (
     <Container>
       <Line options={options} data={chartData} />
