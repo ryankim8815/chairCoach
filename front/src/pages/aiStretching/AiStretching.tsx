@@ -14,20 +14,13 @@ const AiStretching = () => {
       setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
     [setDevices]
   );
-  React.useEffect(() => {
+  useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
-  const webcamRef = useRef(null);
-  const canvasRef = useRef(null);
+  const webcamRef = useRef<Webcam>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const socketUrl = "ws://localhost:8000";
   const socket = io(socketUrl as string);
-  //user media device select할 때 일단 콘솔.. 이걸 적용시켜야함
-  navigator.mediaDevices
-    .enumerateDevices()
-    .then((devices) =>
-      console.log(devices.filter((x) => x.kind == "videoinput"))
-    );
-
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -60,6 +53,9 @@ const AiStretching = () => {
       });
 
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
+      requestAnimationFrame(() => {
+        detectWebCamFeed(detector);
+      });
     }
   };
 
@@ -72,9 +68,7 @@ const AiStretching = () => {
       detectorConfig
     );
 
-    setInterval(() => {
-      detectWebCamFeed(detector);
-    }, 100);
+    requestAnimationFrame(() => detectWebCamFeed(detector));
   };
   runMovenet();
 
@@ -91,6 +85,17 @@ const AiStretching = () => {
     drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
     drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
+  useEffect(() => {
+    if (!webcamRef.current?.video) return;
+
+    webcamRef.current.video.addEventListener("loadeddata", (e) => {
+      const video = e.target as HTMLVideoElement;
+      if (video.readyState === 4) {
+        runMovenet();
+      }
+    });
+  }, [runMovenet]);
+  console.log(devices);
   return (
     <div>
       <Webcam
