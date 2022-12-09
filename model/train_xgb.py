@@ -15,8 +15,8 @@ def onehot(y):
     return y_result
 
 # load data
-train = loadtxt('../data/csvs/train_data.csv', delimiter=",")
-test = loadtxt('../data/csvs/test_data.csv', delimiter=",")
+train = loadtxt('./data/csvs/train_data_xy.csv', delimiter=",")
+test = loadtxt('./data/csvs/test_data._xycsv', delimiter=",")
 
 X_train = train[:, :-1]
 y_train_split = train[:, -1]
