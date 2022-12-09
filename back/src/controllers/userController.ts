@@ -12,13 +12,14 @@ class userController {
   ) {
     try {
       const { count, list } = await userService.getAllUsers();
-      const result = {
+      const getAllUsers = {
         result: true,
         count,
         list,
       };
-      logger.info(result);
-      return res.status(200).json(result);
+
+      logger.info(getAllUsers);
+      return res.status(200).json(getAllUsers);
     } catch (e) {
       next(e);
     }
@@ -37,9 +38,10 @@ class userController {
           "정상적으로 로그인된 사용자의 요청이 아닙니다."
         );
       }
-      const currentUser = await userService.getCurrentUser({ user_id });
-      logger.error(currentUser); // test
-      return res.status(200).json(currentUser);
+      const getCurrentUser = await userService.getCurrentUser({ user_id });
+
+      logger.info(getCurrentUser);
+      return res.status(200).json(getCurrentUser);
     } catch (e) {
       next(e);
     }
@@ -55,8 +57,10 @@ class userController {
       const email = req.body.email;
       const password = req.body.password;
       const nickname = req.body.nickname;
-      const newUser = await userService.addUser({ email, password, nickname });
-      return res.status(200).json(newUser);
+      const addUser = await userService.addUser({ email, password, nickname });
+
+      logger.info(addUser);
+      return res.status(200).json(addUser);
     } catch (e) {
       next(e);
     }
@@ -71,8 +75,10 @@ class userController {
     try {
       const email = req.body.email;
       const password = req.body.password;
-      const signinUser = await userService.getUser({ email, password });
-      return res.status(200).json(signinUser);
+      const getUser = await userService.getUser({ email, password });
+
+      logger.info(getUser);
+      return res.status(200).json(getUser);
     } catch (e) {
       next(e);
     }
@@ -92,11 +98,13 @@ class userController {
         );
       }
       const password = req.body.password;
-      const updateUser = await userService.passwordCheck({
+      const passwordCheck = await userService.passwordCheck({
         user_id,
         password,
       });
-      return res.status(200).json(updateUser);
+
+      logger.info(passwordCheck);
+      return res.status(200).json(passwordCheck);
     } catch (e) {
       next(e);
     }
@@ -122,6 +130,8 @@ class userController {
         password,
         nickname,
       });
+
+      logger.info(updateUser);
       return res.status(200).json(updateUser);
     } catch (e) {
       next(e);
@@ -146,6 +156,8 @@ class userController {
         user_id,
         password,
       });
+
+      logger.info(deleteUser);
       return res.status(200).json(deleteUser);
     } catch (e) {
       next(e);
@@ -161,12 +173,14 @@ class userController {
     try {
       const email = req.body.email;
       const code = req.body.code;
-      const sendCodeToEmail = await userService.sendCode({
+      const sendCode = await userService.sendCode({
         // redis 활용 고려
         email,
         code,
       });
-      return res.status(200).json(sendCodeToEmail);
+
+      logger.info(sendCode);
+      return res.status(200).json(sendCode);
     } catch (e) {
       next(e);
     }
@@ -181,11 +195,13 @@ class userController {
     try {
       const email = req.params.email;
       const code = req.params.code;
-      const verifyEmailCode = await userService.verifyCode({
+      const verifyCode = await userService.verifyCode({
         email,
         code,
       });
-      return res.status(200).json(verifyEmailCode);
+
+      logger.info(verifyCode);
+      return res.status(200).json(verifyCode);
     } catch (e) {
       next(e);
     }
@@ -199,10 +215,12 @@ class userController {
   ) {
     try {
       const nickname = req.params.nickname;
-      const checkNickname = await userService.nicknameDuplicateCheck({
+      const nicknameDuplicateCheck = await userService.nicknameDuplicateCheck({
         nickname,
       });
-      return res.status(200).json(checkNickname);
+
+      logger.info(nicknameDuplicateCheck);
+      return res.status(200).json(nicknameDuplicateCheck);
     } catch (e) {
       next(e);
     }
@@ -228,6 +246,8 @@ class userController {
         alert,
         timer,
       });
+
+      logger.info(setAlert);
       return res.status(200).json(setAlert);
     } catch (e) {
       next(e);

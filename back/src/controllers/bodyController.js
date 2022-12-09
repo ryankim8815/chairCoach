@@ -63,21 +63,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var bodyService_1 = __importDefault(require("../services/bodyService"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
+var logger = require("../config/logger");
 var bodyController = /** @class */ (function () {
     function bodyController() {
     }
     // GET: 전체 운동 기록 조회 기능
     bodyController.bodyRecordlist = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var allBodies, e_1;
+            var getAllBodies, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, bodyService_1.default.getAllBodies()];
                     case 1:
-                        allBodies = _a.sent();
-                        return [2 /*return*/, res.status(200).json(allBodies)];
+                        getAllBodies = _a.sent();
+                        logger.info(getAllBodies);
+                        return [2 /*return*/, res.status(200).json(getAllBodies)];
                     case 2:
                         e_1 = _a.sent();
                         next(e_1);
@@ -90,7 +92,7 @@ var bodyController = /** @class */ (function () {
     // GET: 특정 유저의 운동 기록 조회
     bodyController.bodyRecords = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, Bodies, e_2;
+            var user_id, getBodies, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -101,8 +103,9 @@ var bodyController = /** @class */ (function () {
                         }
                         return [4 /*yield*/, bodyService_1.default.getBodies({ user_id: user_id })];
                     case 1:
-                        Bodies = _a.sent();
-                        return [2 /*return*/, res.status(200).json(Bodies)];
+                        getBodies = _a.sent();
+                        logger.info(getBodies);
+                        return [2 /*return*/, res.status(200).json(getBodies)];
                     case 2:
                         e_2 = _a.sent();
                         next(e_2);
@@ -115,7 +118,7 @@ var bodyController = /** @class */ (function () {
     // POST: 특정 유저의 운동 기록 시작
     bodyController.bodyCreate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, tag, body, e_3;
+            var user_id, tag, addBody, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -130,8 +133,9 @@ var bodyController = /** @class */ (function () {
                                 tag: tag,
                             })];
                     case 1:
-                        body = _a.sent();
-                        return [2 /*return*/, res.status(200).json(body)];
+                        addBody = _a.sent();
+                        logger.info(addBody);
+                        return [2 /*return*/, res.status(200).json(addBody)];
                     case 2:
                         e_3 = _a.sent();
                         next(e_3);
@@ -144,7 +148,7 @@ var bodyController = /** @class */ (function () {
     // PATCH: 특정 유저의 운동 기록 종료
     bodyController.bodyUpdate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, body_id, body, e_4;
+            var user_id, body_id, updateBody, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -158,8 +162,9 @@ var bodyController = /** @class */ (function () {
                                 body_id: body_id,
                             })];
                     case 1:
-                        body = _a.sent();
-                        return [2 /*return*/, res.status(200).json(body)];
+                        updateBody = _a.sent();
+                        logger.info(updateBody);
+                        return [2 /*return*/, res.status(200).json(updateBody)];
                     case 2:
                         e_4 = _a.sent();
                         next(e_4);
@@ -172,7 +177,7 @@ var bodyController = /** @class */ (function () {
     // GET: 특정 유저의 운동 기록 조회 week
     bodyController.bodyRecordsWeek = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, year, week, Bodies, e_5;
+            var user_id, year, week, getBodiesByWeek, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -183,10 +188,15 @@ var bodyController = /** @class */ (function () {
                         }
                         year = req.params.year;
                         week = req.params.week;
-                        return [4 /*yield*/, bodyService_1.default.getBodiesByWeek({ user_id: user_id, year: year, week: week })];
+                        return [4 /*yield*/, bodyService_1.default.getBodiesByWeek({
+                                user_id: user_id,
+                                year: year,
+                                week: week,
+                            })];
                     case 1:
-                        Bodies = _a.sent();
-                        return [2 /*return*/, res.status(200).json(Bodies)];
+                        getBodiesByWeek = _a.sent();
+                        logger.info(getBodiesByWeek);
+                        return [2 /*return*/, res.status(200).json(getBodiesByWeek)];
                     case 2:
                         e_5 = _a.sent();
                         next(e_5);
@@ -199,7 +209,7 @@ var bodyController = /** @class */ (function () {
     // GET: 특정 유저의 운동 기록 조회 year
     bodyController.bodyRecordsYear = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, year, Bodies, e_6;
+            var user_id, year, getBodiesByYear, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -209,10 +219,14 @@ var bodyController = /** @class */ (function () {
                             throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
                         year = req.params.year;
-                        return [4 /*yield*/, bodyService_1.default.getBodiesByYear({ user_id: user_id, year: year })];
+                        return [4 /*yield*/, bodyService_1.default.getBodiesByYear({
+                                user_id: user_id,
+                                year: year,
+                            })];
                     case 1:
-                        Bodies = _a.sent();
-                        return [2 /*return*/, res.status(200).json(Bodies)];
+                        getBodiesByYear = _a.sent();
+                        logger.info(getBodiesByYear);
+                        return [2 /*return*/, res.status(200).json(getBodiesByYear)];
                     case 2:
                         e_6 = _a.sent();
                         next(e_6);

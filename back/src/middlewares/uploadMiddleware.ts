@@ -1,5 +1,6 @@
 import multer from "multer";
 import * as express from "express";
+import { multerError } from "../responses/errorResponse";
 
 const fileFilter = (
   req: express.Request,
@@ -48,16 +49,8 @@ const uploadMiddleware = async (
 ) => {
   uploadFile(req, res, function (err: any) {
     if (err) {
-      // An unknown error occurred when uploading. - from middleware
-      const result_err = {
-        result: false,
-        cause: "file",
-        message:
-          "파일 업로드 중 오류가 발생했습니다. 파일 제한 조건을 확인해주세요.",
-      };
-      return res.status(200).json(result_err);
+      next(multerError);
     }
-    // Everything went fine.
     next();
   });
 };

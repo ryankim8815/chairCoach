@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var multer_1 = __importDefault(require("multer"));
+var errorResponse_1 = require("../responses/errorResponse");
 var fileFilter = function (req, file, cb) {
     if (file.mimetype == "image/png" ||
         file.mimetype == "image/jpg" ||
@@ -75,15 +76,8 @@ var uploadMiddleware = function (req, res, next) { return __awaiter(void 0, void
     return __generator(this, function (_a) {
         uploadFile(req, res, function (err) {
             if (err) {
-                // An unknown error occurred when uploading. - from middleware
-                var result_err = {
-                    result: false,
-                    cause: "file",
-                    message: "파일 업로드 중 오류가 발생했습니다. 파일 제한 조건을 확인해주세요.",
-                };
-                return res.status(200).json(result_err);
+                next(errorResponse_1.multerError);
             }
-            // Everything went fine.
             next();
         });
         return [2 /*return*/];
