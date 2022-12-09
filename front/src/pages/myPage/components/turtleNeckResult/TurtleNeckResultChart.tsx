@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { TurtleNeckResultProps } from "./TurtleNeckResult";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -25,6 +26,18 @@ const options = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
+    autocolors: false,
+    annotation: {
+      annotations: {
+        line1: {
+          type: "line",
+          yMin: 60,
+          yMax: 60,
+          borderColor: "rgb(255, 99, 132)",
+          borderWidth: 2,
+        },
+      },
+    },
     legend: {
       position: "top" as const,
       display: false,
@@ -89,7 +102,7 @@ const chartData = {
   datasets: [
     {
       label: "평균 점수",
-      data: [100, 200, 300, 200, 30, 380, 270, 20, 120, 100, 50, 70],
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       backgroundColor: "#835DFE",
       borderColor: "#835DFE",
       borderWidth: 1,

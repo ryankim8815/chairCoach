@@ -7,7 +7,6 @@ import * as Api from "../../../../api/api";
 import good from "../../../../assets/img/good.png";
 import bad from "../../../../assets/img/bad.png";
 import middle from "../../../../assets/img/middle.png";
-import { number } from "yargs";
 
 const ReportLayout = styled(S.ReportLayout)`
   padding-top: 64px;
@@ -24,7 +23,7 @@ const TurtleNeckResultImage = styled.div<TurtleNeckResultProps>`
   //background-color: gray;
   background: ${(props) => `url(${props.img}) no-repeat top center`};
   background-size: contain;
-  margin: 60px 80px 0 60px;
+  margin: 80px 80px 0 60px;
 `;
 
 const ContentLayout = styled(S.ContentLayout)`

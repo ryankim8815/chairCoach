@@ -76,16 +76,6 @@ const month = [
 ];
 const day = ["월", "화", "수", "목", "금", "토", "일"];
 
-const yearData = {
-  2022: [100, 200, 300, 200, 30, 380, 270, 20, 120, 100, 50, 0],
-};
-const weekData = {
-  1: [30, 5, 10, 100, 40, 20, 80],
-  2: [30, 5, 10, 100, 40, 20, 80],
-  3: [30, 5, 10, 100, 40, 20, 80],
-  4: [30, 5, 10, 100, 40, 20, 80],
-};
-
 const weekChartData = {
   labels: day,
   datasets: [
@@ -109,15 +99,12 @@ const yearChartData = {
     },
   ],
 };
-const MyChairReportChart = ({ chart, data }: MyChairReportProps) => {
+const MyChairReportChart = ({ timeInfo, data }: MyChairReportProps) => {
   let chartData = yearChartData;
-  if (chart === "year") {
+  if (timeInfo === "year") {
     chartData = yearChartData;
     chartData.datasets[0].data = data!;
-    //console.log(chartData.datasets[0].data);
-
-    //curData.datasets[0].data = data;
-  } else if (chart === "week") {
+  } else if (timeInfo === "week") {
     chartData = weekChartData;
     chartData.datasets[0].data = data!;
   }

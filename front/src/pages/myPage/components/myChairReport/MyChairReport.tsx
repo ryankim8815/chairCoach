@@ -4,10 +4,9 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { BsFillClockFill } from "react-icons/bs";
 import MyChairReportChart from "./MyChairReportChart";
 import * as Api from "../../../../api/api";
-import { E } from "chart.js/dist/chunks/helpers.core";
 
 export interface MyChairReportProps {
-  chart?: string;
+  timeInfo?: string;
   year?: number;
   user_id?: string | null;
   data?: number[];
@@ -16,37 +15,51 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const yearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const weekData = [0, 0, 0, 0, 0, 0, 0];
 
-  const [chart, setChart] = useState<string>("year");
+  const [timeInfo, setTimeInfo] = useState<string>("year");
   const [data, setData] = useState<number[] | null>(null);
   const [total, setTotal] = useState<number | null>(null);
-  //const [data, setData] = useState<number[]>(yearData);
-  console.log(chart, data);
+  const [curYear, setCurYear] = useState<number>(year!);
+  //const [curWeek, setCurWeek] = useState<number | null>(null);
 
   const onClickYearButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setChart("year");
+    setTimeInfo("year");
     getYearData();
   };
   const onClickWeekButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setChart("week");
+    setTimeInfo("week");
     getWeekData();
   };
 
+  const onClickPrevButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (timeInfo === "year") setCurYear((prev) => prev - 1);
+    //else if (timeInfo === "week") setCurWeek((prev) => prev - 1);
+    getYearData();
+  };
+
+  const onClickNextButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (timeInfo) setTimeInfo("week");
+    getWeekData();
+  };
   useEffect(() => {
     getYearData();
   }, []);
+
+  useEffect(() => {
+    setCurYear(year!);
+  }, [year]);
 
   // 마이체어리포트 유저 운동기록 조회
   const getYearData = async () => {
     try {
       const res = await Api.get(`bodies/${user_id}/${year}`);
-      //res = res.data.list;
-      //console.log(data);
+
       for (let obj of res.data.list) {
         const month = Number(obj.month.split("-")[1]);
         yearData[month - 1] = Number(obj.duration);
-        //console.log(curYearData);
       }
       let sum = yearData.reduce((sum, v) => {
         return sum + v;
@@ -97,7 +110,6 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
       console.error(err);
     }
   };
-  //if(!data) return null;
   return (
     <S.ReportLayout>
       <S.Text fontSize={24} fontWeight={500}>
@@ -121,13 +133,17 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
             </div>
           </S.InfoBox>
           <S.GraphBox>
-            <MdKeyboardArrowLeft size={32} />
+            <S.ShiftButton>
+              <MdKeyboardArrowLeft size={32} />
+            </S.ShiftButton>
             <S.YearText fontSize={20} fontWeight={500}>
               {year}년
             </S.YearText>
-            <MdKeyboardArrowRight size={32} />
+            <S.ShiftButton>
+              <MdKeyboardArrowRight size={32} />
+            </S.ShiftButton>
             <div className="graph">
-              {data && <MyChairReportChart chart={chart} data={data} />}
+              {data && <MyChairReportChart timeInfo={timeInfo} data={data} />}
             </div>
           </S.GraphBox>
         </div>
