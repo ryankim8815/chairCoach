@@ -11,14 +11,14 @@ axios.interceptors.response.use(
   },
   (err) => {
     console.log(err);
-    throw new Error("(!) axios error");
+    return err;
+    // throw new Error("(!) axios error");
   }
 );
 
-interface PostPayload{
-  [key: string]: string | null,
+interface PostPayload {
+  [key: string]: string | null;
 }
-
 
 async function get(endpoint: string, params = "") {
   return axios.get(serverUrl + endpoint + "/" + params, {

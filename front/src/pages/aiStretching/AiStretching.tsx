@@ -10,8 +10,8 @@ const AiStretching = () => {
   const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
   const handleDevices = React.useCallback(
-    (mediaDevices:any)=>
-      setDevices(mediaDevices.filter(({ kind }:any) => kind === "videoinput")),
+    (mediaDevices: any) =>
+      setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
     [setDevices]
   );
   React.useEffect(() => {
@@ -96,7 +96,7 @@ const AiStretching = () => {
       <Webcam
         ref={webcamRef}
         audio={false}
-        videoConstraints={{deviceId}}
+        videoConstraints={{ deviceId }}
         style={{
           position: "absolute",
           marginLeft: "auto",
@@ -124,7 +124,7 @@ const AiStretching = () => {
         }}
       />
       <div>
-      {devices.map((device, key) => (
+        {devices.map((device, key) => (
           <button
             key={(device as any).deviceId}
             onClick={() => setDeviceId((device as any).deviceId)}
