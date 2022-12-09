@@ -9,8 +9,9 @@ import userState from "./../../atoms/user";
 import { notifyMe } from "../../components/alarm/Alarm";
 import * as S from "./MainStyle";
 import * as Api from "../../api/api";
+import { useRecoilState } from "recoil";
 const Main = () => {
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [alarmTiming, setAlarmTiming] = useState(0);
   const minutes = 60 * 1000;
   Api.get(`users/${user?.id}`).then((res) => {
@@ -32,6 +33,15 @@ const Main = () => {
   const explainRefs = useRef([]);
   const selectRef = useRef(null);
 
+  const handleLogin = () => {
+    let jwtToken = sessionStorage.getItem("userToken");
+    if (!jwtToken) {
+      setUser(null);
+    }
+  };
+  useEffect(() => {
+    handleLogin();
+  }, []);
   useEffect(() => {
     const options = {
       root: rootRef.current,
