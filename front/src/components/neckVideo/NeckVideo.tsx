@@ -5,11 +5,16 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "../../pages/aiStretching/util";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import userState from "../../atoms/user";
 
 require("@tensorflow/tfjs");
 
 const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
+  const user = useRecoilValue(userState);
   const today = new Date();
+  const token = sessionStorage.getItem("userToken");
+  console.log(token);
   const currentTime =
     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   console.log(playInspection);
@@ -91,9 +96,10 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     const formData = new FormData();
     formData.append("file", file);
     console.log(formData);
+
     const res = await axios({
       method: "post",
-      url: `http://localhost:5003/necks`,
+      url: `http://localhost:5003/necks/${user?.id}`,
       data: {
         file: formData,
         result: inclination,
@@ -101,8 +107,10 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       },
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
       },
     });
+    console.log(res);
   };
   const runMovenet = async () => {
     const detectorConfig = {
@@ -137,17 +145,7 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
   return (
     <div>
       <S.WebcamWrap>
-        <Webcam
-          ref={webcamRef}
-          // style={{
-          //   // position: "absolute",
-          //   objectFit: "fill",
-          //   marginLeft: "4%",
-          //   zIndex: "9",
-          //   width: 640,
-          //   height: 480,
-          // }}
-        />
+        <Webcam ref={webcamRef} />
 
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />

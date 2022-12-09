@@ -97,11 +97,10 @@ const NeckInspection = () => {
             <p>촬영완료!</p>
             <S.btnWrap>
               <B.CheckBtn
-              // onClick={() => {
-              //   setStep(prev => prev-1);
-              //   setTime(5);
-              //   startTimer();
-              // }}
+                onClick={() => {
+                  setStep((prev) => prev - 2);
+                  setTime(5);
+                }}
               >
                 다시 촬영하기
               </B.CheckBtn>
