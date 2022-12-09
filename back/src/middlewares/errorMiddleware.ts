@@ -1,7 +1,7 @@
 import * as express from "express";
 import { common } from "../responses/errorResponse";
 // import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
-const logger = require("../../config/logger");
+const logger = require("../config/logger");
 
 function errorHandler(
   error: any, // 적절한 타입 찾기

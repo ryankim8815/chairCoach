@@ -63,7 +63,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var userService_1 = __importDefault(require("../services/userService"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
-var logger = require("../../config/logger");
+var logger = require("../config/logger");
 var userController = /** @class */ (function () {
     function userController() {
     }

@@ -1,7 +1,7 @@
 import * as express from "express";
 import userService from "../services/userService";
 import * as ClientError from "../responses/clientErrorResponse";
-const logger = require("../../config/logger");
+const logger = require("../config/logger");
 
 class userController {
   // GET: 사용자 리스트 조회 기능

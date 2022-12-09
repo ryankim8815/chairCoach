@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = void 0;
 var errorResponse_1 = require("../responses/errorResponse");
 // import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
-var logger = require("../../config/logger");
+var logger = require("../config/logger");
 function errorHandler(error, // 적절한 타입 찾기
 req, res, next) {
     if (error.status) {
