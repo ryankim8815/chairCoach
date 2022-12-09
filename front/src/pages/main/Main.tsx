@@ -15,12 +15,10 @@ const Main = () => {
   const [alarmTiming, setAlarmTiming] = useState(0);
   const minutes = 60 * 1000;
   Api.get(`users/${user?.id}`).then((res) => {
-    if (res.data.result === true) {
-      setAlarmTiming(res.data.timer);
-    }
+    res.data.alert === 0 ? setAlarmTiming(0) : setAlarmTiming(res.data.timer);
   });
-  console.log(alarmTiming);
   useEffect(() => {
+    console.log(alarmTiming);
     if (alarmTiming !== 0)
       setInterval(() => {
         notifyMe();
@@ -32,7 +30,6 @@ const Main = () => {
   const introduceRef = useRef(null);
   const explainRefs = useRef([]);
   const selectRef = useRef(null);
-
   const handleLogin = () => {
     let jwtToken = sessionStorage.getItem("userToken");
     if (!jwtToken) {
