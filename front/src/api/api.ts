@@ -11,7 +11,8 @@ axios.interceptors.response.use(
   },
   (err) => {
     console.log(err);
-    throw new Error("(!) axios error");
+    return err;
+    // throw new Error("(!) axios error");
   }
 );
 

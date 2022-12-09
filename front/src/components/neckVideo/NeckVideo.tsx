@@ -136,20 +136,23 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
   }, [step]);
   return (
     <div>
-      <Webcam
-        ref={webcamRef}
-        style={{
-          position: "absolute",
-          objectFit: "fill",
-          marginLeft: "4%",
-          zIndex: "9",
-          width: 640,
-          height: 480,
-        }}
-      />
-      <S.CanvasResultCon>
-        <canvas ref={canvasRef} />
-      </S.CanvasResultCon>
+      <S.WebcamWrap>
+        <Webcam
+          ref={webcamRef}
+          // style={{
+          //   // position: "absolute",
+          //   objectFit: "fill",
+          //   marginLeft: "4%",
+          //   zIndex: "9",
+          //   width: 640,
+          //   height: 480,
+          // }}
+        />
+
+        <S.CanvasResultCon>
+          <canvas ref={canvasRef} />
+        </S.CanvasResultCon>
+      </S.WebcamWrap>
     </div>
   );
 };
