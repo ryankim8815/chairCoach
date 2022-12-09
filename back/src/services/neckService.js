@@ -125,6 +125,28 @@ var neckService = /** @class */ (function () {
             });
         });
     };
+    //// 특정 유저의 거북목 기록 조회 - year
+    neckService.getNecksByYear = function (_a) {
+        var user_id = _a.user_id, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var Necks, _b, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
+                        return [4 /*yield*/, Neck_1.default.findByUserIdYear({ user_id: user_id, year: year })];
+                    case 1:
+                        Necks = _b.apply(void 0, [_c.sent()]);
+                        result_success = Object.assign({
+                            result: true,
+                            message: "\uD574\uB2F9 \uC720\uC800\uC758 \uAC70\uBD81\uBAA9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                            list: Necks,
+                        });
+                        return [2 /*return*/, result_success];
+                }
+            });
+        });
+    };
     return neckService;
 }());
 module.exports = neckService;

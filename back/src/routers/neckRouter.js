@@ -35,6 +35,7 @@ var neckRouter = express.Router();
 neckRouter.get("/necks", neckController_1.default.neckResultList); // 전체 거북목 테스트 결과 조회 기능, 개발 시 편의용으로 사용처가 없다면 삭제 예정
 neckRouter.get("/necks/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), neckController_1.default.neckResults); // 특정 유저의 거북목 테스트 결과 조회
 neckRouter.post("/necks/:user_id", uploadMiddleware_1.default, authMiddleware_1.default, Validation.validateBodyParamsMulter(Schemas.neckResultSchema, Schemas.userCurrentSchema, Schemas.fileSchema), neckController_1.default.neckCreate); // 거북목 테스트 결과 기록
+neckRouter.get("/necks/:user_id/:year", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.neckRecordsFindByYear), neckController_1.default.neckRecordsYear); // 특정 유저의 거북목 기록 조회 - 월간
 module.exports = neckRouter;
 /**
  * @swagger
@@ -184,4 +185,52 @@ module.exports = neckRouter;
  *                 message:
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
+ */
+/**
+ * @swagger
+ * /necks/{user_id}/{year}:
+ *   get:
+ *     summary: 특정 유저의 거북목 기록 조회 - 특정연도의 월간 기록
+ *     description: 로그인한 사용자만 이용 가능합니다.
+ *     tags: ["neckRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *       - in: path
+ *         name: year
+ *         schema:
+ *           type: number
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: 해당 유저의 거북목 기록 조회가 성공적으로 이뤄졌습니다.
+ *                 list:
+ *                   type: object
+ *                   properties:
+ *                     month:
+ *                       type: string
+ *                     count:
+ *                       type: int
+ *                     avg:
+ *                       type: float
+ *                   example:
+ *                     - month: 2022-11
+ *                       count: 5
+ *                       avg: 55.5555
  */
