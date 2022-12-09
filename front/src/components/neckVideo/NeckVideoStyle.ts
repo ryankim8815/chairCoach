@@ -18,6 +18,12 @@ export const WebcamWrap = styled.div`
     height: 480px;
   }
 `;
+export const BtnWrap = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 12;
+`;
 
 export const CanvasResultCon = styled.div`
   position: absolute;

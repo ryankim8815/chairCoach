@@ -11,6 +11,17 @@ import userState from "../../atoms/user";
 require("@tensorflow/tfjs");
 
 const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
+  const [deviceId, setDeviceId] = useState({});
+  const [devices, setDevices] = useState([]);
+  const handleDevices = React.useCallback(
+    (mediaDevices: any) =>
+      setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
+    [setDevices]
+  );
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices().then(handleDevices);
+  }, [handleDevices]);
+  console.log("장치", deviceId);
   const user = useRecoilValue(userState);
   const today = new Date();
   const token = sessionStorage.getItem("userToken");
@@ -18,7 +29,7 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
   const currentTime =
     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   console.log(playInspection);
-  const webcamRef = useRef(null);
+  const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [inclination, setInclination] = useState(0);
 
@@ -96,12 +107,13 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     const formData = new FormData();
     formData.append("file", file);
     console.log(formData);
-
+    let info = formData.get("file");
+    console.log(info);
     const res = await axios({
       method: "post",
       url: `http://localhost:5003/necks/${user?.id}`,
       data: {
-        file: file,
+        file: formData,
         result: inclination,
         score: 80,
       },
@@ -142,11 +154,31 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     if (step === 0) return;
     takePhoto();
   }, [step]);
+  useEffect(() => {
+    if (!webcamRef.current?.video) return;
+
+    webcamRef.current.video.addEventListener("loadeddata", (e) => {
+      const video = e.target as HTMLVideoElement;
+      if (video.readyState === 4) {
+        runMovenet();
+      }
+    });
+  }, [runMovenet]);
   return (
     <div>
       <S.WebcamWrap>
-        <Webcam ref={webcamRef} />
-
+        <S.BtnWrap>
+          {devices.map((device, key) => (
+            <button
+              style={{ backgroundColor: "#403E56" }}
+              key={(device as any).deviceId}
+              onClick={() => setDeviceId((device as any).deviceId)}
+            >
+              {(device as any).label || `Device ${key + 1}`}
+            </button>
+          ))}
+        </S.BtnWrap>
+        <Webcam ref={webcamRef} videoConstraints={{ deviceId }} audio={false} />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>
