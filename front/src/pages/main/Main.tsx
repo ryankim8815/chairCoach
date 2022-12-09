@@ -15,11 +15,13 @@ const Main = () => {
   const [alarmTiming, setAlarmTiming] = useState(0);
   const minutes = 60 * 1000;
   Api.get(`users/${user?.id}`).then((res) => {
-    res.data.alert === 0 ? setAlarmTiming(0) : setAlarmTiming(res.data.timer);
+    res.data.alert === 0 && res.data.alert === null
+      ? setAlarmTiming(0)
+      : setAlarmTiming(res.data.timer);
   });
   useEffect(() => {
     console.log(alarmTiming);
-    if (alarmTiming !== 0)
+    if (alarmTiming !== 0 && alarmTiming !== null)
       setInterval(() => {
         notifyMe();
       }, alarmTiming * minutes);
