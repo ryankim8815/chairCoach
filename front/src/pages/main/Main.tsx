@@ -19,15 +19,15 @@ const Main = () => {
       ? setAlarmTiming(0)
       : setAlarmTiming(res.data.timer);
   });
+  console.log(alarmTiming);
   useEffect(() => {
-    console.log(alarmTiming);
-    if (alarmTiming !== 0 || alarmTiming !== null) {
+    if (alarmTiming !== 0 && alarmTiming !== null) {
+      console.log("알람이 시작됩니다");
       setInterval(() => {
         notifyMe();
       }, alarmTiming * minutes);
     }
   }, [alarmTiming]);
-
   const rootRef = useRef(null);
   const bannerRef = useRef(null);
   const introduceRef = useRef(null);

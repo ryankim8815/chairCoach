@@ -101,7 +101,7 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       method: "post",
       url: `http://localhost:5003/necks/${user?.id}`,
       data: {
-        file: formData,
+        file: file,
         result: inclination,
         score: 80,
       },
