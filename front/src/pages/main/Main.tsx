@@ -10,10 +10,12 @@ import { notifyMe } from "../../components/alarm/Alarm";
 import * as S from "./MainStyle";
 import * as Api from "../../api/api";
 import { useRecoilState } from "recoil";
+
 const Main = () => {
   const [user, setUser] = useRecoilState(userState);
   const [alarmTiming, setAlarmTiming] = useState(0);
   const minutes = 60 * 1000;
+
   Api.get(`users/${user?.id}`).then((res) => {
     res.data.alert === 0 || res.data.alert === null
       ? setAlarmTiming(0)

@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-import googleIcon from '../../assets/img/googleIcon.png';
-import kakaoIcon from '../../assets/img/kakaoIcon.png';
-import naverIcon from '../../assets/img/naverIcon.png';
+import googleIcon from "../../assets/img/googleIcon.png";
+import kakaoIcon from "../../assets/img/kakaoIcon.png";
+import naverIcon from "../../assets/img/naverIcon.png";
 
 export const LoginLayout = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
   ${({ theme }) => theme.common.flexCenter};
-  
-  .inner{
+
+  .inner {
     width: 800px;
     margin: 0 auto;
     padding: 120px 0;
@@ -20,18 +20,18 @@ export const TopCon = styled.div`
   flex-direction: column;
   padding-bottom: 40px;
 
-  img{
+  img {
     height: 28px;
   }
 
-  form{
+  form {
     margin-top: 40px;
 
-    input:last-of-type{
+    input:last-of-type {
       margin-top: 8px;
     }
-    
-    button{
+
+    button {
       margin-top: 64px;
     }
   }
@@ -43,44 +43,45 @@ export const BottomCon = styled.div`
   padding-top: 40px;
   border-top: 1px solid ${({ theme }) => theme.colors.greyBorder};
 
-  p{
+  p {
     margin-bottom: 20px;
     font-weight: 300;
     color: ${({ theme }) => theme.colors.greyText};
   }
 
-  ul{
+  ul {
     ${({ theme }) => theme.common.flexCenter};
     margin-bottom: 64px;
 
-    li{
+    li {
       text-align: center;
 
-      &+li{
+      & + li {
         margin-left: 16px;
       }
 
-      &:nth-child(1) button{
+      &:nth-child(1) a {
         background: url(${googleIcon}) no-repeat center;
-        background-size: contain; 
+        background-size: contain;
       }
-      &:nth-child(2) button{
+      &:nth-child(2) a {
         background: url(${kakaoIcon}) no-repeat center;
-        background-size: contain; 
+        background-size: contain;
       }
-      &:nth-child(3) button{
+      &:nth-child(3) a {
         background: url(${naverIcon}) no-repeat center;
-        background-size: contain; 
+        background-size: contain;
       }
 
-      button{
+      a {
+        display: block;
         width: 64px;
         height: 64px;
         border-radius: 50%;
         text-indent: -9999px;
       }
 
-      span{
+      span {
         display: block;
         margin-top: 8px;
         font-weight: 300;

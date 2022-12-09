@@ -36,15 +36,15 @@ const Register = () => {
 
             <ul>
               <li>
-                <button>구글</button>
+                <a>구글</a>
                 <span>구글</span>
               </li>
               <li>
-                <button>카카오</button>
+                <a>카카오</a>
                 <span>카카오</span>
               </li>
               <li>
-                <button>네이버</button>
+                <a>네이버</a>
                 <span>네이버</span>
               </li>
             </ul>
