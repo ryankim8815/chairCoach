@@ -46,6 +46,10 @@ def predict_keypoints(image, image_size=640, conf_thresh=0.25, iou_thresh=0.65):
     # Drop
     pred = pred[:, 7:]
     
+    # normalization
+    pred[:,0::3] *= 100 / image_size
+    pred[:,1::3] *= 100 / image_size
+    
     # Resize boxes to the original image size
     # pred[:, 0::3] *= ori_w / image_size
     # pred[:, 1::3] *= ori_h / image_size
