@@ -1,3 +1,5 @@
+import { RecoilRoot } from "recoil";
+
 import GlobalStyles from "./styles/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/Theme";
@@ -19,19 +21,23 @@ import SignUp from "./pages/signUp/SignUp";
 import UserInfoChange from "./pages/userInfoChange/UserInfoChange";
 import KakaoAuth from "./components/kakaoLogin/KakaoAuth";
 import NaverLogin from "./components/naverLogin/Naver";
+import MyPage from "./pages/myPage/MyPage";
+import GoogleLogin from "./components/googleLogin/GoogleLogin";
+import AiStretching from "./pages/aiStretching/AiStretching";
 
 function App() {
   return (
-    <>
+    <RecoilRoot>
       <BrowserRouter>
-        <GlobalStyles />
         <ThemeProvider theme={theme}>
+          <GlobalStyles />
           <Header />
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/necksurvey" element={<NeckSurvey />} />
             <Route path="/chaircoach" element={<ChairCoach />} />
             <Route path="/surveyresult" element={<SurveyResult />} />
@@ -41,12 +47,14 @@ function App() {
             <Route path="/inspectionresult" element={<InspectionResult />} />
             <Route path="/userInfoChange" element={<UserInfoChange />} />
             <Route path="login/oauth2/code/kakao" element={<KakaoAuth />} />
-            <Route path='login/oauth2/code/naver' element={<NaverLogin/>}/>
+            <Route path="login/oauth2/code/naver" element={<NaverLogin />} />
+            <Route path="login/oauth2/code/google" element={<GoogleLogin />} />
+            <Route path="/aistretching" element={<AiStretching />} />
           </Routes>
           <Footer />
         </ThemeProvider>
       </BrowserRouter>
-    </>
+    </RecoilRoot>
   );
 }
 

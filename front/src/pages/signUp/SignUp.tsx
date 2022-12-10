@@ -1,106 +1,139 @@
-import { useState, useEffect } from "react";
+import { useState, useRef  } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import * as RegExp from "./RegExp"
-
-// style
 import * as S from "./SignUpStyle";
 import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
+import * as RegExp from "../../utils/RegExp"
 import * as Api from "../../api/api";
 
 interface SignUp {
   email: string;
   password: string;
   nickname: string;
+  code: string;
 }
 
+const BASIC_TIME = 30;
+
 const SingUp = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [codeDisabled, setCodeDisabled] = useState(true);
-  const [code, setCode] = useState(0);
-  const [code2, setCode2] = useState(0);
-  const [checkCode, setCheckCode] = useState(true);
-
-  const [pwDisabled, setpwDisabled] = useState(true);
+  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-
+  const [confirmPassword , setConfirmPassword ] = useState("");
   const [nickname, setNickname] = useState("");
-
+  
+  const [codeDisabled, setCodeDisabled] = useState(true);
+  const [pwDisabled, setPwDisabled] = useState(true);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  
   const isEmailValid = RegExp.validateEmail(email);
   const isPwdValid = RegExp.validatePwd(password);
-  const isNicknameValid = RegExp.validateNickname(nickname);  
+  const isNicknameValid = RegExp.validateNickname(nickname);
 
+  // 인증번호 확인 타이머
+  const [time, setTime] = useState(BASIC_TIME);
+  const intervalId:any = useRef(null);
 
-  // useEffect(() => {
-  //   Api.get("users")
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  const startTimer = () => {
+    setTime(BASIC_TIME);
 
-  useEffect(()=> {
-    Api.get(`signup/nickname/${nickname}`).then(res => {
-      console.log(res);
-      const data:any = res;
-      
-      if(!data.result) alert('중복된 닉네임 입니다.')
-      data.result && isNicknameValid ? setSubmitDisabled(false) : setSubmitDisabled(true);
+    intervalId.current = setInterval(() => {
+      setTime((time) => time - 1);
+    },1000);
+  };
 
-    }).catch((err)=> {
-      console.log(err);
-    });
-  }, [nickname])
+  const stopTimer = () => {
+    clearInterval(intervalId.current);
+  };
   
+  // time이 0일 경우
+  if(!time){
+    clearInterval(intervalId.current);
+    alert('인증번호 유효시간이 지났습니다. \n인증번호를 다시 발급해주세요.');
+    setTime(BASIC_TIME);
+  }
+
   // 인증번호 요청
   const handlerCodeClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const res: any = await Api.post("signup/email", {
+    stopTimer();
+
+    // 이메일 형식이 아닐 경우
+    if(!isEmailValid){
+      alert('이메일을 다시 입력해주세요.');
+      setCodeDisabled(true);
+      return;
+    }
+
+    // 중복된 이메일일 경우
+    const res = await Api.post("signup/email", {
       email: email,
     });
-    console.log(res.code);
+    console.log(res.data.result);
 
-    res.result ? setCodeDisabled(false) : alert('중복된 이메일 입니다.');
-    setCode(res.code);
+    if(res.data.result){
+      setCodeDisabled(false);
+      setCode(res.data.result);
+      startTimer();
+    }else{
+      alert('중복된 이메일 입니다.');
+      setCodeDisabled(true);
+    }
   };
 
   // 인증번호 확인
-  const handlerCheckCodeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlerCheckCodeClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (code === code2) {
-      setCheckCode(true);
-      setpwDisabled(false);
-    } else setCheckCode(false);
 
-    console.log(code === code2 ? "Yes" : "No");
+    const res = await Api.get(`signup/email/${email}/code/${code}`);
+    res.data.result ? setPwDisabled(false) : alert('인증번호가 틀렸습니다.');
+
+    if(res.data.result){
+      setPwDisabled(false);
+      stopTimer();
+    }else{
+      alert('인증번호가 틀렸습니다.');
+    }
   };
+
+  // 닉네임 disabled 해제여부
+  const nicknameDisabled = confirmPassword.length > 0 && password === confirmPassword ? false : true;
+
+  // 닉네임 중복 확인
+  const handlerCheckNicknameClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    // 닉네임 형식이 아닐 경우
+    if(!isNicknameValid){
+      alert('닉네임을 다시 입력해주세요.');
+      setSubmitDisabled(true);
+      return;
+    }
+
+    // 중복된 닉네임일 경우
+    const res = await Api.get(`signup/nickname/${nickname}`);
+    res.data.result ? setSubmitDisabled(false) : alert('중복된 닉네임 입니다.');
+  }
 
   // 가입하기
   const handlerSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res:any = await Api.post("signup", {
+    const res = await Api.post("signup", {
       email: email,
       password: password,
       nickname: nickname,
     });
 
-    console.log(res);
-    console.log(res.result);
-    if(res.result) navigate('/login');
+    console.log(res.data.result);
+    if(res.data.result){
+      alert('회원가입을 축하합니다.\n로그인하신 후 시작하세요! ');
+      navigate('/login');
+    }
   };
-
-  // 닉네임 disabled 해제여부
-  const nicknameDisabled = password2.length > 0 && password === password2 ? false : true;
 
   return (
     <S.SignUpLayout>
@@ -110,6 +143,7 @@ const SingUp = () => {
         <form onSubmit={handlerSignUpSubmit}>
           <fieldset>
             <legend>회원가입</legend>
+            <span></span>
 
             <S.InputWrap>
               <p>이메일</p>
@@ -135,14 +169,12 @@ const SingUp = () => {
                   type="text"
                   disabled={codeDisabled}
                   placeholder="인증번호를 입력해주세요."
-                  onChange={(e) => setCode2(Number(e.target.value))}
+                  onChange={(e) => setCode(e.target.value)}
                 />
+                <span className="time">{Math.floor(time/60)}:{time%60 < 10 ? `0${time%60}` : time%60}</span>
                 <B.InputCheckBtn onClick={handlerCheckCodeClick}>
                   인증번호 확인
                 </B.InputCheckBtn>
-                {checkCode ? null : (
-                  <F.WarningText>인증번호가 틀렸습니다.</F.WarningText>
-                )}
               </F.CheckInputCon>
             </S.InputWrap>
 
@@ -170,9 +202,9 @@ const SingUp = () => {
                   type="password"
                   disabled={!isPwdValid}
                   placeholder="비밀번호를 다시 입력해주세요."
-                  onChange={(e) => setPassword2(e.target.value)}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                {password2.length === 0 || password === password2 ? null : (
+                {confirmPassword.length === 0 || password === confirmPassword ? null : (
                   <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
                 )}
               </div>
@@ -180,13 +212,22 @@ const SingUp = () => {
 
             <S.InputWrap>
               <p>닉네임</p>
-              <F.InputText
-                type="text"
-                value={nickname}
-                disabled={nicknameDisabled}
-                placeholder="닉네임을 입력해주세요."
-                onChange={(e) => setNickname(e.target.value)}
-              />
+              <F.CheckInputCon>
+                <F.InputText
+                  length="small"
+                  type="text"
+                  value={nickname}
+                  disabled={nicknameDisabled}
+                  placeholder="닉네임을 입력해주세요."
+                  onChange={(e) => {
+                    setNickname(e.target.value);
+                    setSubmitDisabled(true);
+                  }}
+                />
+                <B.InputCheckBtn onClick={handlerCheckNicknameClick}>
+                  중복 확인
+                </B.InputCheckBtn>
+              </F.CheckInputCon>
               {nickname.length === 0 || isNicknameValid ? null : (
                 <F.WarningText lineHeight="true" style={{paddingTop: '4px'}}>
                   영어+숫자로 2~12자 구성 <br />
