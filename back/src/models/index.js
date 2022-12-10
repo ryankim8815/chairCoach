@@ -6,19 +6,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.db = void 0;
 var sequelize_1 = __importDefault(require("../config/sequelize"));
 var sequelize_2 = require("sequelize");
-var User_model_1 = require("./User.model");
-var Neck_model_1 = require("./Neck.model");
-var Body_model_1 = require("./Body.model");
-var Code_model_1 = require("./Code.model");
+// import { User } from "./User.model";
+// import { User } from "./User.model";
+// import { Neck } from "./Neck.model";
+// import { Body } from "./Body.model";
+// import { Code } from "./Code.model";
+// // init
+// function initModels(sequelize, Sequelize, DataTypes) {
+//   const user = _user(sequelize, Sequelize, DataTypes);
+//   return user;
+// }
+// initModels(sequelize, Sequelize, DataTypes);
 var db = {};
 exports.db = db;
+// Code.init(sequelize);
 db.sequelize = sequelize_1.default;
 db.Sequelize = sequelize_2.Sequelize;
 db.Model = sequelize_2.Model;
 db.DataTypes = sequelize_2.DataTypes;
 db.QueryTypes = sequelize_2.QueryTypes;
 db.Deferrable = sequelize_2.Deferrable;
-db.User = User_model_1.User;
-db.User = Neck_model_1.Neck;
-db.User = Body_model_1.Body;
-db.User = Code_model_1.Code;
+db.User = require("./User.schema")(sequelize_1.default, db);
+db.Neck = require("./Neck.schema")(sequelize_1.default, db);
+db.Code = require("./Code.schema")(sequelize_1.default, db);
+db.Body = require("./Body.schema")(sequelize_1.default, db);

@@ -62,23 +62,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var nodemailer_1 = __importDefault(require("nodemailer"));
-var User_1 = __importDefault(require("../db/models/User"));
+// import User from "../db/models/User";
+var User_model_1 = __importDefault(require("../models/User.model"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
 var sendEmail = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
-        var email, checkEmail, checkEmailString, checkEmailObject, code, transporter, info, e_1;
+        var email, checkEmail, code, transporter, info, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
                     email = req.body.email;
-                    return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
                 case 1:
                     checkEmail = _a.sent();
-                    checkEmailString = JSON.stringify(checkEmail);
-                    checkEmailObject = JSON.parse(checkEmailString);
-                    if (checkEmailObject.length !== 0) {
-                        throw ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.");
+                    // const checkEmailString = JSON.stringify(checkEmail);
+                    // const checkEmailObject = JSON.parse(checkEmailString);
+                    if (checkEmail.length !== 0) {
+                        throw ClientError.unauthorized("요청하신 정보로 이미 가입된 내역이 있습니다.");
                     }
                     code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
                     req.body.code = code;

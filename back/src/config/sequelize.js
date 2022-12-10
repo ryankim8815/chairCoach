@@ -9,5 +9,12 @@ var database = process.env.SEQUELIZE_DB_DATABASE;
 var sequelize = new sequelize_1.Sequelize(database, username, password, {
     host: host,
     dialect: "mysql",
+    logging: true,
+    dialectOptions: {
+        charset: "utf8mb4",
+        // dateStrings: true,
+        // typeCast: true,
+        timezone: "+09:00",
+    },
 });
 exports.default = sequelize;

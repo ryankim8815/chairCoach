@@ -16,6 +16,7 @@ function errorHandler(
     logger.error(error);
     return res.status(error.status).json(error);
   }
+  logger.error("common:", error);
   return res.status(400).json(common);
 }
 

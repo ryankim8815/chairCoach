@@ -61,8 +61,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var User_1 = __importDefault(require("../db/models/User"));
-var Code_1 = __importDefault(require("../db/models/Code"));
+// import User from "../db/models/User";
+// import Code from "../db/models/Code";
+var User_model_1 = __importDefault(require("../models/User.model"));
+var Code_model_1 = __importDefault(require("../models/Code.model"));
 var nullPrototypeHandler_1 = require("../utils/nullPrototypeHandler");
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
 var ServerError = __importStar(require("../responses/serverErrorResponse"));
@@ -77,18 +79,15 @@ var userService = /** @class */ (function () {
     //// 모든 사용자 조회
     userService.getAllUsers = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var allUsers, _a, countUsers, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _a = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findAll()];
+            var allUsers, countUsers;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.findAll()];
                     case 1:
-                        allUsers = _a.apply(void 0, [_c.sent()]);
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.countAll()];
+                        allUsers = _a.sent();
+                        return [4 /*yield*/, User_model_1.default.countAll()];
                     case 2:
-                        countUsers = _b.apply(void 0, [_c.sent()]);
+                        countUsers = _a.sent();
                         return [2 /*return*/, { count: countUsers[0].cnt, list: allUsers }];
                 }
             });
@@ -98,24 +97,20 @@ var userService = /** @class */ (function () {
     userService.getCurrentUser = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var currentUser, _b, i, thisUser, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
+            var currentUser, thisUser, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.findByUserId({ user_id: user_id })];
                     case 1:
-                        currentUser = _b.apply(void 0, [_c.sent()]);
-                        for (i = 0; i < currentUser.length; i++) {
-                            delete currentUser[i].password;
-                        }
+                        currentUser = _b.sent();
                         if (currentUser.length === 0) {
                             throw ClientError.notFound("정상적으로 로그인된 사용자의 요청이 아닙니다.");
                         }
-                        else if (currentUser.length > 1) {
+                        if (currentUser.length > 1) {
                             throw ServerError.internalServerError("[확인요망]: 해당 user_id로 조회된 계정이 DB상 두개 이상입니다. 확인해 주세요.");
                         }
                         thisUser = currentUser[0];
+                        delete thisUser.password;
                         result_success = Object.assign({
                             result: true,
                             message: "\uD574\uB2F9 \uC0AC\uC6A9\uC790 \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
@@ -129,14 +124,12 @@ var userService = /** @class */ (function () {
     userService.getUser = function (_a) {
         var email = _a.email, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var user, _b, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id, withdrawnUser, _c, secretKey, token, result_success;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id, withdrawnUser, secretKey, token, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
                     case 1:
-                        user = _b.apply(void 0, [_d.sent()]);
+                        user = _b.sent();
                         if (user.length === 0) {
                             throw ClientError.unauthorized("입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.");
                         }
@@ -144,23 +137,23 @@ var userService = /** @class */ (function () {
                         hashedCorrectPassword = thisUser.password;
                         return [4 /*yield*/, bcrypt_1.default.compare(password, hashedCorrectPassword)];
                     case 2:
-                        isPasswordCorrect = _d.sent();
+                        isPasswordCorrect = _b.sent();
                         if (!isPasswordCorrect) {
                             throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
                         }
                         if (!(user[0].status == "pending")) return [3 /*break*/, 4];
                         user_id = thisUser.user_id;
-                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.undoWithdraw({ user_id: user_id })];
+                        return [4 /*yield*/, User_model_1.default.undoWithdraw({ user_id: user_id })];
                     case 3:
-                        withdrawnUser = _c.apply(void 0, [_d.sent()]);
-                        if (withdrawnUser.affectedRows === 0) {
+                        withdrawnUser = _b.sent();
+                        if (withdrawnUser[1] === 0) {
                             throw ServerError.internalServerError("[확인요망] 탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다.");
                         }
                         else {
                             thisUser.status = null;
+                            thisUser.withdraw_at = null;
                         }
-                        _d.label = 4;
+                        _b.label = 4;
                     case 4:
                         secretKey = process.env.JWT_SECRET_KEY;
                         token = jsonwebtoken_1.default.sign({ user_id: thisUser.user_id }, secretKey);
@@ -183,30 +176,21 @@ var userService = /** @class */ (function () {
     userService.sendCode = function (_a) {
         var email = _a.email, code = _a.code;
         return __awaiter(this, void 0, void 0, function () {
-            var saveCode, _b, result_success, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Code_1.default.create({
-                                email: email,
-                                code: code,
-                            })];
+            var saveCode, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Code_model_1.default.create({
+                            email: email,
+                            code: code,
+                        })];
                     case 1:
-                        saveCode = _b.apply(void 0, [_c.sent()]);
-                        if (saveCode.affectedRows == 1) {
-                            result_success = {
+                        saveCode = _b.sent();
+                        if (saveCode[0].affectedRows > 0) {
+                            result = {
                                 result: true,
                                 message: "code \uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             };
-                            return [2 /*return*/, result_success];
-                        }
-                        else if (saveCode.affectedRows == 2) {
-                            result_success = {
-                                result: true,
-                                message: "code \uC7AC\uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_success];
+                            return [2 /*return*/, result];
                         }
                         return [2 /*return*/];
                 }
@@ -217,39 +201,35 @@ var userService = /** @class */ (function () {
     userService.verifyCode = function (_a) {
         var email = _a.email, code = _a.code;
         return __awaiter(this, void 0, void 0, function () {
-            var checkCode, _b, correctCode, deleteCode, _c, result_success;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Code_1.default.findByEmail({
-                                email: email,
-                            })];
+            var checkCode, isCorrectCode, deleteCode, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Code_model_1.default.findByEmail({
+                            email: email,
+                        })];
                     case 1:
-                        checkCode = _b.apply(void 0, [_d.sent()]);
-                        if (!(checkCode.length == 0)) return [3 /*break*/, 2];
-                        throw ClientError.unauthorized("해당 이메일에 발급된 코드가 만료되었습니다.");
-                    case 2:
-                        if (!(checkCode.length > 1)) return [3 /*break*/, 3];
-                        throw ServerError.internalServerError("[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다.");
-                    case 3:
-                        correctCode = checkCode[0];
-                        if (!(code == correctCode.code)) return [3 /*break*/, 5];
-                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Code_1.default.delete({
+                        checkCode = _b.sent();
+                        if (checkCode.length == 0) {
+                            throw ClientError.unauthorized("해당 이메일에 발급된 코드가 만료되었습니다.");
+                        }
+                        if (checkCode.length > 1) {
+                            throw ServerError.internalServerError("[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다.");
+                        }
+                        isCorrectCode = code == checkCode[0].code;
+                        if (!isCorrectCode)
+                            throw ClientError.unauthorized("email 인증에 실패했습니다.");
+                        if (!isCorrectCode) return [3 /*break*/, 3];
+                        return [4 /*yield*/, Code_model_1.default.delete({
                                 email: email,
                             })];
-                    case 4:
-                        deleteCode = _c.apply(void 0, [_d.sent()]);
-                        if (deleteCode.affectedRows !== 1) {
-                            throw ClientError.unauthorized("email 인증에 실패했습니다.");
-                        }
+                    case 2:
+                        deleteCode = _b.sent();
                         result_success = {
                             result: true,
                             message: "email \uC778\uC99D\uC5D0 \uC131\uACF5\uD588\uC2B5\uB2C8\uB2E4.",
                         };
                         return [2 /*return*/, result_success];
-                    case 5: throw ClientError.unauthorized("email 인증에 실패했습니다.");
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -258,25 +238,20 @@ var userService = /** @class */ (function () {
     userService.nicknameDuplicateCheck = function (_a) {
         var nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var checkNickname, _b, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByNickname({ nickname: nickname })];
+            var checkNickname, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.findByNickname({ nickname: nickname })];
                     case 1:
-                        checkNickname = _b.apply(void 0, [_c.sent()]);
+                        checkNickname = _b.sent();
                         if (checkNickname.length !== 0) {
                             throw ClientError.conflict("입력하신 nickname은 이미 사용중입니다.");
                         }
-                        else {
-                            result_success = {
-                                result: true,
-                                message: "\uC911\uBCF5\uB41C nickname\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uAC00\uC785\uC744 \uC9C4\uD589\uD574\uC8FC\uC138\uC694.",
-                            };
-                            return [2 /*return*/, result_success];
-                        }
-                        return [2 /*return*/];
+                        result_success = {
+                            result: true,
+                            message: "\uC911\uBCF5\uB41C nickname\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uAC00\uC785\uC744 \uC9C4\uD589\uD574\uC8FC\uC138\uC694.",
+                        };
+                        return [2 /*return*/, result_success];
                 }
             });
         });
@@ -285,40 +260,30 @@ var userService = /** @class */ (function () {
     userService.addUser = function (_a) {
         var email = _a.email, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, provider, created_at, newUser, _b, checkNewUser, _c, result_success;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var user_id, provider, newUser, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         user_id = (0, uuid_1.v4)();
                         return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
                     case 1:
-                        password = _d.sent();
+                        password = _b.sent();
                         provider = "chairCoach";
-                        created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.create({
+                        return [4 /*yield*/, User_model_1.default.create({
                                 user_id: user_id,
                                 email: email,
                                 password: password,
                                 nickname: nickname,
                                 provider: provider,
-                                created_at: created_at,
                             })];
                     case 2:
-                        newUser = _b.apply(void 0, [_d.sent()]);
-                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
-                    case 3:
-                        checkNewUser = _c.apply(void 0, [_d.sent()]);
-                        if (newUser.affectedRows == 1 && checkNewUser.length == 1) {
+                        newUser = _b.sent();
+                        if (newUser) {
                             result_success = {
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             };
                             return [2 /*return*/, result_success];
-                        }
-                        else {
-                            throw ServerError.internalServerError("[확인요망] 절차를 따라 진행되었는지 확인해주세요.");
                         }
                         return [2 /*return*/];
                 }
@@ -333,34 +298,28 @@ var userService = /** @class */ (function () {
     userService.passwordCheck = function (_a) {
         var user_id = _a.user_id, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var checkPassword, _b, thisUser, hashedCorrectPassword, isPasswordCorrect, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
+            var checkPassword, thisUser, hashedCorrectPassword, isPasswordCorrect, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.findByUserId({ user_id: user_id })];
                     case 1:
-                        checkPassword = _b.apply(void 0, [_c.sent()]);
-                        if (!(checkPassword.length == 0)) return [3 /*break*/, 2];
-                        throw ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.");
-                    case 2:
+                        checkPassword = _b.sent();
+                        if (checkPassword.length == 0) {
+                            throw ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.");
+                        }
                         thisUser = checkPassword[0];
                         hashedCorrectPassword = thisUser.password;
                         return [4 /*yield*/, bcrypt_1.default.compare(password, hashedCorrectPassword)];
-                    case 3:
-                        isPasswordCorrect = _c.sent();
+                    case 2:
+                        isPasswordCorrect = _b.sent();
                         if (!isPasswordCorrect) {
                             throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
                         }
-                        else {
-                            result_success = {
-                                result: true,
-                                message: "\uC785\uB825\uD558\uC2E0 password\uAC00 \uC77C\uCE58\uD569\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_success];
-                        }
-                        _c.label = 4;
-                    case 4: return [2 /*return*/];
+                        result_success = {
+                            result: true,
+                            message: "\uC785\uB825\uD558\uC2E0 password\uAC00 \uC77C\uCE58\uD569\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_success];
                 }
             });
         });
@@ -369,28 +328,26 @@ var userService = /** @class */ (function () {
     userService.updateUser = function (_a) {
         var user_id = _a.user_id, password = _a.password, nickname = _a.nickname;
         return __awaiter(this, void 0, void 0, function () {
-            var updatedUser, _b, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var updatedUser, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0: return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
                     case 1:
-                        password = _c.sent();
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.update({
+                        password = _b.sent();
+                        return [4 /*yield*/, User_model_1.default.update({
                                 user_id: user_id,
                                 password: password,
                                 nickname: nickname,
                             })];
                     case 2:
-                        updatedUser = _b.apply(void 0, [_c.sent()]);
-                        if (updatedUser.affectedRows == 1) {
-                            result_success = {
-                                result: true,
-                                message: "\uD68C\uC6D0\uC815\uBCF4 \uC218\uC815\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_success];
-                        }
-                        return [2 /*return*/];
+                        updatedUser = _b.sent();
+                        if (updatedUser[1] !== 1)
+                            throw ServerError.internalServerError("[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다.");
+                        result_success = {
+                            result: true,
+                            message: "\uD68C\uC6D0\uC815\uBCF4 \uC218\uC815\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_success];
                 }
             });
         });
@@ -404,7 +361,7 @@ var userService = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.findByUserId({ user_id: user_id })];
+                        return [4 /*yield*/, User_model_1.default.findByUserId({ user_id: user_id })];
                     case 1:
                         checkUserId = _b.apply(void 0, [_d.sent()]);
                         if (checkUserId.length === 0) {
@@ -419,19 +376,18 @@ var userService = /** @class */ (function () {
                             throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
                         }
                         _c = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.withdraw({
+                        return [4 /*yield*/, User_model_1.default.withdraw({
                                 user_id: user_id,
                             })];
                     case 3:
                         updatedUser = _c.apply(void 0, [_d.sent()]);
-                        if (updatedUser.affectedRows == 1) {
-                            result_success = {
-                                result: true,
-                                message: "\uD0C8\uD1F4\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4. 30\uC77C \uD6C4 \uD68C\uC6D0 \uC815\uBCF4\uAC00 \uC0AD\uC81C\uB429\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_success];
-                        }
-                        return [2 /*return*/];
+                        if (updatedUser[1] !== 1)
+                            throw ServerError.internalServerError("[확인요망] 탈퇴 과정에서 오류가 발견되었습니다.");
+                        result_success = {
+                            result: true,
+                            message: "\uD0C8\uD1F4\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4. 30\uC77C \uD6C4 \uD68C\uC6D0 \uC815\uBCF4\uAC00 \uC0AD\uC81C\uB429\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_success];
                 }
             });
         });
@@ -440,22 +396,19 @@ var userService = /** @class */ (function () {
     userService.setAlert = function (_a) {
         var user_id = _a.user_id, alert = _a.alert, timer = _a.timer;
         return __awaiter(this, void 0, void 0, function () {
-            var setAlert, _b, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, User_1.default.updateAlert({ user_id: user_id, alert: alert, timer: timer })];
+            var setAlert, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.updateAlert({ user_id: user_id, alert: alert, timer: timer })];
                     case 1:
-                        setAlert = _b.apply(void 0, [_c.sent()]);
-                        if (setAlert.affectedRows == 1) {
-                            result_success = {
-                                result: true,
-                                message: "Alert \uC5C5\uB370\uC774\uD2B8\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_success];
-                        }
-                        return [2 /*return*/];
+                        setAlert = _b.sent();
+                        if (setAlert[1] !== 1)
+                            throw ServerError.internalServerError("[확인요망] 기존값과 동일한 요청이거나 서버 오류입니다.");
+                        result_success = {
+                            result: true,
+                            message: "Alert \uC5C5\uB370\uC774\uD2B8\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_success];
                 }
             });
         });

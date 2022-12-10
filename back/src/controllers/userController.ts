@@ -62,6 +62,7 @@ class userController {
       logger.info(addUser);
       return res.status(200).json(addUser);
     } catch (e) {
+      // console.log(e);
       next(e);
     }
   }

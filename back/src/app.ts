@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import sequelize from "./config/sequelize";
+// import sequelize from "./config/sequelize";
+import { db } from "./models";
 import userRouter from "./routers/userRouter";
 import socialLoginRouter from "./routers/socialLoginRouter";
 import neckRouter from "./routers/neckRouter";
@@ -26,10 +27,12 @@ app.get("/", (req, res) => {
   res.send("안녕하세요, 4팀 backend 서버입니다.");
 });
 
-// sequelize.sync({ force: false });
+// sequelize.sync({ force: false, alter: true });
+// db.sequelize.sync({ force: true });
+db.sequelize.sync({ force: false });
 (async () => {
   try {
-    await sequelize.authenticate();
+    await db.sequelize.authenticate();
     console.log("데이터베이스 연결 성공");
   } catch (error) {
     console.error("데이터베이스 오류:", error);

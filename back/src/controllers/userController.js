@@ -138,6 +138,7 @@ var userController = /** @class */ (function () {
                         return [2 /*return*/, res.status(200).json(addUser)];
                     case 2:
                         e_3 = _a.sent();
+                        // console.log(e);
                         next(e_3);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];

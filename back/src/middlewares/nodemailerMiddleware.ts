@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import * as express from "express";
-import User from "../db/models/User";
+// import User from "../db/models/User";
+import User from "../models/User.model";
 import * as ClientError from "../responses/clientErrorResponse";
 
 const sendEmail = async function (
@@ -12,17 +13,16 @@ const sendEmail = async function (
     const email = req.body.email;
     // 이메일 중복 확인
     const checkEmail = await User.findByEmail({ email });
-    const checkEmailString = JSON.stringify(checkEmail);
-    const checkEmailObject = JSON.parse(checkEmailString);
-    if (checkEmailObject.length !== 0) {
+    // const checkEmailString = JSON.stringify(checkEmail);
+    // const checkEmailObject = JSON.parse(checkEmailString);
+    if (checkEmail.length !== 0) {
       throw ClientError.unauthorized(
-        "요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요."
+        "요청하신 정보로 이미 가입된 내역이 있습니다."
       );
     }
     // 코드 발급
     const code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
     req.body.code = code;
-
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

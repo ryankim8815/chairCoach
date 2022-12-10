@@ -40,7 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
-var sequelize_1 = __importDefault(require("./config/sequelize"));
+// import sequelize from "./config/sequelize";
+var models_1 = require("./models");
 var userRouter_1 = __importDefault(require("./routers/userRouter"));
 var socialLoginRouter_1 = __importDefault(require("./routers/socialLoginRouter"));
 var neckRouter_1 = __importDefault(require("./routers/neckRouter"));
@@ -61,14 +62,16 @@ app.use(errorMiddleware_1.errorHandler);
 app.get("/", function (req, res) {
     res.send("안녕하세요, 4팀 backend 서버입니다.");
 });
-// sequelize.sync({ force: false });
+// sequelize.sync({ force: false, alter: true });
+// db.sequelize.sync({ force: true });
+models_1.db.sequelize.sync({ force: false });
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, sequelize_1.default.authenticate()];
+                return [4 /*yield*/, models_1.db.sequelize.authenticate()];
             case 1:
                 _a.sent();
                 console.log("데이터베이스 연결 성공");
