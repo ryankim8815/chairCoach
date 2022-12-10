@@ -1,5 +1,6 @@
 import * as express from "express";
 import Joi from "joi";
+import { typeError } from "../responses/errorResponse";
 
 const validateBody = (Schema: Joi.ObjectSchema<any>) =>
   async function (
@@ -11,13 +12,8 @@ const validateBody = (Schema: Joi.ObjectSchema<any>) =>
       const body = req.body;
       await Schema.validateAsync(body);
       next();
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "type",
-        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-      };
-      return res.status(499).json(result_err);
+    } catch (e) {
+      next(typeError);
     }
   };
 
@@ -31,13 +27,8 @@ const validateParams = (Schema: Joi.ObjectSchema<any>) =>
       const params = req.params;
       await Schema.validateAsync(params);
       next();
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "type",
-        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-      };
-      return res.status(499).json(result_err);
+    } catch (e) {
+      next(typeError);
     }
   };
 
@@ -56,13 +47,8 @@ const validateBodyParams = (
       await bodySchema.validateAsync(body);
       await paramsSchema.validateAsync(params);
       next();
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "type",
-        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-      };
-      return res.status(499).json(result_err);
+    } catch (e) {
+      next(typeError);
     }
   };
 
@@ -81,13 +67,8 @@ const validateBodyMulter = (
       await bodySchema.validateAsync(body);
       await multerSchema.validateAsync(file);
       next();
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "type",
-        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-      };
-      return res.status(499).json(result_err);
+    } catch (e) {
+      next(typeError);
     }
   };
 const validateBodyParamsMulter = (
@@ -108,13 +89,8 @@ const validateBodyParamsMulter = (
       await paramsSchema.validateAsync(params);
       await multerSchema.validateAsync(file);
       next();
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "type",
-        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-      };
-      return res.status(499).json(result_err);
+    } catch (e) {
+      next(typeError);
     }
   };
 

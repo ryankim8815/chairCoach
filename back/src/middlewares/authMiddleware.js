@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,34 +62,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var ClientError = __importStar(require("../responses/clientErrorResponse"));
 var authMiddleware = function (req, res, next) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var userToken, result_errNoToken, secretKey, jwtDecoded, user_id, result_errInvalidToken;
+        var userToken, secretKey, jwtDecoded, user_id;
         return __generator(this, function (_c) {
             userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
             if (userToken === "null") {
-                result_errNoToken = {
-                    result: false,
-                    cause: "token",
-                    message: "로그인한 유저만 사용할 수 있는 서비스입니다.",
-                };
-                return [2 /*return*/, res.status(400).json(result_errNoToken)];
+                throw ClientError.unauthorized("로그인한 유저만 사용할 수 있는 서비스입니다.");
             }
             try {
-                secretKey = process.env.JWT_SECRET_KEY || "secret-key";
+                secretKey = process.env.JWT_SECRET_KEY;
                 jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
                 user_id = jwtDecoded.user_id;
                 req.body.user_id = user_id;
                 next();
             }
-            catch (error) {
-                result_errInvalidToken = {
-                    result: false,
-                    cause: "token",
-                    message: "정상적인 토큰이 아닙니다. 다시 한 번 확인해 주세요.",
-                };
-                return [2 /*return*/, res.status(400).json(result_errInvalidToken)];
+            catch (e) {
+                next(e);
             }
             return [2 /*return*/];
         });

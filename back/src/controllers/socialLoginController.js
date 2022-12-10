@@ -44,6 +44,7 @@ var nullPrototypeHandler_1 = require("../utils/nullPrototypeHandler");
 var qs_1 = __importDefault(require("qs"));
 var urlencode_1 = __importDefault(require("urlencode"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var logger = require("../config/logger");
 // axios에서 error 발생시 troubleshooting 용이성을 위해
 axios_1.default.interceptors.response.use(function (res) {
     return res.data;
@@ -69,7 +70,7 @@ var socialLoginController = /** @class */ (function () {
     // POST: kakao api 회원가입 & 로그인
     socialLoginController.kakaoOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, REST_API_KEY, REDIRECT_URI, resultToken, _a, access_token, resultAccount, _b, email, logedinUser, e_1;
+            var code, REST_API_KEY, REDIRECT_URI, resultToken, _a, access_token, resultAccount, _b, email, kakao, e_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -112,8 +113,9 @@ var socialLoginController = /** @class */ (function () {
                                 access_token: access_token,
                             })];
                     case 4:
-                        logedinUser = _c.sent();
-                        return [2 /*return*/, res.status(200).json(logedinUser)];
+                        kakao = _c.sent();
+                        logger.info(kakao);
+                        return [2 /*return*/, res.status(200).json(kakao)];
                     case 5:
                         e_1 = _c.sent();
                         next(e_1);
@@ -128,7 +130,7 @@ var socialLoginController = /** @class */ (function () {
     ////////////////////////////////////////
     socialLoginController.naverOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, state, client_id, client_secret, redirectURI, encoded, url, resultToken, _a, access_token, resultAccount, _b, naverUserResult, email, logedinUser, _c, e_2;
+            var code, state, client_id, client_secret, redirectURI, encoded, url, resultToken, _a, access_token, resultAccount, _b, naverUserResult, email, naver, _c, e_2;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -168,8 +170,9 @@ var socialLoginController = /** @class */ (function () {
                                 access_token: access_token,
                             })];
                     case 4:
-                        logedinUser = _c.apply(void 0, [_d.sent()]);
-                        return [2 /*return*/, res.status(200).json(logedinUser)];
+                        naver = _c.apply(void 0, [_d.sent()]);
+                        logger.info(naver);
+                        return [2 /*return*/, res.status(200).json(naver)];
                     case 5:
                         e_2 = _d.sent();
                         next(e_2);
@@ -184,7 +187,7 @@ var socialLoginController = /** @class */ (function () {
     ////////////////////////////////////////
     socialLoginController.googleOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, data, resultToken, _a, jwtDecoded, email, refresh_token, logedinUser, e_3;
+            var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, data, resultToken, _a, jwtDecoded, email, refresh_token, google, e_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -224,8 +227,9 @@ var socialLoginController = /** @class */ (function () {
                                 refresh_token: refresh_token,
                             })];
                     case 3:
-                        logedinUser = _b.sent();
-                        return [2 /*return*/, res.status(200).json(logedinUser)];
+                        google = _b.sent();
+                        logger.info(google);
+                        return [2 /*return*/, res.status(200).json(google)];
                     case 4:
                         e_3 = _b.sent();
                         next(e_3);

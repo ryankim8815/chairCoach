@@ -2,6 +2,7 @@ import * as express from "express";
 import bodyService from "../services/bodyService";
 import * as ClientError from "../responses/clientErrorResponse";
 import type { MulterFile } from "../customType/multer.d";
+const logger = require("../config/logger");
 
 class bodyController {
   // GET: 전체 운동 기록 조회 기능
@@ -11,8 +12,10 @@ class bodyController {
     next: express.NextFunction
   ) {
     try {
-      const allBodies = await bodyService.getAllBodies();
-      return res.status(200).json(allBodies);
+      const getAllBodies = await bodyService.getAllBodies();
+
+      logger.info(getAllBodies);
+      return res.status(200).json(getAllBodies);
     } catch (e) {
       next(e);
     }
@@ -31,8 +34,10 @@ class bodyController {
           "정상적으로 로그인된 사용자의 요청이 아닙니다."
         );
       }
-      const Bodies = await bodyService.getBodies({ user_id });
-      return res.status(200).json(Bodies);
+      const getBodies = await bodyService.getBodies({ user_id });
+
+      logger.info(getBodies);
+      return res.status(200).json(getBodies);
     } catch (e) {
       next(e);
     }
@@ -52,11 +57,13 @@ class bodyController {
         );
       }
       const tag = req.body.tag;
-      const body = await bodyService.addBody({
+      const addBody = await bodyService.addBody({
         user_id,
         tag,
       });
-      return res.status(200).json(body);
+
+      logger.info(addBody);
+      return res.status(200).json(addBody);
     } catch (e) {
       next(e);
     }
@@ -76,10 +83,12 @@ class bodyController {
         );
       }
       const body_id = req.body.body_id;
-      const body = await bodyService.updateBody({
+      const updateBody = await bodyService.updateBody({
         body_id,
       });
-      return res.status(200).json(body);
+
+      logger.info(updateBody);
+      return res.status(200).json(updateBody);
     } catch (e) {
       next(e);
     }
@@ -100,8 +109,14 @@ class bodyController {
       }
       const year = req.params.year;
       const week = req.params.week;
-      const Bodies = await bodyService.getBodiesByWeek({ user_id, year, week });
-      return res.status(200).json(Bodies);
+      const getBodiesByWeek = await bodyService.getBodiesByWeek({
+        user_id,
+        year,
+        week,
+      });
+
+      logger.info(getBodiesByWeek);
+      return res.status(200).json(getBodiesByWeek);
     } catch (e) {
       next(e);
     }
@@ -121,8 +136,13 @@ class bodyController {
         );
       }
       const year = req.params.year;
-      const Bodies = await bodyService.getBodiesByYear({ user_id, year });
-      return res.status(200).json(Bodies);
+      const getBodiesByYear = await bodyService.getBodiesByYear({
+        user_id,
+        year,
+      });
+
+      logger.info(getBodiesByYear);
+      return res.status(200).json(getBodiesByYear);
     } catch (e) {
       next(e);
     }
