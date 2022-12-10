@@ -36,145 +36,146 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUserDelete = exports.validateUserUpdate = exports.validateUserLogin = exports.validateUserCreate = exports.validateUserCurrent = void 0;
-var schemas_joi_1 = require("../utils/schemas.joi");
-var validateUserCurrent = function (req, res, next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var body, err_1, result_err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    body = req.body;
-                    return [4 /*yield*/, schemas_joi_1.userCurrentSchema.validateAsync(body)];
-                case 1:
-                    _a.sent();
-                    next();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_1 = _a.sent();
-                    result_err = {
-                        result: false,
-                        cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-                    };
-                    console.log(result_err);
-                    return [2 /*return*/, res.status(499).json(result_err)];
-                case 3: return [2 /*return*/];
-            }
+exports.validateBodyParamsMulter = exports.validateBodyMulter = exports.validateBodyParams = exports.validateParams = exports.validateBody = void 0;
+var errorResponse_1 = require("../responses/errorResponse");
+var validateBody = function (Schema) {
+    return function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var body, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        body = req.body;
+                        return [4 /*yield*/, Schema.validateAsync(body)];
+                    case 1:
+                        _a.sent();
+                        next();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_1 = _a.sent();
+                        next(errorResponse_1.typeError);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
         });
-    });
+    };
 };
-exports.validateUserCurrent = validateUserCurrent;
-var validateUserCreate = function (req, res, next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var body, err_2, result_err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    body = req.body;
-                    return [4 /*yield*/, schemas_joi_1.userCreateSchema.validateAsync(body)];
-                case 1:
-                    _a.sent();
-                    next();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_2 = _a.sent();
-                    result_err = {
-                        result: false,
-                        cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-                    };
-                    console.log(result_err);
-                    return [2 /*return*/, res.status(499).json(result_err)];
-                case 3: return [2 /*return*/];
-            }
+exports.validateBody = validateBody;
+var validateParams = function (Schema) {
+    return function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var params, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        params = req.params;
+                        return [4 /*yield*/, Schema.validateAsync(params)];
+                    case 1:
+                        _a.sent();
+                        next();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_2 = _a.sent();
+                        next(errorResponse_1.typeError);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
         });
-    });
+    };
 };
-exports.validateUserCreate = validateUserCreate;
-var validateUserLogin = function (req, res, next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var body, err_3, result_err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    body = req.body;
-                    return [4 /*yield*/, schemas_joi_1.userLoginSchema.validateAsync(body)];
-                case 1:
-                    _a.sent();
-                    next();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_3 = _a.sent();
-                    result_err = {
-                        result: false,
-                        cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-                    };
-                    console.log(result_err);
-                    return [2 /*return*/, res.status(499).json(result_err)];
-                case 3: return [2 /*return*/];
-            }
+exports.validateParams = validateParams;
+var validateBodyParams = function (bodySchema, paramsSchema) {
+    return function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var body, params, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        body = req.body;
+                        params = req.params;
+                        return [4 /*yield*/, bodySchema.validateAsync(body)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, paramsSchema.validateAsync(params)];
+                    case 2:
+                        _a.sent();
+                        next();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_3 = _a.sent();
+                        next(errorResponse_1.typeError);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    });
+    };
 };
-exports.validateUserLogin = validateUserLogin;
-var validateUserUpdate = function (req, res, next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var body, err_4, result_err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    body = req.body;
-                    return [4 /*yield*/, schemas_joi_1.userUpdateSchema.validateAsync(body)];
-                case 1:
-                    _a.sent();
-                    next();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_4 = _a.sent();
-                    result_err = {
-                        result: false,
-                        cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-                    };
-                    console.log(result_err);
-                    return [2 /*return*/, res.status(499).json(result_err)];
-                case 3: return [2 /*return*/];
-            }
+exports.validateBodyParams = validateBodyParams;
+var validateBodyMulter = function (bodySchema, multerSchema) {
+    return function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var body, file, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        body = req.body;
+                        file = req.file;
+                        return [4 /*yield*/, bodySchema.validateAsync(body)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, multerSchema.validateAsync(file)];
+                    case 2:
+                        _a.sent();
+                        next();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_4 = _a.sent();
+                        next(errorResponse_1.typeError);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    });
+    };
 };
-exports.validateUserUpdate = validateUserUpdate;
-var validateUserDelete = function (req, res, next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var body, err_5, result_err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    body = req.body;
-                    return [4 /*yield*/, schemas_joi_1.userDeleteSchema.validateAsync(body)];
-                case 1:
-                    _a.sent();
-                    next();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_5 = _a.sent();
-                    result_err = {
-                        result: false,
-                        cause: "type",
-                        message: "api 요청시 잘못된 type이 첨부되었습니다.",
-                    };
-                    console.log(result_err);
-                    return [2 /*return*/, res.status(499).json(result_err)];
-                case 3: return [2 /*return*/];
-            }
+exports.validateBodyMulter = validateBodyMulter;
+var validateBodyParamsMulter = function (bodySchema, paramsSchema, multerSchema) {
+    return function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var body, params, file, e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        body = req.body;
+                        params = req.params;
+                        file = req.file;
+                        return [4 /*yield*/, bodySchema.validateAsync(body)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, paramsSchema.validateAsync(params)];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, multerSchema.validateAsync(file)];
+                    case 3:
+                        _a.sent();
+                        next();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        e_5 = _a.sent();
+                        next(errorResponse_1.typeError);
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
         });
-    });
+    };
 };
-exports.validateUserDelete = validateUserDelete;
+exports.validateBodyParamsMulter = validateBodyParamsMulter;

@@ -9,7 +9,7 @@ export const FooterLayout = styled.footer`
   }
 `;
 
-export const TopCon = styled.div`
+export const TopContent = styled.div`
   ${({ theme }) => theme.common.flexCenter};
   justify-content: space-between;
   padding: 20px 0;
