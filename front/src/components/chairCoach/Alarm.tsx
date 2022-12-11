@@ -18,6 +18,7 @@ const Alarm = () => {
   useEffect(() => {
     Api.get(`users/${user?.id}`).then((res) => setAlarmState(res.data));
   }, []);
+  //이중삼항연산자를 사용하시라는 말씀이실까..? (A?(B?C:D):E) 이런 느낌인거 같긴 한데... 더 복잡해보일거같은... 아닌가.. 여쭤봐야지..
   useEffect(() => {
     alarmState !== null &&
       setAlarmTimer((alarmState as { timer: number; alert: number })?.timer);
