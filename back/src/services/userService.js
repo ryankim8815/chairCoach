@@ -278,7 +278,8 @@ var userService = /** @class */ (function () {
                             })];
                     case 2:
                         newUser = _b.sent();
-                        if (newUser) {
+                        console.log("newUser: ", newUser);
+                        if (newUser[1]) {
                             result_success = {
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",

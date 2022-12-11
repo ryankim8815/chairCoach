@@ -163,7 +163,8 @@ class userService {
       nickname,
       provider,
     });
-    if (newUser) {
+    console.log("newUser: ", newUser);
+    if (newUser[1]) {
       const result_success = {
         result: true,
         message: `회원가입이 성공적으로 이뤄졌습니다.`,

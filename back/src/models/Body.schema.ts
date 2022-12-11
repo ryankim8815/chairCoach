@@ -12,7 +12,7 @@ module.exports = (sequelize, db) => {
       user_id: {
         type: db.DataTypes.UUID,
         defaultValue: db.DataTypes.UUIDV4, // auto generator
-        unique: true,
+        // unique: true,
         //   primaryKey: true,
         allowNull: false,
         references: {

@@ -61,7 +61,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var Body_1 = __importDefault(require("../db/models/Body"));
+// import Body from "../db/models/Body";
+var Body_model_1 = __importDefault(require("../models/Body.model"));
 var nullPrototypeHandler_1 = require("../utils/nullPrototypeHandler");
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
 var uuid_1 = require("uuid");
@@ -73,18 +74,15 @@ var bodyService = /** @class */ (function () {
     //// 전체 운동 기록 조회 기능
     bodyService.getAllBodies = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var allBodies, _a, countBodies, _b, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _a = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.findAll()];
+            var allBodies, countBodies, result_success;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Body_model_1.default.findAll()];
                     case 1:
-                        allBodies = _a.apply(void 0, [_c.sent()]);
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.countAll()];
+                        allBodies = _a.sent();
+                        return [4 /*yield*/, Body_model_1.default.countAll()];
                     case 2:
-                        countBodies = _b.apply(void 0, [_c.sent()]);
+                        countBodies = _a.sent();
                         result_success = Object.assign({
                             result: true,
                             message: "\uC804\uCCB4 \uC6B4\uB3D9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
@@ -100,18 +98,15 @@ var bodyService = /** @class */ (function () {
     bodyService.getBodies = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var Bodies, _b, countBodies, _c, result_success;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
-                    case 0:
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.findByUserId({ user_id: user_id })];
+            var Bodies, countBodies, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Body_model_1.default.findByUserId({ user_id: user_id })];
                     case 1:
-                        Bodies = _b.apply(void 0, [_d.sent()]);
-                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.countByUserId({ user_id: user_id })];
+                        Bodies = _b.sent();
+                        return [4 /*yield*/, Body_model_1.default.countByUserId({ user_id: user_id })];
                     case 2:
-                        countBodies = _c.apply(void 0, [_d.sent()]);
+                        countBodies = _b.sent();
                         result_success = Object.assign({
                             result: true,
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
@@ -127,21 +122,19 @@ var bodyService = /** @class */ (function () {
     bodyService.addBody = function (_a) {
         var user_id = _a.user_id, tag = _a.tag;
         return __awaiter(this, void 0, void 0, function () {
-            var body_id, start_time, newBody, _b, result_success;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var body_id, newBody, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         body_id = (0, uuid_1.v4)();
-                        start_time = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
-                        _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.create({
+                        return [4 /*yield*/, Body_model_1.default.create({
                                 body_id: body_id,
                                 user_id: user_id,
                                 tag: tag,
-                                start_time: start_time,
+                                // start_time,
                             })];
                     case 1:
-                        newBody = _b.apply(void 0, [_c.sent()]);
+                        newBody = _b.sent();
                         result_success = Object.assign({
                             result: true,
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC2DC\uC791\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
@@ -156,14 +149,14 @@ var bodyService = /** @class */ (function () {
     bodyService.updateBody = function (_a) {
         var body_id = _a.body_id;
         return __awaiter(this, void 0, void 0, function () {
-            var checkBody, _b, end_time, newBody, _c, result_success;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var checkBody, _b, end_time, newBody, result_success;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.findByBodyId({ body_id: body_id })];
+                        return [4 /*yield*/, Body_model_1.default.findByBodyId({ body_id: body_id })];
                     case 1:
-                        checkBody = _b.apply(void 0, [_d.sent()]);
+                        checkBody = _b.apply(void 0, [_c.sent()]);
                         if (checkBody.length == 0) {
                             throw ClientError.notFound("patch를 요청한 body_id 정보와 일치하는 데이터가 없습니다. 다시 한 번 확인해 주세요.");
                         }
@@ -171,13 +164,12 @@ var bodyService = /** @class */ (function () {
                             throw ClientError.conflict("patch를 요청한 body_id의 end_time은 이미 업데이트 되어있습니다. 다시 한 번 확인해 주세요.");
                         }
                         end_time = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
-                        _c = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.patch({
+                        return [4 /*yield*/, Body_model_1.default.patch({
                                 body_id: body_id,
                                 end_time: end_time,
                             })];
                     case 2:
-                        newBody = _c.apply(void 0, [_d.sent()]);
+                        newBody = _c.sent();
                         result_success = Object.assign({
                             result: true,
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uC6B4\uB3D9 \uAE30\uB85D \uC885\uB8CC\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
@@ -196,7 +188,7 @@ var bodyService = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.findByUserIdWeek({ user_id: user_id, year: year, week: week })];
+                        return [4 /*yield*/, Body_model_1.default.findByUserIdWeek({ user_id: user_id, year: year, week: week })];
                     case 1:
                         Bodies = _b.apply(void 0, [_c.sent()]);
                         result_success = Object.assign({
@@ -218,7 +210,7 @@ var bodyService = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _b = nullPrototypeHandler_1.nullPrototypeHandler;
-                        return [4 /*yield*/, Body_1.default.findByUserIdYear({ user_id: user_id, year: year })];
+                        return [4 /*yield*/, Body_model_1.default.findByUserIdYear({ user_id: user_id, year: year })];
                     case 1:
                         Bodies = _b.apply(void 0, [_c.sent()]);
                         result_success = Object.assign({

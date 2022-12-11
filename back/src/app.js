@@ -64,7 +64,7 @@ app.get("/", function (req, res) {
 });
 // sequelize.sync({ force: false, alter: true });
 // db.sequelize.sync({ force: true });
-models_1.db.sequelize.sync({ force: false });
+models_1.db.sequelize.sync({ alter: true });
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
     return __generator(this, function (_a) {
