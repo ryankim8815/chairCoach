@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as S from "./NeckSurveyStyle";
-import * as B from "../../styles/BtnStyle"
+import * as B from "../../styles/BtnStyle";
 import { useNavigate } from "react-router-dom";
 import { Data } from "./Data";
 
 const NeckSurvey = () => {
   const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const [point, setPoint] = useState(0);
+  const [page, setPage] = useState(0);
+  const pointRef = useRef(0);
   const increasePage = () => {
     setPage((prev) => prev + 1);
   };
-  const increasePoint = () => {
-    setPoint((prev) => prev + 1);
+  const increasePointRef = () => {
+    pointRef.current = pointRef.current + 1;
   };
   useEffect(() => {
-    if (page === 11) {
+    if (page === 10) {
       navigate("/surveyresult", {
         state: {
-          point: point,
+          pointRef: pointRef.current,
         },
       });
     }
@@ -29,22 +29,26 @@ const NeckSurvey = () => {
       <div className="inner">
         <S.TitleBox>
           <S.Title>거북목증후군 자가진단 테스트</S.Title>
-          <S.Page>{page}/10</S.Page>
+          <S.Page>{page + 1}/10</S.Page>
         </S.TitleBox>
         <S.ContentBox>
-            <S.SubTitle>Q{page}. {page === 11 ? null : Data[page - 1].questions}</S.SubTitle>
-          {page === 11 ? null : <S.Img src={Data[page - 1].img} />}
+          <S.SubTitle>
+            Q{page + 1}. {page === 10 ? null : Data[page].questions}
+          </S.SubTitle>
+          {page === 10 ? null : <S.Img src={Data[page].img} />}
 
           <S.BtnWrap>
-            <B.CheckBtn size='big'
+            <B.CheckBtn
+              size="big"
               onClick={() => {
-                increasePoint();
+                increasePointRef();
                 increasePage();
               }}
             >
               네
             </B.CheckBtn>
-            <B.CheckBtn size='big'
+            <B.CheckBtn
+              size="big"
               onClick={() => {
                 increasePage();
               }}
@@ -52,7 +56,6 @@ const NeckSurvey = () => {
               아니오
             </B.CheckBtn>
           </S.BtnWrap>
-          
         </S.ContentBox>
       </div>
     </S.SurveyContainer>
