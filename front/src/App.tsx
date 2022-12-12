@@ -24,6 +24,7 @@ import NaverLogin from "./components/naverLogin/Naver";
 import MyPage from "./pages/myPage/MyPage";
 import GoogleLogin from "./components/googleLogin/GoogleLogin";
 import AiStretching from "./pages/aiStretching/AiStretching";
+import StretchingGuide from "./pages/stretchingGuide/StretchingGuide";
 
 function App() {
   return (
@@ -46,10 +47,11 @@ function App() {
             <Route path="/neckinspection" element={<NeckInspection />} />
             <Route path="/inspectionresult" element={<InspectionResult />} />
             <Route path="/userInfoChange" element={<UserInfoChange />} />
-            <Route path="login/oauth2/code/kakao" element={<KakaoAuth />} />
-            <Route path="login/oauth2/code/naver" element={<NaverLogin />} />
-            <Route path="login/oauth2/code/google" element={<GoogleLogin />} />
-            <Route path="/aistretching" element={<AiStretching />} />
+            <Route path="/login/oauth2/code/kakao" element={<KakaoAuth />} />
+            <Route path="/login/oauth2/code/naver" element={<NaverLogin />} />
+            <Route path="/login/oauth2/code/google" element={<GoogleLogin />} />
+            <Route path="/aistretching/:id" element={<AiStretching />} />
+            <Route path="/stretchingguide/:id" element={<StretchingGuide />} />
           </Routes>
           <Footer />
         </ThemeProvider>

@@ -8,8 +8,11 @@ const multerOriginalname = Joi.string().pattern(
   new RegExp(regexp.imageFiltename)
 );
 const multerEncoding = Joi.string().valid("7bit"); // "7bit",
-const multerMimetype = Joi.string().valid(
-  "image/png" || "image/jpg" || "image/jpeg" || "image/gif"
+const multerMimetype = Joi.alternatives().try(
+  Joi.string().valid("image/png"),
+  Joi.string().valid("image/jpg"),
+  Joi.string().valid("image/jpeg"),
+  Joi.string().valid("image/gif")
 ); //"image/png",
 const multerDestination = Joi.string().valid("./uploads"); // "./uploads",
 const multerFilename = Joi.string(); // "file-1669021214727-43580897.png",

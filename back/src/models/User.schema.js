@@ -18,7 +18,7 @@ module.exports = function (sequelize, db) {
             allowNull: false,
         },
         nickname: {
-            type: db.DataTypes.STRING(12),
+            type: db.DataTypes.STRING(255),
             unique: true,
             allowNull: false,
         },

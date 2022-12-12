@@ -85,6 +85,8 @@ var socialLoginController = /** @class */ (function () {
                                 method: "POST",
                                 headers: {
                                     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
                                 },
                                 url: "https://kauth.kakao.com/oauth/token",
                                 data: makeFormData({
@@ -157,6 +159,8 @@ var socialLoginController = /** @class */ (function () {
                                 method: "GET",
                                 headers: {
                                     Authorization: "bearer ".concat(access_token),
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
                                 },
                                 url: "https://openapi.naver.com/v1/nid/me",
                             })];
@@ -213,7 +217,11 @@ var socialLoginController = /** @class */ (function () {
                         _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "POST",
-                                headers: { "content-type": "application/x-www-form-urlencoded" },
+                                headers: {
+                                    "content-type": "application/x-www-form-urlencoded",
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
+                                },
                                 data: qs_1.default.stringify(data),
                                 url: "https://oauth2.googleapis.com/token",
                             })];

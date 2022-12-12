@@ -8,19 +8,18 @@ import { MutableRefObject } from "react";
 
 const SurveyResult = () => {
   const location = useLocation();
-  const pointRef: MutableRefObject<number> = location.state.pointRef;
-  console.log(pointRef);
+  const point: number = location.state.pointRef;
   const navigate = useNavigate();
-
+  const userToken = sessionStorage.getItem("userToken");
   return (
     <S.ResultContainer>
       <div className="inner">
         <S.Title>거북목증후군 자가진단 테스트 결과</S.Title>
 
         <S.ResultBox>
-          {pointRef.current >= 7 ? (
+          {point >= 7 ? (
             <img src={result3} alt="위험" />
-          ) : pointRef.current >= 4 ? (
+          ) : point >= 4 ? (
             <img src={result2} alt="보통" />
           ) : (
             <img src={result1} alt="좋음" />
@@ -29,7 +28,7 @@ const SurveyResult = () => {
           <S.SubTitle1>
             당신의 거북목 위험도는
             <br />
-            <S.PointText>{pointRef.current * 10}%</S.PointText>입니다!
+            <S.PointText>{point * 10}%</S.PointText>입니다!
           </S.SubTitle1>
         </S.ResultBox>
 
@@ -51,7 +50,11 @@ const SurveyResult = () => {
             <B.CheckBtn
               check="true"
               onClick={() => {
-                navigate("/neckguide");
+                if (userToken) {
+                  navigate("/neckguide");
+                } else {
+                  navigate("/");
+                }
               }}
               size="small"
             >

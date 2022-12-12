@@ -29,7 +29,9 @@ app.get("/", (req, res) => {
 
 // sequelize.sync({ force: false, alter: true });
 // db.sequelize.sync({ force: true });
-db.sequelize.sync({ force: false });
+db.sequelize.sync({ alter: true });
+// db.sequelize.sync({ alter: { drop: false } });
+
 (async () => {
   try {
     await db.sequelize.authenticate();

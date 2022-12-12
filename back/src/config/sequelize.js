@@ -12,6 +12,7 @@ var sequelize = new sequelize_1.Sequelize(database, username, password, {
     logging: true,
     dialectOptions: {
         charset: "utf8mb4",
+        timestamps: false,
         // dateStrings: true,
         // typeCast: true,
         timezone: "+09:00",

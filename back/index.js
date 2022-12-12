@@ -5,10 +5,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = __importDefault(require("./src/app"));
 require("dotenv/config");
+// require("dotenv").config();
+//////////
+var fs_1 = __importDefault(require("fs"));
+var https_1 = __importDefault(require("https"));
 require("dotenv").config();
 var PORT = process.env.SERVER_PORT;
-app_1.default
-    .listen(PORT, function () {
-    console.log("\uC815\uC0C1\uC801\uC73C\uB85C \uC11C\uBC84\uB97C \uC2DC\uC791\uD558\uC600\uC2B5\uB2C8\uB2E4.  http://localhost:".concat(PORT));
-})
-    .on("error", function (err) { return console.log(err); });
+var myUrl = "kdt-ai5-team04.elicecoding.com";
+// const app = express();
+var option = {
+    ca: fs_1.default.readFileSync("/etc/letsencrypt/live/".concat(myUrl, "/fullchain.pem")),
+    key: fs_1.default.readFileSync("/etc/letsencrypt/live/".concat(myUrl, "/privkey.pem")),
+    cert: fs_1.default.readFileSync("/etc/letsencrypt/live/".concat(myUrl, "/cert.pem")),
+};
+https_1.default.createServer(option, app_1.default).listen(PORT, function () {
+    console.log("HTTPS 서버가 실행되었습니다. 포트 :: " + PORT);
+});
+//////////
+// const PORT: string = process.env.SERVER_PORT;
+// app
+//   .listen(PORT, () => {
+//     console.log(`정상적으로 서버를 시작하였습니다.  http://localhost:${PORT}`);
+//   })
+//   .on("error", (err: string) => console.log(err));

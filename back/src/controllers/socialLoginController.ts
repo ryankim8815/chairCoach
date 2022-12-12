@@ -46,6 +46,8 @@ class socialLoginController {
           method: "POST",
           headers: {
             "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://kauth.kakao.com/oauth/token",
           data: makeFormData({
@@ -112,6 +114,8 @@ class socialLoginController {
           method: "GET",
           headers: {
             Authorization: `bearer ${access_token}`,
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://openapi.naver.com/v1/nid/me",
         })
@@ -165,7 +169,11 @@ class socialLoginController {
       const resultToken = nullPrototypeHandler(
         await axios({
           method: "POST",
-          headers: { "content-type": "application/x-www-form-urlencoded" },
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
+          },
           data: qs.stringify(data),
           url: "https://oauth2.googleapis.com/token",
         })
