@@ -164,9 +164,9 @@ def detect(opt):
                 cv2.imshow(str(p), im0)
                 
                 # display class
-                # info = "This pose is {0}".format(answer_xgb)
-                # cv2.putText(im0, text=info, org=(30,60), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                #             fontScale=0.5, color=(0,255,0), thickness=2)
+                info = "This pose is {0}".format(answer_xgb)
+                cv2.putText(im0, text=info, org=(30,60), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=0.5, color=(0,255,0), thickness=2)
                 
                 cv2.waitKey(1)  # 1 millisecond
 
