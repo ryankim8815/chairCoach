@@ -120,8 +120,8 @@ const NeckVideo = ({
       photo.toBlob(async (blob) => {
         if (!blob) return;
         resolve(
-          new File([blob], currentTime, {
-            type: "image/jpeg",
+          new File([blob], `${currentTime}.jpg`, {
+            type: "image/png",
           })
         );
       });
@@ -139,7 +139,7 @@ const NeckVideo = ({
       data: {
         file: file,
         result: inclination.toFixed(2),
-        score: 80,
+        score: 70,
       },
       headers: {
         "Content-Type": "multipart/form-data",

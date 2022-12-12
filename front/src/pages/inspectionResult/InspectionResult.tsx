@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as B from "../../styles/BtnStyle";
 import * as S from "../surveyResult/ResultStyle";
+import * as Api from "../../api/api";
+import { useRecoilState } from "recoil";
+import userState from "../../atoms/user";
 
 const InspectionResult = () => {
   const navigate = useNavigate();
-
+  const [user, setUser] = useRecoilState(userState);
+  const [data, setData] = useState(null);
+  const [inclination, setInclination] = useState(0);
+  useEffect(() => {
+    Api.get(`necks/${user?.id}`).then((res) =>
+      setData(res.data.list[res.data.list.length - 1])
+    );
+  }, []);
+  console.log(data);
   return (
     <S.ResultContainer>
       <div className="inner">
@@ -15,9 +26,27 @@ const InspectionResult = () => {
           <img src="" alt="사진들어갈 곳" />
 
           <S.SubTitle1>
-            목과 어깨의 각도가 <S.PointText>*도</S.PointText> 이하로,
+            목과 어깨의 각도가{" "}
+            <S.PointText>
+              {data !== null &&
+                (
+                  data as {
+                    result: number;
+                  }
+                ).result}
+              도
+            </S.PointText>
+            로,
             <br />
-            거북목 <S.PointText>위험</S.PointText> 단계입니다.
+            거북목{" "}
+            <S.PointText>
+              {data !== null && (data as { score: number }).score >= 70
+                ? "안전"
+                : data !== null && (data as { score: number }).score >= 30
+                ? "보통"
+                : "위험"}
+            </S.PointText>{" "}
+            단계입니다.
           </S.SubTitle1>
         </S.InspectionResultWrap>
 
