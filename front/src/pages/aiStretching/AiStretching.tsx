@@ -19,7 +19,8 @@ const AiStretching = () => {
   }, [handleDevices]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const socketUrl = "ws://localhost:8000";
+  //const socketUrl = "ws://localhost:8000";
+  const socketUrl = "wss://kdt-ai5-team04.elicecoding.com:5002";
   const socket = io(socketUrl as string);
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
