@@ -12,9 +12,6 @@ export interface MyChairReportProps {
   data?: number[];
 }
 const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
-  const yearData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  const weekData = [0, 0, 0, 0, 0, 0, 0];
-
   const [timeInfo, setTimeInfo] = useState<string>("year");
   const [data, setData] = useState<number[] | null>(null);
   const [total, setTotal] = useState<number | null>(null);
@@ -56,16 +53,20 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const getYearData = async () => {
     try {
       const res = await Api.get(`bodies/${user_id}/${year}`);
+      if (res.data.list.length) {
+        const newData = new Array(12).fill(0);
+        for (let obj of res.data.list) {
+          let month = Number(obj.month.split("-")[1]);
+          let duration = Number(obj.duration);
+          newData[month - 1] = duration;
+        }
 
-      for (let obj of res.data.list) {
-        const month = Number(obj.month.split("-")[1]);
-        yearData[month - 1] = Number(obj.duration);
+        let sum = newData.reduce((sum, v) => {
+          return sum + v;
+        }, 0);
+        setData(newData);
+        setTotal(sum);
       }
-      let sum = yearData.reduce((sum, v) => {
-        return sum + v;
-      }, 0);
-      setData(yearData);
-      setTotal(sum);
     } catch (err) {
       console.error(err);
     }
@@ -74,38 +75,41 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const getWeekData = async () => {
     try {
       const res = await Api.get(`bodies/${user_id}/${year}/48`);
-      for (let obj of res.data.list) {
-        let dayOfWeek = new Date(obj.date).getDay();
-        switch (dayOfWeek) {
-          // 일요일 ~ 월요일
-          case 0:
-            weekData[6] = Number(obj.duration);
-            break;
-          case 1:
-            weekData[0] = Number(obj.duration);
-            break;
-          case 2:
-            weekData[1] = Number(obj.duration);
-            break;
-          case 3:
-            weekData[2] = Number(obj.duration);
-            break;
-          case 4:
-            weekData[3] = Number(obj.duration);
-            break;
-          case 5:
-            weekData[4] = Number(obj.duration);
-            break;
-          case 6:
-            weekData[5] = Number(obj.duration);
-            break;
+      if (res.data.list.length) {
+        const newData = new Array(7).fill(0);
+        for (let obj of res.data.list) {
+          let dayOfWeek = new Date(obj.date).getDay();
+          switch (dayOfWeek) {
+            // 일요일 ~ 월요일
+            case 0:
+              newData[6] = Number(obj.duration);
+              break;
+            case 1:
+              newData[0] = Number(obj.duration);
+              break;
+            case 2:
+              newData[1] = Number(obj.duration);
+              break;
+            case 3:
+              newData[2] = Number(obj.duration);
+              break;
+            case 4:
+              newData[3] = Number(obj.duration);
+              break;
+            case 5:
+              newData[4] = Number(obj.duration);
+              break;
+            case 6:
+              newData[5] = Number(obj.duration);
+              break;
+          }
         }
+        let sum = newData.reduce((sum, v) => {
+          return sum + v;
+        }, 0);
+        setData(newData);
+        setTotal(sum);
       }
-      let sum = weekData.reduce((sum, v) => {
-        return sum + v;
-      }, 0);
-      setData(weekData);
-      setTotal(sum);
     } catch (err) {
       console.error(err);
     }
@@ -143,7 +147,11 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
               <MdKeyboardArrowRight size={32} />
             </S.ShiftButton>
             <div className="graph">
-              {data && <MyChairReportChart timeInfo={timeInfo} data={data} />}
+              {data ? (
+                <MyChairReportChart timeInfo={timeInfo} data={data} />
+              ) : (
+                <div>마이 체어 리포트 데이터가 없습니다.</div>
+              )}
             </div>
           </S.GraphBox>
         </div>
