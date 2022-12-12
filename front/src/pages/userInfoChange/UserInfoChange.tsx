@@ -65,7 +65,7 @@ const UserInfoChange = () => {
       }
     } catch (err) {
       alert(
-        "입력하신 password가 일치하지 않습니다.\n다시 한 번 확인해 주세요."
+        "입력하신 비밀번호가 일치하지 않습니다.\n다시 한 번 확인해 주세요."
       );
       setCurrentPw("");
     }
