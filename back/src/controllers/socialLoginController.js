@@ -77,14 +77,20 @@ var socialLoginController = /** @class */ (function () {
                         code = req.body.code;
                         REST_API_KEY = process.env.KAKAO_REST_API_KEY;
                         REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
+                        console.log("code: ", code);
+                        console.log("REST_API_KEY: ", REST_API_KEY);
+                        console.log("REDIRECT_URI: ", REDIRECT_URI);
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
+                        console.log("resultToken: start");
                         _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "POST",
                                 headers: {
                                     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
                                 },
                                 url: "https://kauth.kakao.com/oauth/token",
                                 data: makeFormData({
@@ -96,6 +102,7 @@ var socialLoginController = /** @class */ (function () {
                             })];
                     case 2:
                         resultToken = _a.apply(void 0, [_c.sent()]);
+                        console.log("resultToken: ", resultToken);
                         access_token = resultToken.access_token;
                         _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({

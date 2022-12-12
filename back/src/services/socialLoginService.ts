@@ -46,6 +46,12 @@ class socialLoginService {
     const password = access_token;
     const nickname = `${email}_kakao`;
     const provider = "kakao";
+
+    console.log("user_id: ", user_id);
+    console.log("password: ", password);
+    console.log("nickname: ", nickname);
+    console.log("provider: ", provider);
+
     const newUser = await User.create({
       user_id,
       email,

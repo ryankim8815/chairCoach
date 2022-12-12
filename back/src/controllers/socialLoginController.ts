@@ -40,12 +40,18 @@ class socialLoginController {
     const code = req.body.code;
     const REST_API_KEY = process.env.KAKAO_REST_API_KEY;
     const REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
+    console.log("code: ", code);
+    console.log("REST_API_KEY: ", REST_API_KEY);
+    console.log("REDIRECT_URI: ", REDIRECT_URI);
     try {
+      console.log("resultToken: start");
       const resultToken = nullPrototypeHandler(
         await axios({
           method: "POST",
           headers: {
             "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://kauth.kakao.com/oauth/token",
           data: makeFormData({
@@ -56,6 +62,7 @@ class socialLoginController {
           }),
         })
       );
+      console.log("resultToken: ", resultToken);
       ///////정보 받아오기///////
       const access_token = resultToken.access_token;
       const resultAccount = nullPrototypeHandler(

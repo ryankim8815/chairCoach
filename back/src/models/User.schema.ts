@@ -25,7 +25,7 @@ module.exports = (sequelize, db) => {
         allowNull: false,
       },
       provider: {
-        type: db.DataTypes.STRING(16),
+        type: db.DataTypes.STRING(255),
         allowNull: false,
       },
       created_at: {
