@@ -7,9 +7,20 @@ import { useParams } from "react-router-dom";
 import * as D from "./StretchingData";
 require("@tensorflow/tfjs");
 const AiStretching = () => {
+  const [start, setStart] = useState(false);
   const [step, setStep] = useState(0);
+  const [time, setTime] = useState(10);
   const { id } = useParams<string>();
   console.log(D.explains.beginner[step]);
+  const handleTimer = () => {
+    const timer = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(timer);
+      setTime(10);
+    }, 10000);
+  };
   return (
     <S.InspectionLayout>
       <S.MainCont>
@@ -22,6 +33,20 @@ const AiStretching = () => {
           <S.ImgCont>
             <img src={`${neckguideImg}`} alt="가이드 이미지" />
             <span>가이드 동영상</span>
+            <S.TimerBox>
+              {start === false ? (
+                <B.MiddleBtn
+                  onClick={() => {
+                    setStart(true);
+                    handleTimer();
+                  }}
+                >
+                  시작하기
+                </B.MiddleBtn>
+              ) : (
+                <span>{time}초</span>
+              )}
+            </S.TimerBox>
           </S.ImgCont>
 
           <div>

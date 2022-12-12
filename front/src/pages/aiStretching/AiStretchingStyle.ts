@@ -129,3 +129,19 @@ export const FinisheContent = styled.div`
     }
   }
 `;
+
+export const TimerBox = styled.div`
+  width: 240px;
+  height: 108px;
+  margin-top: 100px;
+  span {
+    display: block;
+    margin-top: 24px;
+    text-align: center;
+    color: #835dfe;
+    font-size: 60px;
+  }
+  button {
+    margin-left: 16px;
+  }
+`;
