@@ -23,7 +23,7 @@ import * as Api from "../../api/api";
 
 const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
 const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
-const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=338d7dc2b4538c92f43109046a6093ec&redirect_uri=http://localhost:3000/login/oauth2/code/kakao&response_type=code`;
+const KAKAO_AUTH_URL = process.env.REACT_APP_KAKAO_URL;
 
 const Login = () => {
   const navigate = useNavigate();
