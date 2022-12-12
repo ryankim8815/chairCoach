@@ -118,9 +118,9 @@ def process(img_in_folder, img_out_folder, csv_out_path):
 
 
 # train or test dataset load & save csv
-img_in_train_folder = os.path.join('./data/images', 'train')
-img_out_train_folder = 'image_out_train'
-csv_out_train_path = 'train_data_nor.csv'
+img_in_train_folder = os.path.join('./data/images', 'test')
+img_out_train_folder = 'image_out_test'
+csv_out_train_path = 'test_data_13pose.csv'
 process(img_in_train_folder, img_out_train_folder, csv_out_train_path)
 
 # test code

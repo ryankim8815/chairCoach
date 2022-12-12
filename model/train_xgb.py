@@ -15,8 +15,8 @@ def onehot(y):
     return y_result
 
 # load data
-train = loadtxt('./data/csvs/train_data_xy.csv', delimiter=",")
-test = loadtxt('./data/csvs/test_data._xycsv', delimiter=",")
+train = loadtxt('./data/csvs/train_data_13pose.csv', delimiter=",")
+test = loadtxt('./data/csvs/test_data_13pose.csv', delimiter=",")
 
 X_train = train[:, :-1]
 y_train_split = train[:, -1]
@@ -42,8 +42,8 @@ predicted_y = model.predict(X_test)
 accuracy = accuracy_score(expected_y, predicted_y)
 print("Accuracy: %.2f%%" % (accuracy * 100))
 
-actions = np.array(['hands_up', 'neck_down', 'neck_side'])
-actions[np.argmax(predicted_y[0])]
+# actions = np.array(['hands_up', 'neck_down', 'neck_side'])
+# actions[np.argmax(predicted_y[0])]
 
 # save model
-model.save_model("xgb_0.json")
+model.save_model("xgb_13pose.json")
