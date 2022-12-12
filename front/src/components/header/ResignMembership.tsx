@@ -34,17 +34,30 @@ const ResignMembership = ({
     e.preventDefault();
 
     if (!user) return;
-    try {
-      const res = await Api.delete(`users/${user.id}`, {
-        password: currentPw,
-      });
-      console.log(res);
+    // try {
+    //   const res = await Api.delete(`users/${user.id}`, {
+    //     password: currentPw,
+    //   });
+    //   console.log(res);
 
-      if (res.data.result) {
-        setUser(null);
+    //   if (res.data.result) {
+    //     setUser(null);
+    //     sessionStorage.removeItem("userToken");
+    //     navigate("/");
+    //   }
+    // } catch (err) {
+    //   alert(
+    //     "입력하신 비밀번호가 일치하지 않습니다.\n다시 한 번 확인해 주세요."
+    //   );
+    //   setCurrentPw("");
+    // }
+    try {
+      await Api.delete(`users/${user.id}`, {
+        password: currentPw,
+      }).then((res) => {
         sessionStorage.removeItem("userToken");
-        navigate("/");
-      }
+        window.location.replace("/");
+      });
     } catch (err) {
       alert(
         "입력하신 비밀번호가 일치하지 않습니다.\n다시 한 번 확인해 주세요."

@@ -84,26 +84,14 @@ async function del(endpoint: string, data?: any) {
   // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);
 
-  return axios.put(serverUrl + endpoint, bodyData, {
+  return axios.delete(serverUrl + endpoint, {
+    data: bodyData,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
     },
   });
 }
-
-// async function del(endpoint: string, data?: any) {
-//   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
-//   // 예시: {name: "Kim"} => {"name": "Kim"}
-//   const bodyData = JSON.stringify(data);
-
-//   return axios.delete(serverUrl + endpoint, bodyData, {
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: Bearer ${sessionStorage.getItem("userToken")},
-//     },
-//   });
-// }
 
 // 아래처럼 export한 후, import * as A 방식으로 가져오면,
 // A.get, A.post 로 쓸 수 있음.
