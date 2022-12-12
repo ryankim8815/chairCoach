@@ -28,6 +28,16 @@ neckRouter.post(
   neckController.neckCreate
 ); // 거북목 테스트 결과 기록
 
+neckRouter.get(
+  "/necks/:user_id/:year",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.userCurrentSchema,
+    Schemas.neckRecordsFindByYear
+  ),
+  neckController.neckRecordsYear
+); // 특정 유저의 거북목 기록 조회 - 월간
+
 export = neckRouter;
 
 /**
@@ -180,4 +190,53 @@ export = neckRouter;
  *                 message:
  *                   type: string
  *                   example: 거북목 결과 기록이 성공적으로 이뤄졌습니다.
+ */
+
+/**
+ * @swagger
+ * /necks/{user_id}/{year}:
+ *   get:
+ *     summary: 특정 유저의 거북목 기록 조회 - 특정연도의 월간 기록
+ *     description: 로그인한 사용자만 이용 가능합니다.
+ *     tags: ["neckRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *       - in: path
+ *         name: year
+ *         schema:
+ *           type: number
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: 해당 유저의 거북목 기록 조회가 성공적으로 이뤄졌습니다.
+ *                 list:
+ *                   type: object
+ *                   properties:
+ *                     month:
+ *                       type: string
+ *                     count:
+ *                       type: int
+ *                     avg:
+ *                       type: float
+ *                   example:
+ *                     - month: 2022-11
+ *                       count: 5
+ *                       avg: 55.5555
  */

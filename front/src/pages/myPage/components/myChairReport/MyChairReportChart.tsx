@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-
+import { MyChairReportProps } from "./MyChairReport";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -76,22 +76,42 @@ const month = [
 ];
 const day = ["월", "화", "수", "목", "금", "토", "일"];
 
-const data = {
-  labels: month,
+const weekChartData = {
+  labels: day,
   datasets: [
     {
       backgroundColor: "#835DFE",
-      data: [100, 200, 300, 200, 30, 380, 270, 20, 120, 100, 50, 70],
+      data: [0, 0, 0, 0, 0, 0, 0],
       borderRadius: 6,
       borderSkipped: false,
     },
   ],
 };
 
-const MyChairReportChart = () => {
+const yearChartData = {
+  labels: month,
+  datasets: [
+    {
+      backgroundColor: "#835DFE",
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      borderRadius: 6,
+      borderSkipped: false,
+    },
+  ],
+};
+const MyChairReportChart = ({ timeInfo, data }: MyChairReportProps) => {
+  let chartData = yearChartData;
+  if (timeInfo === "year") {
+    chartData = yearChartData;
+    chartData.datasets[0].data = data!;
+  } else if (timeInfo === "week") {
+    chartData = weekChartData;
+    chartData.datasets[0].data = data!;
+  }
+
   return (
     <Container>
-      <Bar options={options} data={data} />
+      <Bar options={options} data={chartData} />
     </Container>
   );
 };

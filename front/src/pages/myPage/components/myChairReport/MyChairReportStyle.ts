@@ -83,6 +83,12 @@ export const TotalTimeIconBox = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 export const TotalTimeNumber = styled(Text)`
   margin-left: 16px;
+`;
+
+export const ShiftButton = styled.button`
+  width: 32px;
+  height: 32px;
 `;

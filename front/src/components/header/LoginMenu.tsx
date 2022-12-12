@@ -17,7 +17,6 @@ const LoginMenu = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const handleCloseModal = (e: any) => {
-    console.log(e.target);
     if (menuRef.current) {
       const target = menuRef.current.contains(e.target);
 
@@ -56,14 +55,15 @@ const LoginMenu = () => {
     const resignMembership = window.confirm("정말로 탈퇴하시겠습니까?");
 
     if (resignMembership) {
-      if (user) {
-        const res = await Api.get(`users/${user.id}`);
+      if (!user) return;
 
-        if (res.data.result) {
-          setUser(null);
-          sessionStorage.removeItem("userToken");
-          navigate("/");
-        }
+      const res = await Api.delete(`users/${user.id}`); // 모달창 만들고 다시 수정하기
+      console.log(res);
+
+      if (res.data.result) {
+        setUser(null);
+        sessionStorage.removeItem("userToken");
+        navigate("/");
       }
     }
 

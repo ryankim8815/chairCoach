@@ -10,7 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-//import koreaData from "../../../assets/data-analysis/json/1990-2019_Korea.json";
+import { TurtleNeckResultProps } from "./TurtleNeckResult";
 
 ChartJS.register(
   CategoryScale,
@@ -26,6 +26,18 @@ const options = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
+    autocolors: false,
+    annotation: {
+      annotations: {
+        line1: {
+          type: "line",
+          yMin: 60,
+          yMax: 60,
+          borderColor: "rgb(255, 99, 132)",
+          borderWidth: 2,
+        },
+      },
+    },
     legend: {
       position: "top" as const,
       display: false,
@@ -84,14 +96,13 @@ const month = [
   "11월",
   "12월",
 ];
-const day = ["월", "화", "수", "목", "금", "토", "일"];
 
-const data = {
+const chartData = {
   labels: month,
   datasets: [
     {
-      label: "Korea",
-      data: [100, 200, 300, 200, 30, 380, 270, 20, 120, 100, 50, 70],
+      label: "평균 점수",
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       backgroundColor: "#835DFE",
       borderColor: "#835DFE",
       borderWidth: 1,
@@ -99,10 +110,11 @@ const data = {
   ],
 };
 
-function TurtleNeckResultChart() {
+function TurtleNeckResultChart({ data }: TurtleNeckResultProps) {
+  chartData.datasets[0].data = data!;
   return (
     <Container>
-      <Line options={options} data={data} />
+      <Line options={options} data={chartData} />
     </Container>
   );
 }

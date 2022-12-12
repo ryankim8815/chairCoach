@@ -18,7 +18,7 @@ const UserInfoChange = () => {
   const [newPw, setNewPw] = useState("");
   const [confirmNewPw, setConfirmNewPw] = useState("");
 
-  const [checkNickname, setCheckNickname] = useState(false); // 닉네임 중복체크버튼 클릭시 판별
+  const [checkNickname, setCheckNickname] = useState(false);
   const [newPwDisabled, setNewPwDisabled] = useState(true);
 
   const isNicknameValid = nickname ? RegExp.validateNickname(nickname) : false;
@@ -35,11 +35,17 @@ const UserInfoChange = () => {
       return;
     }
 
-    // 중복된 닉네임일 경우
-    const res = await Api.get(`signup/nickname/${nickname}`);
-    console.log(res);
-    console.log(res.status);
-    res.data.result ? setCheckNickname(true) : alert("중복된 닉네임 입니다.");
+    try {
+      const res = await Api.get(`signup/nickname/${nickname}`);
+
+      if (res.data.result) {
+        alert("사용가능한 닉네임 입니다.");
+        setCheckNickname(true);
+      }
+    } catch (err) {
+      alert("중복된 닉네임 입니다.");
+      setNickname("");
+    }
   };
 
   // 비밀번호 확인
@@ -48,19 +54,20 @@ const UserInfoChange = () => {
   ) => {
     e.preventDefault();
 
-    if (user) {
+    if (!user) return;
+    try {
       const res = await Api.post(`users/${user.id}/password`, {
         password: currentPw,
       });
 
       if (res.data.result) {
         setNewPwDisabled(false);
-      } else {
-        alert(
-          "입력하신 password가 일치하지 않습니다.\n다시 한 번 확인해 주세요."
-        );
-        setCurrentPw("");
       }
+    } catch (err) {
+      alert(
+        "입력하신 password가 일치하지 않습니다.\n다시 한 번 확인해 주세요."
+      );
+      setCurrentPw("");
     }
   };
 
@@ -69,11 +76,12 @@ const UserInfoChange = () => {
   ) => {
     e.preventDefault();
 
-    if (user) {
-      console.log(user.id);
+    if (!user) return;
+    console.log(user.id);
+
+    try {
       const res = await Api.put(`users/${user.id}`, {
         password: newPw,
-        currentPassword: currentPw,
         nickname: nickname,
       });
 
@@ -85,6 +93,8 @@ const UserInfoChange = () => {
         });
         navigate("/");
       }
+    } catch (err) {
+      alert("회원정보를 다시 수정해주세요.");
     }
   };
 

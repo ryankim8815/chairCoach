@@ -63,21 +63,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var neckService_1 = __importDefault(require("../services/neckService"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
+var logger = require("../config/logger");
 var userController = /** @class */ (function () {
     function userController() {
     }
     // GET: 전체 거북목 테스트 결과 조회 기능
     userController.neckResultList = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var allNecks, e_1;
+            var getAllNecks, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, neckService_1.default.getAllNecks()];
                     case 1:
-                        allNecks = _a.sent();
-                        return [2 /*return*/, res.status(200).json(allNecks)];
+                        getAllNecks = _a.sent();
+                        logger.info(getAllNecks);
+                        return [2 /*return*/, res.status(200).json(getAllNecks)];
                     case 2:
                         e_1 = _a.sent();
                         next(e_1);
@@ -90,7 +92,7 @@ var userController = /** @class */ (function () {
     // GET: 특정 유저의 거북목 테스트 결과 조회
     userController.neckResults = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, Necks, e_2;
+            var user_id, getNecks, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -101,8 +103,9 @@ var userController = /** @class */ (function () {
                         }
                         return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
                     case 1:
-                        Necks = _a.sent();
-                        return [2 /*return*/, res.status(200).json(Necks)];
+                        getNecks = _a.sent();
+                        logger.info(getNecks);
+                        return [2 /*return*/, res.status(200).json(getNecks)];
                     case 2:
                         e_2 = _a.sent();
                         return [3 /*break*/, 3];
@@ -114,7 +117,7 @@ var userController = /** @class */ (function () {
     // POST: 거북목 테스트 결과 기록
     userController.neckCreate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, filename, result, score, allUsers, e_3;
+            var user_id, filename, result, score, addNeck, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -133,11 +136,42 @@ var userController = /** @class */ (function () {
                                 filename: filename,
                             })];
                     case 1:
-                        allUsers = _a.sent();
-                        return [2 /*return*/, res.status(200).json(allUsers)];
+                        addNeck = _a.sent();
+                        logger.info(addNeck);
+                        return [2 /*return*/, res.status(200).json(addNeck)];
                     case 2:
                         e_3 = _a.sent();
                         next(e_3);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // GET: 특정 유저의 거북목 기록 조회 year
+    userController.neckRecordsYear = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user_id, year, getNecksByYear, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
+                        }
+                        year = req.params.year;
+                        return [4 /*yield*/, neckService_1.default.getNecksByYear({
+                                user_id: user_id,
+                                year: year,
+                            })];
+                    case 1:
+                        getNecksByYear = _a.sent();
+                        logger.info(getNecksByYear);
+                        return [2 /*return*/, res.status(200).json(getNecksByYear)];
+                    case 2:
+                        e_4 = _a.sent();
+                        next(e_4);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
