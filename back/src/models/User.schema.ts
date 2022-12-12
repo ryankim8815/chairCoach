@@ -20,12 +20,12 @@ module.exports = (sequelize, db) => {
         allowNull: false,
       },
       nickname: {
-        type: db.DataTypes.STRING(12), // 한글+숫자 2~8 | 영어+숫자 2~12
+        type: db.DataTypes.STRING(255), // 한글+숫자 2~8 | 영어+숫자 2~12
         unique: true,
         allowNull: false,
       },
       provider: {
-        type: db.DataTypes.STRING(255),
+        type: db.DataTypes.STRING(16),
         allowNull: false,
       },
       created_at: {

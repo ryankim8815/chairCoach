@@ -77,13 +77,9 @@ var socialLoginController = /** @class */ (function () {
                         code = req.body.code;
                         REST_API_KEY = process.env.KAKAO_REST_API_KEY;
                         REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
-                        console.log("code: ", code);
-                        console.log("REST_API_KEY: ", REST_API_KEY);
-                        console.log("REDIRECT_URI: ", REDIRECT_URI);
                         _c.label = 1;
                     case 1:
                         _c.trys.push([1, 5, , 6]);
-                        console.log("resultToken: start");
                         _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "POST",
@@ -102,7 +98,6 @@ var socialLoginController = /** @class */ (function () {
                             })];
                     case 2:
                         resultToken = _a.apply(void 0, [_c.sent()]);
-                        console.log("resultToken: ", resultToken);
                         access_token = resultToken.access_token;
                         _b = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
@@ -164,6 +159,8 @@ var socialLoginController = /** @class */ (function () {
                                 method: "GET",
                                 headers: {
                                     Authorization: "bearer ".concat(access_token),
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
                                 },
                                 url: "https://openapi.naver.com/v1/nid/me",
                             })];
@@ -220,7 +217,11 @@ var socialLoginController = /** @class */ (function () {
                         _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "POST",
-                                headers: { "content-type": "application/x-www-form-urlencoded" },
+                                headers: {
+                                    "content-type": "application/x-www-form-urlencoded",
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
+                                },
                                 data: qs_1.default.stringify(data),
                                 url: "https://oauth2.googleapis.com/token",
                             })];

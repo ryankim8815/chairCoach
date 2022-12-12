@@ -106,10 +106,6 @@ var socialLoginService = /** @class */ (function () {
                         password = access_token;
                         nickname = "".concat(email, "_kakao");
                         provider = "kakao";
-                        console.log("user_id: ", user_id);
-                        console.log("password: ", password);
-                        console.log("nickname: ", nickname);
-                        console.log("provider: ", provider);
                         return [4 /*yield*/, User_model_1.default.create({
                                 user_id: user_id,
                                 email: email,

@@ -40,11 +40,7 @@ class socialLoginController {
     const code = req.body.code;
     const REST_API_KEY = process.env.KAKAO_REST_API_KEY;
     const REDIRECT_URI = process.env.KAKAO_REDIRECT_URL;
-    console.log("code: ", code);
-    console.log("REST_API_KEY: ", REST_API_KEY);
-    console.log("REDIRECT_URI: ", REDIRECT_URI);
     try {
-      console.log("resultToken: start");
       const resultToken = nullPrototypeHandler(
         await axios({
           method: "POST",
@@ -62,7 +58,6 @@ class socialLoginController {
           }),
         })
       );
-      console.log("resultToken: ", resultToken);
       ///////정보 받아오기///////
       const access_token = resultToken.access_token;
       const resultAccount = nullPrototypeHandler(
@@ -119,6 +114,8 @@ class socialLoginController {
           method: "GET",
           headers: {
             Authorization: `bearer ${access_token}`,
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://openapi.naver.com/v1/nid/me",
         })
@@ -172,7 +169,11 @@ class socialLoginController {
       const resultToken = nullPrototypeHandler(
         await axios({
           method: "POST",
-          headers: { "content-type": "application/x-www-form-urlencoded" },
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
+          },
           data: qs.stringify(data),
           url: "https://oauth2.googleapis.com/token",
         })

@@ -18,12 +18,12 @@ module.exports = function (sequelize, db) {
             allowNull: false,
         },
         nickname: {
-            type: db.DataTypes.STRING(12),
+            type: db.DataTypes.STRING(255),
             unique: true,
             allowNull: false,
         },
         provider: {
-            type: db.DataTypes.STRING(255),
+            type: db.DataTypes.STRING(16),
             allowNull: false,
         },
         created_at: {
