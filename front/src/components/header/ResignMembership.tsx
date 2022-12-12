@@ -41,7 +41,7 @@ const ResignMembership = ({
       if (res.data.result) {
         setUser(null);
         sessionStorage.removeItem("userToken");
-        //window.location.replace("/");
+        window.location.replace("/");
       }
     } catch (err) {
       alert(
