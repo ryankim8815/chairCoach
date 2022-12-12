@@ -10,20 +10,22 @@ const InspectionResult = () => {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const [data, setData] = useState(null);
-  const [inclination, setInclination] = useState(0);
   useEffect(() => {
     Api.get(`necks/${user?.id}`).then((res) =>
       setData(res.data.list[res.data.list.length - 1])
     );
   }, []);
-  console.log(data);
+  console.log(`http://localhost:5003/${(data as any)?.filename}`);
   return (
     <S.ResultContainer>
       <div className="inner">
         <S.Title>거북목증후군 자가진단 테스트 결과</S.Title>
 
         <S.InspectionResultWrap>
-          <img src="" alt="사진들어갈 곳" />
+          <img
+            src={`http://localhost:5003/${(data as any)?.filename}`}
+            alt="사진들어갈 곳"
+          />
 
           <S.SubTitle1>
             목과 어깨의 각도가{" "}
@@ -37,8 +39,7 @@ const InspectionResult = () => {
               도
             </S.PointText>
             로,
-            <br />
-            거북목{" "}
+            <br />ㅁ 거북목{" "}
             <S.PointText>
               {data !== null && (data as { score: number }).score >= 70
                 ? "안전"

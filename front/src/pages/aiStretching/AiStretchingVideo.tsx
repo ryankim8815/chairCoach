@@ -70,7 +70,6 @@ const AiStretchingVideo = () => {
 
     requestAnimationFrame(() => detectWebCamFeed(detector));
   };
-  runMovenet();
 
   const drawResult = (
     pose: any,
