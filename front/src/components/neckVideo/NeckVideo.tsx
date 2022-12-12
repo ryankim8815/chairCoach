@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import * as S from "./NeckVideoStyle";
 import Webcam from "react-webcam";
@@ -7,27 +14,36 @@ import * as poseDetection from "@tensorflow-models/pose-detection";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import userState from "../../atoms/user";
-
 require("@tensorflow/tfjs");
 
-const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
-  const [deviceId, setDeviceId] = useState({});
+const NeckVideo = ({
+  time,
+  step,
+  setStep,
+  playInspection,
+}: {
+  time: number;
+  step: number;
+  setStep: Dispatch<SetStateAction<number>>;
+  playInspection: MutableRefObject<boolean>;
+}) => {
+  const [deviceId, setDeviceId] = useState();
   const [devices, setDevices] = useState([]);
   const handleDevices = React.useCallback(
+    //타입을 모르겠음..
     (mediaDevices: any) =>
       setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
     [setDevices]
   );
+
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
-  console.log("장치", deviceId);
   const user = useRecoilValue(userState);
   const today = new Date();
   const token = sessionStorage.getItem("userToken");
-  console.log(token);
   const currentTime =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    today.getHours() + "_" + today.getMinutes() + "_" + today.getSeconds();
   console.log(playInspection);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -37,15 +53,16 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
-      (webcamRef.current as any).video.readyState === 4
+      webcamRef.current.video !== null &&
+      webcamRef.current.video.readyState === 4
     ) {
-      const video = (webcamRef.current as any).video;
+      const video = webcamRef.current.video;
       const videoWidth = (webcamRef.current as any).video.videoWidth;
       const videoHeight = (webcamRef.current as any).video.videoHeight;
-      (webcamRef.current as any).video.width = videoWidth;
-      (webcamRef.current as any).video.height = videoHeight;
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
       const pose = await detector.estimatePoses(video, {});
-      let dataArr: any = [];
+      let dataArr = [];
       const dataToSend = pose[0].keypoints.slice(0, 11);
       if (dataToSend) {
         dataToSend.forEach((item) => {
@@ -54,16 +71,21 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
           dataArr.push(item.score);
         });
       }
-      // console.log(dataToSend[2].y - dataToSend[6].y);
+      //4y=>120
+      // console.log(dataToSend[4].x, dataToSend[6].x);
       const getInclination = () => {
         (dataToSend[3].score as number) > (dataToSend[4].score as number)
           ? setInclination(
-              (dataToSend[3].y - dataToSend[5].y) /
-                (dataToSend[3].x - dataToSend[5].y)
+              Math.abs(
+                (dataToSend[3].y - dataToSend[5].y) /
+                  (dataToSend[3].x - dataToSend[5].x)
+              )
             )
           : setInclination(
-              (dataToSend[4].y - dataToSend[6].y) /
-                (dataToSend[4].x - dataToSend[6].y)
+              Math.abs(
+                (dataToSend[4].y - dataToSend[6].y) /
+                  (dataToSend[4].x - dataToSend[6].x)
+              )
             );
       };
       if (playInspection.current === true) {
@@ -77,11 +99,12 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       });
     }
   };
-  console.log(inclination);
+
   const takePhoto = async () => {
+    if (webcamRef.current === null) return;
     const width = 640;
     const height = 480;
-    let video: HTMLVideoElement | null = (webcamRef.current as any).video;
+    let video: HTMLVideoElement | null = webcamRef.current.video;
     let photo: HTMLCanvasElement | null = canvasRef.current;
     //null일 경우 대비해 return 처리
     if (!photo || !video) return;
@@ -97,13 +120,14 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       photo.toBlob(async (blob) => {
         if (!blob) return;
         resolve(
-          new File([blob], currentTime, {
-            type: "image/jpeg",
+          new File([blob], `${currentTime}.jpg`, {
+            type: "image/png",
           })
         );
       });
     });
     console.log(file);
+    //이미지를 formdata로 보내면 잘못된 type, file로 보내면 파일 제한 조건 확인.
     const formData = new FormData();
     formData.append("file", file);
     console.log(formData);
@@ -113,9 +137,9 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       method: "post",
       url: `http://localhost:5003/necks/${user?.id}`,
       data: {
-        file: formData,
-        result: inclination,
-        score: 80,
+        file: file,
+        result: inclination.toFixed(2),
+        score: 70,
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -132,10 +156,8 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
       poseDetection.SupportedModels.MoveNet,
       detectorConfig
     );
-
     requestAnimationFrame(() => detectWebCamFeed(detector));
   };
-  runMovenet();
   const drawResult = (
     pose: any,
     video: any,
@@ -149,7 +171,7 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
     drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
-
+  console.log(inclination);
   useEffect(() => {
     if (step === 0) return;
     takePhoto();
@@ -158,6 +180,12 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
     if (!webcamRef.current?.video) return;
 
     webcamRef.current.video.addEventListener("loadeddata", (e) => {
+      const video = e.target as HTMLVideoElement;
+      if (video.readyState === 4) {
+        runMovenet();
+      }
+    });
+    webcamRef.current.video.removeEventListener("loadeddata", (e) => {
       const video = e.target as HTMLVideoElement;
       if (video.readyState === 4) {
         runMovenet();
@@ -178,7 +206,7 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
             </button>
           ))}
         </S.BtnWrap>
-        <Webcam ref={webcamRef} videoConstraints={{ deviceId }} audio={false} />
+        <Webcam ref={webcamRef} videoConstraints={deviceId} audio={false} />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>
