@@ -15,30 +15,19 @@ import { useSetRecoilState } from "recoil";
 import userState from "./../../atoms/user";
 import * as Api from "../../api/api";
 
-// interface LoginData {
-//   email: string;
-//   password: string;
-//   [key: string]: string;
-// }
-
-const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
-const KAKAO_AUTH_URL = process.env.REACT_APP_KAKAO_URL;
-
 const Login = () => {
   const navigate = useNavigate();
   const setUser = useSetRecoilState(userState);
-
+  const KAKAO_AUTH_URL = process.env.REACT_APP_KAKAO_URL;
+  const naverUrl = process.env.REACT_APP_NAVER_URL;
+  const googleUrl = process.env.REACT_APP_GOOGLE;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [warning, setWaring] = useState("");
-
   const isEmailValid = RegExp.validateEmail(email);
   const isPwdValid = RegExp.validatePwd(password);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!email.length) {
       setWaring("email");
       return;
@@ -49,7 +38,6 @@ const Login = () => {
       setWaring("invalidInput");
       return;
     }
-
     try {
       const res = await Api.post("signin", {
         email: email,
@@ -75,10 +63,6 @@ const Login = () => {
       setUser(null);
     }
   };
-
-  const naverUrl = process.env.REACT_APP_NAVER_URL;
-  const googleUrl = process.env.REACT_APP_GOOGLE_URL;
-
   return (
     <LoginLayout>
       <div className="inner">
