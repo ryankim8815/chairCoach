@@ -71,18 +71,21 @@ const NeckVideo = ({
           dataArr.push(item.score);
         });
       }
-      // console.log(dataToSend[2].y - dataToSend[6].y);
+      //4y=>120
+      // console.log(dataToSend[4].x, dataToSend[6].x);
       const getInclination = () => {
         (dataToSend[3].score as number) > (dataToSend[4].score as number)
           ? setInclination(
               Math.abs(
                 (dataToSend[3].y - dataToSend[5].y) /
-                  (dataToSend[3].x - dataToSend[5].y)
+                  (dataToSend[3].x - dataToSend[5].x)
               )
             )
           : setInclination(
-              (dataToSend[4].y - dataToSend[6].y) /
-                (dataToSend[4].x - dataToSend[6].y)
+              Math.abs(
+                (dataToSend[4].y - dataToSend[6].y) /
+                  (dataToSend[4].x - dataToSend[6].x)
+              )
             );
       };
       if (playInspection.current === true) {
@@ -96,7 +99,7 @@ const NeckVideo = ({
       });
     }
   };
-  console.log(inclination.toFixed(2));
+
   const takePhoto = async () => {
     if (webcamRef.current === null) return;
     const width = 640;
