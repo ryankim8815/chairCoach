@@ -19,7 +19,7 @@ const Stretching = () => {
         <ul>
           <S.StretchingItem
             onClick={() => {
-              navigate("/stretchingguide/0");
+              navigate("/stretchingguide/beginner");
             }}
           >
             <dl>
@@ -38,7 +38,7 @@ const Stretching = () => {
 
           <S.StretchingItem
             onClick={() => {
-              navigate("/stretchingguide/1");
+              navigate("/stretchingguide/middleclass");
             }}
             className={user ? "" : "lock"}
           >
@@ -58,7 +58,7 @@ const Stretching = () => {
 
           <S.StretchingItem
             onClick={() => {
-              navigate("/stretchingguide/2");
+              navigate("/stretchingguide/highclass");
             }}
             className={user ? "" : "lock"}
           >
