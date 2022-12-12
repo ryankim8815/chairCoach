@@ -15,7 +15,9 @@ class socialLoginService {
   //// 카카오 간편로그인 가입 & 로그인
   static async kakao({ email, access_token }) {
     // email 확인
+    console.log("가즈아", email, access_token);
     const checkEmail = await User.findByEmail({ email });
+    console.log("통과됌.", checkEmail);
     if (checkEmail.length !== 0 && checkEmail[0].provider !== "kakao")
       throw ClientError.unauthorized(
         "kakao 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요."

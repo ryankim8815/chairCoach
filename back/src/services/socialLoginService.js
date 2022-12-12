@@ -82,9 +82,13 @@ var socialLoginService = /** @class */ (function () {
             var checkEmail, thisUser, secretKey, token, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
+                    case 0:
+                        // email 확인
+                        console.log("가즈아", email, access_token);
+                        return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
                     case 1:
                         checkEmail = _b.sent();
+                        console.log("통과됌.", checkEmail);
                         if (checkEmail.length !== 0 && checkEmail[0].provider !== "kakao")
                             throw ClientError.unauthorized("kakao 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         if (checkEmail.length == 1 && checkEmail[0].provider == "kakao") {
