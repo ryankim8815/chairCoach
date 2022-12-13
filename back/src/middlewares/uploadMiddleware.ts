@@ -1,12 +1,16 @@
 import multer from "multer";
 import * as express from "express";
 import { multerError } from "../responses/errorResponse";
+const logger = require("../config/logger");
 
 const fileFilter = (
   req: express.Request,
   file: Express.Multer.File,
   cb: any
 ) => {
+  console.log("file.mimetype: ", file.mimetype); //
+  logger.info(file.mimetype); //
+
   if (
     file.mimetype == "image/png" ||
     file.mimetype == "image/jpg" ||

@@ -39,7 +39,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var multer_1 = __importDefault(require("multer"));
+var logger = require("../config/logger");
 var fileFilter = function (req, file, cb) {
+    console.log("file.mimetype: ", file.mimetype); //
+    logger.info(file.mimetype); //
     if (file.mimetype == "image/png" ||
         file.mimetype == "image/jpg" ||
         file.mimetype == "image/jpeg" ||
