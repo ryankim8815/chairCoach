@@ -58,6 +58,8 @@ app.use(socialLoginRouter_1.default);
 app.use(neckRouter_1.default);
 app.use(bodyRouter_1.default);
 app.use(swagger_1.default);
+// uploads
+app.use(express_1.default.static("uploads"));
 // errorHandlers
 app.use(errorMiddleware_1.errorHandler);
 app.get("/", function (req, res) {

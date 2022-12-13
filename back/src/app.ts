@@ -21,6 +21,9 @@ app.use(neckRouter);
 app.use(bodyRouter);
 app.use(swagger);
 
+// uploads
+app.use(express.static("uploads"));
+
 // errorHandlers
 app.use(errorHandler);
 

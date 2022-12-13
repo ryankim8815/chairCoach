@@ -39,10 +39,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var multer_1 = __importDefault(require("multer"));
-var logger = require("../config/logger");
+var errorResponse_1 = require("../responses/errorResponse");
 var fileFilter = function (req, file, cb) {
-    console.log("file.mimetype: ", file.mimetype); //
-    logger.info(file.mimetype); //
     if (file.mimetype == "image/png" ||
         file.mimetype == "image/jpg" ||
         file.mimetype == "image/jpeg" ||
@@ -78,8 +76,7 @@ var uploadMiddleware = function (req, res, next) { return __awaiter(void 0, void
     return __generator(this, function (_a) {
         uploadFile(req, res, function (err) {
             if (err) {
-                // next(multerError);
-                next(err);
+                next(errorResponse_1.multerError);
             }
             next();
         });
