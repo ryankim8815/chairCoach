@@ -10,12 +10,12 @@ const sequelize = new Sequelize(database, username, password, {
   host: host,
   dialect: "mysql",
   logging: true,
+  timezone: "+09:00",
   dialectOptions: {
     charset: "utf8mb4",
     timestamps: false, // true: createAt, updateAt
-    // dateStrings: true,
-    // typeCast: true,
-    timezone: "+09:00",
+    dateStrings: true,
+    typeCast: true,
   },
 });
 
