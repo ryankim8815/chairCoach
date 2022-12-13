@@ -120,7 +120,7 @@ const NeckVideo = ({
       photo.toBlob(async (blob) => {
         if (!blob) return;
         resolve(
-          new File([blob], `${currentTime}.jpg`, {
+          new File([blob], `${currentTime}.png`, {
             type: "image/png",
           })
         );

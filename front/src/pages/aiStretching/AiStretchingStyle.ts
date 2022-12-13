@@ -78,6 +78,8 @@ export const ImgCont = styled.div`
 
   video {
     width: 240px;
+    height: 240px;
+    object-fit: contain;
   }
 
   span {
@@ -134,6 +136,7 @@ export const TimerBox = styled.div`
   width: 240px;
   height: 108px;
   margin-top: 100px;
+  border: 2px solid #835dfe;
   span {
     display: block;
     margin-top: 24px;

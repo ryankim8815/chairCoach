@@ -34,8 +34,6 @@ const AiStretching = () => {
         </S.GuideTextWrap>
         <S.MiddleContent>
           <S.ImgCont>
-            {/* <img src={`${neckguideImg}`} alt="가이드 이미지" /> */}
-            {/* autoplay를하면.. 쭉가야함... 50초,100초,130초.. 시작하기도 없애고.. 그대신 사이트 들어가기전에 5초후에 시작됩니다 이런거로 로딩스피너 돌려서 하는게 좋을수도.. */}
             <video key={`/videos/${step}/${start}.mp4`} autoPlay={start}>
               <source src={`/videos/${step}.mp4`} type="video/mp4" />
             </video>
