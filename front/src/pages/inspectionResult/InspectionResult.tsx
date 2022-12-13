@@ -10,12 +10,14 @@ const InspectionResult = () => {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const [data, setData] = useState(null);
+  console.log(user?.id);
   useEffect(() => {
     Api.get(`necks/${user?.id}`).then((res) =>
       setData(res.data.list[res.data.list.length - 1])
     );
   }, []);
-  console.log(`http://localhost:5003/${(data as any)?.filename}`);
+  console.log(data);
+  console.log("이미지url", `http://localhost:5003/${(data as any)?.filename}`);
   return (
     <S.ResultContainer>
       <div className="inner">
@@ -23,7 +25,10 @@ const InspectionResult = () => {
 
         <S.InspectionResultWrap>
           <img
-            src={`http://localhost:5003/${(data as any)?.filename}`}
+            // src={`http://localhost:5003/${(data as any)?.filename}`}
+            src={`http://kdt-ai5-team04.elicecoding.com:5003/${
+              (data as any)?.filename
+            }`}
             alt="사진들어갈 곳"
           />
 
@@ -39,7 +44,7 @@ const InspectionResult = () => {
               도
             </S.PointText>
             로,
-            <br />ㅁ 거북목{" "}
+            <br /> 거북목{" "}
             <S.PointText>
               {data !== null && (data as { score: number }).score >= 70
                 ? "안전"

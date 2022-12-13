@@ -76,7 +76,7 @@ export const ImgCont = styled.div`
   top: 0;
   left: -260px;
 
-  img {
+  video {
     width: 240px;
   }
 
