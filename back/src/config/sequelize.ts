@@ -15,7 +15,7 @@ const sequelize = new Sequelize(database, username, password, {
     timestamps: false, // true: createAt, updateAt
     // dateStrings: true,
     // typeCast: true,
-    timezone: "+09:00",
+    // timezone: "+09:00",
   },
 });
 

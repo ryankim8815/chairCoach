@@ -6,7 +6,7 @@ module.exports = (sequelize, db) => {
         // type: DataTypes.CHAR(36),   // mysql for UUID
         type: db.DataTypes.UUID,
         defaultValue: db.DataTypes.UUIDV4, // auto generator
-        unique: true,
+        // unique: true,
         primaryKey: true,
         allowNull: false,
       },

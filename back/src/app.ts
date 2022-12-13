@@ -8,6 +8,7 @@ import neckRouter from "./routers/neckRouter";
 import bodyRouter from "./routers/bodyRouter";
 import swagger from "./utils/swagger";
 import { errorHandler } from "./middlewares/errorMiddleware";
+const logger = require("./config/logger");
 
 const app = express();
 app.use(cors());
@@ -28,15 +29,28 @@ app.get("/", (req, res) => {
 });
 
 // sequelize.sync({ force: false, alter: true });
-// db.sequelize.sync({ force: true });
-db.sequelize.sync({ alter: true });
+db.sequelize
+  // .sync({ force: true })
+  // .sync({ alter: true })
+  .sync({ alter: { drop: false } })
+  .then(() => {
+    logger.info("sequelize.sync: success");
+    console.log("성공");
+  })
+  .catch((error) => {
+    logger.error("sequelize.sync:", error);
+    console.error("실패:", error);
+  });
+// db.sequelize.sync({ alter: true });
 // db.sequelize.sync({ alter: { drop: false } });
 
 (async () => {
   try {
     await db.sequelize.authenticate();
+    logger.info("sequelize.authenticate: success");
     console.log("데이터베이스 연결 성공");
   } catch (error) {
+    logger.error("sequelize.authenticate:", error);
     console.error("데이터베이스 오류:", error);
   }
 })();

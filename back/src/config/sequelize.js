@@ -12,10 +12,10 @@ var sequelize = new sequelize_1.Sequelize(database, username, password, {
     logging: true,
     dialectOptions: {
         charset: "utf8mb4",
-        timestamps: false,
+        timestamps: false, // true: createAt, updateAt
         // dateStrings: true,
         // typeCast: true,
-        timezone: "+09:00",
+        // timezone: "+09:00",
     },
 });
 exports.default = sequelize;

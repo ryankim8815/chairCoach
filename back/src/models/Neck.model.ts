@@ -35,6 +35,7 @@ class Neck {
       `
         SELECT * FROM necks 
         WHERE user_id = ?
+        ORDER BY created_at
           `,
       {
         type: db.QueryTypes.SELECT,
