@@ -33,7 +33,7 @@ print(y_test.shape)
 
 # fit model no training data
 model = XGBClassifier(n_estimators=500, learning_rate=0.2, max_depth=4, random_state=32)
-model.fit(X_test, y_test)
+model.fit(X_train, y_train)
 print(model)
 
 expected_y = y_test
