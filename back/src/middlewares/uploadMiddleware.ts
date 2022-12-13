@@ -49,7 +49,8 @@ const uploadMiddleware = async (
 ) => {
   uploadFile(req, res, function (err: any) {
     if (err) {
-      next(multerError);
+      // next(multerError);
+      next(err);
     }
     next();
   });
