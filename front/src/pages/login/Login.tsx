@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
-
 import logo from "../../assets/img/logo.svg";
 
-import * as S from "../../styles/BtnStyle";
+import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
-import { LoginLayout, TopCon, BottomCon } from "./LoginStyle";
+import * as S from "./LoginStyle";
 import { useState } from "react";
 import Naver from "../../components/naverLogin/Naver";
 import NaverLogin from "../../components/naverLogin/Naver";
@@ -26,7 +24,6 @@ const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
 const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
 
 const Login = () => {
-  const navigate = useNavigate();
   const setUser = useSetRecoilState(userState);
 
   const [email, setEmail] = useState("");
@@ -67,7 +64,7 @@ const Login = () => {
           nickname: res.data.nickname,
         };
         setUser(newUser);
-        navigate("/");
+        window.location.replace("/");
       }
     } catch (err) {
       console.log(err);
@@ -80,9 +77,9 @@ const Login = () => {
   const googleUrl = process.env.REACT_APP_GOOGLE_URL;
 
   return (
-    <LoginLayout>
+    <S.LoginLayout>
       <div className="inner">
-        <TopCon>
+        <S.TopCon>
           <img src={logo} alt="chair coach" />
           <form onSubmit={handleSubmit}>
             <F.InputText
@@ -114,11 +111,11 @@ const Login = () => {
               </F.WarningText>
             )}
 
-            <S.LoginBtn type="submit">로그인</S.LoginBtn>
+            <B.LoginBtn type="submit">로그인</B.LoginBtn>
           </form>
-        </TopCon>
+        </S.TopCon>
 
-        <BottomCon>
+        <S.BottomCon>
           <p>간편 로그인</p>
           <ul>
             <li>
@@ -134,9 +131,9 @@ const Login = () => {
               <span>네이버</span>
             </li>
           </ul>
-        </BottomCon>
+        </S.BottomCon>
       </div>
-    </LoginLayout>
+    </S.LoginLayout>
   );
 };
 

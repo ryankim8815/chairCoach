@@ -77,8 +77,6 @@ const UserInfoChange = () => {
     e.preventDefault();
 
     if (!user) return;
-    console.log(user.id);
-
     try {
       const res = await Api.put(`users/${user.id}`, {
         password: newPw,
@@ -91,7 +89,7 @@ const UserInfoChange = () => {
           id: user.id,
           nickname: nickname,
         });
-        navigate("/");
+        window.location.replace("/");
       }
     } catch (err) {
       alert("회원정보를 다시 수정해주세요.");

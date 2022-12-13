@@ -79,7 +79,7 @@ async function put(endpoint: string, data?: PostPayload) {
 //   });
 // }
 
-async function del(endpoint: string, data?: any) {
+async function del(endpoint: string, data?: PostPayload) {
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);

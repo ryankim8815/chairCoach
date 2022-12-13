@@ -45,7 +45,7 @@ const LoginMenu = () => {
     setUser(null);
     sessionStorage.removeItem("userToken");
     setIsMenuVisible(!isMenuVisible);
-    navigate("/");
+    window.location.replace("/");
   };
 
   return (

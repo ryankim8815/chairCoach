@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { useNavigate } from "react-router-dom";
 
 import { userState } from "./../../atoms/user";
 import * as Api from "../../api/api";
@@ -36,9 +35,11 @@ const ResignMembership = ({
       const res = await Api.delete(`users/${user.id}`, {
         password: currentPw,
       });
-      console.log(res);
 
       if (res.data.result) {
+        alert(
+          "탈퇴가 성공적으로 이뤄졌습니다.\n30일 후 회원 정보가 삭제됩니다."
+        );
         setUser(null);
         sessionStorage.removeItem("userToken");
         window.location.replace("/");

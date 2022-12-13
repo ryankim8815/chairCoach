@@ -1,6 +1,7 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import notification1 from "../../assets/img/notification1.jpg";
 import notification2 from "../../assets/img/notification2.jpg";
+import notification3 from "../../assets/img/notification3.jpg";
 import notification4 from "../../assets/img/notification4.jpg";
 
 const imgWrap = css`
@@ -14,13 +15,19 @@ const imgWrap = css`
 export const NotificationLayout = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
   ${({ theme }) => theme.common.flexCenter};
-  background: linear-gradient(108.15deg, #8C63FF 1.69%, #936CFF 8.1%, #AC8EFF 33.75%, #D1C2FD 96.37%);
-  color:#fff;
+  background: linear-gradient(
+    108.15deg,
+    #8c63ff 1.69%,
+    #936cff 8.1%,
+    #ac8eff 33.75%,
+    #d1c2fd 96.37%
+  );
+  color: #fff;
   .inner {
     padding: 120px 0;
   }
 
-  button{
+  button {
     display: block;
     margin: 64px auto 0 auto;
   }
@@ -31,7 +38,7 @@ export const TitleText = styled.h3`
   line-height: 1.25;
   text-align: center;
 
-  span{
+  span {
     font-weight: 700;
   }
 `;
@@ -70,7 +77,7 @@ export const Image2 = styled.div`
 `;
 export const Image3 = styled.div`
   ${imgWrap}
-  background: url(${notification1}) no-repeat center;
+  background: url(${notification3}) no-repeat center;
   background-size: cover;
 `;
 export const Image4 = styled.div`
