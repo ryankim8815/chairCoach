@@ -145,6 +145,8 @@ export const TimerBox = styled.div`
     font-size: 60px;
   }
   button {
-    margin-left: 16px;
+    width: 240px;
+    height: 108px;
+    font-size: 32px;
   }
 `;

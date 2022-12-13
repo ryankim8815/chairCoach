@@ -11,7 +11,7 @@ const AiStretching = () => {
   const [start, setStart] = useState(false);
   const [step, setStep] = useState(0);
   const [time, setTime] = useState(10);
-  const { id } = useParams<string>();
+  const { id } = useParams<{ id: keyof typeof D.explains }>();
   console.log(D.explains.beginner[step]);
   const handleTimer = () => {
     const timer = setInterval(() => {
@@ -24,13 +24,14 @@ const AiStretching = () => {
       setStart(false);
     }, 10000);
   };
-  console.log(start);
+  console.log(id);
   return (
     <S.InspectionLayout>
       <S.MainCont>
         <S.GuideTextWrap>
-          {/* //여기서 어케 넣어줘야하냐.. 머리굳었나 */}
-          {/* <p>{D.explains[id][step]}</p> */}
+          <p style={{ whiteSpace: "pre-line" }}>
+            {id !== undefined && D.explains[id][step]}
+          </p>
         </S.GuideTextWrap>
         <S.MiddleContent>
           <S.ImgCont>
