@@ -54,4 +54,4 @@ print("Accuracy: %.2f%%" % (accuracy * 100))
 
 
 # save model
-# model.save_model('xgb_mv2_over.json')
+xgb_model.save_model('xgb_mv2_params.json')
