@@ -5,14 +5,16 @@ import * as B from "../../styles/BtnStyle";
 import AiStretchingVideo from "./AiStretchingVideo";
 import { useParams } from "react-router-dom";
 import * as D from "./StretchingData";
+import { useEffect } from "react";
 
 require("@tensorflow/tfjs");
 const AiStretching = () => {
   const [start, setStart] = useState(false);
   const [step, setStep] = useState(0);
   const [time, setTime] = useState(10);
+  const [theEnd, setTheEnd] = useState(false);
   const { id } = useParams<{ id: keyof typeof D.explains }>();
-  console.log(D.explains.beginner[step]);
+  console.log(id !== undefined && D.stepOfStretching[id]);
   const handleTimer = () => {
     const timer = setInterval(() => {
       setTime((prev) => prev - 1);
@@ -24,7 +26,13 @@ const AiStretching = () => {
       setStart(false);
     }, 10000);
   };
-  console.log(id);
+  console.log(theEnd);
+  useEffect(() => {
+    if (id !== undefined && step === D.stepOfStretching[id]) {
+      setTheEnd(true);
+    }
+  }, [step]);
+
   return (
     <S.InspectionLayout>
       <S.MainCont>
