@@ -7,16 +7,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as D from "./StretchingData";
 import { useEffect } from "react";
 import completionIcon from "../../assets/img/completion_icon.png";
-
+import * as Api from "../../api/api";
+import { useRecoilValue } from "recoil";
+import userState from "../../atoms/user";
 require("@tensorflow/tfjs");
 const AiStretching = () => {
+  const [bodyId, setBodyId] = useState("");
   const navigate = useNavigate();
   const [start, setStart] = useState(false);
   const [step, setStep] = useState(0);
   const [time, setTime] = useState(10);
   const [theEnd, setTheEnd] = useState(false);
   const { id } = useParams<{ id: keyof typeof D.explains }>();
-
+  const user = useRecoilValue(userState);
   const handleTimer = () => {
     const timer = setInterval(() => {
       setTime((prev) => prev - 1);
@@ -31,8 +34,16 @@ const AiStretching = () => {
   useEffect(() => {
     if (id !== undefined && step === D.stepOfStretching[id]) {
       setTheEnd(true);
+      Api.patch(`bodies/${user?.id}/terminating`, {
+        body_id: bodyId,
+      });
     }
   }, [step]);
+  useEffect(() => {
+    Api.post(`bodies/${user?.id}/recording`, {
+      tag: id as string,
+    }).then((res) => setBodyId(res.data.body_id));
+  }, []);
   return (
     <S.InspectionLayout>
       <S.MainCont>
