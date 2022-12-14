@@ -19,9 +19,10 @@ const AiStretchingVideo = () => {
   }, [handleDevices]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  //const socketUrl = "ws://localhost:8000";
-  //   const socketUrl = "wss://kdt-ai5-team04.elicecoding.com:5002";
-  //   const socket = io(socketUrl as string);
+  // const socketUrl = "ws://localhost:5001";
+  const socketUrl = "wss://kdt-ai5-team04.elicecoding.com:5002";
+  const socket = io(socketUrl as string);
+  let temp: string;
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -47,11 +48,21 @@ const AiStretchingVideo = () => {
       const dataArr2: { [name: string]: number[] } = {};
       dataArr2.xy_coord = dataArr;
 
-      //   socket.emit("model", dataArr2);
-      //   socket.on("model", (message) => {
-      //     console.log(message);
-      //   });
-
+      
+      
+      socket.emit("model", dataArr2);
+      socket.on("model", (message) => {
+        if (message == temp) {
+          // console.log("1", message == temp);
+          return;
+        };
+        // console.log(message == temp);
+        temp = message;
+        // console.log(temp);
+        // console.log(message);
+        console.log(temp);
+      });
+      
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
       requestAnimationFrame(() => {
         detectWebCamFeed(detector);
