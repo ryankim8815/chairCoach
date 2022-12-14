@@ -10,7 +10,7 @@ def load_model():
     model = XGBClassifier()
     
     # load weight
-    model.load_model('xgb_13pose.json')
+    model.load_model('./weights/xgb_mv3_3.json')
     return model
 
 def extract_coord(kpts, steps):
@@ -20,7 +20,7 @@ def extract_coord(kpts, steps):
         x_coord, y_coord = kpts[steps * kid], kpts[steps * kid + 1]
         if steps == 3:
             conf = kpts[steps * kid + 2]
-            if conf < 0.5:
+            if conf < 0.3:
                 x_coord, y_coord = 0.0, 0.0
                 temp.extend([x_coord, y_coord])
                 continue
@@ -41,8 +41,8 @@ class ChairCouchModel:
         self.model = load_model()
     
     def predict(self, kpts):
-        coords = extract_coord(kpts[0], 3)
-        kpts = [kpts_change(coords, 640, 480)]
-        pred = self.model.predict(kpts)
+        coords = [extract_coord(kpts[0], 3)]
+        # kpts = [kpts_change(coords, 640, 480)]
+        pred = self.model.predict(coords)
         action = self.actions[np.argmax(pred)]
         return action

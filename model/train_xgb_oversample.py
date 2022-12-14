@@ -6,10 +6,10 @@ from sklearn.model_selection import train_test_split, KFold, cross_val_score
 
 
 # load csv
-X_train = np.loadtxt('./data/csvs/csv_2/train_data_mv2_22.csv', delimiter=",", skiprows=1) 
-y_train = np.loadtxt('./data/csvs/csv_2/train_y_mv2_22.csv', delimiter=",", skiprows=1)
-X_test = np.loadtxt('./data/csvs/csv_2/test_data_mv2_22.csv', delimiter=",", skiprows=1)
-y_test = np.loadtxt('./data/csvs/csv_2/test_y_mv2_22.csv', delimiter=",", skiprows=1)
+X_train = np.loadtxt('./data/csvs/csv_3/train_data_mv3_22.csv', delimiter=",", skiprows=1) 
+y_train = np.loadtxt('./data/csvs/csv_3/train_y_mv3_22.csv', delimiter=",", skiprows=1)
+X_test = np.loadtxt('./data/csvs/csv_3/test_data_mv3_22.csv', delimiter=",", skiprows=1)
+y_test = np.loadtxt('./data/csvs/csv_3/test_y_mv3_22.csv', delimiter=",", skiprows=1)
 
 # over sampling using SMOTE
 smote = SMOTE(random_state=11)
@@ -19,9 +19,9 @@ X_train_over, y_train_over = smote.fit_resample(X_train, y_train)
 X_train, X_val, y_train, y_val = train_test_split(X_train_over, y_train_over, test_size=0.10)
 
 # train with XGBClassifier
-model = XGBClassifier(n_estimators=100, learning_rate=0.16, max_depth=4, random_state=32)
-# xgb_model = model.fit(X_train, y_train, early_stopping_rounds=100, eval_metric='logloss', eval_set=[(X_val, y_val)], verbose=True)
-xgb_model = model.fit(X_train_over, y_train_over, eval_metric='logloss', verbose=True)
+model = XGBClassifier(n_estimators=500, learning_rate=0.18, max_depth=4, random_state=32)
+xgb_model = model.fit(X_train, y_train, early_stopping_rounds=100, eval_metric='logloss', eval_set=[(X_val, y_val)], verbose=2)
+# xgb_model = model.fit(X_train_over, y_train_over, eval_metric='logloss', verbose=True)
 print(xgb_model)
 
 
@@ -54,4 +54,4 @@ print("Accuracy: %.2f%%" % (accuracy * 100))
 
 
 # save model
-xgb_model.save_model('xgb_mv2_params.json')
+xgb_model.save_model('xgb_mv3_params.json')
