@@ -9,6 +9,8 @@ import bodyRouter from "./routers/bodyRouter";
 import swagger from "./utils/swagger";
 import { errorHandler } from "./middlewares/errorMiddleware";
 const logger = require("./config/logger");
+const client = require("./discord/index");
+// const discordCommands = require("./discord/deploy-commands");
 
 const app = express();
 app.use(cors());
@@ -21,6 +23,9 @@ app.use(neckRouter);
 app.use(bodyRouter);
 app.use(swagger);
 
+// uploads
+app.use(express.static("uploads"));
+
 // errorHandlers
 app.use(errorHandler);
 
@@ -31,15 +36,16 @@ app.get("/", (req, res) => {
 // sequelize.sync({ force: false, alter: true });
 db.sequelize
   // .sync({ force: true })
+  .sync({ force: false })
   // .sync({ alter: true })
-  .sync({ alter: { drop: false } })
+  // .sync({ alter: { drop: false } })
   .then(() => {
     logger.info("sequelize.sync: success");
-    console.log("성공");
+    console.log("DB 테스트 성공");
   })
   .catch((error) => {
     logger.error("sequelize.sync:", error);
-    console.error("실패:", error);
+    console.error("DB 테스트 실패:", error);
   });
 // db.sequelize.sync({ alter: true });
 // db.sequelize.sync({ alter: { drop: false } });

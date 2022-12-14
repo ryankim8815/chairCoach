@@ -24,9 +24,9 @@ export const explains = {
 export const totalTime = [50, 100, 130];
 // 기초, 중급, 심화 단계별 동작 갯수입니다. 마찬가지로 파람스로 뽑아주세요
 export const stepOfStretching = {
-  beginner: 4,
-  middleclass: 9,
-  highclass: 12,
+  beginner: 5,
+  middleclass: 10,
+  highclass: 13,
 };
 // 민지님이 이미지로 할까요 라고 하셔서 일단 만들어놨습니다. 파람스, 내부 state로 뽑아먹어야합니다. 0에는 기초 단계 이미지 5개, 1에는 중급 10개, 2에는 심화 15개입니다.
 export const stretchingImage = {

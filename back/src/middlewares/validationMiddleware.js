@@ -137,8 +137,7 @@ var validateBodyMulter = function (bodySchema, multerSchema) {
                         return [3 /*break*/, 4];
                     case 3:
                         e_4 = _a.sent();
-                        // next(typeError);
-                        next("validateBodyMulter: , ".concat(e_4));
+                        next(errorResponse_1.typeError);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -171,8 +170,7 @@ var validateBodyParamsMulter = function (bodySchema, paramsSchema, multerSchema)
                         return [3 /*break*/, 5];
                     case 4:
                         e_5 = _a.sent();
-                        // next(typeError);
-                        next("validateBodyParamsMulter: , ".concat(e_5));
+                        next(errorResponse_1.typeError);
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

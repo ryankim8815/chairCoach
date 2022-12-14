@@ -68,8 +68,7 @@ const validateBodyMulter = (
       await multerSchema.validateAsync(file);
       next();
     } catch (e) {
-      // next(typeError);
-      next(`validateBodyMulter: , ${e}`);
+      next(typeError);
     }
   };
 const validateBodyParamsMulter = (
@@ -91,8 +90,7 @@ const validateBodyParamsMulter = (
       await multerSchema.validateAsync(file);
       next();
     } catch (e) {
-      // next(typeError);
-      next(`validateBodyParamsMulter: , ${e}`);
+      next(typeError);
     }
   };
 

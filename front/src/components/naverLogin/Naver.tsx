@@ -11,15 +11,9 @@ const NaverLogin = () => {
     const params = new URL(window.location.href).searchParams;
     const code = params.get("code");
     const state = params.get("state");
-    console.log("네이버코드", code);
-    console.log("보낼스테이트", state);
-    console.log("req", {
-      code: code,
-    });
     const res = await Api.post("naver", {
       code: code,
     });
-    console.log("res", res);
     const userToken = res.data.token;
     sessionStorage.setItem("userToken", userToken);
     const newUser = {

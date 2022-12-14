@@ -47,7 +47,6 @@ const AiStretchingVideo = () => {
       const dataArr2: { [name: string]: number[] } = {};
       dataArr2.xy_coord = dataArr;
 
-      // console.log(JSON.stringify(dataArr))
       //   socket.emit("model", dataArr2);
       //   socket.on("model", (message) => {
       //     console.log(message);

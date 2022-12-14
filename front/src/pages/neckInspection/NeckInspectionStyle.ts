@@ -7,6 +7,12 @@ const positionCenter = css`
   transform: translate(-50%, -50%);
 `;
 
+const positionLeftCenter = css`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
 export const InspectionLayout = styled.div`
   position: fixed;
   width: 100%;
@@ -25,7 +31,7 @@ export const GuideTextWrap = styled.div`
   margin-bottom: 24px;
   height: 60px;
 
-  p {
+  & > p {
     text-align: center;
     font-size: ${({ theme }) => theme.fontSize.subTitle};
     color: #fff;
@@ -35,6 +41,35 @@ export const GuideTextWrap = styled.div`
 
 export const MiddleContent = styled.div`
   position: relative;
+`;
+
+export const ReadyGuide = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+
+  & > img {
+    ${positionLeftCenter}
+    bottom: 20px;
+    height: 340px;
+  }
+
+  & > p {
+    ${positionLeftCenter}
+    bottom: 12px;
+    padding: 12px;
+    width: 480px;
+    border-radius: 2px;
+    background: rgba(225, 225, 225, 0.7);
+    backdrop-filter: saturate(180%) blur(5px);
+    font-weight: 500;
+    color: ${({ theme }) => theme.colors.main};
+    text-align: center;
+  }
 `;
 
 export const ImgCont = styled.div`

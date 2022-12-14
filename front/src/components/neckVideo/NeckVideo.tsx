@@ -44,7 +44,6 @@ const NeckVideo = ({
   const token = sessionStorage.getItem("userToken");
   const currentTime =
     today.getHours() + "_" + today.getMinutes() + "_" + today.getSeconds();
-  console.log(playInspection);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [inclination, setInclination] = useState(0);
@@ -71,8 +70,6 @@ const NeckVideo = ({
           dataArr.push(item.score);
         });
       }
-      //4y=>120
-      // console.log(dataToSend[4].x, dataToSend[6].x);
       const getInclination = () => {
         (dataToSend[3].score as number) > (dataToSend[4].score as number)
           ? setInclination(
@@ -126,16 +123,12 @@ const NeckVideo = ({
         );
       });
     });
-    console.log(file);
     //이미지를 formdata로 보내면 잘못된 type, file로 보내면 파일 제한 조건 확인.
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
-    let info = formData.get("file");
-    console.log(info);
     const res = await axios({
       method: "post",
-      url: `http://localhost:5003/necks/${user?.id}`,
+      url: `https://localhost:5000/necks/${user?.id}`,
       data: {
         file: file,
         result: inclination.toFixed(2),
@@ -146,7 +139,6 @@ const NeckVideo = ({
         Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
       },
     });
-    console.log(res);
   };
   const runMovenet = async () => {
     const detectorConfig = {
@@ -171,7 +163,6 @@ const NeckVideo = ({
     drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
     drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
-  console.log(inclination);
   useEffect(() => {
     if (step === 0) return;
     takePhoto();
@@ -198,7 +189,6 @@ const NeckVideo = ({
         <S.BtnWrap>
           {devices.map((device, key) => (
             <button
-              style={{ backgroundColor: "#403E56" }}
               key={(device as any).deviceId}
               onClick={() => setDeviceId((device as any).deviceId)}
             >

@@ -11,11 +11,9 @@ const KakaoAuth = () => {
   const getPermissonCode = async () => {
     const params = new URL(window.location.href).searchParams;
     const code: string | null = params.get("code");
-    console.log("코드", code);
     const res = await Api.post("kakao", {
       code: code,
     });
-    console.log("res", res);
     const userToken = res.data.token;
     sessionStorage.setItem("userToken", userToken);
     const newUser = {

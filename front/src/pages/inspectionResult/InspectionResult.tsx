@@ -10,14 +10,11 @@ const InspectionResult = () => {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
   const [data, setData] = useState(null);
-  console.log(user?.id);
   useEffect(() => {
     Api.get(`necks/${user?.id}`).then((res) =>
       setData(res.data.list[res.data.list.length - 1])
     );
   }, []);
-  console.log(data);
-  console.log("이미지url", `http://localhost:5003/${(data as any)?.filename}`);
   return (
     <S.ResultContainer>
       <div className="inner">
