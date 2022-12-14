@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./MyChairReportStyle";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import {
+  MdElectricalServices,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+} from "react-icons/md";
 import { BsFillClockFill } from "react-icons/bs";
 import MyChairReportChart from "./MyChairReportChart";
 import * as Api from "../../../../api/api";
@@ -60,7 +64,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         const newData = new Array(12).fill(0);
         for (let obj of res.data.list) {
           let month = Number(obj.month.split("-")[1]);
-          let duration = Number(obj.duration);
+          let duration = Math.round(Number(obj.duration) / 60);
           newData[month - 1] = duration;
         }
 
@@ -70,6 +74,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         setData(newData);
         setTotal(sum);
       }
+      console.log(res);
     } catch (err) {
       console.error(err);
     }
@@ -82,29 +87,12 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         const newData = new Array(7).fill(0);
         for (let obj of res.data.list) {
           let dayOfWeek = new Date(obj.date).getDay();
-          switch (dayOfWeek) {
-            // 일요일 ~ 월요일
-            case 0:
-              newData[6] = Number(obj.duration);
-              break;
-            case 1:
-              newData[0] = Number(obj.duration);
-              break;
-            case 2:
-              newData[1] = Number(obj.duration);
-              break;
-            case 3:
-              newData[2] = Number(obj.duration);
-              break;
-            case 4:
-              newData[3] = Number(obj.duration);
-              break;
-            case 5:
-              newData[4] = Number(obj.duration);
-              break;
-            case 6:
-              newData[5] = Number(obj.duration);
-              break;
+          let totalMiniute = Math.round(Number(obj.duration) / 60);
+          for (let i = 0; i < newData.length; i++) {
+            if (dayOfWeek === 0) newData[6] = totalMiniute;
+            else {
+              newData[i] = newData[i - 1] = totalMiniute;
+            }
           }
         }
         let sum = newData.reduce((sum, v) => {
@@ -113,6 +101,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         setData(newData);
         setTotal(sum);
       }
+      console.log(res);
     } catch (err) {
       console.error(err);
     }

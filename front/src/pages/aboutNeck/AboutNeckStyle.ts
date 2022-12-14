@@ -11,7 +11,7 @@ export const WholePage = styled.div`
     ${({ theme }) => theme.common.inner};
     padding: 120px 0;
 
-    h2{
+    h2 {
       font-size: ${({ theme }) => theme.fontSize.title};
       margin-bottom: 40px;
     }
@@ -25,17 +25,17 @@ export const SubTitle = styled.h3`
 
 export const Text = styled.p`
   margin-top: 20px;
-  line-height:1.25;
-  span{
+  line-height: 1.25;
+  span {
     font-weight: 700;
   }
 `;
 
 // 거북목 증후군에 대해 알아보아요.
 export const neckInfoBox = styled.div`
-  h2{
+  h2 {
     text-align: center;
-    span{
+    span {
       font-weight: 700;
     }
   }
@@ -48,7 +48,7 @@ export const MainContents = styled.div`
   background-color: ${({ theme }) => theme.colors.mainMoreLight};
   overflow: hidden;
 
-  & > div:nth-child(2n) > div:first-of-type{
+  & > div:nth-child(2n) > div:first-of-type {
     order: 2;
   }
 `;
@@ -59,7 +59,7 @@ export const Content = styled.div`
   width: 100%;
   height: 264px;
 
-  & > div:last-of-type{
+  & > div:last-of-type {
     padding: 40px;
   }
 `;
@@ -79,17 +79,17 @@ export const SizedImg3 = styled.div`
 
 export const TextList = styled.ul`
   margin-bottom: 4px;
-  li{
+  li {
     position: relative;
     padding-left: 12px;
 
-    &+li{
+    & + li {
       margin-top: 4px;
     }
   }
 
-  li::before{
-    content: '';
+  li::before {
+    content: "";
     position: absolute;
     left: 0;
     top: 50%;
@@ -104,7 +104,7 @@ export const TextList = styled.ul`
 // 거북목 진단
 export const ChioceBox = styled.div`
   margin-top: 120px;
-  h2{
+  h2 {
     font-weight: 700;
   }
 `;
@@ -120,9 +120,9 @@ export const ChoiceBtn = styled.div`
   border-radius: 4px;
   background: #fff;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 
-  p{
+  p {
     margin-top: 20px;
     line-height: 1.25;
   }
