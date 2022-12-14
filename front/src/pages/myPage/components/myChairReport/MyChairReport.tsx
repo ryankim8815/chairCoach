@@ -16,16 +16,19 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const [data, setData] = useState<number[] | null>(null);
   const [total, setTotal] = useState<number | null>(null);
   const [curYear, setCurYear] = useState<number>(year!);
+  const [isSelected, SetIsSelected] = useState<number[]>([1, 0]);
   //const [curWeek, setCurWeek] = useState<number | null>(null);
 
   const onClickYearButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setTimeInfo("year");
+    SetIsSelected([1, 0]);
     getYearData();
   };
   const onClickWeekButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setTimeInfo("week");
+    SetIsSelected([0, 1]);
     getWeekData();
   };
 
@@ -74,7 +77,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
 
   const getWeekData = async () => {
     try {
-      const res = await Api.get(`bodies/${user_id}/${year}/48`);
+      const res = await Api.get(`bodies/${user_id}/${year}/50`);
       if (res.data.list.length) {
         const newData = new Array(7).fill(0);
         for (let obj of res.data.list) {
@@ -122,8 +125,18 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
       <S.ContentLayout>
         <div className="inner">
           <S.InfoBox>
-            <S.SelectButton onClick={onClickYearButton}>Year</S.SelectButton>
-            <S.SelectButton onClick={onClickWeekButton}>Week</S.SelectButton>
+            <S.SelectButton
+              onClick={onClickYearButton}
+              className={isSelected[0] ? "active" : ""}
+            >
+              Year
+            </S.SelectButton>
+            <S.SelectButton
+              onClick={onClickWeekButton}
+              className={isSelected[1] ? "active" : ""}
+            >
+              Week
+            </S.SelectButton>
             <div className="totalTime">
               <S.Text fontSize={16} fontWeight={500}>
                 총 운동시간(분)

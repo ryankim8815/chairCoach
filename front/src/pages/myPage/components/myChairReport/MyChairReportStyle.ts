@@ -45,7 +45,8 @@ export const SelectButton = styled.button`
 
   transition: all 0.3s;
 
-  &:hover {
+  &:hover,
+  &.active {
     border: none;
     background: ${({ theme }) => theme.colors.main};
     color: #fff;

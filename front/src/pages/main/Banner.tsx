@@ -11,11 +11,12 @@ const Banner = forwardRef<HTMLDivElement>((props, ref) => {
       <div className="inner">
         <S.BannerContent ref={ref}>
           <h2>
-            오늘도 근무 중인 당신에게,<br />
+            오늘도 근무 중인 당신에게,
+            <br />
             <span>CHAIR COACH</span>
           </h2>
           <B.MiddleBtn hover="true" onClick={() => navigate("/chaircoach")}>
-              체어코치 하러가기
+            체어코치 하러가기
           </B.MiddleBtn>
         </S.BannerContent>
       </div>
