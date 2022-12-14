@@ -128,7 +128,7 @@ const NeckVideo = ({
     formData.append("file", file);
     const res = await axios({
       method: "post",
-      url: `https://localhost:5000/necks/${user?.id}`,
+      url: `https://kdt-ai5-team04.elicecoding.com/necks/${user?.id}`,
       data: {
         file: file,
         result: inclination.toFixed(2),
