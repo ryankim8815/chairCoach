@@ -88,11 +88,10 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         for (let obj of res.data.list) {
           let dayOfWeek = new Date(obj.date).getDay();
           let totalMiniute = Math.round(Number(obj.duration) / 60);
-          for (let i = 0; i < newData.length; i++) {
-            if (dayOfWeek === 0) newData[6] = totalMiniute;
-            else {
-              newData[i] = newData[i - 1] = totalMiniute;
-            }
+
+          if (dayOfWeek === 0) newData[6] = totalMiniute;
+          else {
+            newData[dayOfWeek - 1] = totalMiniute;
           }
         }
         let sum = newData.reduce((sum, v) => {
