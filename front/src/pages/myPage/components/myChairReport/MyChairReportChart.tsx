@@ -76,42 +76,39 @@ const month = [
 ];
 const day = ["월", "화", "수", "목", "금", "토", "일"];
 
-const weekChartData = {
-  labels: day,
-  datasets: [
-    {
-      backgroundColor: "#835DFE",
-      data: [0, 0, 0, 0, 0, 0, 0],
-      borderRadius: 6,
-      borderSkipped: false,
-    },
-  ],
-};
-
-const yearChartData = {
-  labels: month,
-  datasets: [
-    {
-      backgroundColor: "#835DFE",
-      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      borderRadius: 6,
-      borderSkipped: false,
-    },
-  ],
-};
 const MyChairReportChart = ({ timeInfo, data }: MyChairReportProps) => {
-  let chartData = yearChartData;
+  let chartData = null;
   if (timeInfo === "year") {
-    chartData = yearChartData;
-    chartData.datasets[0].data = data!;
+    // chartData = yearChartData;
+    // chartData.datasets[0].data = data!;
+    chartData = {
+      labels: month,
+      datasets: [
+        {
+          backgroundColor: "#835DFE",
+          data: data,
+          borderRadius: 6,
+          borderSkipped: false,
+        },
+      ],
+    };
   } else if (timeInfo === "week") {
-    chartData = weekChartData;
-    chartData.datasets[0].data = data!;
+    chartData = {
+      labels: day,
+      datasets: [
+        {
+          backgroundColor: "#835DFE",
+          data: data,
+          borderRadius: 6,
+          borderSkipped: false,
+        },
+      ],
+    };
   }
 
   return (
     <Container>
-      <Bar options={options} data={chartData} />
+      {chartData && <Bar options={options} data={chartData} />}
     </Container>
   );
 };

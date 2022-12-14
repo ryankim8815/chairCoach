@@ -25,11 +25,11 @@ const animationAfter = css`
 `;
 
 export const MainLayout = styled.main`
-  section + section{
+  section + section {
     padding: 120px 0;
   }
 
-  section .inner{
+  section .inner {
     ${({ theme }) => theme.common.inner};
   }
 `;
@@ -40,7 +40,7 @@ export const TitleText = styled.h2<MainStyledProps>`
   line-height: ${({ lineHeight }) => lineHeight && 1.25};
   text-align: center;
 
-  span{
+  span {
     font-weight: 700;
   }
 
@@ -61,7 +61,7 @@ export const MainBanner = styled.section`
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     top: 0;
@@ -72,7 +72,7 @@ export const MainBanner = styled.section`
     background-size: contain;
   }
 
-  .inner{
+  .inner {
     position: relative;
     ${({ theme }) => theme.common.inner};
   }
@@ -82,46 +82,53 @@ export const BannerContent = styled.div`
   margin-top: 160px;
   text-align: right;
 
-  h2{
+  h2 {
     margin-bottom: 64px;
     font-weight: 500;
     font-size: 40px;
     line-height: 1.25;
 
-    transition: all .5s;
+    transition: all 0.5s;
     ${animationBefore}
 
-    span{
+    span {
       font-weight: 700;
     }
   }
 
-  button{
-    transition: all .5s .2s;
+  button {
+    transition: all 0.5s 0.2s;
     ${animationBefore}
   }
 
-  &.active{
-    h2, button{
+  &.active {
+    h2,
+    button {
       ${animationAfter}
     }
   }
 `;
-
 
 // Introduce
 export const IntroduceLayout = styled.section`
-  h2{ transition: all .5s;}
-  & > div{ transition: all .5s .2s; }
-  p{ transition: all .5s .8s; }
+  h2 {
+    transition: all 0.5s;
+  }
+  & > div {
+    transition: all 0.5s 0.2s;
+  }
+  p {
+    transition: all 0.5s 0.8s;
+  }
 
-  &.active{
-    h2, &>div, p{
+  &.active {
+    h2,
+    & > div,
+    p {
       ${animationAfter}
     }
   }
 `;
-
 
 export const IntroduceImage = styled.div`
   width: 100%;
@@ -137,7 +144,7 @@ export const IntroduceText = styled.p`
   font-size: 20px;
   line-height: 1.25;
   text-align: center;
-  span{
+  span {
     font-weight: 700;
   }
 
@@ -147,15 +154,14 @@ export const IntroduceText = styled.p`
 // ImportantText
 export const ImportantTextLayout = styled.section`
   background: ${({ theme }) => theme.colors.greyBtnBg};
-  h2{
+  h2 {
     ${animationAfter}
   }
 `;
 
-
 // ExplainLayout
 export const ExplainLayout = styled.section`
-  .inner > div + div{
+  .inner > div + div {
     margin-top: 240px;
   }
 `;
@@ -165,45 +171,44 @@ export const ExplainContent = styled.div`
   grid-template-columns: repeat(2, 1fr);
   height: 400px;
 
-  & > div:first-of-type{
+  & > div:first-of-type {
     padding-top: 40px;
   }
 
-  &:nth-child(2n){
-    & > div:first-of-type{
+  &:nth-child(2n) {
+    & > div:first-of-type {
       order: 2;
       justify-items: end;
       text-align: right;
     }
   }
 
-
   // 애니메이션 설정
-  & > div:first-of-type{
+  & > div:first-of-type {
     ${animationBefore}
     transition: all .5s;
   }
 
-  & > div:last-of-type{
+  & > div:last-of-type {
     ${animationBefore}
     transition: all .5s .3s;
   }
-  
-  &.active{
-    & > div{
+
+  &.active {
+    & > div {
       ${animationAfter}
     }
-  } 
+  }
 `;
 
 export const ExplainTextWrap = styled.div`
-  p{
+  p {
     font-weight: 700;
     font-size: 20px;
     color: ${({ theme }) => theme.colors.main};
   }
 
-  h3{
+  h3 {
     margin-top: 20px;
     font-size: 28px;
     line-height: 1.25;
@@ -231,36 +236,35 @@ export const ExplainImage3 = styled.div`
   ${explainImg}
 `;
 
-
 // SelectLayout
 export const SelectLayout = styled.section`
   background: ${({ theme }) => theme.colors.mainLight};
 
   // 애니메이션
-  .inner{
-    h2{
-      transition: all .5s;
+  .inner {
+    h2 {
+      transition: all 0.5s;
     }
-    & > div{
-      .stretching{
+    & > div {
+      .stretching {
         ${animationBefore}
         transition: all .5s .3s;
       }
-    
-      .neck{
+
+      .neck {
         ${animationBefore}
         transition: all .5s .6s;
       }
     }
   }
 
-  &.active .inner{
-    & > div > div, h2{
+  &.active .inner {
+    & > div > div,
+    h2 {
       ${animationAfter}
     }
   }
 `;
-
 
 export const SelectContent = styled.div`
   display: grid;
@@ -277,37 +281,37 @@ export const SelectWrap = styled.div`
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
-  
-  &.stretching{
+
+  &.stretching {
     background: url(${stretching}) no-repeat top center;
     background-size: contain;
   }
 
-  &.neck{
+  &.neck {
     background: url(${neck}) no-repeat top center;
     background-size: contain;
   }
 
-  dl{
+  dl {
     padding: 32px 40px;
     border-radius: 4px;
     background: #fff;
-    transition: all .3s;
+    transition: all 0.3s;
 
-    dt{
+    dt {
       margin-bottom: 20px;
-      h3{
+      h3 {
         font-weight: 500;
         font-size: ${({ theme }) => theme.fontSize.subTitle};
       }
     }
 
-    dd p{
+    dd p {
       line-height: 1.25;
     }
   }
 
-  &:hover dl{
+  &:hover dl {
     background: ${({ theme }) => theme.colors.main};
     color: #fff;
     transform: translateY(-12px);
