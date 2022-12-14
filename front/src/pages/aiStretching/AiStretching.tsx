@@ -33,6 +33,11 @@ const AiStretching = () => {
   };
 
   useEffect(() => {
+    if (user === null) {
+      if (id !== undefined && step === D.stepOfStretching[id]) {
+        setTheEnd(true);
+      }
+    }
     if (user !== null) {
       if (id !== undefined && step === D.stepOfStretching[id]) {
         setTheEnd(true);
