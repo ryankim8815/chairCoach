@@ -31,19 +31,22 @@ const AiStretching = () => {
       setStart(false);
     }, 10000);
   };
-  useEffect(() => {
-    if (id !== undefined && step === D.stepOfStretching[id]) {
-      setTheEnd(true);
-      Api.patch(`bodies/${user?.id}/terminating`, {
-        body_id: bodyId,
-      });
-    }
-  }, [step]);
-  useEffect(() => {
-    Api.post(`bodies/${user?.id}/recording`, {
-      tag: id as string,
-    }).then((res) => setBodyId(res.data.body_id));
-  }, []);
+  if (user !== null) {
+    useEffect(() => {
+      if (id !== undefined && step === D.stepOfStretching[id]) {
+        setTheEnd(true);
+        Api.patch(`bodies/${user?.id}/terminating`, {
+          body_id: bodyId,
+        });
+      }
+    }, [step]);
+    useEffect(() => {
+      Api.post(`bodies/${user?.id}/recording`, {
+        tag: id as string,
+      }).then((res) => setBodyId(res.data.body_id));
+    }, []);
+  }
+
   return (
     <S.InspectionLayout>
       <S.MainCont>
