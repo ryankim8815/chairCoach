@@ -11,15 +11,9 @@ const GoogleLogin = () => {
     const code = params.get("code");
     if (code === null) return;
     const decoded = decodeURIComponent(code);
-    console.log("decoded", decoded);
-    console.log("googlecode", code);
-    console.log("req", {
-      code: code,
-    });
     const res = await Api.post("google", {
       code: code,
     });
-    console.log("res", res);
     const userToken = res.data.token;
     sessionStorage.setItem("userToken", userToken);
     const newUser = {

@@ -58,7 +58,6 @@ const LoginMenu = () => {
       if (!user) return;
 
       const res = await Api.delete(`users/${user.id}`); // 모달창 만들고 다시 수정하기
-      console.log(res);
 
       if (res.data.result) {
         setUser(null);

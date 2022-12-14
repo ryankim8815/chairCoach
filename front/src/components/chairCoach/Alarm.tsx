@@ -64,7 +64,6 @@ const Alarm = () => {
                   alert: !isChecked,
                   timer: 15,
                 });
-                console.log(res);
               }}
             />
             <label htmlFor="toggle">

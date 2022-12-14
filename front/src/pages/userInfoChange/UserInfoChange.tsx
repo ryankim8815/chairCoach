@@ -77,8 +77,6 @@ const UserInfoChange = () => {
     e.preventDefault();
 
     if (!user) return;
-    console.log(user.id);
-
     try {
       const res = await Api.put(`users/${user.id}`, {
         password: newPw,

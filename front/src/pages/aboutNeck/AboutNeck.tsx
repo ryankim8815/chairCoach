@@ -1,18 +1,15 @@
 import React from "react";
-import { useRecoilValue } from 'recoil';
-import userState from './../../atoms/user';
+import { useRecoilValue } from "recoil";
+import userState from "./../../atoms/user";
 import * as S from "./AboutNeckStyle";
 
 import { useNavigate } from "react-router-dom";
 const AboutNeck = () => {
   const navigate = useNavigate();
   const user = useRecoilValue(userState);
-
-  console.log(user);
-
   return (
     <S.WholePage>
-      <div className='inner'>
+      <div className="inner">
         <S.neckInfoBox>
           <h2>
             <span>거북목 증후군</span>에 대해 알아보아요.
@@ -20,7 +17,7 @@ const AboutNeck = () => {
 
           <S.MainContents>
             <S.Content>
-              <S.SizedImg1/>
+              <S.SizedImg1 />
               <div>
                 <S.SubTitle>거북목에는 다양한 원인이 있어요!</S.SubTitle>
                 <S.Text>
@@ -36,7 +33,7 @@ const AboutNeck = () => {
             </S.Content>
 
             <S.Content>
-              <S.SizedImg2/>
+              <S.SizedImg2 />
               <div>
                 <S.SubTitle>미리 예방해 보아요!</S.SubTitle>
                 <S.Text>
@@ -48,13 +45,14 @@ const AboutNeck = () => {
             </S.Content>
 
             <S.Content>
-              <S.SizedImg3/>
+              <S.SizedImg3 />
               <div>
                 <S.SubTitle>가장 중요한 예방법은 바른자세!</S.SubTitle>
                 <S.Text>
                   간단한 스트레칭과 운동만으로도 거북목 예방이 가능해요!
                   <br />
-                  여러분의 Personal Coach <span>CHAIR COACH</span>가 도와드릴게요!
+                  여러분의 Personal Coach <span>CHAIR COACH</span>가
+                  도와드릴게요!
                 </S.Text>
               </div>
             </S.Content>
@@ -79,7 +77,7 @@ const AboutNeck = () => {
             </S.ChoiceBtn>
 
             <S.ChoiceBtn
-              className={user ? '' : 'lock'}
+              className={user ? "" : "lock"}
               onClick={() => {
                 navigate("/neckguide");
               }}

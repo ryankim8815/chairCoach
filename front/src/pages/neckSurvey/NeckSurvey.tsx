@@ -23,7 +23,6 @@ const NeckSurvey = () => {
       });
     }
   }, [page]);
-  console.log(page);
   return (
     <S.SurveyContainer>
       <div className="inner">

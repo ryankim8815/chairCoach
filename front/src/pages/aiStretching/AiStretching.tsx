@@ -28,13 +28,11 @@ const AiStretching = () => {
       setStart(false);
     }, 10000);
   };
-  console.log(theEnd);
   useEffect(() => {
     if (id !== undefined && step === D.stepOfStretching[id]) {
       setTheEnd(true);
     }
   }, [step]);
-  console.log(theEnd);
   return (
     <S.InspectionLayout>
       <S.MainCont>
@@ -45,7 +43,7 @@ const AiStretching = () => {
         </S.GuideTextWrap>
         <S.MiddleContent>
           <S.ImgCont>
-            <video key={`/videos/${step}/${start}.mp4`} autoPlay={start}>
+            <video key={`/videos/${step}/${start}.mp4`} autoPlay={start} muted>
               <source src={`/videos/${step}.mp4`} type="video/mp4" />
             </video>
             <span>가이드 동영상</span>

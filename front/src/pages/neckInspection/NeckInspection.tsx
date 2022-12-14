@@ -12,9 +12,6 @@ const NeckInspection = () => {
   const [time, setTime] = useState(5);
   const [step, setStep] = useState(0);
   const playInspection = useRef(false);
-
-  console.log(step);
-
   const startTimer = () => {
     setStep((prev) => prev + 1);
     let timer = setInterval(() => {

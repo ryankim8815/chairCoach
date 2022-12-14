@@ -43,7 +43,6 @@ const Login = () => {
         email: email,
         password: password,
       });
-      console.log(res.data.user_id);
 
       if (res.data.result) {
         // 토큰 저장
