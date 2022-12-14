@@ -10,6 +10,7 @@ const SurveyResult = () => {
   const location = useLocation();
   const point: number = location.state.pointRef;
   const navigate = useNavigate();
+  const userToken = sessionStorage.getItem("userToken");
   return (
     <S.ResultContainer>
       <div className="inner">
@@ -49,7 +50,11 @@ const SurveyResult = () => {
             <B.CheckBtn
               check="true"
               onClick={() => {
-                navigate("/neckguide");
+                if (userToken) {
+                  navigate("/neckguide");
+                } else {
+                  navigate("/");
+                }
               }}
               size="small"
             >

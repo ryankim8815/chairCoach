@@ -15,18 +15,23 @@ const Alarm = () => {
   const checkHandler = () => {
     setIsChecked(!isChecked);
   };
+
   useEffect(() => {
-    Api.get(`users/${user?.id}`).then((res) => setAlarmState(res.data));
+    if (user !== null) {
+      Api.get(`users/${user?.id}`).then((res) => setAlarmState(res.data));
+    }
   }, []);
   //이중삼항연산자를 사용하시라는 말씀이실까..? (A?(B?C:D):E) 이런 느낌인거 같긴 한데... 더 복잡해보일거같은... 아닌가.. 여쭤봐야지..
   useEffect(() => {
-    alarmState !== null &&
+    if (alarmState !== null) {
       setAlarmTimer((alarmState as { timer: number; alert: number })?.timer);
-    alarmState != null && alarmState.alert === 1
-      ? setIsChecked(true)
-      : setIsChecked(false);
+      if (alarmState.alert === 1) {
+        setIsChecked(true);
+      } else {
+        setIsChecked(false);
+      }
+    }
   }, [alarmState]);
-  console.log(!isChecked);
   return (
     <S.AlarmCon className={user ? "" : "lock"}>
       <S.AlarmTextWrap>
@@ -59,7 +64,6 @@ const Alarm = () => {
                   alert: !isChecked,
                   timer: 15,
                 });
-                console.log(res);
               }}
             />
             <label htmlFor="toggle">

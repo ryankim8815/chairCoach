@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import * as express from "express";
-import User from "../db/models/User";
+// import User from "../db/models/User";
+import User from "../models/User.model";
+import * as ClientError from "../responses/clientErrorResponse";
 
 const sendEmail = async function (
   req: express.Request,
@@ -11,21 +13,16 @@ const sendEmail = async function (
     const email = req.body.email;
     // 이메일 중복 확인
     const checkEmail = await User.findByEmail({ email });
-    const checkEmailString = JSON.stringify(checkEmail);
-    const checkEmailObject = JSON.parse(checkEmailString);
-    if (checkEmailObject.length !== 0) {
-      const result_errEmail = {
-        result: false,
-        cause: "email",
-        message:
-          "입력하신 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
-      };
-      return res.status(200).json(result_errEmail);
+    // const checkEmailString = JSON.stringify(checkEmail);
+    // const checkEmailObject = JSON.parse(checkEmailString);
+    if (checkEmail.length !== 0) {
+      throw ClientError.unauthorized(
+        "요청하신 정보로 이미 가입된 내역이 있습니다."
+      );
     }
     // 코드 발급
     const code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
     req.body.code = code;
-
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -43,13 +40,8 @@ const sendEmail = async function (
       `,
     });
     next();
-  } catch (err) {
-    const result_err = {
-      result: false,
-      cause: "mail",
-      message: "mail 발송에 실패했습니다.",
-    };
-    return res.status(499).json(result_err);
+  } catch (e) {
+    next(e);
   }
 };
 

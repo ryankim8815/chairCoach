@@ -63,14 +63,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var userService_1 = __importDefault(require("../services/userService"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
-var logger = require("../../config/logger");
+var logger = require("../config/logger");
 var userController = /** @class */ (function () {
     function userController() {
     }
     // GET: 사용자 리스트 조회 기능
     userController.userList = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, count, list, result, e_1;
+            var _a, count, list, getAllUsers, e_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -78,13 +78,13 @@ var userController = /** @class */ (function () {
                         return [4 /*yield*/, userService_1.default.getAllUsers()];
                     case 1:
                         _a = _b.sent(), count = _a.count, list = _a.list;
-                        result = {
+                        getAllUsers = {
                             result: true,
                             count: count,
                             list: list,
                         };
-                        logger.info(result);
-                        return [2 /*return*/, res.status(200).json(result)];
+                        logger.info(getAllUsers);
+                        return [2 /*return*/, res.status(200).json(getAllUsers)];
                     case 2:
                         e_1 = _b.sent();
                         next(e_1);
@@ -97,7 +97,7 @@ var userController = /** @class */ (function () {
     // GET: 현재 사용자 정보 조회 기능
     userController.userCurrent = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, currentUser, e_2;
+            var user_id, getCurrentUser, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -108,9 +108,9 @@ var userController = /** @class */ (function () {
                         }
                         return [4 /*yield*/, userService_1.default.getCurrentUser({ user_id: user_id })];
                     case 1:
-                        currentUser = _a.sent();
-                        logger.error(currentUser); // test
-                        return [2 /*return*/, res.status(200).json(currentUser)];
+                        getCurrentUser = _a.sent();
+                        logger.info(getCurrentUser);
+                        return [2 /*return*/, res.status(200).json(getCurrentUser)];
                     case 2:
                         e_2 = _a.sent();
                         next(e_2);
@@ -123,7 +123,7 @@ var userController = /** @class */ (function () {
     // POST: 회원가입 기능
     userController.userRegister = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, nickname, newUser, e_3;
+            var email, password, nickname, addUser, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -133,10 +133,12 @@ var userController = /** @class */ (function () {
                         nickname = req.body.nickname;
                         return [4 /*yield*/, userService_1.default.addUser({ email: email, password: password, nickname: nickname })];
                     case 1:
-                        newUser = _a.sent();
-                        return [2 /*return*/, res.status(200).json(newUser)];
+                        addUser = _a.sent();
+                        logger.info(addUser);
+                        return [2 /*return*/, res.status(200).json(addUser)];
                     case 2:
                         e_3 = _a.sent();
+                        // console.log(e);
                         next(e_3);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -147,7 +149,7 @@ var userController = /** @class */ (function () {
     // POST: 로그인
     userController.userSignin = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, signinUser, e_4;
+            var email, password, getUser, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -156,8 +158,9 @@ var userController = /** @class */ (function () {
                         password = req.body.password;
                         return [4 /*yield*/, userService_1.default.getUser({ email: email, password: password })];
                     case 1:
-                        signinUser = _a.sent();
-                        return [2 /*return*/, res.status(200).json(signinUser)];
+                        getUser = _a.sent();
+                        logger.info(getUser);
+                        return [2 /*return*/, res.status(200).json(getUser)];
                     case 2:
                         e_4 = _a.sent();
                         next(e_4);
@@ -170,7 +173,7 @@ var userController = /** @class */ (function () {
     // POST: 회원정보 수정을 위한 비밀번호 확인
     userController.userPassword = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, password, updateUser, e_5;
+            var user_id, password, passwordCheck, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -185,8 +188,9 @@ var userController = /** @class */ (function () {
                                 password: password,
                             })];
                     case 1:
-                        updateUser = _a.sent();
-                        return [2 /*return*/, res.status(200).json(updateUser)];
+                        passwordCheck = _a.sent();
+                        logger.info(passwordCheck);
+                        return [2 /*return*/, res.status(200).json(passwordCheck)];
                     case 2:
                         e_5 = _a.sent();
                         next(e_5);
@@ -217,6 +221,7 @@ var userController = /** @class */ (function () {
                             })];
                     case 1:
                         updateUser = _a.sent();
+                        logger.info(updateUser);
                         return [2 /*return*/, res.status(200).json(updateUser)];
                     case 2:
                         e_6 = _a.sent();
@@ -246,6 +251,7 @@ var userController = /** @class */ (function () {
                             })];
                     case 1:
                         deleteUser = _a.sent();
+                        logger.info(deleteUser);
                         return [2 /*return*/, res.status(200).json(deleteUser)];
                     case 2:
                         e_7 = _a.sent();
@@ -259,7 +265,7 @@ var userController = /** @class */ (function () {
     /// POST: email 인증을 위한 코드 발송
     userController.signupEmail = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, code, sendCodeToEmail, e_8;
+            var email, code, sendCode, e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -272,8 +278,9 @@ var userController = /** @class */ (function () {
                                 code: code,
                             })];
                     case 1:
-                        sendCodeToEmail = _a.sent();
-                        return [2 /*return*/, res.status(200).json(sendCodeToEmail)];
+                        sendCode = _a.sent();
+                        logger.info(sendCode);
+                        return [2 /*return*/, res.status(200).json(sendCode)];
                     case 2:
                         e_8 = _a.sent();
                         next(e_8);
@@ -286,7 +293,7 @@ var userController = /** @class */ (function () {
     /// GET: email 인증 코드 확인
     userController.signupVerifyEmail = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, code, verifyEmailCode, e_9;
+            var email, code, verifyCode, e_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -298,8 +305,9 @@ var userController = /** @class */ (function () {
                                 code: code,
                             })];
                     case 1:
-                        verifyEmailCode = _a.sent();
-                        return [2 /*return*/, res.status(200).json(verifyEmailCode)];
+                        verifyCode = _a.sent();
+                        logger.info(verifyCode);
+                        return [2 /*return*/, res.status(200).json(verifyCode)];
                     case 2:
                         e_9 = _a.sent();
                         next(e_9);
@@ -312,7 +320,7 @@ var userController = /** @class */ (function () {
     /// GET: nickname 중복확인
     userController.signupNickname = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var nickname, checkNickname, e_10;
+            var nickname, nicknameDuplicateCheck, e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -322,8 +330,9 @@ var userController = /** @class */ (function () {
                                 nickname: nickname,
                             })];
                     case 1:
-                        checkNickname = _a.sent();
-                        return [2 /*return*/, res.status(200).json(checkNickname)];
+                        nicknameDuplicateCheck = _a.sent();
+                        logger.info(nicknameDuplicateCheck);
+                        return [2 /*return*/, res.status(200).json(nicknameDuplicateCheck)];
                     case 2:
                         e_10 = _a.sent();
                         next(e_10);
@@ -354,6 +363,7 @@ var userController = /** @class */ (function () {
                             })];
                     case 1:
                         setAlert = _a.sent();
+                        logger.info(setAlert);
                         return [2 /*return*/, res.status(200).json(setAlert)];
                     case 2:
                         e_11 = _a.sent();

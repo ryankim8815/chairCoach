@@ -1,7 +1,8 @@
 import * as express from "express";
 import { common } from "../responses/errorResponse";
 // import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
-const logger = require("../../config/logger");
+const logger = require("../config/logger");
+import { discordForWinston } from "../discord/index";
 
 function errorHandler(
   error: any, // 적절한 타입 찾기
@@ -9,13 +10,12 @@ function errorHandler(
   res: express.Response,
   next: express.NextFunction
 ) {
+  discordForWinston(error);
   if (error.status) {
-    // console.log("error: ", error);
-    // console.log("error.aaa: ", error.aaa);
-    // const m = nullPrototypeHandler(error.aaa);
     logger.error(error);
     return res.status(error.status).json(error);
   }
+  logger.error("common:", error);
   return res.status(400).json(common);
 }
 

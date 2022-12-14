@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,27 +62,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var nodemailer_1 = __importDefault(require("nodemailer"));
-var User_1 = __importDefault(require("../db/models/User"));
+// import User from "../db/models/User";
+var User_model_1 = __importDefault(require("../models/User.model"));
+var ClientError = __importStar(require("../responses/clientErrorResponse"));
 var sendEmail = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
-        var email, checkEmail, checkEmailString, checkEmailObject, result_errEmail, code, transporter, info, err_1, result_err;
+        var email, checkEmail, code, transporter, info, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
                     email = req.body.email;
-                    return [4 /*yield*/, User_1.default.findByEmail({ email: email })];
+                    return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
                 case 1:
                     checkEmail = _a.sent();
-                    checkEmailString = JSON.stringify(checkEmail);
-                    checkEmailObject = JSON.parse(checkEmailString);
-                    if (checkEmailObject.length !== 0) {
-                        result_errEmail = {
-                            result: false,
-                            cause: "email",
-                            message: "입력하신 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_errEmail)];
+                    // const checkEmailString = JSON.stringify(checkEmail);
+                    // const checkEmailObject = JSON.parse(checkEmailString);
+                    if (checkEmail.length !== 0) {
+                        throw ClientError.unauthorized("요청하신 정보로 이미 가입된 내역이 있습니다.");
                     }
                     code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
                     req.body.code = code;
@@ -81,13 +101,9 @@ var sendEmail = function (req, res, next) {
                     next();
                     return [3 /*break*/, 4];
                 case 3:
-                    err_1 = _a.sent();
-                    result_err = {
-                        result: false,
-                        cause: "mail",
-                        message: "mail 발송에 실패했습니다.",
-                    };
-                    return [2 /*return*/, res.status(499).json(result_err)];
+                    e_1 = _a.sent();
+                    next(e_1);
+                    return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
         });

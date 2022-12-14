@@ -1,12 +1,13 @@
-import alarmImage from "../../assets/img/result1.png";
-import logo from "../../assets/img/logo.svg";
+import favicon from "../../assets/img/chaircoach_logo_192.png";
+import alarmImage from "../../assets/img/alarm_img.jpg";
+
 export function notifyMe() {
   const sendNotification = () => {
     var notification = new Notification("CHAIR COACH", {
-      icon: alarmImage,
+      icon: favicon,
       body: "Time to Stretching!",
       requireInteraction: true,
-      image: logo,
+      image: alarmImage,
     });
   };
   // push alaram 가능한지 체크

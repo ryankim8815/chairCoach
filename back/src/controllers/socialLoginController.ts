@@ -5,6 +5,7 @@ import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
 import qs from "qs";
 import urlencode from "urlencode";
 import jwt from "jsonwebtoken";
+const logger = require("../config/logger");
 
 // axios에서 error 발생시 troubleshooting 용이성을 위해
 axios.interceptors.response.use(
@@ -45,6 +46,8 @@ class socialLoginController {
           method: "POST",
           headers: {
             "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://kauth.kakao.com/oauth/token",
           data: makeFormData({
@@ -68,11 +71,13 @@ class socialLoginController {
       );
       // 로그인 & 회원가입
       const email = resultAccount.email;
-      const logedinUser = await socialLoginService.kakao({
+      const kakao = await socialLoginService.kakao({
         email,
         access_token,
       });
-      return res.status(200).json(logedinUser);
+
+      logger.info(kakao);
+      return res.status(200).json(kakao);
     } catch (e) {
       next(e);
     }
@@ -109,6 +114,8 @@ class socialLoginController {
           method: "GET",
           headers: {
             Authorization: `bearer ${access_token}`,
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://openapi.naver.com/v1/nid/me",
         })
@@ -116,13 +123,15 @@ class socialLoginController {
       // 로그인 & 회원가입
       const naverUserResult = resultAccount.response;
       const email = naverUserResult.email;
-      const logedinUser = nullPrototypeHandler(
+      const naver = nullPrototypeHandler(
         await socialLoginService.naver({
           email,
           access_token,
         })
       );
-      return res.status(200).json(logedinUser);
+
+      logger.info(naver);
+      return res.status(200).json(naver);
     } catch (e) {
       next(e);
     }
@@ -160,7 +169,11 @@ class socialLoginController {
       const resultToken = nullPrototypeHandler(
         await axios({
           method: "POST",
-          headers: { "content-type": "application/x-www-form-urlencoded" },
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
+          },
           data: qs.stringify(data),
           url: "https://oauth2.googleapis.com/token",
         })
@@ -170,11 +183,13 @@ class socialLoginController {
       const email = jwtDecoded.email;
       const refresh_token = resultToken.refresh_token;
       // 로그인 & 회원가입
-      const logedinUser = await socialLoginService.google({
+      const google = await socialLoginService.google({
         email,
         refresh_token,
       });
-      return res.status(200).json(logedinUser);
+
+      logger.info(google);
+      return res.status(200).json(google);
     } catch (e) {
       next(e);
     }
