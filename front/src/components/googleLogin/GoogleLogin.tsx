@@ -10,7 +10,6 @@ const GoogleLogin = () => {
     const params = new URL(window.location.href).searchParams;
     const code = params.get("code");
     if (code === null) return;
-    const decoded = decodeURIComponent(code);
     const res = await Api.post("google", {
       code: code,
     });
