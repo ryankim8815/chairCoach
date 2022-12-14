@@ -1,64 +1,43 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import * as S from "./SurveyResultStyle";
+import * as B from "../../styles/BtnStyle";
+import * as S from "./ResultStyle";
 import result1 from "../../assets/img/result1.png";
 import result2 from "../../assets/img/result2.png";
 import result3 from "../../assets/img/result3.png";
-import * as CS from "../../styles/BtnStyle";
-import styled from "styled-components";
-
-const RecommendButton = styled(CS.CheckBtn)`
-    &:hover {
-      background: ${({ theme }) => theme.colors.main};
-      color: #ffffff;
-    }
-  `;
+import { MutableRefObject } from "react";
 
 const SurveyResult = () => {
   const location = useLocation();
-  const point: number = location.state.point;
-  const navigate=useNavigate();
+  const point: number = location.state.pointRef;
+  const navigate = useNavigate();
+  const userToken = sessionStorage.getItem("userToken");
   return (
     <S.ResultContainer>
       <div className="inner">
-        <S.TitleBox>
-          <S.Title>자가진단 결과</S.Title>
-        </S.TitleBox>
+        <S.Title>거북목증후군 자가진단 테스트 결과</S.Title>
+
         <S.ResultBox>
-          <S.HalfBox>
-            <S.TextBox>
-              <S.SubTitle>
-                설문 조항 결과에 따르면, abcdefghijkl님의 거북목 위험도는{" "}
-                <S.Percent>{point * 10}%</S.Percent>
-                입니다!
-              </S.SubTitle>
-            </S.TextBox>
-          </S.HalfBox>
-          <S.HalfBox style={{ marginRight: 129 }}>
-            {point >= 7 ? (
-              <S.IconImg src={result3} />
-            ) : point >= 4 ? (
-              <S.IconImg src={result2} />
-            ) : (
-              <S.IconImg src={result1} />
-            )}
-          </S.HalfBox>
+          {point >= 7 ? (
+            <img src={result3} alt="위험" />
+          ) : point >= 4 ? (
+            <img src={result2} alt="보통" />
+          ) : (
+            <img src={result1} alt="좋음" />
+          )}
+
+          <S.SubTitle1>
+            당신의 거북목 위험도는
+            <br />
+            <S.PointText>{point * 10}%</S.PointText>입니다!
+          </S.SubTitle1>
         </S.ResultBox>
+
         <S.RecommendBox>
-          <S.SubTitle>
-            <S.BoldLetter>CHAIR COACH</S.BoldLetter>의{" "}
-            <S.BoldLetter>정밀진단</S.BoldLetter>을 받아볼까요?
-          </S.SubTitle>
+          <S.SubTitle2>
+            <span>CHAIR COACH</span>의 <span>정밀진단</span>을 받아볼까요?
+          </S.SubTitle2>
           <S.BtnBox>
-            <RecommendButton
-              onClick={() => {
-                navigate("/neckguide");
-              }}
-              size="small"
-              check="false"
-            >
-              네
-            </RecommendButton>
-            <RecommendButton
+            <B.CheckBtn
               onClick={() => {
                 navigate("/");
               }}
@@ -66,7 +45,21 @@ const SurveyResult = () => {
               check="false"
             >
               아니오
-            </RecommendButton>
+            </B.CheckBtn>
+
+            <B.CheckBtn
+              check="true"
+              onClick={() => {
+                if (userToken) {
+                  navigate("/neckguide");
+                } else {
+                  navigate("/");
+                }
+              }}
+              size="small"
+            >
+              네
+            </B.CheckBtn>
           </S.BtnBox>
         </S.RecommendBox>
       </div>

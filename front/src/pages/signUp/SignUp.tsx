@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as S from "./SignUpStyle";
 import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
-import * as RegExp from "./RegExp"
+import * as RegExp from "../../utils/RegExp"
 import * as Api from "../../api/api";
 
 interface SignUp {
@@ -14,7 +14,7 @@ interface SignUp {
   code: string;
 }
 
-const BASIC_TIMEB = 30;
+const BASIC_TIME = 30;
 
 const SingUp = () => {
   const navigate = useNavigate();
@@ -22,11 +22,11 @@ const SingUp = () => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [confirmPassword , setConfirmPassword ] = useState("");
   const [nickname, setNickname] = useState("");
   
   const [codeDisabled, setCodeDisabled] = useState(true);
-  const [pwDisabled, setpwDisabled] = useState(true);
+  const [pwDisabled, setPwDisabled] = useState(true);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
   const isEmailValid = RegExp.validateEmail(email);
@@ -34,11 +34,11 @@ const SingUp = () => {
   const isNicknameValid = RegExp.validateNickname(nickname);
 
   // 인증번호 확인 타이머
-  const [time, setTime] = useState(BASIC_TIMEB);
+  const [time, setTime] = useState(BASIC_TIME);
   const intervalId:any = useRef(null);
 
   const startTimer = () => {
-    setTime(BASIC_TIMEB);
+    setTime(BASIC_TIME);
 
     intervalId.current = setInterval(() => {
       setTime((time) => time - 1);
@@ -53,7 +53,7 @@ const SingUp = () => {
   if(!time){
     clearInterval(intervalId.current);
     alert('인증번호 유효시간이 지났습니다. \n인증번호를 다시 발급해주세요.');
-    setTime(BASIC_TIMEB);
+    setTime(BASIC_TIME);
   }
 
   // 인증번호 요청
@@ -89,16 +89,18 @@ const SingUp = () => {
     e.preventDefault();
 
     const res = await Api.get(`signup/email/${email}/code/${code}`);
-    res.data.result ? setpwDisabled(false) : alert('인증번호가 틀렸습니다.');
+    res.data.result ? setPwDisabled(false) : alert('인증번호가 틀렸습니다.');
 
     if(res.data.result){
-      setpwDisabled(false);
+      setPwDisabled(false);
       stopTimer();
-    }else alert('인증번호가 틀렸습니다.');
+    }else{
+      alert('인증번호가 틀렸습니다.');
+    }
   };
 
   // 닉네임 disabled 해제여부
-  const nicknameDisabled = password2.length > 0 && password === password2 ? false : true;
+  const nicknameDisabled = confirmPassword.length > 0 && password === confirmPassword ? false : true;
 
   // 닉네임 중복 확인
   const handlerCheckNicknameClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -127,7 +129,10 @@ const SingUp = () => {
     });
 
     console.log(res.data.result);
-    if(res.data.result) navigate('/login');
+    if(res.data.result){
+      alert('회원가입을 축하합니다.\n로그인하신 후 시작하세요! ');
+      navigate('/login');
+    }
   };
 
   return (
@@ -197,9 +202,9 @@ const SingUp = () => {
                   type="password"
                   disabled={!isPwdValid}
                   placeholder="비밀번호를 다시 입력해주세요."
-                  onChange={(e) => setPassword2(e.target.value)}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                {password2.length === 0 || password === password2 ? null : (
+                {confirmPassword.length === 0 || password === confirmPassword ? null : (
                   <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
                 )}
               </div>

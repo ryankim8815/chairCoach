@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bodyRecordsFindByYear = exports.bodyUpdateSchema = exports.bodyCreateSchema = exports.bodyRecordsSchema = exports.fileSchema = exports.neckResultSchema = exports.neckResultsSchema = exports.setAlertSchema = exports.checkPasswordSchema = exports.signupNicknameSchema = exports.verifyEmailSchema = exports.signupEmailSchema = exports.userDeleteSchema = exports.userUpdateSchema = exports.userLoginSchema = exports.userCreateSchema = exports.userCurrentSchema = void 0;
+exports.bodyRecordsFindByYear = exports.bodyRecordsFindByWeek = exports.bodyUpdateSchema = exports.bodyCreateSchema = exports.bodyRecordsSchema = exports.neckRecordsFindByYear = exports.fileSchema = exports.neckResultSchema = exports.neckResultsSchema = exports.setAlertSchema = exports.checkPasswordSchema = exports.signupNicknameSchema = exports.verifyEmailSchema = exports.signupEmailSchema = exports.userDeleteSchema = exports.userUpdateSchema = exports.userLoginSchema = exports.userCreateSchema = exports.userCurrentSchema = void 0;
 var joi_1 = __importDefault(require("joi"));
 var Users = __importStar(require("./users.joi"));
 var Necks = __importStar(require("./necks.joi"));
@@ -46,7 +46,6 @@ exports.userLoginSchema = joi_1.default.object().keys({
 });
 exports.userUpdateSchema = joi_1.default.object().keys({
     user_id: Users.user_id.required(),
-    currentPassword: Users.password.required(),
     password: Users.password.required(),
     nickname: Users.nickname.required(),
 });
@@ -92,6 +91,10 @@ exports.fileSchema = joi_1.default.object().keys({
     path: Necks.multerPath.required(),
     size: Necks.multerSize.required(),
 });
+exports.neckRecordsFindByYear = joi_1.default.object().keys({
+    user_id: Users.user_id.required(),
+    year: Necks.year.required(),
+});
 // bodyRouter
 exports.bodyRecordsSchema = joi_1.default.object().keys({
     user_id: Users.user_id.required(),
@@ -104,6 +107,12 @@ exports.bodyUpdateSchema = joi_1.default.object().keys({
     user_id: Users.user_id.required(),
     body_id: Bodies.body_id.required(),
 });
+exports.bodyRecordsFindByWeek = joi_1.default.object().keys({
+    user_id: Users.user_id.required(),
+    week: Bodies.week.required(),
+    year: Bodies.year.required(),
+});
 exports.bodyRecordsFindByYear = joi_1.default.object().keys({
+    user_id: Users.user_id.required(),
     year: Bodies.year.required(),
 });

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const HeaderLayout = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -10,16 +10,16 @@ export const HeaderLayout = styled.header`
   background: #fff;
   z-index: 10;
 
-  .inner{
+  .inner {
     ${({ theme }) => theme.common.flexCenter};
     justify-content: space-between;
     ${({ theme }) => theme.common.inner};
     height: 100%;
 
-    .left{
+    .left {
       ${({ theme }) => theme.common.flexCenter};
 
-      h1{
+      h1 {
         cursor: pointer;
       }
     }
@@ -29,46 +29,45 @@ export const HeaderLayout = styled.header`
 export const NavLayout = styled.nav`
   margin-left: 40px;
 
-  ul{
+  ul {
     ${({ theme }) => theme.common.flexCenter};
     justify-content: space-between;
 
-    li{
-      a{
+    li {
+      a {
         font-weight: 500;
-        transition: all .3s;
+        transition: all 0.3s;
 
-        &:hover{
+        &:hover {
           color: ${({ theme }) => theme.colors.main};
         }
       }
 
-      &+li{
+      & + li {
         margin-left: 20px;
       }
     }
   }
 `;
 
-export const LoginMenuCon = styled.div`
+export const LoginMenuContent = styled.div`
   position: relative;
-  font-weight: 300;
-  button{
+  & > button {
     padding: 4px 8px;
     font-size: ${({ theme }) => theme.fontSize.text};
 
-    span{
+    span {
       font-weight: 500;
       color: ${({ theme }) => theme.colors.main};
     }
 
-    svg{
+    svg {
       margin-left: 4px;
       color: ${({ theme }) => theme.colors.greyText};
     }
   }
 
-  ul{
+  ul {
     position: absolute;
     right: 0;
     top: 47px;
@@ -78,9 +77,10 @@ export const LoginMenuCon = styled.div`
     border-radius: 2px;
     background: #fff;
 
-    li{
-      padding: 8px 16px;
-      a{
+    li {
+      padding: 8px 12px;
+      button {
+        font-weight: 300;
         font-size: ${({ theme }) => theme.fontSize.text};
         color: ${({ theme }) => theme.colors.greyText};
       }
@@ -88,19 +88,19 @@ export const LoginMenuCon = styled.div`
   }
 `;
 
-export const LogoutMenuCon = styled.div`
-  ul{
+export const LogoutMenuContent = styled.div`
+  ul {
     ${({ theme }) => theme.common.flexCenter};
     justify-content: space-between;
 
-    li{
+    li {
       cursor: pointer;
       font-size: ${({ theme }) => theme.fontSize.text};
-      a{
+      a {
         color: ${({ theme }) => theme.colors.greyText};
       }
 
-      &+li{
+      & + li {
         margin-left: 20px;
       }
     }

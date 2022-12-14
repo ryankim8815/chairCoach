@@ -1,21 +1,19 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import * as S from "./MyPageStyle";
-import * as Api from "../../api/api";
-import MyChairReport from "../../components/myChairReport/MyChairReport";
-import TurtleNeckResult from "../../components/turtleNeckResult/TurtleNeckResult";
+import userState from "./../../atoms/user";
+import MyChairReport from "./components/myChairReport/MyChairReport";
+import TurtleNeckResult from "./components/turtleNeckResult/TurtleNeckResult";
 
 const MyPage = () => {
-  const [turtleNeckResult, setTurtleNeckResult] = useState([]);
-
-  // try{
-  //   const res = Api.get("necks");
-  // }
+  const [user, setUser] = useRecoilState(userState);
+  const curTime = new Date();
+  const curYear = curTime.getFullYear();
   return (
     <S.MyPageLayout>
       <div className="inner">
-        <MyChairReport />
-        <TurtleNeckResult />
+        <MyChairReport year={curYear} user_id={user && user.id} />
+        <TurtleNeckResult year={curYear} user_id={user && user.id} />
       </div>
     </S.MyPageLayout>
   );

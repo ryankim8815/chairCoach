@@ -21,7 +21,6 @@ export const userLoginSchema = Joi.object().keys({
 
 export const userUpdateSchema = Joi.object().keys({
   user_id: Users.user_id.required(),
-  currentPassword: Users.password.required(),
   password: Users.password.required(),
   nickname: Users.nickname.required(),
 });
@@ -75,6 +74,10 @@ export const fileSchema = Joi.object().keys({
   path: Necks.multerPath.required(),
   size: Necks.multerSize.required(),
 });
+export const neckRecordsFindByYear = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  year: Necks.year.required(),
+});
 
 // bodyRouter
 export const bodyRecordsSchema = Joi.object().keys({
@@ -91,6 +94,13 @@ export const bodyUpdateSchema = Joi.object().keys({
   body_id: Bodies.body_id.required(),
 });
 
+export const bodyRecordsFindByWeek = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  week: Bodies.week.required(),
+  year: Bodies.year.required(),
+});
+
 export const bodyRecordsFindByYear = Joi.object().keys({
+  user_id: Users.user_id.required(),
   year: Bodies.year.required(),
 });

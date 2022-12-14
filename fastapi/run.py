@@ -7,7 +7,8 @@ from load_model import ChairCouchModel
 
 CLIENT_URLS = ["http://localhost:3000", "ws://localhost:3000"]
 
-sio: Any = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins=CLIENT_URLS)
+#sio: Any = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins=CLIENT_URLS)
+sio: Any = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
 socket_app = socketio.ASGIApp(sio)
 
 app = FastAPI()
@@ -38,6 +39,7 @@ def disconnect(sid):
     print(f"Socket with ID {sid} has disconnected")
 
 if __name__ == "__main__":
-    kwargs = {"port": 8000}
+    # kwargs = {"port": 8000}
+    kwargs = {"port": 5001}
     kwargs.update({"reload":True})
     uvicorn.run("run:app", **kwargs)

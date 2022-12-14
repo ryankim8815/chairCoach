@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,29 +62,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var neckService_1 = __importDefault(require("../services/neckService"));
+var ClientError = __importStar(require("../responses/clientErrorResponse"));
+var logger = require("../config/logger");
 var userController = /** @class */ (function () {
     function userController() {
     }
     // GET: 전체 거북목 테스트 결과 조회 기능
     userController.neckResultList = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var allNecks, err_1, result_err;
+            var getAllNecks, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, neckService_1.default.getAllNecks()];
                     case 1:
-                        allNecks = _a.sent();
-                        return [2 /*return*/, res.status(200).json(allNecks)];
+                        getAllNecks = _a.sent();
+                        logger.info(getAllNecks);
+                        return [2 /*return*/, res.status(200).json(getAllNecks)];
                     case 2:
-                        err_1 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "neckResultList api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_1 = _a.sent();
+                        next(e_1);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -70,24 +92,23 @@ var userController = /** @class */ (function () {
     // GET: 특정 유저의 거북목 테스트 결과 조회
     userController.neckResults = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, Necks, err_2, result_err;
+            var user_id, getNecks, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
+                        }
                         return [4 /*yield*/, neckService_1.default.getNecks({ user_id: user_id })];
                     case 1:
-                        Necks = _a.sent();
-                        return [2 /*return*/, res.status(200).json(Necks)];
+                        getNecks = _a.sent();
+                        logger.info(getNecks);
+                        return [2 /*return*/, res.status(200).json(getNecks)];
                     case 2:
-                        err_2 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "neckResults api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_2 = _a.sent();
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -96,12 +117,15 @@ var userController = /** @class */ (function () {
     // POST: 거북목 테스트 결과 기록
     userController.neckCreate = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, filename, result, score, allUsers, err_3, result_err;
+            var user_id, filename, result, score, addNeck, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
+                        }
                         filename = req.file.filename;
                         result = req.body.result;
                         score = req.body.score;
@@ -112,16 +136,43 @@ var userController = /** @class */ (function () {
                                 filename: filename,
                             })];
                     case 1:
-                        allUsers = _a.sent();
-                        return [2 /*return*/, res.status(200).json(allUsers)];
+                        addNeck = _a.sent();
+                        logger.info(addNeck);
+                        return [2 /*return*/, res.status(200).json(addNeck)];
                     case 2:
-                        err_3 = _a.sent();
-                        result_err = {
-                            result: false,
-                            cause: "api",
-                            message: "neckCreate api에서 오류가 발생했습니다.",
-                        };
-                        return [2 /*return*/, res.status(200).json(result_err)];
+                        e_3 = _a.sent();
+                        next(e_3);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // GET: 특정 유저의 거북목 기록 조회 year
+    userController.neckRecordsYear = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user_id, year, getNecksByYear, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
+                        }
+                        year = req.params.year;
+                        return [4 /*yield*/, neckService_1.default.getNecksByYear({
+                                user_id: user_id,
+                                year: year,
+                            })];
+                    case 1:
+                        getNecksByYear = _a.sent();
+                        logger.info(getNecksByYear);
+                        return [2 /*return*/, res.status(200).json(getNecksByYear)];
+                    case 2:
+                        e_4 = _a.sent();
+                        next(e_4);
+                        return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });

@@ -1,106 +1,80 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import notification1 from "../../assets/img/notification1.jpg";
 import notification2 from "../../assets/img/notification2.jpg";
 import notification4 from "../../assets/img/notification4.jpg";
 
+const imgWrap = css`
+  margin: 16px 0 32px 0;
+  height: 152px;
+  border: 1px solid ${({ theme }) => theme.colors.mainLight};
+  border-radius: 2px;
+  overflow: hidden;
+`;
+
 export const NotificationLayout = styled.div`
   ${({ theme }) => theme.common.contentMinLayout};
+  ${({ theme }) => theme.common.flexCenter};
   background: linear-gradient(108.15deg, #8C63FF 1.69%, #936CFF 8.1%, #AC8EFF 33.75%, #D1C2FD 96.37%);
-  flex-direction:column;
-  color:#FFFFFF;
+  color:#fff;
   .inner {
-    ${({ theme }) => theme.common.inner};
     padding: 120px 0;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+  }
+
+  button{
+    display: block;
+    margin: 64px auto 0 auto;
+  }
 `;
-export const TextBox = styled.div`
-  text-align: center;
-`;
-export const TitleText = styled.div`
+
+export const TitleText = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.title};
-  margin: auto;
+  line-height: 1.25;
+  text-align: center;
+
+  span{
+    font-weight: 700;
+  }
 `;
-export const SubTitleText = styled.span`
+export const SubTitleText = styled.strong`
   font-size: ${({ theme }) => theme.fontSize.subTitle};
   font-weight: 700;
 `;
-export const Text = styled.span`
-  margin-top: 32px;
+export const Text = styled.p`
   line-height: 1.25;
-`;
-export const Bold = styled.span`
-  font-weight: 700;
 `;
 
 export const MiddleCont = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 20px;
+  margin-top: 64px;
 `;
 export const Card = styled.div`
-  width: 336px;
-  height: 398px;
-  display: flex;
-  flex-direction: column;
-  background: rgba(241, 237, 252, 0.2);
-  border: 1px solid #ffffff;
-  box-shadow: 0px 4px 20px rgba(64, 62, 86, 0.2);
+  padding: 28px 24px 72px 24px;
+  width: 285px;
+  border: 1px solid ${({ theme }) => theme.colors.mainLight};
   border-radius: 2px;
-  margin-right: 20px;
-  padding: 32px 40px 64px 40px;
-`;
-export const LowCont = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 18px;
+  background: rgba(241, 237, 252, 0.2);
+  box-shadow: 0px 4px 20px rgba(64, 62, 86, 0.2);
 `;
 
 export const Image1 = styled.div`
-  width: 256px;
-  height: 176px;
-  margin-top: 24px;
-  background-image: url(${notification1});
+  ${imgWrap}
+  background: url(${notification1}) no-repeat center;
   background-size: cover;
-  background-repeat: no-repeat;
-  border: #F1EDFC;
 `;
 export const Image2 = styled.div`
-  width: 256px;
-  height: 176px;
-  margin-top: 24px;
-  background-image: url(${notification2});
+  ${imgWrap}
+  background: url(${notification2}) no-repeat center;
   background-size: cover;
-  background-repeat: no-repeat;
-  border: #F1EDFC;
 `;
 export const Image3 = styled.div`
-  width: 256px;
-  height: 176px;
-  margin-top: 24px;
-  background-image: url(${notification1});
+  ${imgWrap}
+  background: url(${notification1}) no-repeat center;
   background-size: cover;
-  background-repeat: no-repeat;
-  border: #F1EDFC;
 `;
 export const Image4 = styled.div`
-  width: 256px;
-  height: 176px;
-  margin-top: 24px;
-  background-image: url(${notification4});
+  ${imgWrap}
+  background: url(${notification4}) no-repeat center;
   background-size: cover;
-  background-repeat: no-repeat;
-  border: #F1EDFC;
-`;
-
-export const Btn = styled.button`
-  width: 208px;
-  height: 48px;
-  background: #403e56;
-  margin-top: 86px;
-  color: #ffffff;
-  &:hover {
-    background: ${({ theme }) => theme.colors.main};
-  }
 `;
