@@ -4,8 +4,8 @@ module.exports = (sequelize, db) => {
     {
       body_id: {
         type: db.DataTypes.UUID,
-        defaultValue: db.DataTypes.UUIDV4, // auto generator
-        unique: true,
+        // defaultValue: db.DataTypes.UUIDV4, // auto generator
+        // unique: true,
         primaryKey: true,
         allowNull: false,
       },

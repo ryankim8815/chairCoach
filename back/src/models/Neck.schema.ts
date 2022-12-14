@@ -1,4 +1,4 @@
-module.exports = (sequelize, db) => {
+module.exports = (sequelize: any, db: any) => {
   const Neck = sequelize.define(
     "neck",
     {

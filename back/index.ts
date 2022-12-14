@@ -1,31 +1,42 @@
+// // //////////
+// import app from "./src/app";
+// import "dotenv/config";
+// import fs from "fs";
+// import http from "http";
+// import https from "https";
+// const logger = require("./config/logger");
+
+// require("dotenv").config();
+// const PORT: string = process.env.SERVER_PORT;
+// const HTTPS_PORT: string = process.env.HTTPS_SERVER_PORT;
+// const myUrl = "kdt-ai5-team04.elicecoding.com";
+// // const app = express();
+
+// const privateKey = fs.readFileSync(
+//   `/etc/letsencrypt/live/${myUrl}/privkey.pem`,
+//   "utf8"
+// );
+// const certificate = fs.readFileSync(
+//   `/etc/letsencrypt/live/${myUrl}/cert.pem`,
+//   "utf8"
+// );
+// const credentials = { key: privateKey, cert: certificate };
+
+// const httpServer = http.createServer(app);
+// const httpsServer = https.createServer(credentials, app);
+
+// httpServer.listen(PORT);
+// httpsServer.listen(HTTPS_PORT);
+
+///// 기존 http /////
 import app from "./src/app";
 import "dotenv/config";
-// require("dotenv").config();
-//////////
-import fs from "fs";
-import HTTPS from "https";
 require("dotenv").config();
+
 const PORT: string = process.env.SERVER_PORT;
 
-const myUrl = "kdt-ai5-team04.elicecoding.com";
-// const app = express();
-
-const option = {
-  ca: fs.readFileSync(`/etc/letsencrypt/live/${myUrl}/fullchain.pem`),
-  key: fs.readFileSync(`/etc/letsencrypt/live/${myUrl}/privkey.pem`),
-  cert: fs.readFileSync(`/etc/letsencrypt/live/${myUrl}/cert.pem`),
-};
-
-HTTPS.createServer(option, app).listen(PORT, () => {
-  console.log("HTTPS 서버가 실행되었습니다. 포트 :: " + PORT);
-});
-
-//////////
-
-// const PORT: string = process.env.SERVER_PORT;
-
-// app
-//   .listen(PORT, () => {
-//     console.log(`정상적으로 서버를 시작하였습니다.  http://localhost:${PORT}`);
-//   })
-//   .on("error", (err: string) => console.log(err));
+app
+  .listen(PORT, () => {
+    console.log(`정상적으로 서버를 시작하였습니다.  http://localhost:${PORT}`);
+  })
+  .on("error", (err: string) => console.log(err));

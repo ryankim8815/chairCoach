@@ -21,7 +21,7 @@ var Neck = /** @class */ (function () {
     // 특정 유저의 기록 조회
     Neck.findByUserId = function (_a) {
         var user_id = _a.user_id;
-        return index_1.db.sequelize.query("\n        SELECT * FROM necks \n        WHERE user_id = ?\n          ", {
+        return index_1.db.sequelize.query("\n        SELECT * FROM necks \n        WHERE user_id = ?\n        ORDER BY created_at\n          ", {
             type: index_1.db.QueryTypes.SELECT,
             replacements: [user_id],
         });
