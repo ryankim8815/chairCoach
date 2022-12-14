@@ -170,7 +170,6 @@ const NeckVideo = ({ time, step, setStep, playInspection }: any) => {
         <S.BtnWrap>
           {devices.map((device, key) => (
             <button
-              style={{ backgroundColor: "#403E56" }}
               key={(device as any).deviceId}
               onClick={() => setDeviceId((device as any).deviceId)}
             >

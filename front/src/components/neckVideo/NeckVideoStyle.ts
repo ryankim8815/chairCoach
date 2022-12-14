@@ -20,8 +20,21 @@ export const WebcamWrap = styled.div`
 export const BtnWrap = styled.div`
   position: absolute;
   left: 0;
-  top: 0;
+  top: -1px;
   z-index: 12;
+
+  button {
+    display: block;
+    padding: 2px 4px;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: saturate(180%) blur(5px);
+    color: #835dfe;
+  }
+
+  button + button {
+    margin-top: 1px;
+  }
 `;
 
 export const CanvasResultCon = styled.div`

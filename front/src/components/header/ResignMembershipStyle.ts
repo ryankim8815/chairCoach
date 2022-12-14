@@ -58,6 +58,4 @@ export const btnWrap = styled.div`
   button + button {
     margin-left: 20px;
   }
-
-  position: inherit;
 `;
