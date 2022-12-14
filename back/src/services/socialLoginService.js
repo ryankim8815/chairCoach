@@ -79,7 +79,7 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.kakao = function (_a) {
         var email = _a.email, access_token = _a.access_token;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, thisUser, secretKey, token, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, result_success;
+            var checkEmail, thisUser, user_id_1, secretKey, token, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -93,8 +93,9 @@ var socialLoginService = /** @class */ (function () {
                             throw ClientError.unauthorized("kakao 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         if (checkEmail.length == 1 && checkEmail[0].provider == "kakao") {
                             thisUser = checkEmail[0];
+                            user_id_1 = checkEmail[0].user_id;
                             secretKey = process.env.JWT_SECRET_KEY;
-                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            token = jsonwebtoken_1.default.sign({ user_id: user_id_1 }, secretKey);
                             delete thisUser.password;
                             result_success = Object.assign({
                                 result: true,
@@ -125,7 +126,7 @@ var socialLoginService = /** @class */ (function () {
                         if (newUser[1] == 1 && checkNewUser.length == 1) {
                             thisUser = checkNewUser[0];
                             secretKey = process.env.JWT_SECRET_KEY;
-                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            token = jsonwebtoken_1.default.sign({ user_id: user_id }, secretKey);
                             delete thisUser.password;
                             result_success = Object.assign({
                                 result: true,
@@ -148,7 +149,7 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.naver = function (_a) {
         var email = _a.email, access_token = _a.access_token;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, thisUser, secretKey, token, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, result_success;
+            var checkEmail, thisUser, user_id_2, secretKey, token, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -158,8 +159,9 @@ var socialLoginService = /** @class */ (function () {
                             throw ClientError.unauthorized("naver 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         if (checkEmail.length == 1 && checkEmail[0].provider == "naver") {
                             thisUser = checkEmail[0];
+                            user_id_2 = checkEmail[0].user_id;
                             secretKey = process.env.JWT_SECRET_KEY;
-                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            token = jsonwebtoken_1.default.sign({ user_id: user_id_2 }, secretKey);
                             delete thisUser.password;
                             result_success = Object.assign({
                                 result: true,
@@ -189,7 +191,7 @@ var socialLoginService = /** @class */ (function () {
                         if (newUser[1] == 1 && checkNewUser.length == 1) {
                             thisUser = checkNewUser[0];
                             secretKey = process.env.JWT_SECRET_KEY;
-                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            token = jsonwebtoken_1.default.sign({ user_id: user_id }, secretKey);
                             delete thisUser.password;
                             result_success = Object.assign({
                                 result: true,
@@ -212,7 +214,7 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.google = function (_a) {
         var email = _a.email, refresh_token = _a.refresh_token;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, thisUser, secretKey, token, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, result_success;
+            var checkEmail, thisUser, user_id_3, secretKey, token, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -222,8 +224,9 @@ var socialLoginService = /** @class */ (function () {
                             throw ClientError.unauthorized("google 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         if (checkEmail.length == 1 && checkEmail[0].provider == "google") {
                             thisUser = checkEmail[0];
+                            user_id_3 = checkEmail[0].user_id;
                             secretKey = process.env.JWT_SECRET_KEY;
-                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            token = jsonwebtoken_1.default.sign({ user_id: user_id_3 }, secretKey);
                             delete thisUser.password;
                             result_success = Object.assign({
                                 result: true,
@@ -253,7 +256,7 @@ var socialLoginService = /** @class */ (function () {
                         if (newUser[1] == 1 && checkNewUser.length == 1) {
                             thisUser = checkNewUser[0];
                             secretKey = process.env.JWT_SECRET_KEY;
-                            token = jsonwebtoken_1.default.sign({ email: email }, secretKey);
+                            token = jsonwebtoken_1.default.sign({ user_id: user_id }, secretKey);
                             delete thisUser.password;
                             result_success = Object.assign({
                                 result: true,
