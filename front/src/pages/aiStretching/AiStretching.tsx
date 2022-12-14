@@ -3,18 +3,20 @@ import neckguideImg from "../../assets/img/neck_guide_img.jpg";
 import * as S from "./AiStretchingStyle";
 import * as B from "../../styles/BtnStyle";
 import AiStretchingVideo from "./AiStretchingVideo";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as D from "./StretchingData";
 import { useEffect } from "react";
+import completionIcon from "../../assets/img/completion_icon.png";
 
 require("@tensorflow/tfjs");
 const AiStretching = () => {
+  const navigate = useNavigate();
   const [start, setStart] = useState(false);
   const [step, setStep] = useState(0);
   const [time, setTime] = useState(10);
   const [theEnd, setTheEnd] = useState(false);
   const { id } = useParams<{ id: keyof typeof D.explains }>();
-  console.log(id !== undefined && D.stepOfStretching[id]);
+
   const handleTimer = () => {
     const timer = setInterval(() => {
       setTime((prev) => prev - 1);
@@ -32,7 +34,7 @@ const AiStretching = () => {
       setTheEnd(true);
     }
   }, [step]);
-
+  console.log(theEnd);
   return (
     <S.InspectionLayout>
       <S.MainCont>
@@ -68,6 +70,31 @@ const AiStretching = () => {
           </div>
         </S.MiddleContent>
       </S.MainCont>
+      {theEnd === true && (
+        <S.FinisheContent>
+          <div>
+            <img src={`${completionIcon}`} alt="촬영완료" />
+            <p>스트레칭 완료!</p>
+            <S.btnWrap>
+              <B.CheckBtn
+                onClick={() => {
+                  navigate("/chaircoach");
+                }}
+              >
+                다시 하기
+              </B.CheckBtn>
+              <B.CheckBtn
+                check="true"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                메인페이지
+              </B.CheckBtn>
+            </S.btnWrap>
+          </div>
+        </S.FinisheContent>
+      )}
     </S.InspectionLayout>
   );
 };

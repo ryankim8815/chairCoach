@@ -27,10 +27,10 @@ const Stretching = () => {
               <dd>
                 <span>
                   <BsFillClockFill />
-                  1분 30초
+                  50초
                 </span>
                 <span>
-                  <BsFillLightningFill />3 동작
+                  <BsFillLightningFill />5 동작
                 </span>
               </dd>
             </dl>
@@ -47,10 +47,11 @@ const Stretching = () => {
               <dd>
                 <span>
                   <BsFillClockFill />
-                  3분
+                  1분 40초
                 </span>
                 <span>
-                  <BsFillLightningFill />3 동작
+                  <BsFillLightningFill />
+                  10 동작
                 </span>
               </dd>
             </dl>
@@ -67,10 +68,11 @@ const Stretching = () => {
               <dd>
                 <span>
                   <BsFillClockFill />
-                  5분
+                  2분 10초
                 </span>
                 <span>
-                  <BsFillLightningFill />3 동작
+                  <BsFillLightningFill />
+                  13 동작
                 </span>
               </dd>
             </dl>

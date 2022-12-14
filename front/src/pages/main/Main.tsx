@@ -15,13 +15,17 @@ const Main = () => {
   const [user, setUser] = useRecoilState(userState);
   const [alarmTiming, setAlarmTiming] = useState(0);
   const minutes = 60 * 1000;
+  if (user !== null) {
+    Api.get(`users/${user?.id}`).then((res) => {
+      res.data.alert === 0 || res.data.alert === null
+        ? setAlarmTiming(0)
+        : setAlarmTiming(res.data.timer);
+    });
+    console.log(alarmTiming);
+  } else {
+    console.log("안돼");
+  }
 
-  Api.get(`users/${user?.id}`).then((res) => {
-    res.data.alert === 0 || res.data.alert === null
-      ? setAlarmTiming(0)
-      : setAlarmTiming(res.data.timer);
-  });
-  console.log(alarmTiming);
   useEffect(() => {
     if (alarmTiming !== 0 && alarmTiming !== null) {
       console.log("알람이 시작됩니다");
