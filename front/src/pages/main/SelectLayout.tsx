@@ -34,7 +34,7 @@ const SelectLayout = forwardRef<HTMLDivElement>((props, ref) => {
           <S.SelectWrap className="neck" onClick={() => navigate("/aboutneck")}>
             <dl>
               <dt>
-                <h3>체어코치와 함께하는 AI 스트레칭</h3>
+                <h3>체어코치와 함께하는 거북목 진단</h3>
               </dt>
               <dd>
                 <p>
