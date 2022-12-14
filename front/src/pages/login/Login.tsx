@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
-
 import logo from "../../assets/img/logo.svg";
 
-import * as S from "../../styles/BtnStyle";
+import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
-import { LoginLayout, TopCon, BottomCon } from "./LoginStyle";
+import * as S from "./LoginStyle";
 import { useState } from "react";
 import Naver from "../../components/naverLogin/Naver";
 import NaverLogin from "../../components/naverLogin/Naver";
@@ -15,30 +13,18 @@ import { useSetRecoilState } from "recoil";
 import userState from "./../../atoms/user";
 import * as Api from "../../api/api";
 
-// interface LoginData {
-//   email: string;
-//   password: string;
-//   [key: string]: string;
-// }
-
-const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
-const KAKAO_AUTH_URL = process.env.REACT_APP_KAKAO_URL;
-
 const Login = () => {
-  const navigate = useNavigate();
   const setUser = useSetRecoilState(userState);
-
+  const KAKAO_AUTH_URL = process.env.REACT_APP_KAKAO_URL;
+  const naverUrl = process.env.REACT_APP_NAVER_URL;
+  const googleUrl = process.env.REACT_APP_GOOGLE;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [warning, setWaring] = useState("");
-
   const isEmailValid = RegExp.validateEmail(email);
   const isPwdValid = RegExp.validatePwd(password);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!email.length) {
       setWaring("email");
       return;
@@ -49,13 +35,11 @@ const Login = () => {
       setWaring("invalidInput");
       return;
     }
-
     try {
       const res = await Api.post("signin", {
         email: email,
         password: password,
       });
-      console.log(res.data.user_id);
 
       if (res.data.result) {
         // 토큰 저장
@@ -67,22 +51,17 @@ const Login = () => {
           nickname: res.data.nickname,
         };
         setUser(newUser);
-        navigate("/");
+        window.location.replace("/");
       }
     } catch (err) {
-      console.log(err);
       setWaring("invalidInput");
       setUser(null);
     }
   };
-
-  const naverUrl = process.env.REACT_APP_NAVER_URL;
-  const googleUrl = process.env.REACT_APP_GOOGLE_URL;
-
   return (
-    <LoginLayout>
+    <S.LoginLayout>
       <div className="inner">
-        <TopCon>
+        <S.TopCon>
           <img src={logo} alt="chair coach" />
           <form onSubmit={handleSubmit}>
             <F.InputText
@@ -114,11 +93,11 @@ const Login = () => {
               </F.WarningText>
             )}
 
-            <S.LoginBtn type="submit">로그인</S.LoginBtn>
+            <B.LoginBtn type="submit">로그인</B.LoginBtn>
           </form>
-        </TopCon>
+        </S.TopCon>
 
-        <BottomCon>
+        <S.BottomCon>
           <p>간편 로그인</p>
           <ul>
             <li>
@@ -134,9 +113,9 @@ const Login = () => {
               <span>네이버</span>
             </li>
           </ul>
-        </BottomCon>
+        </S.BottomCon>
       </div>
-    </LoginLayout>
+    </S.LoginLayout>
   );
 };
 

@@ -76,8 +76,10 @@ export const ImgCont = styled.div`
   top: 0;
   left: -260px;
 
-  img {
+  video {
     width: 240px;
+    height: 240px;
+    object-fit: contain;
   }
 
   span {
@@ -134,6 +136,7 @@ export const TimerBox = styled.div`
   width: 240px;
   height: 108px;
   margin-top: 100px;
+  border: 2px solid #835dfe;
   span {
     display: block;
     margin-top: 24px;
@@ -142,6 +145,8 @@ export const TimerBox = styled.div`
     font-size: 60px;
   }
   button {
-    margin-left: 16px;
+    width: 240px;
+    height: 108px;
+    font-size: 32px;
   }
 `;
