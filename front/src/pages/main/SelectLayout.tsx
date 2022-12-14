@@ -23,7 +23,8 @@ const SelectLayout = forwardRef<HTMLDivElement>((props, ref) => {
               </dt>
               <dd>
                 <p>
-                  목, 어깨, 허리, 올인원 총 4가지의 코스를 <br />
+                  목, 어깨, 허리, 올인원 총 4가지의 코스를
+                  <br />
                   AI와 함께 경험할 수 있습니다.
                 </p>
               </dd>
@@ -37,8 +38,9 @@ const SelectLayout = forwardRef<HTMLDivElement>((props, ref) => {
               </dt>
               <dd>
                 <p>
-                  목, 어깨, 허리, 올인원 총 4가지의 코스를 <br />
-                  AI와 함께 경험할 수 있습니다.
+                  자가설문과 웹캠을 이용한 AI 진단을 통해
+                  <br />
+                  거북목 여부를 진단해볼 수 있습니다.
                 </p>
               </dd>
             </dl>

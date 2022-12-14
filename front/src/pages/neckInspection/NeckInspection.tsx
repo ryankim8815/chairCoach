@@ -6,6 +6,7 @@ import * as B from "../../styles/BtnStyle";
 import * as S from "./NeckInspectionStyle";
 import neckguideImg from "../../assets/img/neck_guide_img.jpg";
 import completionIcon from "../../assets/img/completion_icon.png";
+import guideLine from "../../assets/img/guide_line.svg";
 
 const NeckInspection = () => {
   const navigate = useNavigate();
@@ -69,6 +70,13 @@ const NeckInspection = () => {
               playInspection={playInspection}
             />
           </div>
+
+          {step === 0 && (
+            <S.ReadyGuide>
+              <img src={`${guideLine}`} alt="가이드라인" />
+              <p>웹캠에 상반신 반 정도 보이게 해야 진단 정확도가 높아집니다.</p>
+            </S.ReadyGuide>
+          )}
 
           {step === 1 && <S.TimeText>{time}</S.TimeText>}
         </S.MiddleContent>

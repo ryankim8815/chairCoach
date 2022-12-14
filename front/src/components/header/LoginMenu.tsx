@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
 import userState from "./../../atoms/user";
-import * as Api from "../../api/api";
-import * as S from "./HeaderStyle";
+import ResignMembership from "./ResignMembership";
 
+import * as S from "./HeaderStyle";
 import { AiFillCaretDown } from "react-icons/ai";
 import { AiFillCaretUp } from "react-icons/ai";
 
 const LoginMenu = () => {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+
+  const [isResignMembership, setIsResignMembership] = useState(false);
 
   const menuRef = useRef<HTMLButtonElement>(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -43,6 +45,7 @@ const LoginMenu = () => {
     setUser(null);
     sessionStorage.removeItem("userToken");
     setIsMenuVisible(!isMenuVisible);
+<<<<<<< HEAD
     navigate("/");
   };
 
@@ -67,6 +70,9 @@ const LoginMenu = () => {
     }
 
     setIsMenuVisible(!isMenuVisible);
+=======
+    window.location.replace("/");
+>>>>>>> front/feature/member
   };
 
   return (
@@ -84,9 +90,18 @@ const LoginMenu = () => {
             <button onClick={handlerlogoutClick}>로그아웃</button>
           </li>
           <li>
-            <button onClick={handlerResignMembershipClick}>회원 탈퇴</button>
+            <button onClick={() => setIsResignMembership(true)}>
+              회원 탈퇴
+            </button>
           </li>
         </ul>
+      )}
+
+      {isResignMembership && (
+        <ResignMembership
+          isResignMembership={isResignMembership}
+          setIsResignMembership={setIsResignMembership}
+        />
       )}
     </S.LoginMenuContent>
   );

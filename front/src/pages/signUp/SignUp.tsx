@@ -131,6 +131,10 @@ const SingUp = () => {
       password: password,
       nickname: nickname,
     });
+<<<<<<< HEAD
+=======
+
+>>>>>>> front/feature/member
     if (res.data.result) {
       alert("회원가입을 축하합니다.\n로그인하신 후 시작하세요! ");
       navigate("/login");
