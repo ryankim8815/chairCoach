@@ -45,34 +45,7 @@ const LoginMenu = () => {
     setUser(null);
     sessionStorage.removeItem("userToken");
     setIsMenuVisible(!isMenuVisible);
-<<<<<<< HEAD
     navigate("/");
-  };
-
-  // 회원탈퇴
-  const handlerResignMembershipClick = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-
-    const resignMembership = window.confirm("정말로 탈퇴하시겠습니까?");
-
-    if (resignMembership) {
-      if (!user) return;
-
-      const res = await Api.delete(`users/${user.id}`); // 모달창 만들고 다시 수정하기
-
-      if (res.data.result) {
-        setUser(null);
-        sessionStorage.removeItem("userToken");
-        navigate("/");
-      }
-    }
-
-    setIsMenuVisible(!isMenuVisible);
-=======
-    window.location.replace("/");
->>>>>>> front/feature/member
   };
 
   return (
