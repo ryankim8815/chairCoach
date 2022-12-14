@@ -49,6 +49,8 @@ var bodyRouter_1 = __importDefault(require("./routers/bodyRouter"));
 var swagger_1 = __importDefault(require("./utils/swagger"));
 var errorMiddleware_1 = require("./middlewares/errorMiddleware");
 var logger = require("./config/logger");
+var client = require("./discord/index");
+// const discordCommands = require("./discord/deploy-commands");
 var app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -68,15 +70,16 @@ app.get("/", function (req, res) {
 // sequelize.sync({ force: false, alter: true });
 models_1.db.sequelize
     // .sync({ force: true })
+    .sync({ force: false })
     // .sync({ alter: true })
-    .sync({ alter: { drop: false } })
+    // .sync({ alter: { drop: false } })
     .then(function () {
     logger.info("sequelize.sync: success");
-    console.log("성공");
+    console.log("DB 테스트 성공");
 })
     .catch(function (error) {
     logger.error("sequelize.sync:", error);
-    console.error("실패:", error);
+    console.error("DB 테스트 실패:", error);
 });
 // db.sequelize.sync({ alter: true });
 // db.sequelize.sync({ alter: { drop: false } });
