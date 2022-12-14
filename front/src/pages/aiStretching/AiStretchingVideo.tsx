@@ -19,8 +19,9 @@ const AiStretchingVideo = () => {
   }, [handleDevices]);
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  //   const socketUrl = "ws://localhost:8000";
-  //   const socket = io(socketUrl as string);
+  const socketUrl = "ws://localhost:8000";
+  const socket = io(socketUrl as string);
+  //   socket.off;
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -47,10 +48,10 @@ const AiStretchingVideo = () => {
       dataArr2.xy_coord = dataArr;
 
       // console.log(JSON.stringify(dataArr))
-      //   socket.emit("model", dataArr2);
-      //   socket.on("model", (message) => {
-      //     console.log(message);
-      //   });
+      socket.emit("model", dataArr2);
+      socket.on("model", (message) => {
+        console.log(message);
+      });
 
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
       requestAnimationFrame(() => {
@@ -93,8 +94,14 @@ const AiStretchingVideo = () => {
         runMovenet();
       }
     });
+    webcamRef.current.video.removeEventListener("loadeddata", (e) => {
+      const video = e.target as HTMLVideoElement;
+      if (video.readyState === 4) {
+        runMovenet();
+      }
+    });
   }, [runMovenet]);
-  console.log(devices);
+
   return (
     <div>
       <S.WebcamWrap>
