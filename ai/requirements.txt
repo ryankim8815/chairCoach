@@ -3,6 +3,7 @@ tensorflow>=2.4.1
 scikit-learn
 xgboost
 imblearn
+pandas
 
 # server
 fastapi
