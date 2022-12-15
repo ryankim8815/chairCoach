@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./util";
@@ -6,7 +12,7 @@ import * as poseDetection from "@tensorflow-models/pose-detection";
 import { Socket, io } from "socket.io-client";
 import * as S from "./AiStretchingStyle";
 require("@tensorflow/tfjs");
-const AiStretchingVideo = () => {
+const AiStretchingVideo = ({ tempref }: any) => {
   const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
   const handleDevices = React.useCallback(
@@ -17,12 +23,12 @@ const AiStretchingVideo = () => {
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
+  // let temp: string;
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   // const socketUrl = "ws://localhost:5001";
   const socketUrl = "wss://kdt-ai5-team04.elicecoding.com:5002";
   const socket = io(socketUrl as string);
-  let temp: string;
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -48,21 +54,19 @@ const AiStretchingVideo = () => {
       const dataArr2: { [name: string]: number[] } = {};
       dataArr2.xy_coord = dataArr;
 
-      
-      
       socket.emit("model", dataArr2);
       socket.on("model", (message) => {
-        if (message == temp) {
+        if (message == tempref) {
           // console.log("1", message == temp);
           return;
-        };
+        }
         // console.log(message == temp);
-        temp = message;
+        tempref.current = message;
         // console.log(temp);
         // console.log(message);
-        console.log(temp);
+        console.log(tempref);
       });
-      
+
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
       requestAnimationFrame(() => {
         detectWebCamFeed(detector);

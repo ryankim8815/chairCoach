@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import neckguideImg from "../../assets/img/neck_guide_img.jpg";
 import * as S from "./AiStretchingStyle";
 import * as B from "../../styles/BtnStyle";
@@ -20,6 +20,8 @@ const AiStretching = () => {
   const [theEnd, setTheEnd] = useState(false);
   const { id } = useParams<{ id: keyof typeof D.explains }>();
   const user = useRecoilValue(userState);
+  const [correct, setCorrect] = useState(true);
+  const tempref = useRef(null);
   const handleTimer = () => {
     const timer = setInterval(() => {
       setTime((prev) => prev - 1);
@@ -31,7 +33,15 @@ const AiStretching = () => {
       setStart(false);
     }, 10000);
   };
-
+  useEffect(() => {
+    if (id !== undefined && D.stretchingName[id][step] === tempref.current) {
+      setCorrect(true);
+      console.log(correct);
+    } else {
+      setCorrect(false);
+      console.log(correct);
+    }
+  }, [tempref.current]);
   useEffect(() => {
     if (user === null) {
       if (id !== undefined && step === D.stepOfStretching[id]) {
@@ -85,7 +95,15 @@ const AiStretching = () => {
           </S.ImgCont>
 
           <div>
-            <AiStretchingVideo />
+            <AiStretchingVideo tempref={tempref} />
+            {correct === false && (
+              <S.AnswerTextWrap>
+                <p>
+                  올바르지 않은 자세입니다. <br />
+                  가이드 영상과 동일한 동작을 취해주세요.
+                </p>
+              </S.AnswerTextWrap>
+            )}
           </div>
         </S.MiddleContent>
       </S.MainCont>

@@ -66,6 +66,18 @@ export const GuideTextWrap = styled.div`
     line-height: 1.25;
   }
 `;
+export const AnswerTextWrap = styled.div`
+  ${({ theme }) => theme.common.flexCenter};
+  margin-top: 24px;
+  height: 60px;
+
+  p {
+    text-align: center;
+    font-size: ${({ theme }) => theme.fontSize.subTitle};
+    color: #ff0000;
+    line-height: 1.25;
+  }
+`;
 
 export const MiddleContent = styled.div`
   position: relative;

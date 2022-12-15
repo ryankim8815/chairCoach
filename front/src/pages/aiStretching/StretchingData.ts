@@ -1,14 +1,14 @@
 //각 동작 설명입니다 params로 explains.params[state] 이렇게 뽑아서 넣어주세요
 export const explains = {
   beginner: [
-    "손을 양옆으로 드세요.\n손높이는 귀높이에 맞춰주시고 상체를 펴주세요.",
+    "양손을 귀에 붙이고\n 위로 최대한 뻗어주세요.",
     "오른쪽 손으로 왼쪽 옆머리를 잡아주시고, \n목을 오른쪽으로 꺾어주세요.",
     "왼쪽 손으로 오른쪽 옆머리를 잡아주시고, \n목을 왼쪽으로 꺾어주세요.",
     "오른쪽 팔을 귀에 붙인 후,\n 몸을 왼쪽으로 기울여주세요.",
     "왼쪽 팔을 귀에 붙인 후,\n 몸을 오른쪽으로 기울여주세요.",
   ],
   middleclass: [
-    "손을 양옆으로 드세요.\n손높이는 귀높이에 맞춰주시고 상체를 펴주세요.",
+    "양손을 귀에 붙이고\n 위로 최대한 뻗어주세요.",
     "오른쪽 손으로 왼쪽 옆머리를 잡아주시고, \n목을 오른쪽으로 꺾어주세요.",
     "왼쪽 손으로 오른쪽 옆머리를 잡아주시고, \n목을 왼쪽으로 꺾어주세요.",
     "오른쪽 팔을 귀에 붙인 후,\n 몸을 왼쪽으로 기울여주세요.",
@@ -20,7 +20,7 @@ export const explains = {
     "목을 왼쪽 대각선 방향으로 꺾어주세요.",
   ],
   highclass: [
-    "손을 양옆으로 드세요.\n손높이는 귀높이에 맞춰주시고 상체를 펴주세요.",
+    "양손을 귀에 붙이고\n 위로 최대한 뻗어주세요.",
     "오른쪽 손으로 왼쪽 옆머리를 잡아주시고, \n목을 오른쪽으로 꺾어주세요.",
     "왼쪽 손으로 오른쪽 옆머리를 잡아주시고, \n목을 왼쪽으로 꺾어주세요.",
     "오른쪽 팔을 귀에 붙인 후,\n 몸을 왼쪽으로 기울여주세요.",
@@ -30,9 +30,39 @@ export const explains = {
     "왼쪽 어깨 끝을 바라보신 후,\n 왼쪽 손을 뒷통수에 대고 눌러주세요.",
     "목을 오른쪽 대각선 방향으로 꺾어주세요.",
     "목을 왼쪽 대각선 방향으로 꺾어주세요.",
-    "양손을 귀에 붙이고\n 위로 최대한 뻗어주세요.",
+    "손을 양옆으로 드세요.\n손높이는 귀높이에 맞춰주시고 상체를 펴주세요.",
     "어깨가 시작되는 지점에\n 손을 올리시고 돌려주세요.",
     "목 뒤에 손을 살짝 얹고,\n 고개를 위로 젖혀주세요.",
+  ],
+};
+export const stretchingName = {
+  beginner: ["arms_up", "neck_right", "neck_left", "arm_right", "arm_left"],
+  middleclass: [
+    "arms_up",
+    "neck_right",
+    "neck_left",
+    "arm_right",
+    "arm_left",
+    "neck_down",
+    "neck_down_right",
+    "neck_down_left",
+    "neck_up_right",
+    "neck_up_left",
+  ],
+  highclass: [
+    "arms_up",
+    "neck_right",
+    "neck_left",
+    "arm_right",
+    "arm_left",
+    "neck_down",
+    "neck_down_right",
+    "neck_down_left",
+    "neck_up_right",
+    "neck_up_left",
+    "hands_up",
+    "shoulder",
+    "neck-up",
   ],
 };
 //기초, 중급, 심화 단계별 총 시간입니다. 마찬가지로 파람스로 뽑아주세요
