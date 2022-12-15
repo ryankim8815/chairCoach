@@ -36,10 +36,8 @@ const AiStretching = () => {
   useEffect(() => {
     if (id !== undefined && D.stretchingName[id][step] === tempref.current) {
       setCorrect(true);
-      console.log(correct);
     } else {
       setCorrect(false);
-      console.log(correct);
     }
   }, [tempref.current]);
   useEffect(() => {
@@ -96,7 +94,7 @@ const AiStretching = () => {
 
           <div>
             <AiStretchingVideo tempref={tempref} />
-            {correct === false && (
+            {correct === false && start === true && (
               <S.AnswerTextWrap>
                 <p>
                   올바르지 않은 자세입니다. <br />
