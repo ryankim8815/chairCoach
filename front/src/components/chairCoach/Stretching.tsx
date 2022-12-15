@@ -12,7 +12,7 @@ const Stretching = () => {
   const navigate = useNavigate();
   return (
     <S.ChairCoachCon>
-      <h2>chair coach</h2>
+      <h2>CHAIR COACH</h2>
       <p>체어코치의 AI 가이드와 함께 스트레칭을 시작해보세요.</p>
 
       <S.StretchingCon>
