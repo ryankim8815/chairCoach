@@ -35,6 +35,11 @@ def disconnect(sid):
     print(f"Socket with ID {sid} has disconnected")
 
 if __name__ == "__main__":
+<<<<<<< HEAD:fastapi/run.py
+    # kwargs = {"port": 8000}
+    kwargs = {"host":"0.0.0.0","port": 5001}
+=======
     kwargs = {"port": 5001}
+>>>>>>> e54778a4b9153f6a46cd9b758512e68c37482490:ai/fastapi/run.py
     kwargs.update({"reload":True})
     uvicorn.run("run:app", **kwargs)
