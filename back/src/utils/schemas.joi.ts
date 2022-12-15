@@ -3,6 +3,11 @@ import * as Users from "./users.joi";
 import * as Necks from "./necks.joi";
 import * as Bodies from "./bodies.joi";
 
+// socialLoginRouter
+export const codeSchema = Joi.object().keys({
+  code: Joi.string().required(),
+});
+
 // userRouter
 export const userCurrentSchema = Joi.object().keys({
   user_id: Users.user_id.required(),

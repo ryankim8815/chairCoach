@@ -1,22 +1,23 @@
 import * as express from "express";
 import socialLoginController from "../controllers/socialLoginController";
-import { validateCode } from "../middlewares/socialLoginValidationMiddleware";
+import * as Validation from "../middlewares/validationMiddleware";
+import * as Schemas from "../utils/schemas.joi";
 
 const socialLoginRouter = express.Router();
 
 socialLoginRouter.post(
   "/kakao",
-  validateCode,
+  Validation.validateBody(Schemas.codeSchema),
   socialLoginController.kakaoOauth
 );
 socialLoginRouter.post(
   "/naver",
-  validateCode,
+  Validation.validateBody(Schemas.codeSchema),
   socialLoginController.naverOauth
 );
 socialLoginRouter.post(
   "/google",
-  validateCode,
+  Validation.validateBody(Schemas.codeSchema),
   socialLoginController.googleOauth
 );
 

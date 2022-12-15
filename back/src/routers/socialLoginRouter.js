@@ -27,11 +27,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var express = __importStar(require("express"));
 var socialLoginController_1 = __importDefault(require("../controllers/socialLoginController"));
-var socialLoginValidationMiddleware_1 = require("../middlewares/socialLoginValidationMiddleware");
+var Validation = __importStar(require("../middlewares/validationMiddleware"));
+var Schemas = __importStar(require("../utils/schemas.joi"));
 var socialLoginRouter = express.Router();
-socialLoginRouter.post("/kakao", socialLoginValidationMiddleware_1.validateCode, socialLoginController_1.default.kakaoOauth);
-socialLoginRouter.post("/naver", socialLoginValidationMiddleware_1.validateCode, socialLoginController_1.default.naverOauth);
-socialLoginRouter.post("/google", socialLoginValidationMiddleware_1.validateCode, socialLoginController_1.default.googleOauth);
+socialLoginRouter.post("/kakao", Validation.validateBody(Schemas.codeSchema), socialLoginController_1.default.kakaoOauth);
+socialLoginRouter.post("/naver", Validation.validateBody(Schemas.codeSchema), socialLoginController_1.default.naverOauth);
+socialLoginRouter.post("/google", Validation.validateBody(Schemas.codeSchema), socialLoginController_1.default.googleOauth);
 module.exports = socialLoginRouter;
 /**
  * @swagger
