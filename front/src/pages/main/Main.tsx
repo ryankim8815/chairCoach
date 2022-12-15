@@ -4,7 +4,6 @@ import IntroduceLayout from "./IntroduceLayout";
 import ImportantText from "./ImportantText";
 import ExplainLayout from "./ExplainLayout";
 import SelectLayout from "./SelectLayout";
-import { useRecoilValue } from "recoil";
 import userState from "./../../atoms/user";
 import { notifyMe } from "../../components/alarm/Alarm";
 import * as S from "./MainStyle";
@@ -30,20 +29,24 @@ const Main = () => {
       }, alarmTiming * minutes);
     }
   }, [alarmTiming]);
+
   const rootRef = useRef(null);
   const bannerRef = useRef(null);
   const introduceRef = useRef(null);
   const explainRefs = useRef([]);
   const selectRef = useRef(null);
+
   const handleLogin = () => {
     let jwtToken = sessionStorage.getItem("userToken");
     if (!jwtToken) {
       setUser(null);
     }
   };
+
   useEffect(() => {
     handleLogin();
   }, []);
+
   useEffect(() => {
     const options = {
       root: rootRef.current,
