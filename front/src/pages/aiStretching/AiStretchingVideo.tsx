@@ -115,7 +115,6 @@ const AiStretchingVideo = ({ tempref }: any) => {
       }
     });
   }, [runMovenet]);
-
   return (
     <div>
       <S.WebcamWrap>

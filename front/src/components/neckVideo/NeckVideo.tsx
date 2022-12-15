@@ -14,6 +14,7 @@ import * as poseDetection from "@tensorflow-models/pose-detection";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import userState from "../../atoms/user";
+import { constraints } from "@tensorflow/tfjs";
 require("@tensorflow/tfjs");
 
 const NeckVideo = ({
@@ -27,15 +28,14 @@ const NeckVideo = ({
   setStep: Dispatch<SetStateAction<number>>;
   playInspection: MutableRefObject<boolean>;
 }) => {
-  const [deviceId, setDeviceId] = useState();
+  const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
   const handleDevices = React.useCallback(
-    //타입을 모르겠음..
     (mediaDevices: any) =>
       setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
     [setDevices]
   );
-
+  console.log(devices);
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
@@ -48,8 +48,10 @@ const NeckVideo = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [inclination, setInclination] = useState(0);
   const [score, setScore] = useState(0);
+  const [angle, setAngle] = useState(0);
   console.log(score);
   console.log(inclination);
+  console.log("각도", angle);
   const getScore = () => {
     if (inclination >= 5) {
       setScore(100);
@@ -57,6 +59,8 @@ const NeckVideo = ({
       setScore(Math.floor(inclination * 20));
     }
   };
+  const media = navigator.mediaDevices.getUserMedia;
+  console.log(media);
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -96,9 +100,29 @@ const NeckVideo = ({
           );
         }
       };
+      const getAngle = () => {
+        if ((dataToSend[3].score as number) > (dataToSend[4].score as number)) {
+          var rad = Math.atan2(
+            dataToSend[3].y - dataToSend[5].y,
+            dataToSend[3].x - dataToSend[5].x
+          );
+          setAngle((rad * 180) / Math.PI);
+        } else {
+          var rad = Math.atan2(
+            dataToSend[4].y - dataToSend[6].y,
+            dataToSend[4].x - dataToSend[6].x
+          );
+          setAngle((rad * 180) / Math.PI);
+          console.log(
+            dataToSend[3].y - dataToSend[5].y,
+            dataToSend[3].x - dataToSend[5].x
+          );
+        }
+      };
       if (playInspection.current === true) {
         getInclination();
-        getScore();
+        //useEffect 때리자
+        getAngle();
         playInspection.current = false;
       }
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
@@ -195,6 +219,7 @@ const NeckVideo = ({
       }
     });
   }, [runMovenet]);
+  console.log(deviceId);
   return (
     <div>
       <S.WebcamWrap>
@@ -208,7 +233,7 @@ const NeckVideo = ({
             </button>
           ))}
         </S.BtnWrap>
-        <Webcam ref={webcamRef} videoConstraints={deviceId} audio={false} />
+        <Webcam ref={webcamRef} videoConstraints={{ deviceId }} audio={false} />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>
