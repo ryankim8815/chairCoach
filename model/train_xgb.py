@@ -1,49 +1,48 @@
-from numpy import loadtxt
+from imblearn.over_sampling import SMOTE
 import numpy as np
-from xgboost import XGBClassifier
-import pandas as pd
-from sklearn.metrics import accuracy_score
-from keras.utils import to_categorical
+from xgboost import XGBClassifier, DMatrix, cv
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
 
-# one hot encoding
-def onehot(y):
-    label = []
-    for i in y:
-        label.append([int(i)])
-    y_result = to_categorical(label).astype(int)
-    
-    return y_result
 
-# load data
-train = loadtxt('./data/csvs/train_data_mv_22.csv', delimiter=",", skiprows=1)
-test = loadtxt('./data/csvs/test_data_mv_22.csv', delimiter=",", skiprows=1)
+# load csv
+X_train = np.loadtxt('./data/csvs/csv_3/train_data_mv3_22.csv', delimiter=",", skiprows=1) 
+y_train = np.loadtxt('./data/csvs/csv_3/train_y_mv3_22.csv', delimiter=",", skiprows=1)
+X_test = np.loadtxt('./data/csvs/csv_3/test_data_mv3_22.csv', delimiter=",", skiprows=1)
+y_test = np.loadtxt('./data/csvs/csv_3/test_y_mv3_22.csv', delimiter=",", skiprows=1)
 
-X_train = train[:, :-1]
-y_train_split = train[:, -1]
-X_test = test[:, :-1]
-y_test_split = test[:, -1]
+# over sampling using SMOTE
+smote = SMOTE(random_state=11)
+X_train_over, y_train_over = smote.fit_resample(X_train, y_train)
 
-y_train = onehot(y_train_split)
-y_test = onehot(y_test_split)
+# split train, validation
+X_train, X_val, y_train, y_val = train_test_split(X_train_over, y_train_over, test_size=0.10)
 
-print(X_train.shape)
-print(X_test.shape)
-print(y_train.shape)
-print(y_test.shape)
+# train with XGBClassifier
+model = XGBClassifier(n_estimators=500, learning_rate=0.18, max_depth=4, random_state=32)
+xgb_model = model.fit(X_train, y_train, early_stopping_rounds=100, eval_metric='logloss', eval_set=[(X_val, y_val)], verbose=2)
+# xgb_model = model.fit(X_train_over, y_train_over, eval_metric='logloss', verbose=True)
+print(xgb_model)
 
-# fit model no training data
-model = XGBClassifier(n_estimators=500, learning_rate=0.2, max_depth=4, random_state=32)
-model.fit(X_train, y_train)
-print(model)
+# cross validation - kfold
+kfold = KFold(n_splits=5, shuffle=True, random_state=0)
+scores = cross_val_score(xgb_model, X_train_over, y_train_over, cv=kfold)
 
+# validation score
+print("교차 검증별 정확도: ", (np.round(scores, 4)* 100))
+print("평균 검증 정확도: ", (np.round(np.mean(scores), 4)*100))
+
+# prediction test
 expected_y = y_test
-predicted_y = model.predict(X_test)
+predicted_y = xgb_model.predict(X_test)
 
+# class report
+print(classification_report(expected_y, predicted_y))
+
+# accuracy score
 accuracy = accuracy_score(expected_y, predicted_y)
 print("Accuracy: %.2f%%" % (accuracy * 100))
 
-# actions = np.array(['hands_up', 'neck_down', 'neck_side'])
-# actions[np.argmax(predicted_y[0])]
 
 # save model
-model.save_model("xgb_13pose.json")
+xgb_model.save_model('xgb_mv3_params.json')
