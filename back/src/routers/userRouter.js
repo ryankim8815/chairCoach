@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var express = __importStar(require("express"));
-var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
+var authMiddleware_1 = require("../middlewares/authMiddleware");
 var nodemailerMiddleware_1 = __importDefault(require("../middlewares/nodemailerMiddleware"));
 var Validation = __importStar(require("../middlewares/validationMiddleware"));
 var Schemas = __importStar(require("../utils/schemas.joi"));
@@ -34,17 +34,17 @@ var userController_1 = __importDefault(require("../controllers/userController"))
 var userRouter = express.Router();
 // api index
 userRouter.get("/users", userController_1.default.userList); // 전체 사용자 검색, 개발시 편의용으로 사용하는 곳이 없다면 추후 삭제 예정
-userRouter.get("/users/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), userController_1.default.userCurrent); // 현재 사용자 정보 조회
+userRouter.get("/users/:user_id", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), userController_1.default.userCurrent); // 현재 사용자 정보 조회
 userRouter.post("/signup", Validation.validateBody(Schemas.userCreateSchema), userController_1.default.userRegister); // 자체 회원가입
 userRouter.post("/signin", Validation.validateBody(Schemas.userLoginSchema), userController_1.default.userSignin); // 로그인
-userRouter.post("/users/:user_id/password", authMiddleware_1.default, Validation.validateBodyParams(Schemas.checkPasswordSchema, Schemas.userCurrentSchema), userController_1.default.userPassword); // 유저 정보 업데이트를 위한 password 확인
-userRouter.put("/users/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userUpdateSchema, Schemas.userCurrentSchema), userController_1.default.userUpdate); // 유저 정보 업데이트(pw & nickname)
-userRouter.put("/users/:user_id/provider/:provider", authMiddleware_1.default, Validation.validateBodyParams(Schemas.socialLoginUserUpdateSchema, Schemas.socialLoginUserUpdateSchemaParams), userController_1.default.socialLoginUserUpdate); // 유저 정보 업데이트(nickname) - 간편로그인 회원용
-userRouter.delete("/users/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userDeleteSchema, Schemas.userCurrentSchema), userController_1.default.userDelete); // 유저 삭제
+userRouter.post("/users/:user_id/password", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.checkPasswordSchema, Schemas.userCurrentSchema), userController_1.default.userPassword); // 유저 정보 업데이트를 위한 password 확인
+userRouter.put("/users/:user_id", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userUpdateSchema, Schemas.userCurrentSchema), userController_1.default.userUpdate); // 유저 정보 업데이트(pw & nickname)
+userRouter.put("/users/:user_id/provider/:provider", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.socialLoginUserUpdateSchema, Schemas.socialLoginUserUpdateSchemaParams), userController_1.default.socialLoginUserUpdate); // 유저 정보 업데이트(nickname) - 간편로그인 회원용
+userRouter.delete("/users/:user_id", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userDeleteSchema, Schemas.userCurrentSchema), userController_1.default.userDelete); // 유저 삭제
 userRouter.post("/signup/email", Validation.validateBody(Schemas.signupEmailSchema), nodemailerMiddleware_1.default, userController_1.default.signupEmail); // email로 코드 발송
 userRouter.get("/signup/email/:email/code/:code", Validation.validateParams(Schemas.verifyEmailSchema), userController_1.default.signupVerifyEmail); // email 인증
 userRouter.get("/signup/nickname/:nickname", Validation.validateParams(Schemas.signupNicknameSchema), userController_1.default.signupNickname); // nickname 중복확인
-userRouter.patch("/users/:user_id/alert", authMiddleware_1.default, Validation.validateBodyParams(Schemas.setAlertSchema, Schemas.userCurrentSchema), userController_1.default.userSetAlert); // 알람 설정
+userRouter.patch("/users/:user_id/alert", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.setAlertSchema, Schemas.userCurrentSchema), userController_1.default.userSetAlert); // 알람 설정
 module.exports = userRouter;
 /**
  * @swagger

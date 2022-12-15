@@ -27,15 +27,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var express = __importStar(require("express"));
 var neckController_1 = __importDefault(require("../controllers/neckController"));
-var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
+var authMiddleware_1 = require("../middlewares/authMiddleware");
 var uploadMiddleware_1 = __importDefault(require("../middlewares/uploadMiddleware"));
 var Validation = __importStar(require("../middlewares/validationMiddleware"));
 var Schemas = __importStar(require("../utils/schemas.joi"));
 var neckRouter = express.Router();
 neckRouter.get("/necks", neckController_1.default.neckResultList); // 전체 거북목 테스트 결과 조회 기능, 개발 시 편의용으로 사용처가 없다면 삭제 예정
-neckRouter.get("/necks/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), neckController_1.default.neckResults); // 특정 유저의 거북목 테스트 결과 조회
-neckRouter.post("/necks/:user_id", uploadMiddleware_1.default, authMiddleware_1.default, Validation.validateBodyParamsMulter(Schemas.neckResultSchema, Schemas.userCurrentSchema, Schemas.fileSchema), neckController_1.default.neckCreate); // 거북목 테스트 결과 기록
-neckRouter.get("/necks/:user_id/:year", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.neckRecordsFindByYear), neckController_1.default.neckRecordsYear); // 특정 유저의 거북목 기록 조회 - 월간
+neckRouter.get("/necks/:user_id", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), neckController_1.default.neckResults); // 특정 유저의 거북목 테스트 결과 조회
+neckRouter.post("/necks/:user_id", uploadMiddleware_1.default, authMiddleware_1.authMiddleware, Validation.validateBodyParamsMulter(Schemas.neckResultSchema, Schemas.userCurrentSchema, Schemas.fileSchema), neckController_1.default.neckCreate); // 거북목 테스트 결과 기록
+neckRouter.get("/necks/:user_id/:year", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.neckRecordsFindByYear), neckController_1.default.neckRecordsYear); // 특정 유저의 거북목 기록 조회 - 월간
 module.exports = neckRouter;
 /**
  * @swagger

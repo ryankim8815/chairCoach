@@ -61,56 +61,67 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.refreshToken = exports.authMiddleware = void 0;
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var Token_model_1 = __importDefault(require("../models/Token.model"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
-var authMiddleware = function (req, res, next) {
-    var _a, _b;
-    return __awaiter(this, void 0, void 0, function () {
-        var userToken, secretKey, jwtDecoded, user_id;
-        return __generator(this, function (_c) {
-            userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
-            if (userToken === "null") {
-                throw ClientError.unauthorized("로그인한 유저만 사용할 수 있는 서비스입니다.");
-            }
-            try {
-                secretKey = process.env.JWT_SECRET_KEY;
-                jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
-                user_id = jwtDecoded.user_id;
-                req.body.user_id = user_id;
-                next();
-            }
-            catch (e) {
-                next(e);
-            }
-            return [2 /*return*/];
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var moment_timezone_1 = __importDefault(require("moment-timezone"));
+moment_timezone_1.default.tz.setDefault("Asia/Seoul");
+var tokenService = /** @class */ (function () {
+    function tokenService() {
+    }
+    //// 전체 운동 기록 조회 기능
+    tokenService.reissueToken = function (_a) {
+        var currentRefreshToken = _a.currentRefreshToken, user_id = _a.user_id, ipAddress = _a.ipAddress;
+        return __awaiter(this, void 0, void 0, function () {
+            var checkToken, secretKey, accessToken, refreshToken, status, created_at, tokenUpdate, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Token_model_1.default.findByRefreshToken({
+                            currentRefreshToken: currentRefreshToken,
+                        })];
+                    case 1:
+                        checkToken = _b.sent();
+                        if (checkToken.length == 0) {
+                            console.log("이거 나오면 FALSE");
+                            throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
+                        }
+                        console.log("이거 나오면 true");
+                        secretKey = process.env.JWT_SECRET_KEY;
+                        accessToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+                            user_id: user_id,
+                        }, secretKey);
+                        refreshToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+                            user_id: user_id,
+                        }, secretKey);
+                        status = "valid";
+                        created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        return [4 /*yield*/, Token_model_1.default.reissue({
+                                currentRefreshToken: currentRefreshToken,
+                                refreshToken: refreshToken,
+                                accessToken: accessToken,
+                                ipAddress: ipAddress,
+                                status: status,
+                                created_at: created_at,
+                            })];
+                    case 2:
+                        tokenUpdate = _b.sent();
+                        if (tokenUpdate[1]) {
+                            result = Object.assign({
+                                result: true,
+                                message: "\uD1A0\uD070 \uC7AC\uBC1C\uAE09\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                user_id: user_id,
+                                accessToken: accessToken,
+                                refreshToken: refreshToken,
+                            });
+                            return [2 /*return*/, result];
+                        }
+                        return [2 /*return*/];
+                }
+            });
         });
-    });
-};
-exports.authMiddleware = authMiddleware;
-var refreshToken = function (req, res, next) {
-    var _a, _b;
-    return __awaiter(this, void 0, void 0, function () {
-        var refreshToken, secretKey, jwtDecoded, user_id;
-        return __generator(this, function (_c) {
-            refreshToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
-            if (refreshToken === "null") {
-                throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
-            }
-            try {
-                secretKey = process.env.JWT_SECRET_KEY;
-                jwtDecoded = jsonwebtoken_1.default.verify(refreshToken, secretKey);
-                user_id = jwtDecoded.user_id;
-                req.body.user_id = user_id;
-                req.body.refreshToken = refreshToken;
-                next();
-            }
-            catch (e) {
-                next(e);
-            }
-            return [2 /*return*/];
-        });
-    });
-};
-exports.refreshToken = refreshToken;
+    };
+    return tokenService;
+}());
+module.exports = tokenService;
