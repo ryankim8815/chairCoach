@@ -1,3 +1,10 @@
+# train model
+tensorflow>=2.4.1
+scikit-learn
+xgboost
+imblearn
+
+# server
 fastapi
 fastapi-socketio
 uvicorn[standard]
