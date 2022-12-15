@@ -24,15 +24,6 @@ xgb_model = model.fit(X_train, y_train, early_stopping_rounds=100, eval_metric='
 # xgb_model = model.fit(X_train_over, y_train_over, eval_metric='logloss', verbose=True)
 print(xgb_model)
 
-
-
-# cross validation - cv
-# data_dmatrix = DMatrix(data=X_train_over, label=y_train_over)
-# params = {"objective":"binary:logistic", "learning_rate": 0.1, "max_depth": 5, "alpha": 10}
-# xgb_cv = cv(dtrain=data_dmatrix, params=params, nfold=3, num_boost_round=50, early_stopping_rounds=10, metrics="logloss", as_pandas=True)
-# print('교차 검증별 정확도:\n', np.round(xgb_cv, 4))
-# print('평균 검증 정확도:\n', np.round(np.mean(xgb_cv), 4))
-
 # cross validation - kfold
 kfold = KFold(n_splits=5, shuffle=True, random_state=0)
 scores = cross_val_score(xgb_model, X_train_over, y_train_over, cv=kfold)
