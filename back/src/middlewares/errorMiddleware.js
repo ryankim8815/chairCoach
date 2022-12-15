@@ -7,7 +7,7 @@ var logger = require("../config/logger");
 var index_1 = require("../discord/index");
 function errorHandler(error, // 적절한 타입 찾기
 req, res, next) {
-    (0, index_1.discordForWinston)(error);
+    (0, index_1.discordForWinston)(error, req);
     if (error.status) {
         logger.error(error);
         return res.status(error.status).json(error);

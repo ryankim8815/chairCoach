@@ -76,13 +76,35 @@ class userService {
       }
     }
     const secretKey = process.env.JWT_SECRET_KEY;
-    const token = jwt.sign({ user_id: thisUser.user_id }, secretKey);
+    const token = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+        user_id: thisUser.user_id,
+      },
+      secretKey
+    );
+    const accessToken = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
+        user_id: thisUser.user_id,
+      },
+      secretKey
+    );
+    const refreshToken = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // sec, 1week
+        user_id: thisUser.user_id,
+      },
+      secretKey
+    );
     delete thisUser.password;
     const result_success = Object.assign(
       {
         result: true,
         message: `로그인이 성공적으로 이뤄졌습니다.`,
         token: token,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       },
       thisUser
     );

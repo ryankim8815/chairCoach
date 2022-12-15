@@ -7,6 +7,7 @@ const authMiddleware = async function (
   res: express.Response,
   next: express.NextFunction
 ) {
+  // const accessToken = req.headers["authorization"]?.split(" ")[1] ?? "null";
   const userToken = req.headers["authorization"]?.split(" ")[1] ?? "null";
   if (userToken === "null") {
     throw ClientError.unauthorized(

@@ -17,12 +17,25 @@ const TOKEN: string = process.env.DISCORD_TOKEN;
 const GUILD_ID: string = process.env.GUILD_ID;
 const CHANNEL_ID: string = process.env.CHANNEL_ID;
 
-export async function discordForWinston(error) {
+export async function discordForWinston(error, req) {
   if (!error) return;
   const time = moment().format("YYYY-MM-DD HH:mm:ss");
   const status = error.status || 400;
   const message = error.message;
-  const discordLogger = `[ERROR] ${time} (${status}) ${message}`;
+  const originalUrl = req.originalUrl;
+  const requestClientIp = req.body.requestClientIp;
+  const requestStartTime = req.body.requestStartTime;
+  const discordLogger = `
+  \`\`\`
+  [ERROR] 
+      STATUS:       ${status}
+      URL:          ${originalUrl}
+      MESSAGE:      ${message}
+      ERROR_TIME:   ${time}
+      REQUEST_TIME: ${requestStartTime}
+      CLIENT_IP:    ${requestClientIp}
+  \`\`\` 
+  `;
   const channel = await client.channels.fetch(CHANNEL_ID);
   if (status > 500) {
     return channel.send(discordLogger);

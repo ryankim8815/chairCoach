@@ -48,6 +48,7 @@ var neckRouter_1 = __importDefault(require("./routers/neckRouter"));
 var bodyRouter_1 = __importDefault(require("./routers/bodyRouter"));
 var swagger_1 = __importDefault(require("./utils/swagger"));
 var errorMiddleware_1 = require("./middlewares/errorMiddleware");
+var clientIpMiddleware_1 = __importDefault(require("./middlewares/clientIpMiddleware"));
 var logger = require("./config/logger");
 var client = require("./discord/index");
 // const discordCommands = require("./discord/deploy-commands");
@@ -55,6 +56,7 @@ var app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
+app.use(clientIpMiddleware_1.default);
 app.use(userRouter_1.default);
 app.use(socialLoginRouter_1.default);
 app.use(neckRouter_1.default);
@@ -70,9 +72,9 @@ app.get("/", function (req, res) {
 // sequelize.sync({ force: false, alter: true });
 models_1.db.sequelize
     // .sync({ force: true })
-    .sync({ force: false })
+    // .sync({ force: false })
     // .sync({ alter: true })
-    // .sync({ alter: { drop: false } })
+    .sync({ alter: { drop: false } })
     .then(function () {
     logger.info("sequelize.sync: success");
     console.log("DB 테스트 성공");

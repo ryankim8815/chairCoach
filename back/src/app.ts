@@ -8,6 +8,7 @@ import neckRouter from "./routers/neckRouter";
 import bodyRouter from "./routers/bodyRouter";
 import swagger from "./utils/swagger";
 import { errorHandler } from "./middlewares/errorMiddleware";
+import checkClientIp from "./middlewares/clientIpMiddleware";
 const logger = require("./config/logger");
 const client = require("./discord/index");
 // const discordCommands = require("./discord/deploy-commands");
@@ -16,6 +17,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(checkClientIp);
 
 app.use(userRouter);
 app.use(socialLoginRouter);
@@ -36,9 +39,9 @@ app.get("/", (req, res) => {
 // sequelize.sync({ force: false, alter: true });
 db.sequelize
   // .sync({ force: true })
-  .sync({ force: false })
+  // .sync({ force: false })
   // .sync({ alter: true })
-  // .sync({ alter: { drop: false } })
+  .sync({ alter: { drop: false } })
   .then(() => {
     logger.info("sequelize.sync: success");
     console.log("DB 테스트 성공");
