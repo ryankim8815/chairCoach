@@ -5,20 +5,22 @@ import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
 import * as RegExp from "../../utils/RegExp";
 import * as Api from "../../api/api";
-import * as userType from "../../atoms/user";
 
-interface userType {
-  user: userType.User;
-  setUser: React.Dispatch<React.SetStateAction<userType.User | null>>;
+type User = {
+  id: string | null;
+  nickname: string | null;
+};
+
+interface LoginSNSType {
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  provider: string;
 }
 
-const LoginSNS = ({ user, setUser }: userType) => {
+const LoginSNS = ({ user, setUser, provider }: LoginSNSType) => {
   const [nickname, setNickname] = useState(String(user?.nickname));
   const isNicknameValid = nickname ? RegExp.validateNickname(nickname) : false;
   const [checkNickname, setCheckNickname] = useState(false);
-
-  const nicknameSame =
-    nickname.length > 0 && user?.nickname === nickname ? true : false;
 
   // 닉네임 중복 확인
   const handlerCheckNicknameClick = async (
@@ -34,7 +36,6 @@ const LoginSNS = ({ user, setUser }: userType) => {
 
     try {
       const res = await Api.get(`signup/nickname/${nickname}`);
-
       if (res.data.result) {
         alert("사용가능한 닉네임 입니다.");
         setCheckNickname(true);
@@ -51,22 +52,22 @@ const LoginSNS = ({ user, setUser }: userType) => {
     e.preventDefault();
 
     if (!user) return;
-    // try {
-    //   const res = await Api.put(`users/${user.id}/provider/${provider}`, {
-    //     nickname: nickname,
-    //   });
+    try {
+      const res = await Api.put(`users/${user.id}/provider/${provider}`, {
+        nickname: nickname,
+      });
 
-    //   if (res.data.result) {
-    //     alert("회원정보가 변경되었습니다.");
-    //     setUser({
-    //       id: user.id,
-    //       nickname: nickname,
-    //     });
-    //     window.location.replace("/");
-    //   }
-    // } catch (err) {
-    //   alert("회원정보를 다시 수정해주세요.");
-    // }
+      if (res.data.result) {
+        alert("회원정보가 변경되었습니다.");
+        setUser({
+          id: user.id,
+          nickname: nickname,
+        });
+        window.location.replace("/");
+      }
+    } catch (err) {
+      alert("회원정보를 다시 수정해주세요.");
+    }
   };
 
   return (
@@ -98,15 +99,17 @@ const LoginSNS = ({ user, setUser }: userType) => {
                 한글, 한글+숫자로 2~8자 구성 (초성 및 모음은 허가하지 않음)
               </F.WarningText>
             )}
-            {/* {!nicknameSame && isNicknameValid && currentPwDisabled ? (
-              <F.WarningText>닉네임 중복 확인을 해주세요.</F.WarningText>
-            ) : null} */}
+            {!checkNickname && isNicknameValid ? (
+              <F.WarningText style={{ paddingTop: "3px" }}>
+                닉네임 중복 확인을 해주세요.
+              </F.WarningText>
+            ) : null}
           </S.InputWrap>
 
           <B.InputBtn
             type="submit"
-            // disabled={!newPwSame}
-            // check={String(newPwSame)}
+            disabled={!checkNickname}
+            check={String(checkNickname)}
           >
             변경하기
           </B.InputBtn>

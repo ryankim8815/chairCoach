@@ -15,7 +15,7 @@ const UserInfoChange = () => {
     const getApi = async () => {
       if (!user) return;
       const res = await Api.get(`users/${user.id}`);
-      setProvider(res.data.provider === "chairCoach" ? "chairCoach" : "SNS");
+      setProvider(res.data.provider);
     };
     getApi();
   }, []);
@@ -28,7 +28,9 @@ const UserInfoChange = () => {
         <LoginChairCoach user={user} setUser={setUser} />
       )}
 
-      {user && provider === "SNS" && <LoginSNS user={user} setUser={setUser} />}
+      {user && provider !== "chairCoach" && (
+        <LoginSNS user={user} setUser={setUser} provider={provider} />
+      )}
     </S.SignUpLayout>
   );
 };

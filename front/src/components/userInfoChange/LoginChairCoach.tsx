@@ -5,14 +5,18 @@ import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
 import * as RegExp from "../../utils/RegExp";
 import * as Api from "../../api/api";
-import * as userType from "../../atoms/user";
 
-interface userType {
-  user: userType.User;
-  setUser: React.Dispatch<React.SetStateAction<userType.User | null>>;
+type User = {
+  id: string | null;
+  nickname: string | null;
+};
+
+interface LoginChairCoachType {
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-const LoginChairCoach = ({ user, setUser }: userType) => {
+const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
   const [nickname, setNickname] = useState(String(user?.nickname));
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");

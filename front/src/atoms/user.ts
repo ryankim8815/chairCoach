@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
-export interface User {
+interface User {
   id: string | null;
   nickname: string | null;
 }
