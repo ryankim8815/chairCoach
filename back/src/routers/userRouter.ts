@@ -1,5 +1,5 @@
 import * as express from "express";
-import authMiddleware from "../middlewares/authMiddleware";
+import { authMiddleware } from "../middlewares/authMiddleware";
 import nodemailerMiddleware from "../middlewares/nodemailerMiddleware";
 import * as Validation from "../middlewares/validationMiddleware";
 import * as Schemas from "../utils/schemas.joi";

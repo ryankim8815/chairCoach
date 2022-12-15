@@ -6,6 +6,7 @@ import userRouter from "./routers/userRouter";
 import socialLoginRouter from "./routers/socialLoginRouter";
 import neckRouter from "./routers/neckRouter";
 import bodyRouter from "./routers/bodyRouter";
+import tokenRouter from "./routers/tokenRouter";
 import swagger from "./utils/swagger";
 import { errorHandler } from "./middlewares/errorMiddleware";
 import checkClientIp from "./middlewares/clientIpMiddleware";
@@ -24,6 +25,7 @@ app.use(userRouter);
 app.use(socialLoginRouter);
 app.use(neckRouter);
 app.use(bodyRouter);
+app.use(tokenRouter);
 app.use(swagger);
 
 // uploads

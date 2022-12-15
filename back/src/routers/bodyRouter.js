@@ -27,16 +27,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var express = __importStar(require("express"));
 var bodyController_1 = __importDefault(require("../controllers/bodyController"));
-var authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
+var authMiddleware_1 = require("../middlewares/authMiddleware");
 var Validation = __importStar(require("../middlewares/validationMiddleware"));
 var Schemas = __importStar(require("../utils/schemas.joi"));
 var bodyRouter = express.Router();
 bodyRouter.get("/bodies", bodyController_1.default.bodyRecordlist); // 전체 운동 기록 조회 기능, 개발시 편의를 위한 기능으로 사용처가 없다면 삭제 예정
-bodyRouter.get("/bodies/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), bodyController_1.default.bodyRecords); // 특정 유저의 운동 기록 조회
-bodyRouter.post("/bodies/:user_id/recording", authMiddleware_1.default, Validation.validateBodyParams(Schemas.bodyCreateSchema, Schemas.userCurrentSchema), bodyController_1.default.bodyCreate); // 특정 유저의 운동 기록 시작
-bodyRouter.patch("/bodies/:user_id/terminating", authMiddleware_1.default, Validation.validateBodyParams(Schemas.bodyUpdateSchema, Schemas.userCurrentSchema), bodyController_1.default.bodyUpdate); // 특정 유저의 운동 기록 종료
-bodyRouter.get("/bodies/:user_id/:year/:week", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.bodyRecordsFindByWeek), bodyController_1.default.bodyRecordsWeek); // 특정 유저의 운동 기록 조회 - 일간
-bodyRouter.get("/bodies/:user_id/:year", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.bodyRecordsFindByYear), bodyController_1.default.bodyRecordsYear); // 특정 유저의 운동 기록 조회 - 월간
+bodyRouter.get("/bodies/:user_id", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.userCurrentSchema), bodyController_1.default.bodyRecords); // 특정 유저의 운동 기록 조회
+bodyRouter.post("/bodies/:user_id/recording", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.bodyCreateSchema, Schemas.userCurrentSchema), bodyController_1.default.bodyCreate); // 특정 유저의 운동 기록 시작
+bodyRouter.patch("/bodies/:user_id/terminating", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.bodyUpdateSchema, Schemas.userCurrentSchema), bodyController_1.default.bodyUpdate); // 특정 유저의 운동 기록 종료
+bodyRouter.get("/bodies/:user_id/:year/:week", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.bodyRecordsFindByWeek), bodyController_1.default.bodyRecordsWeek); // 특정 유저의 운동 기록 조회 - 일간
+bodyRouter.get("/bodies/:user_id/:year", authMiddleware_1.authMiddleware, Validation.validateBodyParams(Schemas.userCurrentSchema, Schemas.bodyRecordsFindByYear), bodyController_1.default.bodyRecordsYear); // 특정 유저의 운동 기록 조회 - 월간
 module.exports = bodyRouter;
 /**
  * @swagger

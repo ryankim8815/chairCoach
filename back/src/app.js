@@ -46,6 +46,7 @@ var userRouter_1 = __importDefault(require("./routers/userRouter"));
 var socialLoginRouter_1 = __importDefault(require("./routers/socialLoginRouter"));
 var neckRouter_1 = __importDefault(require("./routers/neckRouter"));
 var bodyRouter_1 = __importDefault(require("./routers/bodyRouter"));
+var tokenRouter_1 = __importDefault(require("./routers/tokenRouter"));
 var swagger_1 = __importDefault(require("./utils/swagger"));
 var errorMiddleware_1 = require("./middlewares/errorMiddleware");
 var clientIpMiddleware_1 = __importDefault(require("./middlewares/clientIpMiddleware"));
@@ -61,6 +62,7 @@ app.use(userRouter_1.default);
 app.use(socialLoginRouter_1.default);
 app.use(neckRouter_1.default);
 app.use(bodyRouter_1.default);
+app.use(tokenRouter_1.default);
 app.use(swagger_1.default);
 // uploads
 app.use(express_1.default.static("uploads"));

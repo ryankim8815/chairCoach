@@ -9,6 +9,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment-timezone";
+import Token from "../models/Token.model";
 moment.tz.setDefault("Asia/Seoul");
 
 class userService {
@@ -44,7 +45,7 @@ class userService {
     return result_success;
   }
   //// 로그인용 사용자 조회
-  static async getUser({ email, password }) {
+  static async getUser({ email, password, ipAddress }) {
     const user = await User.findByEmail({ email });
     if (user.length === 0) {
       throw ClientError.unauthorized(
@@ -97,18 +98,33 @@ class userService {
       },
       secretKey
     );
-    delete thisUser.password;
-    const result_success = Object.assign(
-      {
-        result: true,
-        message: `로그인이 성공적으로 이뤄졌습니다.`,
-        token: token,
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      },
-      thisUser
-    );
-    return result_success;
+    const status = "valid";
+    const created_at = moment().format("YYYY-MM-DD HH:mm:ss");
+    // token update
+    const user_id = thisUser.user_id;
+    const tokenUpdate = await Token.update({
+      user_id,
+      refreshToken,
+      accessToken,
+      ipAddress,
+      status,
+      created_at,
+    });
+    console.log("tokenUpdate::::::: ", tokenUpdate); // 여기에도 트랜젝션 ====================
+    if (tokenUpdate[1]) {
+      delete thisUser.password;
+      const result_success = Object.assign(
+        {
+          result: true,
+          message: `로그인이 성공적으로 이뤄졌습니다.`,
+          token: token,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        },
+        thisUser
+      );
+      return result_success;
+    }
   }
 
   ///////////////////////////
@@ -174,7 +190,7 @@ class userService {
   }
 
   //// 자체 회원가입
-  static async addUser({ email, password, nickname }) {
+  static async addUser({ email, password, nickname, ipAddress }) {
     const user_id = uuidv4();
     password = await bcrypt.hash(password, 10);
     const provider = "chairCoach";
@@ -185,8 +201,38 @@ class userService {
       nickname,
       provider,
     });
-    console.log("newUser: ", newUser);
-    if (newUser[1]) {
+    const secretKey = process.env.JWT_SECRET_KEY;
+    const token = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+        user_id: user_id,
+      },
+      secretKey
+    );
+    const accessToken = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
+        user_id: user_id,
+      },
+      secretKey
+    );
+    const refreshToken = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // sec, 1week
+        user_id: user_id,
+      },
+      secretKey
+    );
+
+    const tokenCreate = await Token.create({
+      user_id,
+      refreshToken,
+      accessToken,
+      ipAddress,
+    });
+    // console.log("tokenCreate: ", tokenCreate);
+    // 트랜젝션 적용=============================================================================
+    if (newUser[1] && tokenCreate[1]) {
       const result_success = {
         result: true,
         message: `회원가입이 성공적으로 이뤄졌습니다.`,

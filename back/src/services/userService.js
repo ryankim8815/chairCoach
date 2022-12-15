@@ -72,6 +72,7 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var uuid_1 = require("uuid");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
+var Token_model_1 = __importDefault(require("../models/Token.model"));
 moment_timezone_1.default.tz.setDefault("Asia/Seoul");
 var userService = /** @class */ (function () {
     function userService() {
@@ -122,9 +123,9 @@ var userService = /** @class */ (function () {
     };
     //// 로그인용 사용자 조회
     userService.getUser = function (_a) {
-        var email = _a.email, password = _a.password;
+        var email = _a.email, password = _a.password, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id, withdrawnUser, secretKey, token, accessToken, refreshToken, result_success;
+            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id_1, withdrawnUser, secretKey, token, accessToken, refreshToken, status, created_at, user_id, tokenUpdate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -142,8 +143,8 @@ var userService = /** @class */ (function () {
                             throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
                         }
                         if (!(user[0].status == "pending")) return [3 /*break*/, 4];
-                        user_id = thisUser.user_id;
-                        return [4 /*yield*/, User_model_1.default.undoWithdraw({ user_id: user_id })];
+                        user_id_1 = thisUser.user_id;
+                        return [4 /*yield*/, User_model_1.default.undoWithdraw({ user_id: user_id_1 })];
                     case 3:
                         withdrawnUser = _b.sent();
                         if (withdrawnUser[1] === 0) {
@@ -168,15 +169,32 @@ var userService = /** @class */ (function () {
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
                             user_id: thisUser.user_id,
                         }, secretKey);
-                        delete thisUser.password;
-                        result_success = Object.assign({
-                            result: true,
-                            message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                            token: token,
-                            accessToken: accessToken,
-                            refreshToken: refreshToken,
-                        }, thisUser);
-                        return [2 /*return*/, result_success];
+                        status = "valid";
+                        created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        user_id = thisUser.user_id;
+                        return [4 /*yield*/, Token_model_1.default.update({
+                                user_id: user_id,
+                                refreshToken: refreshToken,
+                                accessToken: accessToken,
+                                ipAddress: ipAddress,
+                                status: status,
+                                created_at: created_at,
+                            })];
+                    case 5:
+                        tokenUpdate = _b.sent();
+                        console.log("tokenUpdate::::::: ", tokenUpdate); // 여기에도 트랜젝션 ====================
+                        if (tokenUpdate[1]) {
+                            delete thisUser.password;
+                            result_success = Object.assign({
+                                result: true,
+                                message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                token: token,
+                                accessToken: accessToken,
+                                refreshToken: refreshToken,
+                            }, thisUser);
+                            return [2 /*return*/, result_success];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
@@ -271,9 +289,9 @@ var userService = /** @class */ (function () {
     };
     //// 자체 회원가입
     userService.addUser = function (_a) {
-        var email = _a.email, password = _a.password, nickname = _a.nickname;
+        var email = _a.email, password = _a.password, nickname = _a.nickname, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, provider, newUser, result_success;
+            var user_id, provider, newUser, secretKey, token, accessToken, refreshToken, tokenCreate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -291,8 +309,30 @@ var userService = /** @class */ (function () {
                             })];
                     case 2:
                         newUser = _b.sent();
-                        console.log("newUser: ", newUser);
-                        if (newUser[1]) {
+                        secretKey = process.env.JWT_SECRET_KEY;
+                        token = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
+                            user_id: user_id,
+                        }, secretKey);
+                        accessToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+                            user_id: user_id,
+                        }, secretKey);
+                        refreshToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+                            user_id: user_id,
+                        }, secretKey);
+                        return [4 /*yield*/, Token_model_1.default.create({
+                                user_id: user_id,
+                                refreshToken: refreshToken,
+                                accessToken: accessToken,
+                                ipAddress: ipAddress,
+                            })];
+                    case 3:
+                        tokenCreate = _b.sent();
+                        // console.log("tokenCreate: ", tokenCreate);
+                        // 트랜젝션 적용=============================================================================
+                        if (newUser[1] && tokenCreate[1]) {
                             result_success = {
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",

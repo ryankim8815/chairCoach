@@ -1,6 +1,6 @@
 import * as express from "express";
 import neckController from "../controllers/neckController";
-import authMiddleware from "../middlewares/authMiddleware";
+import { authMiddleware } from "../middlewares/authMiddleware";
 import uploadMiddleware from "../middlewares/uploadMiddleware";
 import * as Validation from "../middlewares/validationMiddleware";
 import * as Schemas from "../utils/schemas.joi";

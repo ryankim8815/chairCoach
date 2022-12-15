@@ -123,7 +123,7 @@ var userController = /** @class */ (function () {
     // POST: 회원가입 기능
     userController.userRegister = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, nickname, addUser, e_3;
+            var email, password, nickname, ipAddress, addUser, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -131,7 +131,13 @@ var userController = /** @class */ (function () {
                         email = req.body.email;
                         password = req.body.password;
                         nickname = req.body.nickname;
-                        return [4 /*yield*/, userService_1.default.addUser({ email: email, password: password, nickname: nickname })];
+                        ipAddress = req.body.requestClientIp;
+                        return [4 /*yield*/, userService_1.default.addUser({
+                                email: email,
+                                password: password,
+                                nickname: nickname,
+                                ipAddress: ipAddress,
+                            })];
                     case 1:
                         addUser = _a.sent();
                         logger.info(addUser);
@@ -149,14 +155,15 @@ var userController = /** @class */ (function () {
     // POST: 로그인
     userController.userSignin = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, getUser, e_4;
+            var email, password, ipAddress, getUser, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         email = req.body.email;
                         password = req.body.password;
-                        return [4 /*yield*/, userService_1.default.getUser({ email: email, password: password })];
+                        ipAddress = req.body.requestClientIp;
+                        return [4 /*yield*/, userService_1.default.getUser({ email: email, password: password, ipAddress: ipAddress })];
                     case 1:
                         getUser = _a.sent();
                         logger.info(getUser);

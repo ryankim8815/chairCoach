@@ -57,7 +57,13 @@ class userController {
       const email = req.body.email;
       const password = req.body.password;
       const nickname = req.body.nickname;
-      const addUser = await userService.addUser({ email, password, nickname });
+      const ipAddress = req.body.requestClientIp;
+      const addUser = await userService.addUser({
+        email,
+        password,
+        nickname,
+        ipAddress,
+      });
 
       logger.info(addUser);
       return res.status(200).json(addUser);
@@ -76,7 +82,8 @@ class userController {
     try {
       const email = req.body.email;
       const password = req.body.password;
-      const getUser = await userService.getUser({ email, password });
+      const ipAddress = req.body.requestClientIp;
+      const getUser = await userService.getUser({ email, password, ipAddress });
 
       logger.info(getUser);
       return res.status(200).json(getUser);

@@ -24,5 +24,26 @@ const authMiddleware = async function (
     next(e);
   }
 };
+const refreshToken = async function (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) {
+  // const accessToken = req.headers["authorization"]?.split(" ")[1] ?? "null";
+  const refreshToken = req.headers["authorization"]?.split(" ")[1] ?? "null";
+  if (refreshToken === "null") {
+    throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
+  }
+  try {
+    const secretKey = process.env.JWT_SECRET_KEY;
+    const jwtDecoded: any = jwt.verify(refreshToken, secretKey);
+    const user_id = jwtDecoded.user_id;
+    req.body.user_id = user_id;
+    req.body.refreshToken = refreshToken;
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
 
-export = authMiddleware;
+export { authMiddleware, refreshToken };
