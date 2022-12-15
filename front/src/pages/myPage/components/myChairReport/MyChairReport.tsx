@@ -20,6 +20,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const [data, setData] = useState<number[] | null>(null);
   const [total, setTotal] = useState<number | null>(null);
   const [curYear, setCurYear] = useState<number>(year!);
+  const [curWeek, setCurWeek] = useState<number>(50);
   const [isSelected, SetIsSelected] = useState<number[]>([1, 0]);
   //const [curWeek, setCurWeek] = useState<number | null>(null);
 
@@ -38,15 +39,24 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
 
   const onClickPrevButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (timeInfo === "year") setCurYear((prev) => prev - 1);
-    //else if (timeInfo === "week") setCurWeek((prev) => prev - 1);
-    getYearData();
+    if (timeInfo === "year") {
+      setCurYear((prev) => prev - 1);
+      getYearData();
+    } else if (timeInfo === "week") {
+      setCurWeek((prev) => prev - 1);
+      getWeekData();
+    }
   };
 
   const onClickNextButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (timeInfo) setTimeInfo("week");
-    getWeekData();
+    if (timeInfo === "year") {
+      setCurYear((prev) => prev + 1);
+      getYearData();
+    } else if (timeInfo === "week") {
+      setCurWeek((prev) => prev + 1);
+      getWeekData();
+    }
   };
   useEffect(() => {
     getYearData();
@@ -59,7 +69,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   // 마이체어리포트 유저 운동기록 조회
   const getYearData = async () => {
     try {
-      const res = await Api.get(`bodies/${user_id}/${year}`);
+      const res = await Api.get(`bodies/${user_id}/${curYear}`);
       if (res.data.list.length) {
         const newData = new Array(12).fill(0);
         for (let obj of res.data.list) {
@@ -82,13 +92,12 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
 
   const getWeekData = async () => {
     try {
-      const res = await Api.get(`bodies/${user_id}/${year}/50`);
+      const res = await Api.get(`bodies/${user_id}/${year}/${curWeek}`);
       if (res.data.list.length) {
         const newData = new Array(7).fill(0);
         for (let obj of res.data.list) {
           let dayOfWeek = new Date(obj.date).getDay();
           let totalMiniute = Math.round(Number(obj.duration) / 60);
-
           if (dayOfWeek === 0) newData[6] = totalMiniute;
           else {
             newData[dayOfWeek - 1] = totalMiniute;
@@ -138,13 +147,13 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
             </div>
           </S.InfoBox>
           <S.GraphBox>
-            <S.ShiftButton>
+            <S.ShiftButton onClick={onClickPrevButton}>
               <MdKeyboardArrowLeft size={32} />
             </S.ShiftButton>
             <S.YearText fontSize={20} fontWeight={500}>
-              {year}년
+              {curYear}년
             </S.YearText>
-            <S.ShiftButton>
+            <S.ShiftButton onClick={onClickNextButton}>
               <MdKeyboardArrowRight size={32} />
             </S.ShiftButton>
             <div className="graph">

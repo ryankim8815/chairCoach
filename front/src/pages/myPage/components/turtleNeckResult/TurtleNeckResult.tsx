@@ -75,7 +75,7 @@ const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
 
     if (avg < 40) setImage(good);
     else if (avg >= 40 && avg < 70) setImage(middle);
-    else setImage(bad);
+    else if (avg >= 70) setImage(bad);
   };
 
   useEffect(() => {
