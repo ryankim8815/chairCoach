@@ -10,7 +10,7 @@ def load_model():
     model = XGBClassifier()
     
     # load weight
-    model.load_model('./weights/xgb_mv4.json')
+    model.load_model('./weights/xgb_mv3_nor.json')
     return model
 
 def extract_coord(kpts, steps):

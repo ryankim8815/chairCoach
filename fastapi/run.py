@@ -40,6 +40,6 @@ def disconnect(sid):
 
 if __name__ == "__main__":
     # kwargs = {"port": 8000}
-    kwargs = {"port": 5001}
+    kwargs = {"host":"0.0.0.0","port": 5001}
     kwargs.update({"reload":True})
     uvicorn.run("run:app", **kwargs)
