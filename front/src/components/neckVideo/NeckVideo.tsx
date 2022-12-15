@@ -35,7 +35,6 @@ const NeckVideo = ({
       setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
     [setDevices]
   );
-  console.log(devices);
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
@@ -49,9 +48,6 @@ const NeckVideo = ({
   const [inclination, setInclination] = useState(0);
   const [score, setScore] = useState(0);
   const [angle, setAngle] = useState(0);
-  console.log(score);
-  console.log(inclination);
-  console.log("각도", angle);
   const getScore = () => {
     if (inclination >= 5) {
       setScore(100);
@@ -60,7 +56,6 @@ const NeckVideo = ({
     }
   };
   const media = navigator.mediaDevices.getUserMedia;
-  console.log(media);
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -113,10 +108,6 @@ const NeckVideo = ({
             dataToSend[4].x - dataToSend[6].x
           );
           setAngle((rad * 180) / Math.PI);
-          console.log(
-            dataToSend[3].y - dataToSend[5].y,
-            dataToSend[3].x - dataToSend[5].x
-          );
         }
       };
       if (playInspection.current === true) {
@@ -167,8 +158,8 @@ const NeckVideo = ({
       url: `https://kdt-ai5-team04.elicecoding.com:5000/necks/${user?.id}`,
       data: {
         file: file,
-        result: inclination.toFixed(2),
-        score: Math.floor(inclination * 20),
+        result: Math.abs(angle),
+        score: Math.abs(angle),
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -219,7 +210,6 @@ const NeckVideo = ({
       }
     });
   }, [runMovenet]);
-  console.log(deviceId);
   return (
     <div>
       <S.WebcamWrap>

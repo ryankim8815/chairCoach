@@ -14,70 +14,83 @@
  * limitations under the License.
  * =============================================================================
  */
- import * as posenet from "@tensorflow-models/posenet";
+import * as posenet from "@tensorflow-models/posenet";
 
- const color = "#835DFE";
- const lineWidth = 3;
- const r = 3;
- 
- export function drawPoint(ctx:CanvasRenderingContext2D, y:number, x:number, r:number, color:string, videoWidth:number) {
-   ctx.beginPath();
-   ctx.arc(x, y, r, 0, 2 * Math.PI);
-   ctx.fillStyle = color;
-   ctx.fill();
- }
- 
- export function drawKeypoints(
-   keypoints:any,
-   minConfidence:number,
-   ctx:CanvasRenderingContext2D,
-   videoWidth:number,
-   scale = 1
- ) {
-   for (let i = 0; i < keypoints.length; i++) {
-     const keypoint = keypoints[i];
- 
-     if (keypoint.score < minConfidence) {
-       continue;
-     }
-     const x = videoWidth-(videoWidth - keypoint.x);
-     const y = keypoint.y;
-     drawPoint(ctx, y * scale, x * scale, r, color, videoWidth);
-   }
- }
- 
- function toTuple(y:any, x:any) {
-   return [y, x];
- }
- 
- export function drawSegment([ay, ax]:any, [by, bx]:any, color:string, scale:number, ctx:CanvasRenderingContext2D) {
-   ctx.beginPath();
-   ctx.moveTo(ax * scale, ay * scale);
-   ctx.lineTo(bx * scale, by * scale);
-   ctx.lineWidth = lineWidth;
-   ctx.strokeStyle = color;
-   ctx.stroke();
- }
- 
- export function drawSkeleton(
-   keypoints:any,
-   minConfidence:number,
-   ctx:CanvasRenderingContext2D,
-   videoWidth:number,
-   scale = 1
- ) {
-   const adjacentKeyPoints = posenet.getAdjacentKeyPoints(
-     keypoints,
-     minConfidence
-   );
- 
-   adjacentKeyPoints.forEach((keypoints) => {
-     drawSegment(
-       toTuple((keypoints[0]as any).y, videoWidth-(videoWidth - (keypoints[0]as any).x)),
-       toTuple((keypoints[1]as any).y, videoWidth-(videoWidth - (keypoints[1]as any).x)),
-       color,
-       scale,
-       ctx
-     );
-   });
- }
+const color = "#835DFE";
+const lineWidth = 3;
+const r = 3;
+
+export function drawPoint(
+  ctx: CanvasRenderingContext2D,
+  y: number,
+  x: number,
+  r: number,
+  color: string,
+  videoWidth: number
+) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, 2 * Math.PI);
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+export function drawKeypoints(
+  keypoints: any,
+  minConfidence: number,
+  ctx: CanvasRenderingContext2D,
+  videoWidth: number,
+  scale = 1
+) {
+  for (let i = 0; i < keypoints.length; i++) {
+    const keypoint = keypoints[i];
+
+    if (keypoint.score < minConfidence) {
+      continue;
+    }
+    const x = videoWidth - keypoint.x;
+    const y = keypoint.y;
+    drawPoint(ctx, y * scale, x * scale, r, color, videoWidth);
+  }
+}
+
+function toTuple(y: any, x: any) {
+  return [y, x];
+}
+
+export function drawSegment(
+  [ay, ax]: any,
+  [by, bx]: any,
+  color: string,
+  scale: number,
+  ctx: CanvasRenderingContext2D
+) {
+  ctx.beginPath();
+  ctx.moveTo(ax * scale, ay * scale);
+  ctx.lineTo(bx * scale, by * scale);
+  ctx.lineWidth = lineWidth;
+  ctx.strokeStyle = color;
+  ctx.stroke();
+}
+
+export function drawSkeleton(
+  keypoints: any,
+  minConfidence: number,
+  ctx: CanvasRenderingContext2D,
+  videoWidth: number,
+  scale = 1
+) {
+  const adjacentKeyPoints = posenet.getAdjacentKeyPoints(
+    keypoints,
+    minConfidence
+  );
+
+  adjacentKeyPoints.forEach((keypoints) => {
+    drawSegment(
+      toTuple((keypoints[0] as any).y, videoWidth - (keypoints[0] as any).x),
+      toTuple((keypoints[1] as any).y, videoWidth - (keypoints[1] as any).x),
+      color,
+      scale,
+      ctx
+    );
+  });
+}
