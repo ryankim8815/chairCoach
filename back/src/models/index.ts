@@ -30,6 +30,7 @@ db.User = require("./User.schema")(sequelize, db);
 db.Neck = require("./Neck.schema")(sequelize, db);
 db.Code = require("./Code.schema")(sequelize, db);
 db.Body = require("./Body.schema")(sequelize, db);
+db.Token = require("./Token.schema")(sequelize, db);
 // db.User = Neck;
 // db.User = Body;
 // db.User = Code;

@@ -10,7 +10,7 @@ function errorHandler(
   res: express.Response,
   next: express.NextFunction
 ) {
-  discordForWinston(error);
+  discordForWinston(error, req);
   if (error.status) {
     logger.error(error);
     return res.status(error.status).json(error);

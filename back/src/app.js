@@ -72,9 +72,9 @@ app.get("/", function (req, res) {
 // sequelize.sync({ force: false, alter: true });
 models_1.db.sequelize
     // .sync({ force: true })
-    .sync({ force: false })
+    // .sync({ force: false })
     // .sync({ alter: true })
-    // .sync({ alter: { drop: false } })
+    .sync({ alter: { drop: false } })
     .then(function () {
     logger.info("sequelize.sync: success");
     console.log("DB 테스트 성공");

@@ -58,9 +58,9 @@ var CLIENT_ID = process.env.CLIENT_ID;
 var TOKEN = process.env.DISCORD_TOKEN;
 var GUILD_ID = process.env.GUILD_ID;
 var CHANNEL_ID = process.env.CHANNEL_ID;
-function discordForWinston(error) {
+function discordForWinston(error, req) {
     return __awaiter(this, void 0, void 0, function () {
-        var time, status, message, discordLogger, channel;
+        var time, status, message, originalUrl, requestClientIp, requestStartTime, discordLogger, channel;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -69,7 +69,10 @@ function discordForWinston(error) {
                     time = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
                     status = error.status || 400;
                     message = error.message;
-                    discordLogger = "[ERROR] ".concat(time, " (").concat(status, ") ").concat(message);
+                    originalUrl = req.originalUrl;
+                    requestClientIp = req.body.requestClientIp;
+                    requestStartTime = req.body.requestStartTime;
+                    discordLogger = "\n  ```\n  [ERROR] \n      STATUS:       ".concat(status, "\n      URL:          ").concat(originalUrl, "\n      MESSAGE:      ").concat(message, "\n      ERROR_TIME:   ").concat(time, "\n      REQUEST_TIME: ").concat(requestStartTime, "\n      CLIENT_IP:    ").concat(requestClientIp, "\n  ``` \n  ");
                     return [4 /*yield*/, client.channels.fetch(CHANNEL_ID)];
                 case 1:
                     channel = _a.sent();

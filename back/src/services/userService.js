@@ -124,7 +124,7 @@ var userService = /** @class */ (function () {
     userService.getUser = function (_a) {
         var email = _a.email, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
-            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id, withdrawnUser, secretKey, token, result_success;
+            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id, withdrawnUser, secretKey, token, accessToken, refreshToken, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -156,12 +156,25 @@ var userService = /** @class */ (function () {
                         _b.label = 4;
                     case 4:
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({ user_id: thisUser.user_id }, secretKey);
+                        token = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
+                            user_id: thisUser.user_id,
+                        }, secretKey);
+                        accessToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+                            user_id: thisUser.user_id,
+                        }, secretKey);
+                        refreshToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+                            user_id: thisUser.user_id,
+                        }, secretKey);
                         delete thisUser.password;
                         result_success = Object.assign({
                             result: true,
                             message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             token: token,
+                            accessToken: accessToken,
+                            refreshToken: refreshToken,
                         }, thisUser);
                         return [2 /*return*/, result_success];
                 }

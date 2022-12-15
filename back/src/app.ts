@@ -39,9 +39,9 @@ app.get("/", (req, res) => {
 // sequelize.sync({ force: false, alter: true });
 db.sequelize
   // .sync({ force: true })
-  .sync({ force: false })
+  // .sync({ force: false })
   // .sync({ alter: true })
-  // .sync({ alter: { drop: false } })
+  .sync({ alter: { drop: false } })
   .then(() => {
     logger.info("sequelize.sync: success");
     console.log("DB 테스트 성공");
