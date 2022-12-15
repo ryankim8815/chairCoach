@@ -47,11 +47,6 @@ var validateBody = function (Schema) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         body = req.body;
-                        console.log("BODY: ", body);
-                        console.log("requestClientIp: ", body.requestClientIp);
-                        console.log("requestClientIp: ", typeof body.requestClientIp);
-                        console.log("requestStartTime:: ", body.requestStartTime);
-                        console.log("requestStartTime:: ", typeof body.requestStartTime);
                         return [4 /*yield*/, Schema.validateAsync(body)];
                     case 1:
                         _a.sent();

@@ -10,11 +10,6 @@ const validateBody = (Schema: Joi.ObjectSchema<any>) =>
   ) {
     try {
       const body = req.body;
-      console.log("BODY: ", body);
-      console.log("requestClientIp: ", body.requestClientIp);
-      console.log("requestClientIp: ", typeof body.requestClientIp);
-      console.log("requestStartTime:: ", body.requestStartTime);
-      console.log("requestStartTime:: ", typeof body.requestStartTime);
       await Schema.validateAsync(body);
       next();
     } catch (e) {
