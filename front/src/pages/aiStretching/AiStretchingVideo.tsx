@@ -57,9 +57,14 @@ const AiStretchingVideo = ({ tempref }: any) => {
       socket.emit("model", dataArr2);
       socket.on("model", (message) => {
         if (message == tempref.current) {
+          // console.log("1", message == temp);
           return;
         }
+        // console.log(message == temp);
         tempref.current = message;
+        // console.log(temp);
+        // console.log(message);
+        console.log(tempref.current);
       });
 
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
