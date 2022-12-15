@@ -47,7 +47,16 @@ const NeckVideo = ({
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [inclination, setInclination] = useState(0);
-
+  const [score, setScore] = useState(0);
+  console.log(score);
+  console.log(inclination);
+  const getScore = () => {
+    if (inclination >= 5) {
+      setScore(100);
+    } else {
+      setScore(Math.floor(inclination * 20));
+    }
+  };
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -71,22 +80,25 @@ const NeckVideo = ({
         });
       }
       const getInclination = () => {
-        (dataToSend[3].score as number) > (dataToSend[4].score as number)
-          ? setInclination(
-              Math.abs(
-                (dataToSend[3].y - dataToSend[5].y) /
-                  (dataToSend[3].x - dataToSend[5].x)
-              )
+        if ((dataToSend[3].score as number) > (dataToSend[4].score as number)) {
+          setInclination(
+            Math.abs(
+              (dataToSend[3].y - dataToSend[5].y) /
+                (dataToSend[3].x - dataToSend[5].x)
             )
-          : setInclination(
-              Math.abs(
-                (dataToSend[4].y - dataToSend[6].y) /
-                  (dataToSend[4].x - dataToSend[6].x)
-              )
-            );
+          );
+        } else {
+          setInclination(
+            Math.abs(
+              (dataToSend[4].y - dataToSend[6].y) /
+                (dataToSend[4].x - dataToSend[6].x)
+            )
+          );
+        }
       };
       if (playInspection.current === true) {
         getInclination();
+        getScore();
         playInspection.current = false;
       }
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
@@ -132,7 +144,7 @@ const NeckVideo = ({
       data: {
         file: file,
         result: inclination.toFixed(2),
-        score: 70,
+        score: Math.floor(inclination * 20),
       },
       headers: {
         "Content-Type": "multipart/form-data",
