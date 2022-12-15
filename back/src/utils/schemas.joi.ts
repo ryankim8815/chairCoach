@@ -25,6 +25,16 @@ export const userUpdateSchema = Joi.object().keys({
   nickname: Users.nickname.required(),
 });
 
+export const socialLoginUserUpdateSchema = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  nickname: Users.nickname.required(),
+});
+
+export const socialLoginUserUpdateSchemaParams = Joi.object().keys({
+  user_id: Users.user_id.required(),
+  provider: Users.provider.required(),
+});
+
 export const userDeleteSchema = Joi.object().keys({
   user_id: Users.user_id.required(),
   password: Users.password.required(),

@@ -232,10 +232,45 @@ var userController = /** @class */ (function () {
             });
         });
     };
+    // PUT: 회원정보 수정 - 간편로그인 회원용
+    userController.socialLoginUserUpdate = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user_id, provider, nickname, updateUser, e_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        user_id = req.body.user_id;
+                        if (user_id !== req.params.user_id) {
+                            throw ClientError.unauthorized("정상적으로 로그인된 사용자의 요청이 아닙니다.");
+                        }
+                        provider = req.params.provider;
+                        if (provider == "chairCoach") {
+                            throw ClientError.unauthorized("정상적으로 접근된 사용자의 요청이 아닙니다.");
+                        }
+                        nickname = req.body.nickname;
+                        return [4 /*yield*/, userService_1.default.updateSocialLoginUser({
+                                user_id: user_id,
+                                provider: provider,
+                                nickname: nickname,
+                            })];
+                    case 1:
+                        updateUser = _a.sent();
+                        logger.info(updateUser);
+                        return [2 /*return*/, res.status(200).json(updateUser)];
+                    case 2:
+                        e_7 = _a.sent();
+                        next(e_7);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     // DELETE: 회원정보 삭제
     userController.userDelete = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, password, deleteUser, e_7;
+            var user_id, password, deleteUser, e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -254,8 +289,8 @@ var userController = /** @class */ (function () {
                         logger.info(deleteUser);
                         return [2 /*return*/, res.status(200).json(deleteUser)];
                     case 2:
-                        e_7 = _a.sent();
-                        next(e_7);
+                        e_8 = _a.sent();
+                        next(e_8);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -265,7 +300,7 @@ var userController = /** @class */ (function () {
     /// POST: email 인증을 위한 코드 발송
     userController.signupEmail = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, code, sendCode, e_8;
+            var email, code, sendCode, e_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -282,8 +317,8 @@ var userController = /** @class */ (function () {
                         logger.info(sendCode);
                         return [2 /*return*/, res.status(200).json(sendCode)];
                     case 2:
-                        e_8 = _a.sent();
-                        next(e_8);
+                        e_9 = _a.sent();
+                        next(e_9);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -293,7 +328,7 @@ var userController = /** @class */ (function () {
     /// GET: email 인증 코드 확인
     userController.signupVerifyEmail = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, code, verifyCode, e_9;
+            var email, code, verifyCode, e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -309,8 +344,8 @@ var userController = /** @class */ (function () {
                         logger.info(verifyCode);
                         return [2 /*return*/, res.status(200).json(verifyCode)];
                     case 2:
-                        e_9 = _a.sent();
-                        next(e_9);
+                        e_10 = _a.sent();
+                        next(e_10);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -320,7 +355,7 @@ var userController = /** @class */ (function () {
     /// GET: nickname 중복확인
     userController.signupNickname = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var nickname, nicknameDuplicateCheck, e_10;
+            var nickname, nicknameDuplicateCheck, e_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -334,8 +369,8 @@ var userController = /** @class */ (function () {
                         logger.info(nicknameDuplicateCheck);
                         return [2 /*return*/, res.status(200).json(nicknameDuplicateCheck)];
                     case 2:
-                        e_10 = _a.sent();
-                        next(e_10);
+                        e_11 = _a.sent();
+                        next(e_11);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -345,7 +380,7 @@ var userController = /** @class */ (function () {
     /// PATCH: 알람 설정
     userController.userSetAlert = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, alert_1, timer, setAlert, e_11;
+            var user_id, alert_1, timer, setAlert, e_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -366,8 +401,8 @@ var userController = /** @class */ (function () {
                         logger.info(setAlert);
                         return [2 /*return*/, res.status(200).json(setAlert)];
                     case 2:
-                        e_11 = _a.sent();
-                        next(e_11);
+                        e_12 = _a.sent();
+                        next(e_12);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

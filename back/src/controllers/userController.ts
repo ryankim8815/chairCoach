@@ -139,6 +139,39 @@ class userController {
     }
   }
 
+  // PUT: 회원정보 수정 - 간편로그인 회원용
+  static async socialLoginUserUpdate(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
+      const provider = req.params.provider;
+      if (provider == "chairCoach") {
+        throw ClientError.unauthorized(
+          "정상적으로 접근된 사용자의 요청이 아닙니다."
+        );
+      }
+      const nickname = req.body.nickname;
+      const updateUser = await userService.updateSocialLoginUser({
+        user_id,
+        provider,
+        nickname,
+      });
+
+      logger.info(updateUser);
+      return res.status(200).json(updateUser);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   // DELETE: 회원정보 삭제
   static async userDelete(
     req: express.Request,

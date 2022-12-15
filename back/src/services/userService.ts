@@ -214,7 +214,25 @@ class userService {
     });
     if (updatedUser[1] !== 1)
       throw ServerError.internalServerError(
-        "[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다."
+        "[확인요망] 업데이트 과정트서 오류가 발견되었습니다."
+      );
+    const result_success = {
+      result: true,
+      message: `회원정보 수정이 성공적으로 이뤄졌습니다.`,
+    };
+    return result_success;
+  }
+
+  //// 회원 정보 수정 - 간편로그인 회원용
+  static async updateSocialLoginUser({ user_id, provider, nickname }) {
+    const updatedUser = await User.updateNickname({
+      user_id,
+      provider,
+      nickname,
+    });
+    if (updatedUser[1] !== 1)
+      throw ServerError.internalServerError(
+        "[확인요망] 업데이트 과정트서 오류가 발견되었습니다."
       );
     const result_success = {
       result: true,

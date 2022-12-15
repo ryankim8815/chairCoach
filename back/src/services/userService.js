@@ -343,7 +343,32 @@ var userService = /** @class */ (function () {
                     case 2:
                         updatedUser = _b.sent();
                         if (updatedUser[1] !== 1)
-                            throw ServerError.internalServerError("[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다.");
+                            throw ServerError.internalServerError("[확인요망] 업데이트 과정트서 오류가 발견되었습니다.");
+                        result_success = {
+                            result: true,
+                            message: "\uD68C\uC6D0\uC815\uBCF4 \uC218\uC815\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_success];
+                }
+            });
+        });
+    };
+    //// 회원 정보 수정 - 간편로그인 회원용
+    userService.updateSocialLoginUser = function (_a) {
+        var user_id = _a.user_id, provider = _a.provider, nickname = _a.nickname;
+        return __awaiter(this, void 0, void 0, function () {
+            var updatedUser, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.updateNickname({
+                            user_id: user_id,
+                            provider: provider,
+                            nickname: nickname,
+                        })];
+                    case 1:
+                        updatedUser = _b.sent();
+                        if (updatedUser[1] !== 1)
+                            throw ServerError.internalServerError("[확인요망] 업데이트 과정트서 오류가 발견되었습니다.");
                         result_success = {
                             result: true,
                             message: "\uD68C\uC6D0\uC815\uBCF4 \uC218\uC815\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",

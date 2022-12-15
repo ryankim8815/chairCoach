@@ -46,6 +46,15 @@ userRouter.put(
   ),
   userController.userUpdate
 ); // 유저 정보 업데이트(pw & nickname)
+userRouter.put(
+  "/users/:user_id/provider/:provider",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.socialLoginUserUpdateSchema,
+    Schemas.socialLoginUserUpdateSchemaParams
+  ),
+  userController.socialLoginUserUpdate
+); // 유저 정보 업데이트(nickname) - 간편로그인 회원용
 userRouter.delete(
   "/users/:user_id",
   authMiddleware,

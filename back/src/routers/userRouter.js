@@ -39,6 +39,7 @@ userRouter.post("/signup", Validation.validateBody(Schemas.userCreateSchema), us
 userRouter.post("/signin", Validation.validateBody(Schemas.userLoginSchema), userController_1.default.userSignin); // 로그인
 userRouter.post("/users/:user_id/password", authMiddleware_1.default, Validation.validateBodyParams(Schemas.checkPasswordSchema, Schemas.userCurrentSchema), userController_1.default.userPassword); // 유저 정보 업데이트를 위한 password 확인
 userRouter.put("/users/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userUpdateSchema, Schemas.userCurrentSchema), userController_1.default.userUpdate); // 유저 정보 업데이트(pw & nickname)
+userRouter.put("/users/:user_id/provider/:provider", authMiddleware_1.default, Validation.validateBodyParams(Schemas.socialLoginUserUpdateSchema, Schemas.socialLoginUserUpdateSchemaParams), userController_1.default.socialLoginUserUpdate); // 유저 정보 업데이트(nickname) - 간편로그인 회원용
 userRouter.delete("/users/:user_id", authMiddleware_1.default, Validation.validateBodyParams(Schemas.userDeleteSchema, Schemas.userCurrentSchema), userController_1.default.userDelete); // 유저 삭제
 userRouter.post("/signup/email", Validation.validateBody(Schemas.signupEmailSchema), nodemailerMiddleware_1.default, userController_1.default.signupEmail); // email로 코드 발송
 userRouter.get("/signup/email/:email/code/:code", Validation.validateParams(Schemas.verifyEmailSchema), userController_1.default.signupVerifyEmail); // email 인증
