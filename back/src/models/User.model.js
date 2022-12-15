@@ -50,6 +50,13 @@ var User = /** @class */ (function () {
             replacements: [password, nickname, user_id],
         });
     };
+    User.updateNickname = function (_a) {
+        var user_id = _a.user_id, provider = _a.provider, nickname = _a.nickname;
+        return _1.db.sequelize.query("\n        UPDATE users SET nickname = ?\n        WHERE user_id = ? AND provider = ?\n              ", {
+            type: _1.db.QueryTypes.UPDATE,
+            replacements: [nickname, user_id, provider],
+        });
+    };
     User.updateAlert = function (_a) {
         var user_id = _a.user_id, alert = _a.alert, timer = _a.timer;
         return _1.db.sequelize.query("\n        UPDATE users SET alert = ?, timer = ?\n        WHERE user_id = ?\n                ", {

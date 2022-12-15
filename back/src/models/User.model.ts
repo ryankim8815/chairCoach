@@ -87,6 +87,18 @@ class User {
       }
     );
 
+  static updateNickname = ({ user_id, provider, nickname }) =>
+    db.sequelize.query(
+      `
+        UPDATE users SET nickname = ?
+        WHERE user_id = ? AND provider = ?
+              `,
+      {
+        type: db.QueryTypes.UPDATE,
+        replacements: [nickname, user_id, provider],
+      }
+    );
+
   static updateAlert = ({ user_id, alert, timer }) =>
     db.sequelize.query(
       `
