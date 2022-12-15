@@ -27,7 +27,7 @@ const AiStretchingVideo = ({ tempref }: any) => {
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   // const socketUrl = "ws://localhost:5001";
-  const socketUrl = "wss://kdt-ai5-team04.elicecoding.com:5002";
+  const socketUrl = process.env.REACT_APP_SOCKET_URL;
   const socket = io(socketUrl as string);
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
@@ -57,14 +57,9 @@ const AiStretchingVideo = ({ tempref }: any) => {
       socket.emit("model", dataArr2);
       socket.on("model", (message) => {
         if (message == tempref.current) {
-          // console.log("1", message == temp);
           return;
         }
-        // console.log(message == temp);
         tempref.current = message;
-        // console.log(temp);
-        // console.log(message);
-        console.log(tempref.current);
       });
 
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
@@ -115,7 +110,6 @@ const AiStretchingVideo = ({ tempref }: any) => {
       }
     });
   }, [runMovenet]);
-
   return (
     <div>
       <S.WebcamWrap>
@@ -130,7 +124,12 @@ const AiStretchingVideo = ({ tempref }: any) => {
             </button>
           ))}
         </S.BtnWrap>
-        <Webcam ref={webcamRef} audio={false} videoConstraints={{ deviceId }} />
+        <Webcam
+          mirrored
+          ref={webcamRef}
+          audio={false}
+          videoConstraints={{ deviceId }}
+        />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>
