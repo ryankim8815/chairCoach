@@ -61,7 +61,6 @@ function App() {
 
   if (!isFetchCompleted) {
     handleStorageChange();
-    return "loading...";
   }
   return (
     <RecoilRoot>

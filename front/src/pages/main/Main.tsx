@@ -15,13 +15,17 @@ const Main = () => {
   const [user, setUser] = useRecoilState(userState);
   const [alarmTiming, setAlarmTiming] = useState(0);
   const minutes = 60 * 1000;
-  if (user !== null) {
-    Api.get(`users/${user?.id}`).then((res) => {
-      res.data.alert === 0 || res.data.alert === null
-        ? setAlarmTiming(0)
-        : setAlarmTiming(res.data.timer);
-    });
-  }
+  const accessToken = sessionStorage.getItem("accessToken");
+  //이 상태는, 성공상태. 렌더링이 된 이후 access token이 변했을때 통신을 시도.
+  useEffect(() => {
+    if (user !== null && accessToken !== null) {
+      Api.get(`users/${user?.id}`).then((res) => {
+        res.data.alert === 0 || res.data.alert === null
+          ? setAlarmTiming(0)
+          : setAlarmTiming(res.data.timer);
+      });
+    }
+  }, [accessToken]);
 
   useEffect(() => {
     if (alarmTiming !== 0 && alarmTiming !== null) {
