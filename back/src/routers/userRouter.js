@@ -303,6 +303,50 @@ module.exports = userRouter;
  */
 /**
  * @swagger
+ * /users/{user_id}/provider/{provider}:
+ *   put:
+ *     summary: 회원정보 수정 - 간편로그인 회원용
+ *     description: nickname만 수정됩니다.
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *       - in: path
+ *         name: provider
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nickname:
+ *                 type: string
+ *                 example: new_nickname
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: 회원정보 수정이 성공적으로 이뤄졌습니다.
+ */
+/**
+ * @swagger
  * /users/{user_id}:
  *   delete:
  *     summary: 회원정보 삭제
