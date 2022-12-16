@@ -148,9 +148,15 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
             <S.ShiftButton onClick={onClickPrevButton}>
               <MdKeyboardArrowLeft size={32} />
             </S.ShiftButton>
-            <S.YearText fontSize={20} fontWeight={500}>
-              {curYear}년
-            </S.YearText>
+            {timeInfo === "year" ? (
+              <S.YearText fontSize={20} fontWeight={500}>
+                {curYear}년
+              </S.YearText>
+            ) : (
+              <S.YearText fontSize={20} fontWeight={500}>
+                {curWeek}주차
+              </S.YearText>
+            )}
             <S.ShiftButton onClick={onClickNextButton}>
               <MdKeyboardArrowRight size={32} />
             </S.ShiftButton>
