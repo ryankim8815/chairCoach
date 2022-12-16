@@ -79,7 +79,7 @@
 
 # 5. 프로젝트 구조도 & 와이어프레임
 ### 시스템 구조도
-![Group_395](/uploads/d9cf748da9c997687bcc03d0a459b92a/Group_395.png)
+<img src="/uploads/d9cf748da9c997687bcc03d0a459b92a/Group_395.png" width="700">
 
 ### 와이어프레임
 - https://www.figma.com/file/sk1aBXQqq63DlghY80vUYg/4%ED%8C%80?node-id=0%3A1&t=T9UWXzJeYZ6DuPps-1
