@@ -22,7 +22,7 @@
 | 김병용 | ❤️BE |
 | 김민아 | 🖤AI |
 
-### 기술 스택
+# 2.  기술 스택
 
 | Front-end | Back-end | AI |
 | --- | --- | --- |
@@ -37,42 +37,30 @@
     - Custom dataset, keypoints labeling
     
 - 라이브러리 및 알고리즘
-    - Tensorflow, XGBoost, Sklearn, LSTM : pose classification
-        
-        (테스트 후 가장 성능이 좋은 것으로 사용할 예정)
-        
-    - Yolov7 : pose estimation
+    - 모델: MoveNet(관절 키포인트 인식), XGBoost(포즈 분류)
 - 유사 인공지능 기반 서비스의 활용 사례 및 참고 논문
     - github: [yolov7](https://github.com/WongKinYiu/yolov7)
     - 논문 : [Yoga-82: A New Dataset for Fine-grained Classification of Human Poses](https://arxiv.org/pdf/2004.10362.pdf)
 - 학습 과정
-    
     [전체 학습 과정](https://www.notion.so/1f677f2be8ff46268815d4e2e4fd529c)
     
 
-# 2. 메인 기능
+# 3. 메인 기능
 
 - 메인 서비스
     - 컴퓨터 웹캠을 통한 AI 자세 인식(상체 중심)
-        - 운동 자세 코칭
-            - 목, 어깨, 허리, 올인원
+        - 운동 자세 코칭: 간단, 기본, 심화 스트레칭
         - 타이머
-        - 다음 동작 알림
-    - 시작 전 웹캠의 위치 맞추기
+    - 시작 전 웹캠의 위치 설정 안내
 - 회원가입/로그인
     - 간편 로그인
     - 이메일 인증
 - MyPage
     - DashBoard
-        - 주간 운동 시간
+        - 년간/주간 운동 시간
         - 거북목 진단 결과
 - 소개페이지
     - 간략한 서비스 소개
-- 플로우차트
-    - 플로우차트
-        
-        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4cc75466-9319-45c8-905b-986fe177f590/Untitled.png)
-        
 
 ### 서브기능
 
@@ -83,9 +71,18 @@
 - 거북목 진단
     - 웹캠을 통한 목과 어깨사이의 각도를 통해 간단한 거북목 진단 서비스
 
-**프로젝트만의 차별점 및 기대 효과**
+# 4. **프로젝트만의 차별점 및 기대 효과**
 
 - 인공지능을 통한 정확한 자세 전달
 - 컴퓨터를 자주 이용하는 고객에게 포커싱하여, 의자에 앉아서 간단하게 할 수 있는 니즈 충족
 - 알람 기능을 통한, 이용 유저의 지속적인 사용 유도
 - 무료 거북목 진단 서비스를 통한 고객 체험 강화
+
+# 5. 프로젝트 구조도 & 와이어프레임
+### 시스템 구조도
+![Group_395](/uploads/d9cf748da9c997687bcc03d0a459b92a/Group_395.png)
+
+### 와이어프레임
+- https://www.figma.com/file/sk1aBXQqq63DlghY80vUYg/4%ED%8C%80?node-id=0%3A1&t=T9UWXzJeYZ6DuPps-1
+- https://www.figma.com/file/3kepUPsaBNtgzlAidmMC9m/4%ED%8C%80---AI-%EA%B1%B0%EB%B6%81%EB%AA%A9-%EA%B5%90%EC%A0%95-%EC%84%9C%EB%B9%84%EC%8A%A4?node-id=0%3A1&t=bmIyyxr4rDX12Sx4-0
+
