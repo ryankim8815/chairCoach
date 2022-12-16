@@ -10,8 +10,8 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./util";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import { Socket, io } from "socket.io-client";
-import * as S from "./AiStretchingStyle";
-import { StringNGramsAttrs } from "@tensorflow/tfjs-core";
+import * as S from "../../components/neckVideo/NeckVideoStyle";
+import NeckInspection from "./../neckInspection/NeckInspection";
 require("@tensorflow/tfjs");
 
 interface AiStretchingVideoProps {
@@ -72,11 +72,7 @@ const AiStretchingVideo = ({ tempref, color }: AiStretchingVideoProps) => {
           // console.log("1", message == temp);
           return;
         }
-        // console.log(message == temp);
         tempref.current = message;
-        // console.log(temp);
-        // console.log(message);
-        console.log(tempref.current);
       });
 
       drawResult(pose, video, videoWidth, videoHeight, canvasRef, color);
@@ -132,17 +128,16 @@ const AiStretchingVideo = ({ tempref, color }: AiStretchingVideoProps) => {
   return (
     <div>
       <S.WebcamWrap>
-        <S.BtnWrap>
+        <S.WebcamBtnWrap>
           {devices.map((device, key) => (
             <button
-              style={{ backgroundColor: "#403E56" }}
               key={(device as any).deviceId}
               onClick={() => setDeviceId((device as any).deviceId)}
             >
               {(device as any).label || `Device ${key + 1}`}
             </button>
           ))}
-        </S.BtnWrap>
+        </S.WebcamBtnWrap>
         <Webcam
           mirrored
           ref={webcamRef}

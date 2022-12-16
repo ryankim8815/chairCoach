@@ -159,7 +159,7 @@ const NeckVideo = ({
       data: {
         file: file,
         result: Math.abs(angle),
-        score: Math.abs(angle),
+        score: Math.floor(Math.abs(angle)),
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -192,6 +192,7 @@ const NeckVideo = ({
   };
   useEffect(() => {
     if (step === 0) return;
+    if (step === 1) return;
     takePhoto();
   }, [step]);
   useEffect(() => {
@@ -213,7 +214,7 @@ const NeckVideo = ({
   return (
     <div>
       <S.WebcamWrap>
-        <S.BtnWrap>
+        <S.WebcamBtnWrap>
           {devices.map((device, key) => (
             <button
               key={(device as any).deviceId}
@@ -222,8 +223,13 @@ const NeckVideo = ({
               {(device as any).label || `Device ${key + 1}`}
             </button>
           ))}
-        </S.BtnWrap>
-        <Webcam ref={webcamRef} videoConstraints={{ deviceId }} audio={false} />
+        </S.WebcamBtnWrap>
+        <Webcam
+          mirrored
+          ref={webcamRef}
+          videoConstraints={{ deviceId }}
+          audio={false}
+        />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>

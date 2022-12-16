@@ -73,6 +73,7 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var uuid_1 = require("uuid");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var Token_model_1 = __importDefault(require("../models/Token.model"));
+var models_1 = require("../models");
 moment_timezone_1.default.tz.setDefault("Asia/Seoul");
 var userService = /** @class */ (function () {
     function userService() {
@@ -125,7 +126,7 @@ var userService = /** @class */ (function () {
     userService.getUser = function (_a) {
         var email = _a.email, password = _a.password, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id_1, withdrawnUser, secretKey, token, accessToken, refreshToken, status, created_at, user_id, tokenUpdate, result_success;
+            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id_1, withdrawnUser, secretKey, accessToken, refreshToken, status, created_at, user_id, tokenUpdate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -157,10 +158,6 @@ var userService = /** @class */ (function () {
                         _b.label = 4;
                     case 4:
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: thisUser.user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: thisUser.user_id,
@@ -187,7 +184,7 @@ var userService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -290,13 +287,18 @@ var userService = /** @class */ (function () {
     userService.addUser = function (_a) {
         var email = _a.email, password = _a.password, nickname = _a.nickname, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, provider, newUser, secretKey, token, accessToken, refreshToken, tokenCreate, result_success;
+            var transaction, user_id, provider, newUser, secretKey, accessToken, refreshToken, tokenCreate, result_success, e_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, models_1.db.sequelize.transaction()];
+                    case 1:
+                        transaction = _b.sent();
+                        _b.label = 2;
+                    case 2:
+                        _b.trys.push([2, 8, , 10]);
                         user_id = (0, uuid_1.v4)();
                         return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
-                    case 1:
+                    case 3:
                         password = _b.sent();
                         provider = "chairCoach";
                         return [4 /*yield*/, User_model_1.default.create({
@@ -305,14 +307,11 @@ var userService = /** @class */ (function () {
                                 password: password,
                                 nickname: nickname,
                                 provider: provider,
+                                transaction: transaction,
                             })];
-                    case 2:
+                    case 4:
                         newUser = _b.sent();
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: user_id,
@@ -326,22 +325,30 @@ var userService = /** @class */ (function () {
                                 refreshToken: refreshToken,
                                 accessToken: accessToken,
                                 ipAddress: ipAddress,
+                                transaction: transaction,
                             })];
-                    case 3:
+                    case 5:
                         tokenCreate = _b.sent();
-                        // console.log("tokenCreate: ", tokenCreate);
-                        // 트랜젝션 적용=============================================================================
-                        if (newUser[1] && tokenCreate[1]) {
-                            result_success = {
-                                result: true,
-                                message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
-                                accessToken: accessToken,
-                                refreshToken: refreshToken,
-                            };
-                            return [2 /*return*/, result_success];
-                        }
-                        throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
+                        if (!(newUser[1] && tokenCreate[1])) return [3 /*break*/, 7];
+                        result_success = {
+                            result: true,
+                            message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                            // token: token,
+                            accessToken: accessToken,
+                            refreshToken: refreshToken,
+                        };
+                        return [4 /*yield*/, transaction.commit()];
+                    case 6:
+                        _b.sent();
+                        return [2 /*return*/, result_success];
+                    case 7: throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
+                    case 8:
+                        e_1 = _b.sent();
+                        return [4 /*yield*/, transaction.rollback()];
+                    case 9:
+                        _b.sent();
+                        throw ServerError.internalServerError("[\uD655\uC778\uC694\uB9DD]: transaction - ".concat(e_1));
+                    case 10: return [2 /*return*/];
                 }
             });
         });

@@ -96,14 +96,14 @@ export const BannerContent = styled.div`
     }
   }
 
-  button {
+  div {
     transition: all 0.5s 0.2s;
     ${animationBefore}
   }
 
   &.active {
     h2,
-    button {
+    div {
       ${animationAfter}
     }
   }

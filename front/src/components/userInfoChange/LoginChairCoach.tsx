@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import * as S from "../../pages/signUp/SignUpStyle";
 import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
 import * as RegExp from "../../utils/RegExp";
 import * as Api from "../../api/api";
+import { FaCheck } from "react-icons/fa";
 
 type User = {
   id: string | null;
@@ -22,24 +23,35 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
   const [newPw, setNewPw] = useState("");
   const [confirmNewPw, setConfirmNewPw] = useState("");
 
-  const [checkNickname, setCheckNickname] = useState(false);
-  const [newPwDisabled, setNewPwDisabled] = useState(true);
+  const [checkNickname, setCheckNickname] = useState(true);
+  const [checkCurrentPw, setCheckCurrentPw] = useState(false);
+  const [checkNewPw, setCheckNewPw] = useState(false);
+  const [checkConfirmNewPw, setCheckConfirmNewPw] = useState(false);
 
-  const isNicknameValid = nickname ? RegExp.validateNickname(nickname) : false;
-  const nicknameSame =
-    nickname.length > 0 && user?.nickname === nickname ? true : false;
-  const currentPwDisabled = checkNickname || nicknameSame ? false : true;
-  const newPwSame =
-    confirmNewPw.length > 0 && newPw === confirmNewPw ? true : false;
+  useEffect(() => {
+    // 기존 닉네임이랑 같은지 비교
+    setCheckNickname(nickname === String(user?.nickname) ? true : false);
+  }, [nickname]);
 
-  // 닉네임 중복 확인
+  useEffect(() => {
+    setCheckCurrentPw(false);
+  }, [currentPw]);
+
+  useEffect(() => {
+    setCheckNewPw(RegExp.validatePwd(newPw) ? true : false);
+  }, [newPw]);
+
+  useEffect(() => {
+    setCheckConfirmNewPw(newPw === confirmNewPw ? true : false);
+  }, [confirmNewPw]);
+
   const handlerCheckNicknameClick = async (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
 
     // 닉네임 형식이 아닐 경우
-    if (!isNicknameValid) {
+    if (!RegExp.validateNickname(nickname)) {
       alert("닉네임을 다시 입력해주세요.");
       return;
     }
@@ -57,11 +69,16 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
     }
   };
 
-  // 비밀번호 확인
   const handlerCheckCurrentPwClick = async (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
+
+    // 비밀번호 형식이 아닐 경우
+    if (RegExp.validatePwd(currentPw)) {
+      alert("비밀번호을 다시 입력해주세요.");
+      return;
+    }
 
     if (!user) return;
     try {
@@ -70,7 +87,7 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
       });
 
       if (res.data.result) {
-        setNewPwDisabled(false);
+        setCheckCurrentPw(true);
       }
     } catch (err) {
       alert(
@@ -124,19 +141,21 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
                   setCheckNickname(false);
                 }}
               />
+              {checkNickname && <FaCheck />}
               <B.InputCheckBtn onClick={handlerCheckNicknameClick}>
                 중복 확인
               </B.InputCheckBtn>
             </F.CheckInputCon>
-            {isNicknameValid ? null : (
+
+            {nickname.length > 0 && !RegExp.validateNickname(nickname) && (
               <F.WarningText lineHeight="true">
                 영어, 영어+숫자로 2~12자 구성 <br />
                 한글, 한글+숫자로 2~8자 구성 (초성 및 모음은 허가하지 않음)
               </F.WarningText>
             )}
-            {!nicknameSame && isNicknameValid && currentPwDisabled ? (
+            {RegExp.validateNickname(nickname) && !checkNickname && (
               <F.WarningText>닉네임 중복 확인을 해주세요.</F.WarningText>
-            ) : null}
+            )}
           </S.InputWrap>
 
           <S.InputWrap>
@@ -147,38 +166,41 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
                 type="password"
                 value={currentPw}
                 placeholder="현재 비밀번호를 입력해주세요."
-                disabled={currentPwDisabled}
-                onChange={(e) => {
-                  setCurrentPw(e.target.value);
-                }}
+                disabled={!checkNickname}
+                onChange={(e) => setCurrentPw(e.target.value)}
               />
+              {checkCurrentPw && <FaCheck />}
               <B.InputCheckBtn onClick={handlerCheckCurrentPwClick}>
                 비밀번호 확인
               </B.InputCheckBtn>
             </F.CheckInputCon>
-            {currentPw.length === 0 || RegExp.validatePwd(currentPw) ? null : (
+            {currentPw.length > 0 && !RegExp.validatePwd(currentPw) && (
               <F.WarningText lineHeight="true">
                 영어 대문자, 소문자, 숫자, 특수문자를 포함한
                 <br />
                 8글자 이상이여야 합니다.
               </F.WarningText>
             )}
-            {RegExp.validatePwd(currentPw) && newPwDisabled ? (
+            {RegExp.validatePwd(currentPw) && !checkCurrentPw && (
               <F.WarningText>비밀번호 확인을 해주세요.</F.WarningText>
-            ) : null}
+            )}
           </S.InputWrap>
 
           <S.InputWrap>
             <div>
               <p>새 비밀번호</p>
-              <F.InputText
-                type="password"
-                value={newPw}
-                placeholder="새로운 비밀번호를 입력해주세요."
-                disabled={newPwDisabled}
-                onChange={(e) => setNewPw(e.target.value)}
-              />
-              {newPw.length === 0 || RegExp.validatePwd(newPw) ? null : (
+              <F.Inputcontent>
+                <F.InputText
+                  type="password"
+                  value={newPw}
+                  placeholder="새로운 비밀번호를 입력해주세요."
+                  disabled={!checkCurrentPw}
+                  onChange={(e) => setNewPw(e.target.value)}
+                />
+                {checkNewPw && <FaCheck />}
+              </F.Inputcontent>
+
+              {newPw.length > 0 && !checkNewPw && (
                 <F.WarningText lineHeight="true">
                   영어 대문자, 소문자, 숫자, 특수문자를 포함한
                   <br />
@@ -189,25 +211,37 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
 
             <div>
               <p>새 비밀번호 확인</p>
-              <F.InputText
-                type="password"
-                value={confirmNewPw}
-                placeholder="비밀번호를 다시 입력해주세요."
-                disabled={!RegExp.validatePwd(newPw)}
-                onChange={(e) => setConfirmNewPw(e.target.value)}
-              />
-              {confirmNewPw.length === 0 || newPw === confirmNewPw ? null : (
-                <F.WarningText style={{ paddingTop: "4px" }}>
-                  비밀번호를 다시 확인해주세요.
-                </F.WarningText>
+              <F.Inputcontent>
+                <F.InputText
+                  type="password"
+                  value={confirmNewPw}
+                  placeholder="비밀번호를 다시 입력해주세요."
+                  disabled={!checkNewPw}
+                  onChange={(e) => setConfirmNewPw(e.target.value)}
+                />
+                {confirmNewPw.length > 0 && checkConfirmNewPw && <FaCheck />}
+              </F.Inputcontent>
+
+              {confirmNewPw.length > 0 && !checkConfirmNewPw && (
+                <F.WarningText>비밀번호를 다시 확인해주세요.</F.WarningText>
               )}
             </div>
           </S.InputWrap>
 
           <B.InputBtn
             type="submit"
-            disabled={!newPwSame}
-            check={String(newPwSame)}
+            disabled={
+              checkNickname && checkCurrentPw && checkNewPw && checkConfirmNewPw
+                ? false
+                : true
+            }
+            check={String(
+              checkNickname &&
+                checkCurrentPw &&
+                checkNewPw &&
+                checkConfirmNewPw &&
+                true
+            )}
           >
             변경하기
           </B.InputBtn>
