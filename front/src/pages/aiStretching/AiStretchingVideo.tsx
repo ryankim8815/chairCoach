@@ -108,13 +108,14 @@ const AiStretchingVideo = ({ tempref }: any) => {
         runMovenet();
       }
     });
-    webcamRef.current.video.removeEventListener("loadeddata", (e) => {
+    return webcamRef.current.video.removeEventListener("loadeddata", (e) => {
       const video = e.target as HTMLVideoElement;
       if (video.readyState === 4) {
         runMovenet();
       }
     });
   }, [runMovenet]);
+
   return (
     <div>
       <S.WebcamWrap>
@@ -143,4 +144,4 @@ const AiStretchingVideo = ({ tempref }: any) => {
   );
 };
 
-export default AiStretchingVideo;
+export default React.memo(AiStretchingVideo);
