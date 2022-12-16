@@ -64,7 +64,6 @@ const AiStretchingVideo = ({ tempref }: any) => {
         tempref.current = message;
         // console.log(temp);
         // console.log(message);
-        console.log(tempref.current);
       });
 
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
