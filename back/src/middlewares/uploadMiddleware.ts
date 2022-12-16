@@ -47,10 +47,12 @@ const uploadMiddleware = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
+  const ipAddress = req.body.requestClientIp;
   uploadFile(req, res, function (err: any) {
     if (err) {
       next(multerError);
     }
+    req.body.requestClientIp = ipAddress;
     next();
   });
 };
