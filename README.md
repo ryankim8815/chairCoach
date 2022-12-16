@@ -35,7 +35,6 @@
 
 - 데이터 셋 및 전처리
     - Custom dataset, keypoints labeling
-    
 - 라이브러리 및 알고리즘
     - 모델: MoveNet(관절 키포인트 인식), XGBoost(포즈 분류)
 - 유사 인공지능 기반 서비스의 활용 사례 및 참고 논문
