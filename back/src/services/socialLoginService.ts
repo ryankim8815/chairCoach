@@ -411,14 +411,15 @@ class socialLoginService {
       console.log("newUser 종료"); /////////////////////
       console.log("newUser: ", newUser); /////////////////////
 
-      const checkNewUser = await User.findByEmail({ email });
-      console.log("checkNewUser 종료"); /////////////////////
-      console.log("checkNewUser: ", checkNewUser); /////////////////////
+      // const checkNewUser = await User.findByEmail({ email });
+      // console.log("checkNewUser 종료"); /////////////////////
+      // console.log("checkNewUser: ", checkNewUser); /////////////////////
 
-      if (newUser[1] == 1 && checkNewUser.length == 1) {
+      // if (newUser[1] == 1 && checkNewUser.length == 1) {
+      if (newUser[1] == 1) {
         // 토큰 발급
-        const thisUser = checkNewUser[0];
-        delete thisUser.password;
+        // const thisUser = checkNewUser[0];
+        // delete thisUser.password;
         const secretKey = process.env.JWT_SECRET_KEY;
         // const token = jwt.sign(
         //   {
@@ -454,16 +455,15 @@ class socialLoginService {
         // console.log("tokenCreate: ", tokenCreate);
         // 트랜젝션 적용=============================================================================
         if (newUser[1] && tokenCreate[1]) {
-          const result_success = Object.assign(
-            {
-              result: true,
-              message: `회원가입이 성공적으로 이뤄졌습니다.`,
-              // token: token,
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-            },
-            thisUser
-          );
+          const result_success = {
+            result: true,
+            message: `회원가입이 성공적으로 이뤄졌습니다.`,
+            // token: token,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          };
+          // thisUser
+
           await transaction.commit();
           return result_success;
         }
@@ -471,14 +471,13 @@ class socialLoginService {
           "[확인요망]: DB확인이 필요합니다."
         );
       }
-      if (
-        newUser[1] !== 1 ||
-        checkNewUser.length == 0 ||
-        checkNewUser.length > 1
-      )
-        throw ServerError.internalServerError(
-          "[확인요망]: DB확인이 필요합니다."
-        );
+      // if (
+      //   newUser[1] !== 1 ||
+      //   checkNewUser.length == 0 ||
+      //   checkNewUser.length > 1
+      // )
+      // if (newUser[1] !== 1)
+      throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
     } catch (e) {
       console.log("캐치로 빠짐");
       console.log("캐치로 빠짐 e: ", e);
