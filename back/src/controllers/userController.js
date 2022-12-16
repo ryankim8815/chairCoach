@@ -80,6 +80,7 @@ var userController = /** @class */ (function () {
                         _a = _b.sent(), count = _a.count, list = _a.list;
                         getAllUsers = {
                             result: true,
+                            message: "\uBAA8\uB4E0 \uC0AC\uC6A9\uC790 \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             count: count,
                             list: list,
                         };

@@ -82,11 +82,11 @@ var tokenService = /** @class */ (function () {
                     case 1:
                         checkToken = _b.sent();
                         if (checkToken.length == 0 || checkToken[0].status == "expired") {
-                            throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
+                            return [2 /*return*/, ClientError.unauthorized("유효한 토큰이 아닙니다.")];
                         }
                         isSameIpAdress = checkToken[0].ip_address == ipAddress;
                         if (!isSameIpAdress)
-                            throw ClientError.unauthorized("[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다.");
+                            return [2 /*return*/, ClientError.unauthorized("[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다.")];
                         secretKey = process.env.JWT_SECRET_KEY;
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,

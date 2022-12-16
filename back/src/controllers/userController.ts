@@ -14,6 +14,7 @@ class userController {
       const { count, list } = await userService.getAllUsers();
       const getAllUsers = {
         result: true,
+        message: `모든 사용자 조회가 성공적으로 이뤄졌습니다.`,
         count,
         list,
       };

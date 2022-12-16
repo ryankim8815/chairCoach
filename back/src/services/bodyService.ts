@@ -59,11 +59,11 @@ class bodyService {
       await Body.findByBodyId({ body_id })
     );
     if (checkBody.length == 0) {
-      throw ClientError.notFound(
+      return ClientError.notFound(
         "patch를 요청한 body_id 정보와 일치하는 데이터가 없습니다. 다시 한 번 확인해 주세요."
       );
     } else if (checkBody[0].end_time) {
-      throw ClientError.conflict(
+      return ClientError.conflict(
         "patch를 요청한 body_id의 end_time은 이미 업데이트 되어있습니다. 다시 한 번 확인해 주세요."
       );
     }

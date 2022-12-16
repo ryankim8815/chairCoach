@@ -22,6 +22,7 @@ export async function discordForWinston(error, req) {
   const time = moment().format("YYYY-MM-DD HH:mm:ss");
   const status = error.status || 400;
   const message = error.message;
+  const method = req.method;
   const originalUrl = req.originalUrl;
   const requestClientIp = req.body.requestClientIp;
   const requestStartTime = req.body.requestStartTime;
@@ -29,6 +30,7 @@ export async function discordForWinston(error, req) {
   \`\`\`
   [ERROR] 
       STATUS:       ${status}
+      METHOD:       ${method}
       URL:          ${originalUrl}
       MESSAGE:      ${message}
       ERROR_TIME:   ${time}

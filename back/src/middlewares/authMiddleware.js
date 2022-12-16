@@ -73,25 +73,19 @@ var authMiddleware = function (req, res, next) {
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
+                    _c.trys.push([0, 2, , 3]);
                     userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
                     if (userToken === "null") {
                         throw ClientError.unauthorized("로그인한 유저만 사용할 수 있는 서비스입니다.");
                     }
-                    _c.label = 1;
-                case 1:
-                    _c.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, Token_model_1.default.findByAccessToken({
                             userToken: userToken,
                         })];
-                case 2:
+                case 1:
                     checkToken = _c.sent();
-                    // console.log("CHECKKKKKK: ", checkToken);
                     if (checkToken.length !== 1)
                         throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
                     isSameIpAdress = checkToken[0].ip_address == req.body.requestClientIp;
-                    // console.log("checkToken[0].ipAddress: ", checkToken[0].ipAddress);
-                    // console.log("req.body.requestClientIp: ", req.body.requestClientIp);
-                    // console.log("isSameIpAdress: ", isSameIpAdress);
                     if (!isSameIpAdress)
                         throw ClientError.unauthorized("[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다.");
                     secretKey = process.env.JWT_SECRET_KEY;
@@ -99,12 +93,12 @@ var authMiddleware = function (req, res, next) {
                     user_id = jwtDecoded.user_id;
                     req.body.user_id = user_id;
                     next();
-                    return [3 /*break*/, 4];
-                case 3:
+                    return [3 /*break*/, 3];
+                case 2:
                     e_1 = _c.sent();
                     next(e_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });
@@ -117,7 +111,7 @@ var refreshToken = function (req, res, next) {
         return __generator(this, function (_c) {
             refreshToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
             if (refreshToken === "null") {
-                throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
+                return [2 /*return*/, ClientError.unauthorized("유효한 토큰이 아닙니다.")];
             }
             try {
                 secretKey = process.env.JWT_SECRET_KEY;
