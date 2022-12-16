@@ -43,11 +43,10 @@ const Login = () => {
 
       if (res.data.result) {
         // 토큰 저장
-        const jwtToken = res.data.token;
+        const jwtToken = res.data.accessToken;
         const refreshToken = res.data.refreshToken;
         sessionStorage.setItem("accessToken", jwtToken);
         localStorage.setItem("refreshToken", refreshToken);
-
         const newUser = {
           id: res.data.user_id,
           nickname: res.data.nickname,

@@ -39,7 +39,6 @@ const Main = () => {
   const introduceRef = useRef(null);
   const explainRefs = useRef([]);
   const selectRef = useRef(null);
-
   useEffect(() => {
     const options = {
       root: rootRef.current,
