@@ -56,8 +56,9 @@ const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
         }
         getImage(data);
         setData(data);
+      } else {
+        setData(null);
       }
-      console.log(res);
     } catch (err) {
       console.error(err);
     }

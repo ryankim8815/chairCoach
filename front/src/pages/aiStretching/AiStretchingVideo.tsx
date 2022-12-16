@@ -48,21 +48,19 @@ const AiStretchingVideo = () => {
       const dataArr2: { [name: string]: number[] } = {};
       dataArr2.xy_coord = dataArr;
 
-      
-      
       socket.emit("model", dataArr2);
       socket.on("model", (message) => {
         if (message == temp) {
           // console.log("1", message == temp);
           return;
-        };
+        }
         // console.log(message == temp);
         temp = message;
         // console.log(temp);
         // console.log(message);
         console.log(temp);
       });
-      
+
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
       requestAnimationFrame(() => {
         detectWebCamFeed(detector);

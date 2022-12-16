@@ -41,10 +41,8 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
     e.preventDefault();
     if (timeInfo === "year") {
       setCurYear((prev) => prev - 1);
-      getYearData();
     } else if (timeInfo === "week") {
       setCurWeek((prev) => prev - 1);
-      getWeekData();
     }
   };
 
@@ -52,15 +50,18 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
     e.preventDefault();
     if (timeInfo === "year") {
       setCurYear((prev) => prev + 1);
-      getYearData();
     } else if (timeInfo === "week") {
       setCurWeek((prev) => prev + 1);
-      getWeekData();
     }
   };
+
   useEffect(() => {
     getYearData();
-  }, []);
+  }, [curYear]);
+
+  useEffect(() => {
+    getWeekData();
+  }, [curWeek]);
 
   useEffect(() => {
     setCurYear(year!);
@@ -83,8 +84,9 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         }, 0);
         setData(newData);
         setTotal(sum);
+      } else {
+        setData(null);
       }
-      console.log(res);
     } catch (err) {
       console.error(err);
     }
@@ -92,7 +94,7 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
 
   const getWeekData = async () => {
     try {
-      const res = await Api.get(`bodies/${user_id}/${year}/${curWeek}`);
+      const res = await Api.get(`bodies/${user_id}/${curYear}/${curWeek}`);
       if (res.data.list.length) {
         const newData = new Array(7).fill(0);
         for (let obj of res.data.list) {
@@ -108,8 +110,9 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
         }, 0);
         setData(newData);
         setTotal(sum);
+      } else {
+        setData(null);
       }
-      console.log(res);
     } catch (err) {
       console.error(err);
     }
