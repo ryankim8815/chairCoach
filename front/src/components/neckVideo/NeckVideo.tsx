@@ -159,7 +159,7 @@ const NeckVideo = ({
       data: {
         file: file,
         result: Math.abs(angle),
-        score: Math.abs(angle),
+        score: Math.floor(Math.abs(angle)),
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -223,7 +223,12 @@ const NeckVideo = ({
             </button>
           ))}
         </S.BtnWrap>
-        <Webcam ref={webcamRef} videoConstraints={{ deviceId }} audio={false} />
+        <Webcam
+          mirrored
+          ref={webcamRef}
+          videoConstraints={{ deviceId }}
+          audio={false}
+        />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>
