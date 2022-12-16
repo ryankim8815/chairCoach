@@ -8,6 +8,6 @@ dataset_in = './data/images'
 if not os.path.isdir(dataset_in):
     raise Exception("dataset_in is not a valid directory")
 
-dataset_out = 'C:/Users/miming/yolo-pose-vm/elice-ai-team-04/yolov7-pose/data/images'
+dataset_out = './ouput folder path'
 split_into_train_test(dataset_in, dataset_out, test_split=0.2)
 IMAGES_ROOT = dataset_out
