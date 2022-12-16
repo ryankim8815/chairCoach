@@ -16,7 +16,7 @@
  */
 import * as posenet from "@tensorflow-models/posenet";
 
-const color = "#FC4566";
+const color = "#835DFE";
 const lineWidth = 3;
 const r = 6;
 
