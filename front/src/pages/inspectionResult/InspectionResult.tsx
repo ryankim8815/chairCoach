@@ -45,7 +45,7 @@ const InspectionResult = () => {
             <S.PointText>
               {data !== null && (data as { score: number }).score >= 70
                 ? "안전"
-                : data !== null && (data as { score: number }).score >= 30
+                : data !== null && (data as { score: number }).score >= 55
                 ? "보통"
                 : "위험"}
             </S.PointText>{" "}
