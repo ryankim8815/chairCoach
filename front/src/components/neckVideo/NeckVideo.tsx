@@ -213,7 +213,7 @@ const NeckVideo = ({
   return (
     <div>
       <S.WebcamWrap>
-        <S.BtnWrap>
+        <S.WebcamBtnWrap>
           {devices.map((device, key) => (
             <button
               key={(device as any).deviceId}
@@ -222,7 +222,7 @@ const NeckVideo = ({
               {(device as any).label || `Device ${key + 1}`}
             </button>
           ))}
-        </S.BtnWrap>
+        </S.WebcamBtnWrap>
         <Webcam
           mirrored
           ref={webcamRef}

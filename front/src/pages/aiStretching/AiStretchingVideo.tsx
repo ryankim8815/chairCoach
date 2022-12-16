@@ -10,8 +10,10 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./util";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import { Socket, io } from "socket.io-client";
-import * as S from "./AiStretchingStyle";
+import * as S from "../../components/neckVideo/NeckVideoStyle";
+import NeckInspection from "./../neckInspection/NeckInspection";
 require("@tensorflow/tfjs");
+
 const AiStretchingVideo = ({ tempref }: any) => {
   const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
@@ -118,17 +120,16 @@ const AiStretchingVideo = ({ tempref }: any) => {
   return (
     <div>
       <S.WebcamWrap>
-        <S.BtnWrap>
+        <S.WebcamBtnWrap>
           {devices.map((device, key) => (
             <button
-              style={{ backgroundColor: "#403E56" }}
               key={(device as any).deviceId}
               onClick={() => setDeviceId((device as any).deviceId)}
             >
               {(device as any).label || `Device ${key + 1}`}
             </button>
           ))}
-        </S.BtnWrap>
+        </S.WebcamBtnWrap>
         <Webcam
           mirrored
           ref={webcamRef}

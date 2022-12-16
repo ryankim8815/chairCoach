@@ -5,6 +5,7 @@ import * as B from "../../styles/BtnStyle";
 import * as F from "../../styles/InputStyle";
 import * as RegExp from "../../utils/RegExp";
 import * as Api from "../../api/api";
+import { FaCheck } from "react-icons/fa";
 
 type User = {
   id: string | null;
@@ -89,6 +90,8 @@ const LoginSNS = ({ user, setUser, provider }: LoginSNSType) => {
                   setCheckNickname(false);
                 }}
               />
+              {checkNickname && <FaCheck />}
+
               <B.InputCheckBtn onClick={handlerCheckNicknameClick}>
                 중복 확인
               </B.InputCheckBtn>
@@ -100,9 +103,7 @@ const LoginSNS = ({ user, setUser, provider }: LoginSNSType) => {
               </F.WarningText>
             )}
             {!checkNickname && isNicknameValid ? (
-              <F.WarningText style={{ paddingTop: "3px" }}>
-                닉네임 중복 확인을 해주세요.
-              </F.WarningText>
+              <F.WarningText>닉네임 중복 확인을 해주세요.</F.WarningText>
             ) : null}
           </S.InputWrap>
 
