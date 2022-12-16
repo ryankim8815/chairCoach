@@ -73,11 +73,14 @@ var upload = (0, multer_1.default)({
 });
 var uploadFile = upload.single("file");
 var uploadMiddleware = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var ipAddress;
     return __generator(this, function (_a) {
+        ipAddress = req.body.requestClientIp;
         uploadFile(req, res, function (err) {
             if (err) {
                 next(errorResponse_1.multerError);
             }
+            req.body.requestClientIp = ipAddress;
             next();
         });
         return [2 /*return*/];
