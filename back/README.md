@@ -40,4 +40,5 @@
 ## 시스템 구조도
 
 <br>
-<img src="https://kdt-gitlab.elice.io/ai_track/class05/ai_project/team04/elice-ai-team-04/-/blob/backend/back/system_diagram.png"/>
+<img src="https://kdt-gitlab.elice.io/ai_track/class05/ai_project/team04/elice-ai-team-04/-/raw/backend/back/system_diagram.png"/>
+
