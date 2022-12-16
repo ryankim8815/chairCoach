@@ -112,7 +112,7 @@ const AiStretching = () => {
           </S.LeftContent>
 
           <S.CanvasContent>
-            <AiStretchingVideo />
+            <AiStretchingVideo tempref={tempref} />
 
             {theStart && (
               <S.ReadyGuide>
