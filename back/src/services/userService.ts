@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment-timezone";
 import Token from "../models/Token.model";
+import { db } from "../models";
 moment.tz.setDefault("Asia/Seoul");
 
 class userService {
@@ -78,13 +79,13 @@ class userService {
     }
     // token update
     const secretKey = process.env.JWT_SECRET_KEY;
-    const token = jwt.sign(
-      {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-        user_id: thisUser.user_id,
-      },
-      secretKey
-    );
+    // const token = jwt.sign(
+    //   {
+    //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+    //     user_id: thisUser.user_id,
+    //   },
+    //   secretKey
+    // );
     const accessToken = jwt.sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -116,7 +117,7 @@ class userService {
         {
           result: true,
           message: `로그인이 성공적으로 이뤄졌습니다.`,
-          token: token,
+          // token: token,
           accessToken: accessToken,
           refreshToken: refreshToken,
         },
@@ -190,58 +191,67 @@ class userService {
 
   //// 자체 회원가입
   static async addUser({ email, password, nickname, ipAddress }) {
-    const user_id = uuidv4();
-    password = await bcrypt.hash(password, 10);
-    const provider = "chairCoach";
-    const newUser = await User.create({
-      user_id,
-      email,
-      password,
-      nickname,
-      provider,
-    });
-    const secretKey = process.env.JWT_SECRET_KEY;
-    const token = jwt.sign(
-      {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-        user_id: user_id,
-      },
-      secretKey
-    );
-    const accessToken = jwt.sign(
-      {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
-        user_id: user_id,
-      },
-      secretKey
-    );
-    const refreshToken = jwt.sign(
-      {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // sec, 1week
-        user_id: user_id,
-      },
-      secretKey
-    );
+    const transaction = await db.sequelize.transaction();
+    try {
+      const user_id = uuidv4();
+      password = await bcrypt.hash(password, 10);
+      const provider = "chairCoach";
+      const newUser = await User.create({
+        user_id,
+        email,
+        password,
+        nickname,
+        provider,
+        transaction,
+      });
+      const secretKey = process.env.JWT_SECRET_KEY;
+      // const token = jwt.sign(
+      //   {
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+      //     user_id: user_id,
+      //   },
+      //   secretKey
+      // );
+      const accessToken = jwt.sign(
+        {
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
+          user_id: user_id,
+        },
+        secretKey
+      );
+      const refreshToken = jwt.sign(
+        {
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // sec, 1week
+          user_id: user_id,
+        },
+        secretKey
+      );
 
-    const tokenCreate = await Token.create({
-      user_id,
-      refreshToken,
-      accessToken,
-      ipAddress,
-    });
-    // console.log("tokenCreate: ", tokenCreate);
-    // 트랜젝션 적용=============================================================================
-    if (newUser[1] && tokenCreate[1]) {
-      const result_success = {
-        result: true,
-        message: `회원가입이 성공적으로 이뤄졌습니다.`,
-        token: token,
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      };
-      return result_success;
+      const tokenCreate = await Token.create({
+        user_id,
+        refreshToken,
+        accessToken,
+        ipAddress,
+        transaction,
+      });
+      // console.log("tokenCreate: ", tokenCreate);
+      // 트랜젝션 적용=============================================================================
+      if (newUser[1] && tokenCreate[1]) {
+        const result_success = {
+          result: true,
+          message: `회원가입이 성공적으로 이뤄졌습니다.`,
+          // token: token,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        };
+        await transaction.commit();
+        return result_success;
+      }
+      throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
+    } catch (e) {
+      await transaction.rollback();
+      throw ServerError.internalServerError(`[확인요망]: transaction - ${e}`);
     }
-    throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
   }
   //
   ///////////////////////////

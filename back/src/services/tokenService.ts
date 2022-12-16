@@ -12,12 +12,14 @@ class tokenService {
       currentRefreshToken,
     });
 
-    if (checkToken.length == 0) {
-      //   console.log("이거 나오면 FALSE");
+    if (checkToken.length == 0 || checkToken[0].status == "expired") {
       throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
     }
-
-    // console.log("이거 나오면 true");
+    const isSameIpAdress = checkToken[0].ip_address == ipAddress;
+    if (!isSameIpAdress)
+      throw ClientError.unauthorized(
+        "[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다."
+      );
     const secretKey = process.env.JWT_SECRET_KEY;
     const accessToken = jwt.sign(
       {

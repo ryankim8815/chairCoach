@@ -5,10 +5,11 @@ var Token = /** @class */ (function () {
     }
     // Models
     Token.create = function (_a) {
-        var user_id = _a.user_id, refreshToken = _a.refreshToken, accessToken = _a.accessToken, ipAddress = _a.ipAddress;
+        var user_id = _a.user_id, refreshToken = _a.refreshToken, accessToken = _a.accessToken, ipAddress = _a.ipAddress, transaction = _a.transaction;
         return index_1.db.sequelize.query("\n      INSERT INTO tokens (user_id, refresh_token, access_token, ip_address, status) \n      VALUES (?, ?, ?, ?, ?)\n        ", {
             type: index_1.db.QueryTypes.INSERT,
             replacements: [user_id, refreshToken, accessToken, ipAddress, "valid"],
+            transaction: transaction,
         });
     };
     Token.update = function (_a) {
@@ -44,6 +45,13 @@ var Token = /** @class */ (function () {
         return index_1.db.sequelize.query("\n        SELECT * FROM tokens\n        WHERE refresh_token = ?\n          ", {
             type: index_1.db.QueryTypes.SELECT,
             replacements: [currentRefreshToken],
+        });
+    };
+    Token.findByAccessToken = function (_a) {
+        var userToken = _a.userToken;
+        return index_1.db.sequelize.query("\n        SELECT * FROM tokens\n        WHERE access_token = ?\n          ", {
+            type: index_1.db.QueryTypes.SELECT,
+            replacements: [userToken],
         });
     };
     return Token;
