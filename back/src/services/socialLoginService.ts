@@ -98,32 +98,21 @@ class socialLoginService {
         transaction,
       });
 
-      const checkNewUser = await User.findByEmail({ email });
-
-      if (newUser[1] == 1 && checkNewUser.length == 1) {
+      if (newUser[1] == 1) {
         // 토큰 발급
-        const thisUser = checkNewUser[0];
-        delete thisUser.password;
-        // issue token
         const secretKey = process.env.JWT_SECRET_KEY;
-        // const token = jwt.sign(
-        //   {
-        //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-        //     user_id: thisUser.user_id,
-        //   },
-        //   secretKey
-        // );
+
         const accessToken = jwt.sign(
           {
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
-            user_id: thisUser.user_id,
+            user_id: user_id,
           },
           secretKey
         );
         const refreshToken = jwt.sign(
           {
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // sec, 1week
-            user_id: thisUser.user_id,
+            user_id: user_id,
           },
           secretKey
         );
@@ -134,18 +123,15 @@ class socialLoginService {
           ipAddress,
           transaction,
         });
-        // console.log("tokenCreate::::::: ", tokenCreate); // 여기에도 트랜젝션 ====================
+
         if (newUser[1] && tokenCreate[1]) {
-          const result_success = Object.assign(
-            {
-              result: true,
-              message: `회원가입이 성공적으로 이뤄졌습니다.`,
-              // token: token,
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-            },
-            thisUser
-          );
+          const result_success = {
+            result: true,
+            message: `회원가입이 성공적으로 이뤄졌습니다.`,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          };
+
           await transaction.commit();
           return result_success;
         }
@@ -153,14 +139,7 @@ class socialLoginService {
           "[확인요망]: DB확인이 필요합니다."
         );
       }
-      if (
-        newUser[1] !== 1 ||
-        checkNewUser.length == 0 ||
-        checkNewUser.length > 1
-      )
-        throw ServerError.internalServerError(
-          "[확인요망]: DB확인이 필요합니다."
-        );
+      throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
     } catch (e) {
       await transaction.rollback();
       throw ServerError.internalServerError(`[확인요망]: transaction - ${e}`);
@@ -252,20 +231,9 @@ class socialLoginService {
         transaction,
       });
 
-      const checkNewUser = await User.findByEmail({ email });
-
-      if (newUser[1] == 1 && checkNewUser.length == 1) {
+      if (newUser[1] == 1) {
         // 토큰 발급
-        const thisUser = checkNewUser[0];
-        delete thisUser.password;
         const secretKey = process.env.JWT_SECRET_KEY;
-        // const token = jwt.sign(
-        //   {
-        //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-        //     user_id: user_id,
-        //   },
-        //   secretKey
-        // );
         const accessToken = jwt.sign(
           {
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -280,7 +248,6 @@ class socialLoginService {
           },
           secretKey
         );
-
         const tokenCreate = await Token.create({
           user_id,
           refreshToken,
@@ -288,19 +255,15 @@ class socialLoginService {
           ipAddress,
           transaction,
         });
-        // console.log("tokenCreate: ", tokenCreate);
-        // 트랜젝션 적용=============================================================================
+
         if (newUser[1] && tokenCreate[1]) {
-          const result_success = Object.assign(
-            {
-              result: true,
-              message: `회원가입이 성공적으로 이뤄졌습니다.`,
-              // token: token,
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-            },
-            thisUser
-          );
+          const result_success = {
+            result: true,
+            message: `회원가입이 성공적으로 이뤄졌습니다.`,
+            // token: token,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          };
           await transaction.commit();
           return result_success;
         }
@@ -308,14 +271,8 @@ class socialLoginService {
           "[확인요망]: DB확인이 필요합니다."
         );
       }
-      if (
-        newUser[1] !== 1 ||
-        checkNewUser.length == 0 ||
-        checkNewUser.length > 1
-      )
-        throw ServerError.internalServerError(
-          "[확인요망]: DB확인이 필요합니다."
-        );
+
+      throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
     } catch (e) {
       await transaction.rollback();
       throw ServerError.internalServerError(`[확인요망]: transaction - ${e}`);
@@ -394,8 +351,6 @@ class socialLoginService {
     // 신규 가입자 DB저장
     const transaction = await db.sequelize.transaction();
     try {
-      console.log("트렌젝션 시작"); /////////////////////
-
       const user_id = uuidv4();
       const password = refresh_token;
       const nickname = `${email}_google`;
@@ -408,26 +363,10 @@ class socialLoginService {
         provider,
         transaction,
       });
-      console.log("newUser 종료"); /////////////////////
-      console.log("newUser: ", newUser); /////////////////////
 
-      // const checkNewUser = await User.findByEmail({ email });
-      // console.log("checkNewUser 종료"); /////////////////////
-      // console.log("checkNewUser: ", checkNewUser); /////////////////////
-
-      // if (newUser[1] == 1 && checkNewUser.length == 1) {
       if (newUser[1] == 1) {
         // 토큰 발급
-        // const thisUser = checkNewUser[0];
-        // delete thisUser.password;
         const secretKey = process.env.JWT_SECRET_KEY;
-        // const token = jwt.sign(
-        //   {
-        //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-        //     user_id: user_id,
-        //   },
-        //   secretKey
-        // );
         const accessToken = jwt.sign(
           {
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -450,20 +389,14 @@ class socialLoginService {
           ipAddress,
           transaction,
         });
-        console.log("tokenCreate 종료"); /////////////////////
-        console.log("tokenCreate: ", tokenCreate); /////////////////////
-        // console.log("tokenCreate: ", tokenCreate);
-        // 트랜젝션 적용=============================================================================
+
         if (newUser[1] && tokenCreate[1]) {
           const result_success = {
             result: true,
             message: `회원가입이 성공적으로 이뤄졌습니다.`,
-            // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
           };
-          // thisUser
-
           await transaction.commit();
           return result_success;
         }
@@ -471,18 +404,8 @@ class socialLoginService {
           "[확인요망]: DB확인이 필요합니다."
         );
       }
-      // if (
-      //   newUser[1] !== 1 ||
-      //   checkNewUser.length == 0 ||
-      //   checkNewUser.length > 1
-      // )
-      // if (newUser[1] !== 1)
       throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
     } catch (e) {
-      console.log("캐치로 빠짐");
-      console.log("캐치로 빠짐 e: ", e);
-      const stringE = JSON.stringify(e);
-      console.log("캐치로 빠짐 stringE: ", stringE);
       await transaction.rollback();
       throw ServerError.internalServerError(`[확인요망]: transaction - ${e}`);
     }
