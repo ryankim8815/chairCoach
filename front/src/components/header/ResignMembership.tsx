@@ -41,7 +41,8 @@ const ResignMembership = ({
           "탈퇴가 성공적으로 이뤄졌습니다.\n30일 후 회원 정보가 삭제됩니다."
         );
         setUser(null);
-        sessionStorage.removeItem("userToken");
+        sessionStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         window.location.replace("/");
       }
     } catch (err) {

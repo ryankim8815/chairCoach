@@ -43,7 +43,8 @@ const LoginMenu = () => {
 
   const handlerlogoutClick = () => {
     setUser(null);
-    sessionStorage.removeItem("userToken");
+    sessionStorage.removeItem("acessToken");
+    localStorage.removeItem("refreshToken");
     setIsMenuVisible(!isMenuVisible);
     navigate("/");
   };
