@@ -130,6 +130,8 @@ class socialLoginService {
             message: `회원가입이 성공적으로 이뤄졌습니다.`,
             accessToken: accessToken,
             refreshToken: refreshToken,
+            user_id: user_id,
+            nickname: nickname,
           };
 
           await transaction.commit();
@@ -263,6 +265,8 @@ class socialLoginService {
             // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
+            user_id: user_id,
+            nickname: nickname,
           };
           await transaction.commit();
           return result_success;
@@ -396,6 +400,8 @@ class socialLoginService {
             message: `회원가입이 성공적으로 이뤄졌습니다.`,
             accessToken: accessToken,
             refreshToken: refreshToken,
+            user_id: user_id,
+            nickname: nickname,
           };
           await transaction.commit();
           return result_success;
