@@ -16,11 +16,9 @@ require("@tensorflow/tfjs");
 
 interface AiStretchingVideoProps {
   tempref: any;
-  color: string;
 }
 
-const AiStretchingVideo = ({ tempref, color }: AiStretchingVideoProps) => {
-  console.log(color);
+const AiStretchingVideo = ({ tempref }: AiStretchingVideoProps) => {
   const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
 
@@ -75,7 +73,7 @@ const AiStretchingVideo = ({ tempref, color }: AiStretchingVideoProps) => {
         tempref.current = message;
       });
 
-      drawResult(pose, video, videoWidth, videoHeight, canvasRef, color);
+      drawResult(pose, video, videoWidth, videoHeight, canvasRef);
       requestAnimationFrame(() => {
         detectWebCamFeed(detector);
       });
@@ -99,14 +97,13 @@ const AiStretchingVideo = ({ tempref, color }: AiStretchingVideoProps) => {
     video: any,
     videoWidth: number,
     videoHeight: number,
-    canvas: any,
-    color: string
+    canvas: any
   ) => {
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
     canvas.current.height = videoHeight;
-    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth, color);
-    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth, color);
+    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
+    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
   useEffect(() => {
     if (!webcamRef.current?.video) return;

@@ -187,8 +187,8 @@ const NeckVideo = ({
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
     canvas.current.height = videoHeight;
-    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth, "#835DFE");
-    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth, "#835DFE");
+    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
+    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
   useEffect(() => {
     if (step === 0) return;

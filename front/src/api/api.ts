@@ -26,44 +26,44 @@ async function updateToken() {
   }
 }
 // axios 에러날때 잡아줌
-// axios.interceptors.response.use(
-//   async function (response) {
-//     return response;
-//   },
-//   async (error) => {
-//     // 오류 응답 처리
-//     if (error.response.status === 490) {
-//       let refreshedAccessTokenResponse = await fetch(serverUrl + "token", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
-//         },
-//       });
+axios.interceptors.response.use(
+  async function (response) {
+    return response;
+  },
+  async (error) => {
+    // 오류 응답 처리
+    if (error.response.status === 490) {
+      let refreshedAccessTokenResponse = await fetch(serverUrl + "token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
+        },
+      });
 
-//       let refreshedAccessToken = await refreshedAccessTokenResponse.json();
-//       if (refreshedAccessToken.logout) {
-//         localStorage.removeItem("refreshToken");
-//         sessionStorage.removeItem("accessToken");
-//         window.location.reload();
-//       } else {
-//         await sessionStorage.setItem(
-//           "accessToken",
-//           refreshedAccessToken.accessToken
-//         );
-//         await localStorage.setItem(
-//           "refreshToken",
-//           refreshedAccessToken.refreshToken
-//         );
-//         let retryData = error.config;
-//         retryData.headers.Authorization = `Bearer ${refreshedAccessToken.accessToken}`;
-//         return await axios.request(retryData);
-//       }
+      let refreshedAccessToken = await refreshedAccessTokenResponse.json();
+      if (refreshedAccessToken.logout) {
+        localStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("accessToken");
+        window.location.reload();
+      } else {
+        await sessionStorage.setItem(
+          "accessToken",
+          refreshedAccessToken.accessToken
+        );
+        await localStorage.setItem(
+          "refreshToken",
+          refreshedAccessToken.refreshToken
+        );
+        let retryData = error.config;
+        retryData.headers.Authorization = `Bearer ${refreshedAccessToken.accessToken}`;
+        return await axios.request(retryData);
+      }
 
-//       return Promise.reject(error);
-//     }
-//   }
-// );
+      return Promise.reject(error);
+    }
+  }
+);
 
 interface PostPayload {
   [key: string]: string | null;

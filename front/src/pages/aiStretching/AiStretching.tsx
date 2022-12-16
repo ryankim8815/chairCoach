@@ -7,7 +7,6 @@ import * as D from "./StretchingData";
 import * as Api from "../../api/api";
 import * as S from "./AiStretchingStyle";
 import * as B from "../../styles/BtnStyle";
-import neckguideImg from "../../assets/img/neck_guide_img.jpg";
 import completionIcon from "../../assets/img/completion_icon.png";
 import guideLine from "../../assets/img/guide_line.svg";
 
@@ -23,7 +22,6 @@ const AiStretching = () => {
   const { id } = useParams<{ id: keyof typeof D.explains }>();
   const user = useRecoilValue(userState);
   const [correct, setCorrect] = useState(true);
-  const [color, setColor] = useState("#835DFE");
   const tempref = useRef(null);
   const handleTimer = () => {
     const timer = setInterval(() => {
@@ -43,16 +41,6 @@ const AiStretching = () => {
       setCorrect(false);
     }
   }, [tempref.current]);
-
-  useEffect(() => {
-    if (!correct && start) {
-      setColor("#ff0000");
-    } else {
-      setColor("#835DFE");
-    }
-    console.log(correct, start, color);
-  });
-
   useEffect(() => {
     if (user === null) {
       if (id !== undefined && step === D.stepOfStretching[id]) {
@@ -123,7 +111,7 @@ const AiStretching = () => {
           </S.LeftContent>
 
           <S.CanvasContent>
-            <AiStretchingVideo tempref={tempref} color={color} />
+            <AiStretchingVideo tempref={tempref} />
 
             {theStart && (
               <S.ReadyGuide>
@@ -146,7 +134,8 @@ const AiStretching = () => {
                 스트레칭 시작
               </B.CheckBtn>
             </>
-          ) : (
+          ) : null}
+          {correct === false && start === true && (
             <p>자세를 알맞게 해주세요!</p>
           )}
         </S.btnWrap>
