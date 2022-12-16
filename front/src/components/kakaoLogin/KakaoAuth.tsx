@@ -14,7 +14,6 @@ const KakaoAuth = () => {
     const res = await Api.post("kakao", {
       code: code,
     });
-    console.log(res);
     const accessToken = res.data.accessToken;
     const refreshToken = res.data.refreshToken;
     sessionStorage.setItem("accessToken", accessToken);
