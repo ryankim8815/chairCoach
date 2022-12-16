@@ -12,13 +12,13 @@ req, res, next) {
     var originalUrl = req.originalUrl;
     var requestClientIp = req.body.requestClientIp;
     var requestStartTime = req.body.requestStartTime;
-    var errorMessage = "[".concat(status, " | ").concat(method, "]\n  URL: ").concat(originalUrl, " \n  CLIENT_IP: ").concat(requestClientIp, "\n  MESSAGE: ").concat(message);
+    var errorMessage = "".concat(method, " ").concat(originalUrl, " \n  [").concat(status, "]: ").concat(message, "\n  [IP]: ").concat(requestClientIp, "\n  ");
     (0, index_1.discordForWinston)(error, req);
     if (error.status) {
         logger.error(errorMessage);
         return res.status(error.status).json(error);
     }
-    logger.error("common:", errorMessage);
+    logger.error(errorMessage);
     return res.status(400).json(errorResponse_1.common);
 }
 exports.errorHandler = errorHandler;
