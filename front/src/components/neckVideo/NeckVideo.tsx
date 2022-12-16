@@ -158,8 +158,6 @@ const NeckVideo = ({
       url: `https://kdt-ai5-team04.elicecoding.com:5000/necks/${user?.id}`,
       data: {
         file: file,
-        result: Math.abs(angle),
-        score: Math.floor(Math.abs(angle)),
       },
       headers: {
         "Content-Type": "multipart/form-data",
