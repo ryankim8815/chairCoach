@@ -1,5 +1,5 @@
 # data
-/data/images
+model/data/images
 
 # csv 
 *.csv

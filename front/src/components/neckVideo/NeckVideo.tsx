@@ -14,6 +14,7 @@ import * as poseDetection from "@tensorflow-models/pose-detection";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import userState from "../../atoms/user";
+import { constraints } from "@tensorflow/tfjs";
 require("@tensorflow/tfjs");
 
 const NeckVideo = ({
@@ -27,15 +28,13 @@ const NeckVideo = ({
   setStep: Dispatch<SetStateAction<number>>;
   playInspection: MutableRefObject<boolean>;
 }) => {
-  const [deviceId, setDeviceId] = useState();
+  const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
   const handleDevices = React.useCallback(
-    //타입을 모르겠음..
     (mediaDevices: any) =>
       setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
     [setDevices]
   );
-
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
@@ -47,7 +46,16 @@ const NeckVideo = ({
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [inclination, setInclination] = useState(0);
-
+  const [score, setScore] = useState(0);
+  const [angle, setAngle] = useState(0);
+  const getScore = () => {
+    if (inclination >= 5) {
+      setScore(100);
+    } else {
+      setScore(Math.floor(inclination * 20));
+    }
+  };
+  const media = navigator.mediaDevices.getUserMedia;
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -71,22 +79,41 @@ const NeckVideo = ({
         });
       }
       const getInclination = () => {
-        (dataToSend[3].score as number) > (dataToSend[4].score as number)
-          ? setInclination(
-              Math.abs(
-                (dataToSend[3].y - dataToSend[5].y) /
-                  (dataToSend[3].x - dataToSend[5].x)
-              )
+        if ((dataToSend[3].score as number) > (dataToSend[4].score as number)) {
+          setInclination(
+            Math.abs(
+              (dataToSend[3].y - dataToSend[5].y) /
+                (dataToSend[3].x - dataToSend[5].x)
             )
-          : setInclination(
-              Math.abs(
-                (dataToSend[4].y - dataToSend[6].y) /
-                  (dataToSend[4].x - dataToSend[6].x)
-              )
-            );
+          );
+        } else {
+          setInclination(
+            Math.abs(
+              (dataToSend[4].y - dataToSend[6].y) /
+                (dataToSend[4].x - dataToSend[6].x)
+            )
+          );
+        }
+      };
+      const getAngle = () => {
+        if ((dataToSend[3].score as number) > (dataToSend[4].score as number)) {
+          var rad = Math.atan2(
+            dataToSend[3].y - dataToSend[5].y,
+            dataToSend[3].x - dataToSend[5].x
+          );
+          setAngle((rad * 180) / Math.PI);
+        } else {
+          var rad = Math.atan2(
+            dataToSend[4].y - dataToSend[6].y,
+            dataToSend[4].x - dataToSend[6].x
+          );
+          setAngle((rad * 180) / Math.PI);
+        }
       };
       if (playInspection.current === true) {
         getInclination();
+        //useEffect 때리자
+        getAngle();
         playInspection.current = false;
       }
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
@@ -131,8 +158,8 @@ const NeckVideo = ({
       url: `https://kdt-ai5-team04.elicecoding.com:5000/necks/${user?.id}`,
       data: {
         file: file,
-        result: inclination.toFixed(2),
-        score: 70,
+        result: Math.abs(angle),
+        score: Math.abs(angle),
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -196,7 +223,7 @@ const NeckVideo = ({
             </button>
           ))}
         </S.BtnWrap>
-        <Webcam ref={webcamRef} videoConstraints={deviceId} audio={false} />
+        <Webcam ref={webcamRef} videoConstraints={{ deviceId }} audio={false} />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>

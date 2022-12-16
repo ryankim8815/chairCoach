@@ -10,7 +10,7 @@ def load_model():
     model = XGBClassifier()
     
     # load weight
-    model.load_model('./weights/xgb_mv4.json')
+    model.load_model('./weights/xgb_mv3_nor.json')
     return model
 
 def extract_coord(kpts, steps):
@@ -31,8 +31,8 @@ def extract_coord(kpts, steps):
 def kpts_change(kpts, img_size_w, img_size_h):
     kpts = [round(float(x), 2) for x in kpts]
     kpts = np.array(kpts)
-    kpts[0::2] *= 1 / img_size_w
-    kpts[1::2] *= 1 / img_size_h
+    kpts[0::2] /= img_size_w
+    kpts[1::2] /= img_size_h
     return kpts
 
 class ChairCouchModel:

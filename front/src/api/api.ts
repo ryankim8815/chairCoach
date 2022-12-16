@@ -1,18 +1,67 @@
 import axios from "axios";
 
-const backendPortNumber = "5000";
+const backendPortNumber = "5003";
 const serverUrl =
-  "https://" + window.location.hostname + ":" + backendPortNumber + "/";
+  "http://" + window.location.hostname + ":" + backendPortNumber + "/";
 
+async function updateToken() {
+  if (localStorage.getItem("refreshToken")) {
+    let refreshedAccessTokenResponse = await fetch(serverUrl + "token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
+      },
+    });
+
+    let refreshedAccessToken = await refreshedAccessTokenResponse.json();
+    if (refreshedAccessToken.Logout) {
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("accessToken");
+      window.location.reload();
+    } else {
+      sessionStorage.setItem("accessToken", refreshedAccessToken.accessToken);
+      localStorage.setItem("refreshToken", refreshedAccessToken.refreshToken);
+    }
+  }
+}
 // axios 에러날때 잡아줌
 axios.interceptors.response.use(
-  (res) => {
-    return res;
+  async function (response) {
+    return response;
   },
-  (err) => {
-    console.log(err);
-    return err;
-    // throw new Error("(!) axios error");
+  async (error) => {
+    // 오류 응답 처리
+    if (error.response.status === 490) {
+      let refreshedAccessTokenResponse = await fetch(serverUrl + "token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
+        },
+      });
+
+      let refreshedAccessToken = await refreshedAccessTokenResponse.json();
+      if (refreshedAccessToken.logout) {
+        localStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("accessToken");
+        window.location.reload();
+      } else {
+        await sessionStorage.setItem(
+          "accessToken",
+          refreshedAccessToken.accessToken
+        );
+        await localStorage.setItem(
+          "refreshToken",
+          refreshedAccessToken.refreshToken
+        );
+        let retryData = error.config;
+        retryData.headers.Authorization = `Bearer ${refreshedAccessToken.accessToken}`;
+        return await axios.request(retryData);
+      }
+
+      return Promise.reject(error);
+    }
   }
 );
 
@@ -25,7 +74,7 @@ async function get(endpoint: string, params = "") {
     // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
     },
   });
 }
@@ -38,7 +87,7 @@ async function post(endpoint: string, data?: PostPayload) {
   return axios.post(serverUrl + endpoint, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
     },
   });
 }
@@ -51,13 +100,13 @@ async function patch(endpoint: string, data?: any) {
   return axios.patch(serverUrl + endpoint, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
     },
   });
 }
 const customAxios = axios.create({
   headers: {
-    Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+    Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
   },
 });
 
@@ -69,7 +118,7 @@ async function put(endpoint: string, data?: PostPayload) {
   return axios.put(serverUrl + endpoint, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
     },
   });
 }
@@ -85,11 +134,11 @@ async function del(endpoint: string, data?: PostPayload) {
     data: bodyData,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
     },
   });
 }
 
 // 아래처럼 export한 후, import * as A 방식으로 가져오면,
 // A.get, A.post 로 쓸 수 있음.
-export { get, post, put, del as delete, patch };
+export { get, post, put, del as delete, patch, updateToken };

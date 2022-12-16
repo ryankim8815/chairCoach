@@ -56,8 +56,9 @@ const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
         }
         getImage(data);
         setData(data);
+      } else {
+        setData(null);
       }
-      console.log(res);
     } catch (err) {
       console.error(err);
     }
@@ -75,7 +76,7 @@ const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
 
     if (avg < 40) setImage(good);
     else if (avg >= 40 && avg < 70) setImage(middle);
-    else setImage(bad);
+    else if (avg >= 70) setImage(bad);
   };
 
   useEffect(() => {

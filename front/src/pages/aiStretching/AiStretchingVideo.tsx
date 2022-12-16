@@ -115,7 +115,6 @@ const AiStretchingVideo = ({ tempref }: any) => {
       }
     });
   }, [runMovenet]);
-
   return (
     <div>
       <S.WebcamWrap>
@@ -130,7 +129,12 @@ const AiStretchingVideo = ({ tempref }: any) => {
             </button>
           ))}
         </S.BtnWrap>
-        <Webcam ref={webcamRef} audio={false} videoConstraints={{ deviceId }} />
+        <Webcam
+          mirrored
+          ref={webcamRef}
+          audio={false}
+          videoConstraints={{ deviceId }}
+        />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />
         </S.CanvasResultCon>
