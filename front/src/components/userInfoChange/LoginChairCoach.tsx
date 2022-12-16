@@ -18,40 +18,33 @@ interface LoginChairCoachType {
 }
 
 const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
-  // e.target.value
   const [nickname, setNickname] = useState(String(user?.nickname));
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
   const [confirmNewPw, setConfirmNewPw] = useState("");
 
-  // 각각 통과된 값인지 아닌지 판별, disable 판별
-  const [checkNickname, setCheckNickname] = useState(true); // 비번만 바꾸고 싶을 경우도 있기 때문
+  const [checkNickname, setCheckNickname] = useState(true);
   const [checkCurrentPw, setCheckCurrentPw] = useState(false);
   const [checkNewPw, setCheckNewPw] = useState(false);
   const [checkConfirmNewPw, setCheckConfirmNewPw] = useState(false);
 
-  // 닉네임이 바뀔 때마다
   useEffect(() => {
     // 기존 닉네임이랑 같은지 비교
     setCheckNickname(nickname === String(user?.nickname) ? true : false);
   }, [nickname]);
 
-  // 현재 비밀번호 바뀔 때마다
   useEffect(() => {
     setCheckCurrentPw(false);
   }, [currentPw]);
 
-  // 새 비밀번호 바뀔 때마다
   useEffect(() => {
     setCheckNewPw(RegExp.validatePwd(newPw) ? true : false);
   }, [newPw]);
 
-  //새 비밀번호 확인 바뀔 때마다
   useEffect(() => {
     setCheckConfirmNewPw(newPw === confirmNewPw ? true : false);
   }, [confirmNewPw]);
 
-  // 닉네임 중복 확인
   const handlerCheckNicknameClick = async (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -76,7 +69,6 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
     }
   };
 
-  // 비밀번호 확인
   const handlerCheckCurrentPwClick = async (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -105,7 +97,6 @@ const LoginChairCoach = ({ user, setUser }: LoginChairCoachType) => {
     }
   };
 
-  // 변경하기
   const handlerInfoChangeSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {

@@ -31,20 +31,30 @@ const SingUp = () => {
 
   useEffect(() => {
     setCheckEmail(false);
+    setCheckCode(false);
+    setCheckPassword(false);
+    setCheckConfirmPassword(false);
+    setCheckNickname(false);
   }, [email]);
 
   useEffect(() => {
     setCheckCode(false);
+    setCheckPassword(false);
+    setCheckConfirmPassword(false);
+    setCheckNickname(false);
   }, [code]);
 
   useEffect(() => {
     setCheckPassword(isPwdValid ? true : false);
+    setCheckConfirmPassword(false);
+    setCheckNickname(false);
   }, [password]);
 
   useEffect(() => {
     setCheckConfirmPassword(
       checkPassword && password === confirmPassword ? true : false
     );
+    setCheckNickname(false);
   }, [confirmPassword]);
 
   useEffect(() => {
@@ -243,7 +253,7 @@ const SingUp = () => {
                 <F.Inputcontent>
                   <F.InputText
                     type="password"
-                    disabled={!isPwdValid}
+                    disabled={!checkPassword}
                     placeholder="비밀번호를 다시 입력해주세요."
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
