@@ -28,6 +28,8 @@ const NeckVideo = ({
   setStep: Dispatch<SetStateAction<number>>;
   playInspection: MutableRefObject<boolean>;
 }) => {
+  const atoken = sessionStorage.getItem("accessToken");
+  console.log(atoken);
   const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
   const handleDevices = React.useCallback(
@@ -166,6 +168,7 @@ const NeckVideo = ({
         Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
       },
     });
+    console.log(res);
   };
   const runMovenet = async () => {
     const detectorConfig = {
@@ -192,6 +195,7 @@ const NeckVideo = ({
   };
   useEffect(() => {
     if (step === 0) return;
+    if (step === 1) return;
     takePhoto();
   }, [step]);
   useEffect(() => {
@@ -210,6 +214,7 @@ const NeckVideo = ({
       }
     });
   }, [runMovenet]);
+  console.log(step);
   return (
     <div>
       <S.WebcamWrap>

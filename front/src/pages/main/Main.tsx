@@ -39,15 +39,6 @@ const Main = () => {
   const introduceRef = useRef(null);
   const explainRefs = useRef([]);
   const selectRef = useRef(null);
-  // const handleLogin = () => {
-  //   let jwtToken = sessionStorage.getItem("userToken");
-  //   if (!jwtToken) {
-  //     setUser(null);
-  //   }
-  // };
-  // useEffect(() => {
-  //   handleLogin();
-  // }, []);
   useEffect(() => {
     const options = {
       root: rootRef.current,
