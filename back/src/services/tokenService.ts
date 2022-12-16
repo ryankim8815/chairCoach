@@ -12,7 +12,7 @@ class tokenService {
       currentRefreshToken,
     });
 
-    if (checkToken.length == 0) {
+    if (checkToken.length == 0 || checkToken[0].status == "expired") {
       throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
     }
     const isSameIpAdress = checkToken[0].ip_address == ipAddress;

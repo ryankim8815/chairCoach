@@ -81,7 +81,7 @@ var tokenService = /** @class */ (function () {
                         })];
                     case 1:
                         checkToken = _b.sent();
-                        if (checkToken.length == 0) {
+                        if (checkToken.length == 0 || checkToken[0].status == "expired") {
                             throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
                         }
                         isSameIpAdress = checkToken[0].ip_address == ipAddress;
