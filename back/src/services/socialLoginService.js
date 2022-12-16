@@ -175,6 +175,8 @@ var socialLoginService = /** @class */ (function () {
                             message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             accessToken: accessToken,
                             refreshToken: refreshToken,
+                            user_id: user_id,
+                            nickname: nickname,
                         };
                         return [4 /*yield*/, transaction.commit()];
                     case 8:
@@ -293,6 +295,8 @@ var socialLoginService = /** @class */ (function () {
                             // token: token,
                             accessToken: accessToken,
                             refreshToken: refreshToken,
+                            user_id: user_id,
+                            nickname: nickname,
                         };
                         return [4 /*yield*/, transaction.commit()];
                     case 8:
@@ -410,6 +414,8 @@ var socialLoginService = /** @class */ (function () {
                             message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
                             accessToken: accessToken,
                             refreshToken: refreshToken,
+                            user_id: user_id,
+                            nickname: nickname,
                         };
                         return [4 /*yield*/, transaction.commit()];
                     case 8:
