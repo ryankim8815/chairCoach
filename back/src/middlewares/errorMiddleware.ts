@@ -1,6 +1,5 @@
 import * as express from "express";
 import { common } from "../responses/errorResponse";
-// import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
 const logger = require("../config/logger");
 import { discordForWinston } from "../discord/index";
 
@@ -10,12 +9,23 @@ function errorHandler(
   res: express.Response,
   next: express.NextFunction
 ) {
+  const status = error.status || 400;
+  const message = error.message;
+  const method = req.method;
+  const originalUrl = req.originalUrl;
+  const requestClientIp = req.body.requestClientIp;
+  const requestStartTime = req.body.requestStartTime;
+  const errorMessage = `[${status} | ${method}]
+  URL: ${originalUrl} 
+  CLIENT_IP: ${requestClientIp}
+  MESSAGE: ${message}`;
   discordForWinston(error, req);
   if (error.status) {
-    logger.error(error);
+    logger.error(errorMessage);
     return res.status(error.status).json(error);
   }
-  logger.error("common:", error);
+
+  logger.error("common:", errorMessage);
   return res.status(400).json(common);
 }
 

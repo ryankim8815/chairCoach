@@ -158,8 +158,8 @@ const NeckVideo = ({
       url: `https://kdt-ai5-team04.elicecoding.com:5000/necks/${user?.id}`,
       data: {
         file: file,
-        result: Math.abs(angle),
-        score: Math.floor(Math.abs(angle)),
+        result: Math.abs(90 - Math.abs(angle)),
+        score: Math.abs(90 - Math.floor(Math.abs(angle))),
       },
       headers: {
         "Content-Type": "multipart/form-data",
@@ -187,8 +187,8 @@ const NeckVideo = ({
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
     canvas.current.height = videoHeight;
-    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth, "#835DFE");
-    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth, "#835DFE");
+    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
+    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
   };
   useEffect(() => {
     if (step === 0) return;

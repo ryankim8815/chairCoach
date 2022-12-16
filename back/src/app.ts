@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-// import sequelize from "./config/sequelize";
 import { db } from "./models";
 import checkClientIp from "./middlewares/clientIpMiddleware";
 import userRouter from "./routers/userRouter";
@@ -12,7 +11,6 @@ import swagger from "./utils/swagger";
 import { errorHandler } from "./middlewares/errorMiddleware";
 const logger = require("./config/logger");
 const client = require("./discord/index");
-// const discordCommands = require("./discord/deploy-commands");
 
 const app = express();
 app.use(cors());
@@ -38,11 +36,7 @@ app.get("/", (req, res) => {
   res.send("안녕하세요, 4팀 backend 서버입니다.");
 });
 
-// sequelize.sync({ force: false, alter: true });
 db.sequelize
-  // .sync({ force: true })
-  // .sync({ force: false })
-  // .sync({ alter: true })
   .sync({ alter: { drop: false } })
   .then(() => {
     logger.info("sequelize.sync: success");
@@ -52,8 +46,6 @@ db.sequelize
     logger.error("sequelize.sync:", error);
     console.error("DB 테스트 실패:", error);
   });
-// db.sequelize.sync({ alter: true });
-// db.sequelize.sync({ alter: { drop: false } });
 
 (async () => {
   try {

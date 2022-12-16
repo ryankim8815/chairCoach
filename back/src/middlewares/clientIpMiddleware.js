@@ -41,7 +41,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var request_ip_1 = __importDefault(require("request-ip"));
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 moment_timezone_1.default.tz.setDefault("Asia/Seoul");
-// module.exports = async (
 var checkClientIp = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var requestClientIp, requestStartTime;
     return __generator(this, function (_a) {
