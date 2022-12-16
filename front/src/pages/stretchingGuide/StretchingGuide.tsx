@@ -1,4 +1,4 @@
-import * as S from "./StretchingGuideStyle";
+import * as S from "../neckGuide/GuideStyle";
 import * as B from "../../styles/BtnStyle";
 import { useNavigate, useParams } from "react-router-dom";
 

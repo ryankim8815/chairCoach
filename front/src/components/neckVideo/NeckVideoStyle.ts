@@ -17,9 +17,9 @@ export const WebcamWrap = styled.div`
     height: 480px;
   }
 `;
-export const BtnWrap = styled.div`
+export const WebcamBtnWrap = styled.div`
   position: absolute;
-  left: 0;
+  left: -1px;
   top: -1px;
   z-index: 12;
 

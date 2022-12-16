@@ -1,44 +1,16 @@
 import styled, { css } from "styled-components";
 
-export const CameraCont = styled.video`
-  position: absolute;
-  width: 120%;
-  height: 60vh;
-  object-fit: fill;
-  margin-left: 4%;
-  /* z-index: 9; */
-`;
-
-export const WebcamWrap = styled.div`
-  position: relative;
-
-  video {
-    object-fit: fill;
-    width: 640px;
-    height: 480px;
-  }
-`;
-export const BtnWrap = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 12;
-`;
-
-export const CanvasResultCon = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 640px;
-  height: 480px;
-  object-fit: fill;
-  /* z-index: 9; */
-`;
 const positionCenter = css`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+`;
+
+const positionLeftCenter = css`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 export const InspectionLayout = styled.div`
@@ -52,6 +24,16 @@ export const InspectionLayout = styled.div`
 
 export const MainCont = styled.div`
   ${positionCenter}
+  position: relative;
+
+  .startTitle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background: #31303a;
+  }
 `;
 
 export const GuideTextWrap = styled.div`
@@ -69,17 +51,67 @@ export const GuideTextWrap = styled.div`
 
 export const MiddleContent = styled.div`
   position: relative;
+  ${({ theme }) => theme.common.flexCenter};
 `;
 
-export const ImgCont = styled.div`
+export const LeftContent = styled.div`
+  display: grid;
+  align-content: space-between;
+  margin-right: 20px;
+  height: 480px;
+`;
+
+export const StretchingStartWrap = styled.div`
+  & > * {
+    margin-bottom: 60px;
+  }
+
+  .timer {
+    display: block;
+    width: 100%;
+    font-weight: 700;
+    font-size: 100px;
+    color: ${({ theme }) => theme.colors.main};
+    text-align: center;
+  }
+`;
+
+export const CanvasContent = styled.div`
+  position: relative;
+`;
+
+export const ReadyGuide = styled.div`
   position: absolute;
   top: 0;
-  left: -260px;
+  left: 0;
+  width: 640px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
 
+  & > img {
+    ${positionLeftCenter}
+    bottom: 20px;
+    height: 340px;
+  }
+
+  & > p {
+    ${positionLeftCenter}
+    bottom: 12px;
+    padding: 12px;
+    width: 480px;
+    border-radius: 2px;
+    background: rgba(225, 225, 225, 0.7);
+    backdrop-filter: saturate(180%) blur(5px);
+    font-weight: 500;
+    color: ${({ theme }) => theme.colors.main};
+    text-align: center;
+  }
+`;
+
+export const VideoContent = styled.div`
   video {
-    width: 240px;
-    height: 240px;
-    object-fit: contain;
+    width: 400px;
   }
 
   span {
@@ -90,14 +122,6 @@ export const ImgCont = styled.div`
   }
 `;
 
-export const TimeText = styled.p`
-  ${positionCenter}
-  font-weight: 700;
-  font-size: 120px;
-  color: ${({ theme }) => theme.colors.main};
-  z-index: 10;
-`;
-
 export const btnWrap = styled.div`
   ${({ theme }) => theme.common.flexCenter};
   margin-top: 24px;
@@ -105,6 +129,12 @@ export const btnWrap = styled.div`
 
   button + button {
     margin-left: 20px;
+  }
+
+  p {
+    font-weight: 500;
+    font-size: ${({ theme }) => theme.fontSize.title};
+    color: #fc4566;
   }
 `;
 
@@ -129,24 +159,5 @@ export const FinisheContent = styled.div`
       font-size: ${({ theme }) => theme.fontSize.title};
       color: #fff;
     }
-  }
-`;
-
-export const TimerBox = styled.div`
-  width: 240px;
-  height: 108px;
-  margin-top: 100px;
-  border: 2px solid #835dfe;
-  span {
-    display: block;
-    margin-top: 24px;
-    text-align: center;
-    color: #835dfe;
-    font-size: 60px;
-  }
-  button {
-    width: 240px;
-    height: 108px;
-    font-size: 32px;
   }
 `;

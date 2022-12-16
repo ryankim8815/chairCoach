@@ -8,7 +8,7 @@ import * as RegExp from "../../utils/RegExp";
 import * as Api from "../../api/api";
 import { FaCheck } from "react-icons/fa";
 
-const BASIC_TIME = 30;
+const BASIC_TIME = 180;
 
 const SingUp = () => {
   const navigate = useNavigate();

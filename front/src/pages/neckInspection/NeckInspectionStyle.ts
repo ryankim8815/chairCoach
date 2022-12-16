@@ -72,7 +72,7 @@ export const ReadyGuide = styled.div`
   }
 `;
 
-export const ImgCont = styled.div`
+export const ImgContent = styled.div`
   position: absolute;
   top: 0;
   left: -260px;

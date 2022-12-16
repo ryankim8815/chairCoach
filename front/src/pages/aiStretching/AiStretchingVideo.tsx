@@ -4,8 +4,10 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./util";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import { Socket, io } from "socket.io-client";
-import * as S from "./AiStretchingStyle";
+import * as S from "../../components/neckVideo/NeckVideoStyle";
+import NeckInspection from "./../neckInspection/NeckInspection";
 require("@tensorflow/tfjs");
+
 const AiStretchingVideo = () => {
   const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
@@ -48,21 +50,19 @@ const AiStretchingVideo = () => {
       const dataArr2: { [name: string]: number[] } = {};
       dataArr2.xy_coord = dataArr;
 
-      
-      
       socket.emit("model", dataArr2);
       socket.on("model", (message) => {
         if (message == temp) {
           // console.log("1", message == temp);
           return;
-        };
+        }
         // console.log(message == temp);
         temp = message;
         // console.log(temp);
         // console.log(message);
         console.log(temp);
       });
-      
+
       drawResult(pose, video, videoWidth, videoHeight, canvasRef);
       requestAnimationFrame(() => {
         detectWebCamFeed(detector);
@@ -115,17 +115,16 @@ const AiStretchingVideo = () => {
   return (
     <div>
       <S.WebcamWrap>
-        <S.BtnWrap>
+        <S.WebcamBtnWrap>
           {devices.map((device, key) => (
             <button
-              style={{ backgroundColor: "#403E56" }}
               key={(device as any).deviceId}
               onClick={() => setDeviceId((device as any).deviceId)}
             >
               {(device as any).label || `Device ${key + 1}`}
             </button>
           ))}
-        </S.BtnWrap>
+        </S.WebcamBtnWrap>
         <Webcam ref={webcamRef} audio={false} videoConstraints={{ deviceId }} />
         <S.CanvasResultCon>
           <canvas ref={canvasRef} />

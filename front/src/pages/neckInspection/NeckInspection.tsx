@@ -50,16 +50,14 @@ const NeckInspection = () => {
               유사한 각도를 유지해주세요!
             </p>
           )}
-
-          {/* {step === 2 && <p>사진촬영이 정상적으로 완료되었습니다!</p>} */}
         </S.GuideTextWrap>
 
         <S.MiddleContent>
           {step !== 2 && (
-            <S.ImgCont>
+            <S.ImgContent>
               <img src={`${neckguideImg}`} alt="가이드 이미지" />
               <span>가이드 이미지</span>
-            </S.ImgCont>
+            </S.ImgContent>
           )}
 
           <div>
