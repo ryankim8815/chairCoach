@@ -43,9 +43,9 @@ const InspectionResult = () => {
             로,
             <br /> 거북목{" "}
             <S.PointText>
-              {data !== null && (data as { score: number }).score <= 20
+              {data !== null && (data as { score: number }).score <= 15
                 ? "안전"
-                : data !== null && (data as { score: number }).score <= 35
+                : data !== null && (data as { score: number }).score <= 30
                 ? "보통"
                 : "위험"}
             </S.PointText>{" "}
