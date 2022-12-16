@@ -339,7 +339,7 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.google = function (_a) {
         var email = _a.email, refresh_token = _a.refresh_token, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, thisUser, user_id_1, secretKey, accessToken, refreshToken, status_3, created_at, tokenUpdate, result_success, user_id, password, nickname, provider, transaction, newUser, checkNewUser, thisUser, secretKey, accessToken, refreshToken, tokenCreate, result_success;
+            var checkEmail, thisUser, user_id, secretKey, accessToken, refreshToken, status_3, created_at, tokenUpdate, result_success, transaction, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, accessToken, refreshToken, tokenCreate, result_success, e_3, stringE;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -349,7 +349,7 @@ var socialLoginService = /** @class */ (function () {
                             throw ClientError.unauthorized("google 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
                         if (!(checkEmail.length == 1 && checkEmail[0].provider == "google")) return [3 /*break*/, 3];
                         thisUser = checkEmail[0];
-                        user_id_1 = checkEmail[0].user_id;
+                        user_id = checkEmail[0].user_id;
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
                         accessToken = jsonwebtoken_1.default.sign({
@@ -363,7 +363,7 @@ var socialLoginService = /** @class */ (function () {
                         status_3 = "valid";
                         created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
                         return [4 /*yield*/, Token_model_1.default.update({
-                                user_id: user_id_1,
+                                user_id: user_id,
                                 refreshToken: refreshToken,
                                 accessToken: accessToken,
                                 ipAddress: ipAddress,
@@ -386,11 +386,17 @@ var socialLoginService = /** @class */ (function () {
                     case 3:
                         if (checkEmail.length > 1)
                             throw ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.");
+                        return [4 /*yield*/, models_1.db.sequelize.transaction()];
+                    case 4:
+                        transaction = _b.sent();
+                        _b.label = 5;
+                    case 5:
+                        _b.trys.push([5, 12, , 14]);
+                        console.log("트렌젝션 시작"); /////////////////////
                         user_id = (0, uuid_1.v4)();
                         password = refresh_token;
                         nickname = "".concat(email, "_google");
                         provider = "google";
-                        transaction = null;
                         return [4 /*yield*/, User_model_1.default.create({
                                 user_id: user_id,
                                 email: email,
@@ -399,12 +405,16 @@ var socialLoginService = /** @class */ (function () {
                                 provider: provider,
                                 transaction: transaction,
                             })];
-                    case 4:
+                    case 6:
                         newUser = _b.sent();
+                        console.log("newUser 종료"); /////////////////////
+                        console.log("newUser: ", newUser); /////////////////////
                         return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
-                    case 5:
+                    case 7:
                         checkNewUser = _b.sent();
-                        if (!(newUser[1] == 1 && checkNewUser.length == 1)) return [3 /*break*/, 9];
+                        console.log("checkNewUser 종료"); /////////////////////
+                        console.log("checkNewUser: ", checkNewUser); /////////////////////
+                        if (!(newUser[1] == 1 && checkNewUser.length == 1)) return [3 /*break*/, 11];
                         thisUser = checkNewUser[0];
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
@@ -423,9 +433,11 @@ var socialLoginService = /** @class */ (function () {
                                 ipAddress: ipAddress,
                                 transaction: transaction,
                             })];
-                    case 6:
+                    case 8:
                         tokenCreate = _b.sent();
-                        if (!(newUser[1] && tokenCreate[1])) return [3 /*break*/, 8];
+                        console.log("tokenCreate 종료"); /////////////////////
+                        console.log("tokenCreate: ", tokenCreate); /////////////////////
+                        if (!(newUser[1] && tokenCreate[1])) return [3 /*break*/, 10];
                         result_success = Object.assign({
                             result: true,
                             message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
@@ -434,14 +446,27 @@ var socialLoginService = /** @class */ (function () {
                             refreshToken: refreshToken,
                         }, thisUser);
                         return [4 /*yield*/, transaction.commit()];
-                    case 7:
+                    case 9:
                         _b.sent();
                         return [2 /*return*/, result_success];
-                    case 8: throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
-                    case 9:
-                        if (newUser[1] !== 1 || checkNewUser.length == 0 || checkNewUser.length > 1)
+                    case 10: throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
+                    case 11:
+                        if (newUser[1] !== 1 ||
+                            checkNewUser.length == 0 ||
+                            checkNewUser.length > 1)
                             throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
-                        return [2 /*return*/];
+                        return [3 /*break*/, 14];
+                    case 12:
+                        e_3 = _b.sent();
+                        console.log("캐치로 빠짐");
+                        console.log("캐치로 빠짐 e: ", e_3);
+                        stringE = JSON.stringify(e_3);
+                        console.log("캐치로 빠짐 stringE: ", stringE);
+                        return [4 /*yield*/, transaction.rollback()];
+                    case 13:
+                        _b.sent();
+                        throw ServerError.internalServerError("[\uD655\uC778\uC694\uB9DD]: transaction - ".concat(e_3));
+                    case 14: return [2 /*return*/];
                 }
             });
         });
