@@ -163,7 +163,7 @@ const NeckVideo = ({
       },
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
       },
     });
   };

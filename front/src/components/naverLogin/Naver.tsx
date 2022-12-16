@@ -16,7 +16,7 @@ const NaverLogin = () => {
     });
     console.log(res);
     const accessToken = res.data.accessToken;
-    const refreshToken = res.data.retreshToken;
+    const refreshToken = res.data.refreshToken;
     sessionStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
     const newUser = {
