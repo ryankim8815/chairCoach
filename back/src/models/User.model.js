@@ -37,10 +37,11 @@ var User = /** @class */ (function () {
         });
     };
     User.create = function (_a) {
-        var user_id = _a.user_id, email = _a.email, password = _a.password, nickname = _a.nickname, provider = _a.provider;
+        var user_id = _a.user_id, email = _a.email, password = _a.password, nickname = _a.nickname, provider = _a.provider, transaction = _a.transaction;
         return _1.db.sequelize.query("\n        INSERT INTO users (user_id, email, password, nickname, provider) VALUES (?, ?, ?, ?, ?)\n              ", {
             type: _1.db.QueryTypes.INSERT,
             replacements: [user_id, email, password, nickname, provider],
+            transaction: transaction,
         });
     };
     User.update = function (_a) {

@@ -2,7 +2,13 @@ import { db } from "./index";
 
 class Token {
   // Models
-  static create = ({ user_id, refreshToken, accessToken, ipAddress }) =>
+  static create = ({
+    user_id,
+    refreshToken,
+    accessToken,
+    ipAddress,
+    transaction,
+  }) =>
     db.sequelize.query(
       `
       INSERT INTO tokens (user_id, refresh_token, access_token, ip_address, status) 
@@ -11,6 +17,7 @@ class Token {
       {
         type: db.QueryTypes.INSERT,
         replacements: [user_id, refreshToken, accessToken, ipAddress, "valid"],
+        transaction: transaction,
       }
     );
 
