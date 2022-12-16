@@ -30,13 +30,13 @@ class socialLoginService {
       delete thisUser.password;
       // token update
       const secretKey = process.env.JWT_SECRET_KEY;
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-          user_id: thisUser.user_id,
-        },
-        secretKey
-      );
+      // const token = jwt.sign(
+      //   {
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+      //     user_id: thisUser.user_id,
+      //   },
+      //   secretKey
+      // );
       const accessToken = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -67,7 +67,7 @@ class socialLoginService {
           {
             result: true,
             message: `로그인이 성공적으로 이뤄졌습니다.`,
-            token: token,
+            // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
           },
@@ -102,13 +102,13 @@ class socialLoginService {
       delete thisUser.password;
       // issue token
       const secretKey = process.env.JWT_SECRET_KEY;
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-          user_id: thisUser.user_id,
-        },
-        secretKey
-      );
+      // const token = jwt.sign(
+      //   {
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+      //     user_id: thisUser.user_id,
+      //   },
+      //   secretKey
+      // );
       const accessToken = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -135,7 +135,7 @@ class socialLoginService {
           {
             result: true,
             message: `회원가입이 성공적으로 이뤄졌습니다.`,
-            token: token,
+            // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
           },
@@ -167,13 +167,13 @@ class socialLoginService {
       delete thisUser.password;
       // token update
       const secretKey = process.env.JWT_SECRET_KEY;
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-          user_id: thisUser.user_id,
-        },
-        secretKey
-      );
+      // const token = jwt.sign(
+      //   {
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+      //     user_id: thisUser.user_id,
+      //   },
+      //   secretKey
+      // );
       const accessToken = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -204,7 +204,7 @@ class socialLoginService {
           {
             result: true,
             message: `${thisUser.nickname}님의 로그인이 성공적으로 이뤄졌습니다.`,
-            token: token,
+            // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
           },
@@ -238,13 +238,13 @@ class socialLoginService {
       const thisUser = checkNewUser[0];
       delete thisUser.password;
       const secretKey = process.env.JWT_SECRET_KEY;
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-          user_id: user_id,
-        },
-        secretKey
-      );
+      // const token = jwt.sign(
+      //   {
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+      //     user_id: user_id,
+      //   },
+      //   secretKey
+      // );
       const accessToken = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -273,7 +273,7 @@ class socialLoginService {
           {
             result: true,
             message: `회원가입이 성공적으로 이뤄졌습니다.`,
-            token: token,
+            // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
           },
@@ -305,13 +305,13 @@ class socialLoginService {
       delete thisUser.password;
       // token update
       const secretKey = process.env.JWT_SECRET_KEY;
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-          user_id: thisUser.user_id,
-        },
-        secretKey
-      );
+      // const token = jwt.sign(
+      //   {
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+      //     user_id: thisUser.user_id,
+      //   },
+      //   secretKey
+      // );
       const accessToken = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -342,7 +342,7 @@ class socialLoginService {
           {
             result: true,
             message: `로그인이 성공적으로 이뤄졌습니다.`,
-            token: token,
+            // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
           },
@@ -376,13 +376,13 @@ class socialLoginService {
       const thisUser = checkNewUser[0];
       delete thisUser.password;
       const secretKey = process.env.JWT_SECRET_KEY;
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-          user_id: user_id,
-        },
-        secretKey
-      );
+      // const token = jwt.sign(
+      //   {
+      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
+      //     user_id: user_id,
+      //   },
+      //   secretKey
+      // );
       const accessToken = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -411,7 +411,7 @@ class socialLoginService {
           {
             result: true,
             message: `회원가입이 성공적으로 이뤄졌습니다.`,
-            token: token,
+            // token: token,
             accessToken: accessToken,
             refreshToken: refreshToken,
           },

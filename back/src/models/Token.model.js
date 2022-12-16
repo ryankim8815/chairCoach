@@ -46,6 +46,13 @@ var Token = /** @class */ (function () {
             replacements: [currentRefreshToken],
         });
     };
+    Token.findByAccessToken = function (_a) {
+        var userToken = _a.userToken;
+        return index_1.db.sequelize.query("\n        SELECT * FROM tokens\n        WHERE access_token = ?\n          ", {
+            type: index_1.db.QueryTypes.SELECT,
+            replacements: [userToken],
+        });
+    };
     return Token;
 }());
 module.exports = Token;

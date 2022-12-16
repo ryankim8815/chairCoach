@@ -82,11 +82,9 @@ var tokenService = /** @class */ (function () {
                     case 1:
                         checkToken = _b.sent();
                         if (checkToken.length == 0) {
-                            //   console.log("이거 나오면 FALSE");
                             throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
                         }
-                        isSameIpAdress = checkToken[0].ipAddress == ipAddress;
-                        console.log(isSameIpAdress);
+                        isSameIpAdress = checkToken[0].ip_address == ipAddress;
                         if (!isSameIpAdress)
                             throw ClientError.unauthorized("[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다.");
                         secretKey = process.env.JWT_SECRET_KEY;

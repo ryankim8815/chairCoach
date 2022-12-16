@@ -86,6 +86,17 @@ class Token {
         replacements: [currentRefreshToken],
       }
     );
+  static findByAccessToken = ({ userToken }) =>
+    db.sequelize.query(
+      `
+        SELECT * FROM tokens
+        WHERE access_token = ?
+          `,
+      {
+        type: db.QueryTypes.SELECT,
+        replacements: [userToken],
+      }
+    );
 
   //   static delete = ({ email }) =>
   //     db.sequelize.query(

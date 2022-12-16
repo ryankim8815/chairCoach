@@ -80,7 +80,7 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.kakao = function (_a) {
         var email = _a.email, access_token = _a.access_token, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, thisUser, user_id_1, secretKey, token, accessToken, refreshToken, status_1, created_at, tokenUpdate, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, accessToken, refreshToken, tokenCreate, result_success;
+            var checkEmail, thisUser, user_id_1, secretKey, accessToken, refreshToken, status_1, created_at, tokenUpdate, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, accessToken, refreshToken, tokenCreate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -94,10 +94,6 @@ var socialLoginService = /** @class */ (function () {
                         user_id_1 = checkEmail[0].user_id;
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: thisUser.user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: thisUser.user_id,
@@ -122,7 +118,7 @@ var socialLoginService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -153,10 +149,6 @@ var socialLoginService = /** @class */ (function () {
                         thisUser = checkNewUser[0];
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: thisUser.user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: thisUser.user_id,
@@ -178,7 +170,7 @@ var socialLoginService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -200,7 +192,7 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.naver = function (_a) {
         var email = _a.email, access_token = _a.access_token, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, thisUser, user_id_2, secretKey, token, accessToken, refreshToken, status_2, created_at, tokenUpdate, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, accessToken, refreshToken, tokenCreate, result_success;
+            var checkEmail, thisUser, user_id_2, secretKey, accessToken, refreshToken, status_2, created_at, tokenUpdate, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, accessToken, refreshToken, tokenCreate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -213,10 +205,6 @@ var socialLoginService = /** @class */ (function () {
                         user_id_2 = checkEmail[0].user_id;
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: thisUser.user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: thisUser.user_id,
@@ -241,7 +229,7 @@ var socialLoginService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "".concat(thisUser.nickname, "\uB2D8\uC758 \uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4."),
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -271,10 +259,6 @@ var socialLoginService = /** @class */ (function () {
                         thisUser = checkNewUser[0];
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: user_id,
@@ -297,7 +281,7 @@ var socialLoginService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -319,7 +303,7 @@ var socialLoginService = /** @class */ (function () {
     socialLoginService.google = function (_a) {
         var email = _a.email, refresh_token = _a.refresh_token, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, thisUser, user_id_3, secretKey, token, accessToken, refreshToken, status_3, created_at, tokenUpdate, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, token, accessToken, refreshToken, tokenCreate, result_success;
+            var checkEmail, thisUser, user_id_3, secretKey, accessToken, refreshToken, status_3, created_at, tokenUpdate, result_success, user_id, password, nickname, provider, newUser, checkNewUser, thisUser, secretKey, accessToken, refreshToken, tokenCreate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -332,10 +316,6 @@ var socialLoginService = /** @class */ (function () {
                         user_id_3 = checkEmail[0].user_id;
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: thisUser.user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: thisUser.user_id,
@@ -360,7 +340,7 @@ var socialLoginService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -390,10 +370,6 @@ var socialLoginService = /** @class */ (function () {
                         thisUser = checkNewUser[0];
                         delete thisUser.password;
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: user_id,
@@ -416,7 +392,7 @@ var socialLoginService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);

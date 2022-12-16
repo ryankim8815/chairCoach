@@ -125,7 +125,7 @@ var userService = /** @class */ (function () {
     userService.getUser = function (_a) {
         var email = _a.email, password = _a.password, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id_1, withdrawnUser, secretKey, token, accessToken, refreshToken, status, created_at, user_id, tokenUpdate, result_success;
+            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id_1, withdrawnUser, secretKey, accessToken, refreshToken, status, created_at, user_id, tokenUpdate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
@@ -157,10 +157,6 @@ var userService = /** @class */ (function () {
                         _b.label = 4;
                     case 4:
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: thisUser.user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: thisUser.user_id,
@@ -187,7 +183,7 @@ var userService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -290,7 +286,7 @@ var userService = /** @class */ (function () {
     userService.addUser = function (_a) {
         var email = _a.email, password = _a.password, nickname = _a.nickname, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, provider, newUser, secretKey, token, accessToken, refreshToken, tokenCreate, result_success;
+            var user_id, provider, newUser, secretKey, accessToken, refreshToken, tokenCreate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -309,10 +305,6 @@ var userService = /** @class */ (function () {
                     case 2:
                         newUser = _b.sent();
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({
-                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-                            user_id: user_id,
-                        }, secretKey);
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
                             user_id: user_id,
@@ -335,7 +327,7 @@ var userService = /** @class */ (function () {
                             result_success = {
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                token: token,
+                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             };
