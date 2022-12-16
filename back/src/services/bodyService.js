@@ -158,10 +158,10 @@ var bodyService = /** @class */ (function () {
                     case 1:
                         checkBody = _b.apply(void 0, [_c.sent()]);
                         if (checkBody.length == 0) {
-                            throw ClientError.notFound("patch를 요청한 body_id 정보와 일치하는 데이터가 없습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.notFound("patch를 요청한 body_id 정보와 일치하는 데이터가 없습니다. 다시 한 번 확인해 주세요.")];
                         }
                         else if (checkBody[0].end_time) {
-                            throw ClientError.conflict("patch를 요청한 body_id의 end_time은 이미 업데이트 되어있습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.conflict("patch를 요청한 body_id의 end_time은 이미 업데이트 되어있습니다. 다시 한 번 확인해 주세요.")];
                         }
                         end_time = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
                         return [4 /*yield*/, Body_model_1.default.patch({

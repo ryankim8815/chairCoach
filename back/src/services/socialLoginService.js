@@ -61,7 +61,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-// import User from "../db/models/User";
 var User_model_1 = __importDefault(require("../models/User.model"));
 var Token_model_1 = __importDefault(require("../models/Token.model"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
@@ -87,9 +86,8 @@ var socialLoginService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
                     case 1:
                         checkEmail = _b.sent();
-                        // console.log("통과됌.", checkEmail);
                         if (checkEmail.length !== 0 && checkEmail[0].provider !== "kakao")
-                            throw ClientError.unauthorized("kakao 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("kakao 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.")];
                         if (!(checkEmail.length == 1 && checkEmail[0].provider == "kakao")) return [3 /*break*/, 3];
                         thisUser = checkEmail[0];
                         user_id = checkEmail[0].user_id;
@@ -119,7 +117,6 @@ var socialLoginService = /** @class */ (function () {
                             result_success = Object.assign({
                                 result: true,
                                 message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                                // token: token,
                                 accessToken: accessToken,
                                 refreshToken: refreshToken,
                             }, thisUser);
@@ -128,7 +125,7 @@ var socialLoginService = /** @class */ (function () {
                         _b.label = 3;
                     case 3:
                         if (checkEmail.length > 1) {
-                            throw ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.")];
                         }
                         return [4 /*yield*/, models_1.db.sequelize.transaction()];
                     case 4:
@@ -209,7 +206,7 @@ var socialLoginService = /** @class */ (function () {
                     case 1:
                         checkEmail = _b.sent();
                         if (checkEmail.length !== 0 && checkEmail[0].provider !== "naver")
-                            throw ClientError.unauthorized("naver 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("naver 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.")];
                         if (!(checkEmail.length == 1 && checkEmail[0].provider == "naver")) return [3 /*break*/, 3];
                         thisUser = checkEmail[0];
                         user_id = checkEmail[0].user_id;
@@ -248,7 +245,7 @@ var socialLoginService = /** @class */ (function () {
                         _b.label = 3;
                     case 3:
                         if (checkEmail.length > 1)
-                            throw ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.")];
                         return [4 /*yield*/, models_1.db.sequelize.transaction()];
                     case 4:
                         transaction = _b.sent();
@@ -329,7 +326,7 @@ var socialLoginService = /** @class */ (function () {
                     case 1:
                         checkEmail = _b.sent();
                         if (checkEmail.length !== 0 && checkEmail[0].provider !== "google")
-                            throw ClientError.unauthorized("google 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("google 계정의 email로 이미 가입된 내역이 있습니다. 다시 한 번 확인해 주세요.")];
                         if (!(checkEmail.length == 1 && checkEmail[0].provider == "google")) return [3 /*break*/, 3];
                         thisUser = checkEmail[0];
                         user_id = checkEmail[0].user_id;
@@ -368,7 +365,7 @@ var socialLoginService = /** @class */ (function () {
                         _b.label = 3;
                     case 3:
                         if (checkEmail.length > 1)
-                            throw ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망]: 해당 이메일로 가입된 사용자가 2명 이상입니다. 정책상 이메일 하나로 계정 하나만 생성 가능 합니다.")];
                         return [4 /*yield*/, models_1.db.sequelize.transaction()];
                     case 4:
                         transaction = _b.sent();

@@ -13,8 +13,6 @@ axios.interceptors.response.use(
     return res.data;
   },
   (err) => {
-    // console.log(err);
-    // throw new Error("(!) axios error");
     throw new Error(`(!) axios error: ${err}`);
   }
 );
@@ -100,8 +98,6 @@ class socialLoginController {
     const redirectURI = process.env.NAVER_REDIRECT_URL;
     const encoded = encodeURIComponent(redirectURI);
     const url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${encoded}&code=${code}&state=${state}`;
-    // const FE_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${encoded}&state=${state}`;
-    // console.log("FE_url: ", FE_url);
     try {
       const resultToken = nullPrototypeHandler(
         await axios({
@@ -158,10 +154,6 @@ class socialLoginController {
     const redirectURI = process.env.GOOGLE_REDIRECT_URL;
     const hd = process.env.GOOGLE_HD;
     const encoded = encodeURIComponent(redirectURI);
-    // const FE_url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${client_id}&scope=openid%20email&redirect_uri=${encoded}&state=${state}&login_hint=${login_hint}&nonce=${nonce}&hd=${hd}`;
-    // console.log("url: ", FE_url);
-    // const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${client_id}&scope=openid%20email&redirect_uri=${encoded}&state=${state}&login_hint=${login_hint}&nonce=${nonce}&hd=${hd}`;
-
     try {
       const data = {
         code: code,

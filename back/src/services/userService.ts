@@ -25,12 +25,12 @@ class userService {
   static async getCurrentUser({ user_id }) {
     const currentUser = await User.findByUserId({ user_id });
     if (currentUser.length === 0) {
-      throw ClientError.notFound(
+      return ClientError.notFound(
         "정상적으로 로그인된 사용자의 요청이 아닙니다."
       );
     }
     if (currentUser.length > 1) {
-      throw ServerError.internalServerError(
+      return ServerError.internalServerError(
         "[확인요망]: 해당 user_id로 조회된 계정이 DB상 두개 이상입니다. 확인해 주세요."
       );
     }
@@ -49,7 +49,7 @@ class userService {
   static async getUser({ email, password, ipAddress }) {
     const user = await User.findByEmail({ email });
     if (user.length === 0) {
-      throw ClientError.unauthorized(
+      return ClientError.unauthorized(
         "입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요."
       );
     }
@@ -60,7 +60,7 @@ class userService {
       hashedCorrectPassword
     );
     if (!isPasswordCorrect) {
-      throw ClientError.unauthorized(
+      return ClientError.unauthorized(
         "입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요."
       );
     }
@@ -69,7 +69,7 @@ class userService {
       const user_id = thisUser.user_id;
       const withdrawnUser = await User.undoWithdraw({ user_id });
       if (withdrawnUser[1] === 0) {
-        throw ServerError.internalServerError(
+        return ServerError.internalServerError(
           "[확인요망] 탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다."
         );
       } else {
@@ -79,13 +79,6 @@ class userService {
     }
     // token update
     const secretKey = process.env.JWT_SECRET_KEY;
-    // const token = jwt.sign(
-    //   {
-    //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-    //     user_id: thisUser.user_id,
-    //   },
-    //   secretKey
-    // );
     const accessToken = jwt.sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -152,18 +145,18 @@ class userService {
       email,
     });
     if (checkCode.length == 0) {
-      throw ClientError.unauthorized(
+      return ClientError.unauthorized(
         "해당 이메일에 발급된 코드가 만료되었습니다."
       );
     }
     if (checkCode.length > 1) {
-      throw ServerError.internalServerError(
+      return ServerError.internalServerError(
         "[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다."
       );
     }
     const isCorrectCode = code == checkCode[0].code;
     if (!isCorrectCode)
-      throw ClientError.unauthorized("email 인증에 실패했습니다.");
+      return ClientError.unauthorized("email 인증에 실패했습니다.");
     if (isCorrectCode) {
       const deleteCode = await Code.delete({
         email,
@@ -180,7 +173,7 @@ class userService {
   static async nicknameDuplicateCheck({ nickname }) {
     const checkNickname = await User.findByNickname({ nickname });
     if (checkNickname.length !== 0) {
-      throw ClientError.conflict("입력하신 nickname은 이미 사용중입니다.");
+      return ClientError.conflict("입력하신 nickname은 이미 사용중입니다.");
     }
     const result_success = {
       result: true,
@@ -205,13 +198,6 @@ class userService {
         transaction,
       });
       const secretKey = process.env.JWT_SECRET_KEY;
-      // const token = jwt.sign(
-      //   {
-      //     exp: Math.floor(Date.now() / 1000) + 60 * 60, // sec, 1hour
-      //     user_id: user_id,
-      //   },
-      //   secretKey
-      // );
       const accessToken = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // sec, 1day
@@ -234,13 +220,10 @@ class userService {
         ipAddress,
         transaction,
       });
-      // console.log("tokenCreate: ", tokenCreate);
-      // 트랜젝션 적용=============================================================================
       if (newUser[1] && tokenCreate[1]) {
         const result_success = {
           result: true,
           message: `회원가입이 성공적으로 이뤄졌습니다.`,
-          // token: token,
           accessToken: accessToken,
           refreshToken: refreshToken,
         };
@@ -260,10 +243,9 @@ class userService {
 
   //// 회원정보 수정을 위한 비밀번호 확인
   static async passwordCheck({ user_id, password }) {
-    // try {
     const checkPassword = await User.findByUserId({ user_id });
     if (checkPassword.length == 0) {
-      throw ClientError.unauthorized(
+      return ClientError.unauthorized(
         "요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요."
       );
     }
@@ -274,7 +256,7 @@ class userService {
       hashedCorrectPassword
     );
     if (!isPasswordCorrect) {
-      throw ClientError.unauthorized(
+      return ClientError.unauthorized(
         "입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요."
       );
     }
@@ -294,7 +276,7 @@ class userService {
       nickname,
     });
     if (updatedUser[1] !== 1)
-      throw ServerError.internalServerError(
+      return ServerError.internalServerError(
         "[확인요망] 업데이트 과정트서 오류가 발견되었습니다."
       );
     const result_success = {
@@ -312,7 +294,7 @@ class userService {
       nickname,
     });
     if (updatedUser[1] !== 1)
-      throw ServerError.internalServerError(
+      return ServerError.internalServerError(
         "[확인요망] 업데이트 과정트서 오류가 발견되었습니다."
       );
     const result_success = {
@@ -328,7 +310,7 @@ class userService {
       await User.findByUserId({ user_id })
     );
     if (checkUserId.length === 0) {
-      throw ClientError.unauthorized(
+      return ClientError.unauthorized(
         "요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요."
       );
     }
@@ -340,7 +322,7 @@ class userService {
       hashedCorrectPassword
     );
     if (!isPasswordCorrect) {
-      throw ClientError.unauthorized(
+      return ClientError.unauthorized(
         "입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요."
       );
     }
@@ -350,7 +332,7 @@ class userService {
       })
     );
     if (updatedUser[1] !== 1)
-      throw ServerError.internalServerError(
+      return ServerError.internalServerError(
         "[확인요망] 탈퇴 과정에서 오류가 발견되었습니다."
       );
     const result_success = {
@@ -364,7 +346,7 @@ class userService {
   static async setAlert({ user_id, alert, timer }) {
     const setAlert = await User.updateAlert({ user_id, alert, timer });
     if (setAlert[1] !== 1)
-      throw ServerError.internalServerError(
+      return ServerError.internalServerError(
         "[확인요망] 기존값과 동일한 요청이거나 서버 오류입니다."
       );
     const result_success = {

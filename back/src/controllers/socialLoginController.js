@@ -49,8 +49,6 @@ var logger = require("../config/logger");
 axios_1.default.interceptors.response.use(function (res) {
     return res.data;
 }, function (err) {
-    // console.log(err);
-    // throw new Error("(!) axios error");
     throw new Error("(!) axios error: ".concat(err));
 });
 // formdata 포멧으로 만들어 줌
