@@ -13,11 +13,11 @@ class tokenService {
     });
 
     if (checkToken.length == 0) {
-      console.log("이거 나오면 FALSE");
+      //   console.log("이거 나오면 FALSE");
       throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
     }
 
-    console.log("이거 나오면 true");
+    // console.log("이거 나오면 true");
     const secretKey = process.env.JWT_SECRET_KEY;
     const accessToken = jwt.sign(
       {

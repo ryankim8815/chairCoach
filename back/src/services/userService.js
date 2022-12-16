@@ -182,7 +182,6 @@ var userService = /** @class */ (function () {
                             })];
                     case 5:
                         tokenUpdate = _b.sent();
-                        console.log("tokenUpdate::::::: ", tokenUpdate); // 여기에도 트랜젝션 ====================
                         if (tokenUpdate[1]) {
                             delete thisUser.password;
                             result_success = Object.assign({
@@ -336,10 +335,13 @@ var userService = /** @class */ (function () {
                             result_success = {
                                 result: true,
                                 message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                token: token,
+                                accessToken: accessToken,
+                                refreshToken: refreshToken,
                             };
                             return [2 /*return*/, result_success];
                         }
-                        return [2 /*return*/];
+                        throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
                 }
             });
         });

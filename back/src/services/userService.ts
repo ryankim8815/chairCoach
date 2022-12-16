@@ -76,6 +76,7 @@ class userService {
         thisUser.withdraw_at = null;
       }
     }
+    // token update
     const secretKey = process.env.JWT_SECRET_KEY;
     const token = jwt.sign(
       {
@@ -100,7 +101,6 @@ class userService {
     );
     const status = "valid";
     const created_at = moment().format("YYYY-MM-DD HH:mm:ss");
-    // token update
     const user_id = thisUser.user_id;
     const tokenUpdate = await Token.update({
       user_id,
@@ -110,7 +110,6 @@ class userService {
       status,
       created_at,
     });
-    console.log("tokenUpdate::::::: ", tokenUpdate); // 여기에도 트랜젝션 ====================
     if (tokenUpdate[1]) {
       delete thisUser.password;
       const result_success = Object.assign(
@@ -236,9 +235,13 @@ class userService {
       const result_success = {
         result: true,
         message: `회원가입이 성공적으로 이뤄졌습니다.`,
+        token: token,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       };
       return result_success;
     }
+    throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
   }
   //
   ///////////////////////////

@@ -71,9 +71,11 @@ class socialLoginController {
       );
       // 로그인 & 회원가입
       const email = resultAccount.email;
+      const ipAddress = req.body.requestClientIp;
       const kakao = await socialLoginService.kakao({
         email,
         access_token,
+        ipAddress,
       });
 
       logger.info(kakao);
@@ -123,10 +125,12 @@ class socialLoginController {
       // 로그인 & 회원가입
       const naverUserResult = resultAccount.response;
       const email = naverUserResult.email;
+      const ipAddress = req.body.requestClientIp;
       const naver = nullPrototypeHandler(
         await socialLoginService.naver({
           email,
           access_token,
+          ipAddress,
         })
       );
 
@@ -182,10 +186,12 @@ class socialLoginController {
       const jwtDecoded = nullPrototypeHandler(jwt.decode(resultToken.id_token));
       const email = jwtDecoded.email;
       const refresh_token = resultToken.refresh_token;
+      const ipAddress = req.body.requestClientIp;
       // 로그인 & 회원가입
       const google = await socialLoginService.google({
         email,
         refresh_token,
+        ipAddress,
       });
 
       logger.info(google);

@@ -82,10 +82,9 @@ var tokenService = /** @class */ (function () {
                     case 1:
                         checkToken = _b.sent();
                         if (checkToken.length == 0) {
-                            console.log("이거 나오면 FALSE");
+                            //   console.log("이거 나오면 FALSE");
                             throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
                         }
-                        console.log("이거 나오면 true");
                         secretKey = process.env.JWT_SECRET_KEY;
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
