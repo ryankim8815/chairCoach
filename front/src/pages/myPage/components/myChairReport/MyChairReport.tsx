@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./MyChairReportStyle";
-import {
-  MdElectricalServices,
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-} from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { BsFillClockFill } from "react-icons/bs";
 import MyChairReportChart from "./MyChairReportChart";
 import * as Api from "../../../../api/api";
@@ -22,7 +18,6 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   const [curYear, setCurYear] = useState<number>(year!);
   const [curWeek, setCurWeek] = useState<number>(50);
   const [isSelected, SetIsSelected] = useState<number[]>([1, 0]);
-  //const [curWeek, setCurWeek] = useState<number | null>(null);
 
   const onClickYearButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -64,8 +59,8 @@ const MyChairReport = ({ year, user_id }: MyChairReportProps) => {
   }, [curWeek]);
 
   useEffect(() => {
-    setCurYear(year!);
-  }, [year]);
+    getYearData();
+  }, []);
 
   // 마이체어리포트 유저 운동기록 조회
   const getYearData = async () => {
