@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as S from "../myChairReport/MyChairReportStyle";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdOutlineCollectionsBookmark,
+} from "react-icons/md";
 import TurtleNeckResultChart from "./TurtleNeckResultChart";
 import * as Api from "../../../../api/api";
 import good from "../../../../assets/img/good.png";
@@ -40,13 +44,13 @@ export interface TurtleNeckResultProps {
 const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
   const [data, setData] = useState<number[] | null>(null);
   const [img, setImage] = useState<string | null>(null); // data 없을때 디폴트 이미지 필요!
-
+  const [curYear, setCurYear] = useState<number>(year!);
   /**
    * 선택한 년도에 따라 월별 거북목 점수 데이터를 변경하는 함수
    */
   const getData = async () => {
     try {
-      const res = await Api.get(`necks/${user_id}/${year}`);
+      const res = await Api.get(`necks/${user_id}/${curYear}`);
       if (res.data.list.length) {
         const data = new Array(12).fill(0);
         for (let obj of res.data.list) {
@@ -79,6 +83,19 @@ const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
     else if (avg >= 70) setImage(bad);
   };
 
+  const onClickPrevButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setCurYear((prev) => prev - 1);
+  };
+
+  const onClickNextButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setCurYear((prev) => prev + 1);
+  };
+  useEffect(() => {
+    getData();
+  }, [curYear]);
+
   useEffect(() => {
     getData();
   }, []);
@@ -93,11 +110,15 @@ const TurtleNeckResult = ({ year, user_id }: TurtleNeckResultProps) => {
         <ContentLayout>
           <div className="inner">
             <S.GraphBox>
-              <MdKeyboardArrowLeft size={32} />
+              <S.ShiftButton onClick={onClickPrevButton}>
+                <MdKeyboardArrowLeft size={32} />
+              </S.ShiftButton>
               <S.YearText fontSize={20} fontWeight={500}>
-                2022년
+                {curYear}년
               </S.YearText>
-              <MdKeyboardArrowRight size={32} />
+              <S.ShiftButton onClick={onClickNextButton}>
+                <MdKeyboardArrowRight size={32} />
+              </S.ShiftButton>
               <div className="graph">
                 {data ? (
                   <TurtleNeckResultChart data={data} />

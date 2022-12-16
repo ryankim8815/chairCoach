@@ -16,7 +16,7 @@
  */
 import * as posenet from "@tensorflow-models/posenet";
 
-const color = "#835DFE";
+//const color = "#835DFE";
 const lineWidth = 3;
 const r = 3;
 
@@ -39,6 +39,7 @@ export function drawKeypoints(
   minConfidence: number,
   ctx: CanvasRenderingContext2D,
   videoWidth: number,
+  color: string,
   scale = 1
 ) {
   for (let i = 0; i < keypoints.length; i++) {
@@ -77,6 +78,7 @@ export function drawSkeleton(
   minConfidence: number,
   ctx: CanvasRenderingContext2D,
   videoWidth: number,
+  color: string,
   scale = 1
 ) {
   const adjacentKeyPoints = posenet.getAdjacentKeyPoints(

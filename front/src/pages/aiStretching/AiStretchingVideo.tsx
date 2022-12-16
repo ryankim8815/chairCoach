@@ -11,24 +11,36 @@ import { drawKeypoints, drawSkeleton } from "./util";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import { Socket, io } from "socket.io-client";
 import * as S from "./AiStretchingStyle";
+import { StringNGramsAttrs } from "@tensorflow/tfjs-core";
 require("@tensorflow/tfjs");
-const AiStretchingVideo = ({ tempref }: any) => {
+
+interface AiStretchingVideoProps {
+  tempref: any;
+  color: string;
+}
+
+const AiStretchingVideo = ({ tempref, color }: AiStretchingVideoProps) => {
+  console.log(color);
   const [deviceId, setDeviceId] = useState({});
   const [devices, setDevices] = useState([]);
+
   const handleDevices = React.useCallback(
     (mediaDevices: any) =>
       setDevices(mediaDevices.filter(({ kind }: any) => kind === "videoinput")),
     [setDevices]
   );
+
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
-  // let temp: string;
+
   const webcamRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
   // const socketUrl = "ws://localhost:5001";
   const socketUrl = "wss://kdt-ai5-team04.elicecoding.com:5002";
   const socket = io(socketUrl as string);
+
   const detectWebCamFeed = async (detector: poseDetection.PoseDetector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -56,7 +68,7 @@ const AiStretchingVideo = ({ tempref }: any) => {
 
       socket.emit("model", dataArr2);
       socket.on("model", (message) => {
-        if (message == tempref.current) {
+        if (message === tempref.current) {
           // console.log("1", message == temp);
           return;
         }
@@ -67,7 +79,7 @@ const AiStretchingVideo = ({ tempref }: any) => {
         console.log(tempref.current);
       });
 
-      drawResult(pose, video, videoWidth, videoHeight, canvasRef);
+      drawResult(pose, video, videoWidth, videoHeight, canvasRef, color);
       requestAnimationFrame(() => {
         detectWebCamFeed(detector);
       });
@@ -91,13 +103,14 @@ const AiStretchingVideo = ({ tempref }: any) => {
     video: any,
     videoWidth: number,
     videoHeight: number,
-    canvas: any
+    canvas: any,
+    color: string
   ) => {
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
     canvas.current.height = videoHeight;
-    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
-    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
+    drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth, color);
+    drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth, color);
   };
   useEffect(() => {
     if (!webcamRef.current?.video) return;
