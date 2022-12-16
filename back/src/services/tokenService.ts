@@ -16,7 +16,12 @@ class tokenService {
       //   console.log("이거 나오면 FALSE");
       throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
     }
-
+    const isSameIpAdress = checkToken[0].ipAddress == ipAddress;
+    console.log(isSameIpAdress);
+    if (!isSameIpAdress)
+      throw ClientError.unauthorized(
+        "[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다."
+      );
     // console.log("이거 나오면 true");
     const secretKey = process.env.JWT_SECRET_KEY;
     const accessToken = jwt.sign(

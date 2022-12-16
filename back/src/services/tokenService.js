@@ -73,7 +73,7 @@ var tokenService = /** @class */ (function () {
     tokenService.reissueToken = function (_a) {
         var currentRefreshToken = _a.currentRefreshToken, user_id = _a.user_id, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var checkToken, secretKey, accessToken, refreshToken, status, created_at, tokenUpdate, result;
+            var checkToken, isSameIpAdress, secretKey, accessToken, refreshToken, status, created_at, tokenUpdate, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, Token_model_1.default.findByRefreshToken({
@@ -85,6 +85,10 @@ var tokenService = /** @class */ (function () {
                             //   console.log("이거 나오면 FALSE");
                             throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
                         }
+                        isSameIpAdress = checkToken[0].ipAddress == ipAddress;
+                        console.log(isSameIpAdress);
+                        if (!isSameIpAdress)
+                            throw ClientError.unauthorized("[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다.");
                         secretKey = process.env.JWT_SECRET_KEY;
                         accessToken = jsonwebtoken_1.default.sign({
                             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
