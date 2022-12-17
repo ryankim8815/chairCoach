@@ -15,17 +15,16 @@ function errorHandler(
   const originalUrl = req.originalUrl;
   const requestClientIp = req.body.requestClientIp;
   const requestStartTime = req.body.requestStartTime;
-  const errorMessage = `[${status} | ${method}]
-  URL: ${originalUrl} 
-  CLIENT_IP: ${requestClientIp}
-  MESSAGE: ${message}`;
+  const errorMessage = `${method} ${originalUrl} 
+  [${status}]: ${message}
+  [IP]: ${requestClientIp}
+  `;
   discordForWinston(error, req);
   if (error.status) {
     logger.error(errorMessage);
     return res.status(error.status).json(error);
   }
-
-  logger.error("common:", errorMessage);
+  logger.error(errorMessage);
   return res.status(400).json(common);
 }
 
