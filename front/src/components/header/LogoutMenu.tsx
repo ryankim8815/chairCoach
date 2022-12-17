@@ -1,17 +1,18 @@
-import { Link } from 'react-router-dom';
-
-// style
-import { LogoutMenuCon } from './HeaderStyle';
-
+import { Link } from "react-router-dom";
+import * as S from "./HeaderStyle";
 
 const LogoutMenu = () => {
   return (
-    <LogoutMenuCon>
-        <ul>
-          <li><Link to='/login'>로그인</Link></li>
-          <li><Link to='/register'>회원가입</Link></li>
+    <S.LogoutMenuContent>
+      <ul>
+        <li>
+          <Link to="/login">로그인</Link>
+        </li>
+        <li>
+          <Link to="/register">회원가입</Link>
+        </li>
       </ul>
-    </LogoutMenuCon>
+    </S.LogoutMenuContent>
   );
 };
 

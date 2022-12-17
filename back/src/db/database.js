@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var mysql2_1 = __importDefault(require("mysql2"));
 require("dotenv/config");
 var dbConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    host: process.env.MySQL_DB_HOST,
+    user: process.env.MySQL_DB_USER,
+    password: process.env.MySQL_DB_PASSWORD,
+    database: process.env.MySQL_DB_DATABASE,
     connectionLimit: 10,
     queueLimit: 0, // unlimited
 };

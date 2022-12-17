@@ -1,7 +1,7 @@
 import * as express from "express";
 import userService from "../services/userService";
-// import logger from "../../config/logger";
-const logger = require("../../config/logger");
+import * as ClientError from "../responses/clientErrorResponse";
+const logger = require("../config/logger");
 
 class userController {
   // GET: 사용자 리스트 조회 기능
@@ -11,16 +11,18 @@ class userController {
     next: express.NextFunction
   ) {
     try {
-      const allUsers = await userService.getAllUsers();
-      logger.info(allUsers);
-      return res.status(200).json(allUsers);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userList api에서 오류가 발생했습니다.",
+      const { count, list } = await userService.getAllUsers();
+      const getAllUsers = {
+        result: true,
+        message: `모든 사용자 조회가 성공적으로 이뤄졌습니다.`,
+        count,
+        list,
       };
-      return res.status(200).json(result_err);
+
+      logger.info(getAllUsers);
+      return res.status(200).json(getAllUsers);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -32,17 +34,17 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
-      const currentUser = await userService.getCurrentUser({ user_id });
-      logger.error(currentUser); // test
-      return res.status(200).json(currentUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userCurrent api에서 오류가 발생했습니다.",
-      };
-      logger.error(result_err); // test
-      return res.status(200).json(result_err);
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
+      const getCurrentUser = await userService.getCurrentUser({ user_id });
+
+      logger.info(getCurrentUser);
+      return res.status(200).json(getCurrentUser);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -56,15 +58,19 @@ class userController {
       const email = req.body.email;
       const password = req.body.password;
       const nickname = req.body.nickname;
-      const newUser = await userService.addUser({ email, password, nickname });
-      return res.status(200).json(newUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userRegister api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+      const ipAddress = req.body.requestClientIp;
+      const addUser = await userService.addUser({
+        email,
+        password,
+        nickname,
+        ipAddress,
+      });
+
+      logger.info(addUser);
+      return res.status(200).json(addUser);
+    } catch (e) {
+      // console.log(e);
+      next(e);
     }
   }
 
@@ -77,15 +83,13 @@ class userController {
     try {
       const email = req.body.email;
       const password = req.body.password;
-      const signinUser = await userService.getUser({ email, password });
-      return res.status(200).json(signinUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userLogin api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+      const ipAddress = req.body.requestClientIp;
+      const getUser = await userService.getUser({ email, password, ipAddress });
+
+      logger.info(getUser);
+      return res.status(200).json(getUser);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -97,23 +101,25 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
       const password = req.body.password;
-      const updateUser = await userService.passwordCheck({
+      const passwordCheck = await userService.passwordCheck({
         user_id,
         password,
       });
-      return res.status(200).json(updateUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userPassword api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+
+      logger.info(passwordCheck);
+      return res.status(200).json(passwordCheck);
+    } catch (e) {
+      next(e);
     }
   }
 
-  // POST: 회원정보 수정
+  // PUT: 회원정보 수정
   static async userUpdate(
     req: express.Request,
     res: express.Response,
@@ -121,23 +127,56 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
-      const currentPassword = req.body.currentPassword;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
       const password = req.body.password;
       const nickname = req.body.nickname;
       const updateUser = await userService.updateUser({
         user_id,
-        currentPassword,
         password,
         nickname,
       });
+
+      logger.info(updateUser);
       return res.status(200).json(updateUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userUpdate api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  // PUT: 회원정보 수정 - 간편로그인 회원용
+  static async socialLoginUserUpdate(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
+      const provider = req.params.provider;
+      if (provider == "chairCoach") {
+        throw ClientError.unauthorized(
+          "정상적으로 접근된 사용자의 요청이 아닙니다."
+        );
+      }
+      const nickname = req.body.nickname;
+      const updateUser = await userService.updateSocialLoginUser({
+        user_id,
+        provider,
+        nickname,
+      });
+
+      logger.info(updateUser);
+      return res.status(200).json(updateUser);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -149,19 +188,21 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
       const password = req.body.password;
       const deleteUser = await userService.deleteUser({
         user_id,
         password,
       });
+
+      logger.info(deleteUser);
       return res.status(200).json(deleteUser);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userDelete api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -174,19 +215,16 @@ class userController {
     try {
       const email = req.body.email;
       const code = req.body.code;
-      const sendCodeToEmail = await userService.sendCode({
+      const sendCode = await userService.sendCode({
         // redis 활용 고려
         email,
         code,
       });
-      return res.status(200).json(sendCodeToEmail);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "signupEmail api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+
+      logger.info(sendCode);
+      return res.status(200).json(sendCode);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -199,18 +237,15 @@ class userController {
     try {
       const email = req.params.email;
       const code = req.params.code;
-      const verifyEmailCode = await userService.verifyCode({
+      const verifyCode = await userService.verifyCode({
         email,
         code,
       });
-      return res.status(200).json(verifyEmailCode);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "signupVerifyEmail api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+
+      logger.info(verifyCode);
+      return res.status(200).json(verifyCode);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -222,17 +257,14 @@ class userController {
   ) {
     try {
       const nickname = req.params.nickname;
-      const checkNickname = await userService.nicknameDuplicateCheck({
+      const nicknameDuplicateCheck = await userService.nicknameDuplicateCheck({
         nickname,
       });
-      return res.status(200).json(checkNickname);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "signupNickname api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+
+      logger.info(nicknameDuplicateCheck);
+      return res.status(200).json(nicknameDuplicateCheck);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -244,6 +276,11 @@ class userController {
   ) {
     try {
       const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
       const alert = req.body.alert;
       const timer = req.body.timer;
       const setAlert = await userService.setAlert({
@@ -251,14 +288,11 @@ class userController {
         alert,
         timer,
       });
+
+      logger.info(setAlert);
       return res.status(200).json(setAlert);
-    } catch (err) {
-      const result_err = {
-        result: false,
-        cause: "api",
-        message: "userSetAlert api에서 오류가 발생했습니다.",
-      };
-      return res.status(200).json(result_err);
+    } catch (e) {
+      next(e);
     }
   }
 }

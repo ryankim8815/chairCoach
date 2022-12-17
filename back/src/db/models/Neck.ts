@@ -49,5 +49,14 @@ class Neck {
     });
     return rows;
   }
+
+  // 특정 유저의 기록 조회 - year
+  static async findByUserIdYear({ user_id, year }) {
+    const [rows, fields] = await promisePool.query({
+      sql: "SELECT DATE_FORMAT(`created_at`,'%Y-%m') AS month, COUNT(`user_id`) AS count, AVG(score) AS avg FROM necks WHERE NOT `score` IS NULL AND `user_id` = ? AND DATE_FORMAT(`created_at`, '%Y') = ? GROUP BY DATE_FORMAT(`created_at`, '%Y-%m')",
+      values: [user_id, year],
+    });
+    return rows;
+  }
 }
 export = Neck;

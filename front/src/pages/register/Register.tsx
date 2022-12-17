@@ -12,7 +12,9 @@ import * as S from "../../styles/BtnStyle";
 
 const Register = () => {
   const navigate = useNavigate();
-
+  const KAKAO_AUTH_URL = process.env.REACT_APP_KAKAO_URL;
+  const naverUrl = process.env.REACT_APP_NAVER_URL;
+  const googleUrl = process.env.REACT_APP_GOOGLE;
   return (
     <RegisterLayout>
       <div className="inner">
@@ -36,15 +38,15 @@ const Register = () => {
 
             <ul>
               <li>
-                <button>구글</button>
+                <a href={googleUrl}>구글</a>
                 <span>구글</span>
               </li>
               <li>
-                <button>카카오</button>
+                <a href={KAKAO_AUTH_URL}>카카오</a>
                 <span>카카오</span>
               </li>
               <li>
-                <button>네이버</button>
+                <a href={naverUrl}>네이버</a>
                 <span>네이버</span>
               </li>
             </ul>

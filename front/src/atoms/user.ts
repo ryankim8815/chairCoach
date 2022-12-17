@@ -2,12 +2,11 @@ import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 interface User {
-  email: string | null;
-  password: string | null;
+  id: string | null;
   nickname: string | null;
 }
 
-const {persistAtom} = recoilPersist();
+const { persistAtom } = recoilPersist();
 
 export const userState = atom<User | null>({
   key: "userState",

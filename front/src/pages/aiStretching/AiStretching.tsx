@@ -1,90 +1,174 @@
-import {useRef} from 'react';
-import * as posenet from '@tensorflow-models/posenet';
-import Webcam from 'react-webcam';
-import {drawKeypoints, drawSkeleton} from './util'
-import * as poseDetection from '@tensorflow-models/pose-detection';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import userState from "../../atoms/user";
+import AiStretchingVideo from "./AiStretchingVideo";
+import * as D from "./StretchingData";
+import * as Api from "../../api/api";
+import * as S from "./AiStretchingStyle";
+import * as B from "../../styles/BtnStyle";
+import completionIcon from "../../assets/img/completion_icon.png";
+import guideLine from "../../assets/img/guide_line.svg";
 
-require('@tensorflow/tfjs')
-
+require("@tensorflow/tfjs");
 const AiStretching = () => {
-    const webcamRef=useRef(null);
-    const canvasRef= useRef(null);
-  
-    const detectWebCamFeed = async (detector:poseDetection.PoseDetector) => {
-      if (
-        typeof webcamRef.current !== "undefined" &&
-        webcamRef.current !== null &&
-        (webcamRef.current as any).video.readyState === 4
-      ) {
-        const video =(webcamRef.current as any).video;
-        const videoWidth = (webcamRef.current as any).video.videoWidth;
-        const videoHeight = (webcamRef.current as any).video.videoHeight;
-        (webcamRef.current as any).video.width = videoWidth;
-        (webcamRef.current as any).video.height = videoHeight;
-        const pose = await detector.estimatePoses(video, {
-        });
-        console.log('좌표값',pose[0].keypoints.slice(0,11))
-        drawResult(pose, video, videoWidth, videoHeight, canvasRef);
-  
-        requestAnimationFrame(() => {detectWebCamFeed(detector)})
+  const [bodyId, setBodyId] = useState("");
+  const navigate = useNavigate();
+  const [start, setStart] = useState(false);
+  const [step, setStep] = useState(0);
+  const [time, setTime] = useState(10);
+  const [theStart, setTheStart] = useState(true);
+  const [theEnd, setTheEnd] = useState(false);
+  const { id } = useParams<{ id: keyof typeof D.explains }>();
+  const user = useRecoilValue(userState);
+  const [correct, setCorrect] = useState(true);
+  const tempref = useRef(null);
+  const handleTimer = () => {
+    const timer = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(timer);
+      setStep((prev) => prev + 1);
+      setTime(10);
+      setStart(false);
+    }, 10000);
+  };
+  useEffect(() => {
+    if (id !== undefined && D.stretchingName[id][step] === tempref.current) {
+      setCorrect(true);
+    } else {
+      setCorrect(false);
+    }
+  }, [tempref.current]);
+  useEffect(() => {
+    if (user === null) {
+      if (id !== undefined && step === D.stepOfStretching[id]) {
+        setTheEnd(true);
       }
-    };
-  
-    const runMovenet = async () => {
-      const detectorConfig = {
-        modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER
-      };
-      const detector = await poseDetection.createDetector(
-        poseDetection.SupportedModels.MoveNet,
-        detectorConfig
-      );
-  
-      requestAnimationFrame(() => detectWebCamFeed(detector))
-      // setInterval(() => {
-      //   detectWebCamFeed(detector)
-      // }, 100)
-    };
-    runMovenet();
-  
-    const drawResult = (pose:any, video:any, videoWidth:number, videoHeight:number, canvas:any) => {
-      const ctx = canvas.current.getContext("2d");
-      canvas.current.width = videoWidth;
-      canvas.current.height = videoHeight;
-      drawKeypoints(pose[0]["keypoints"], 0.3, ctx, videoWidth);
-      drawSkeleton(pose[0]["keypoints"], 0.3, ctx, videoWidth);
-    };
+    }
+    if (user !== null) {
+      if (id !== undefined && step === D.stepOfStretching[id]) {
+        setTheEnd(true);
+        Api.patch(`bodies/${user?.id}/terminating`, {
+          body_id: bodyId,
+        });
+      }
+    }
+  }, [step]);
+  useEffect(() => {
+    if (user !== null) {
+      Api.post(`bodies/${user?.id}/recording`, {
+        tag: id as string,
+      }).then((res) => setBodyId(res.data.body_id));
+    }
+  }, []);
   return (
-    <div>
-    <Webcam
-    ref={webcamRef}
-    style={{
-      position: "absolute",
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      left: 0,
-      right: 0,
-      textAlign: "center",
-      zIndex:9,
-      width: 640,
-      height: 480,
-    }}
-    />
-     <canvas
-     ref={canvasRef}
-    style={{
-      position: "absolute",
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      left: 0,
-      right: 0,
-      textAlign: "center",
-      zIndex:9,
-      width: 640,
-      height: 480,
-    }}
-    />
-  </div>
-  )
-}
+    <S.InspectionLayout>
+      <S.MainCont>
+        <S.GuideTextWrap>
+          {theStart && (
+            <p className="startTitle">
+              “스트레칭 시작하기” 버튼을 클릭하시면 스트레칭이 시작됩니다.
+              <br />
+              시작 시 가이드 영상과 유사한 자세를 유지해주세요!
+            </p>
+          )}
+          <p>{id !== undefined && D.explains[id][step]}</p>
+        </S.GuideTextWrap>
+        <S.MiddleContent>
+          <S.LeftContent>
+            <S.VideoContent>
+              <video
+                key={`/videos/${step}/${start}.mp4`}
+                autoPlay={start}
+                muted
+              >
+                <source src={`/videos/${step}.mp4`} type="video/mp4" />
+              </video>
+              <span>가이드 동영상</span>
+            </S.VideoContent>
 
-export default AiStretching
+            {!theStart && (
+              <S.StretchingStartWrap>
+                {start ? (
+                  <span className="timer">{time}</span>
+                ) : (
+                  <S.btnWrap>
+                    <B.CheckBtn
+                      check="true"
+                      onClick={() => {
+                        setStart(true);
+                        handleTimer();
+                      }}
+                    >
+                      시작하기
+                    </B.CheckBtn>
+                  </S.btnWrap>
+                )}
+              </S.StretchingStartWrap>
+            )}
+          </S.LeftContent>
+
+          <S.CanvasContent>
+            <AiStretchingVideo tempref={tempref} />
+
+            {theStart && (
+              <S.ReadyGuide>
+                <img src={`${guideLine}`} alt="가이드라인" />
+                <p>
+                  웹캠에 상반신 반 정도 보이게 해야 진단 정확도가 높아집니다.
+                </p>
+              </S.ReadyGuide>
+            )}
+          </S.CanvasContent>
+        </S.MiddleContent>
+
+        <S.btnWrap>
+          {theStart ? (
+            <>
+              <B.CheckBtn onClick={() => navigate("/chaircoach")}>
+                돌아가기
+              </B.CheckBtn>
+              <B.CheckBtn check="true" onClick={() => setTheStart(false)}>
+                스트레칭 시작
+              </B.CheckBtn>
+            </>
+          ) : null}
+          {correct === false && start === true && (
+            <p>자세를 알맞게 해주세요!</p>
+          )}
+        </S.btnWrap>
+      </S.MainCont>
+
+      {theEnd === true && (
+        <S.FinisheContent>
+          <div>
+            <img src={`${completionIcon}`} alt="촬영완료" />
+            <p>스트레칭 완료!</p>
+
+            <S.btnWrap>
+              <B.CheckBtn
+                onClick={() => {
+                  navigate("/chaircoach");
+                }}
+              >
+                다시 하기
+              </B.CheckBtn>
+              <B.CheckBtn
+                check="true"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                메인페이지
+              </B.CheckBtn>
+            </S.btnWrap>
+          </div>
+        </S.FinisheContent>
+      )}
+    </S.InspectionLayout>
+  );
+};
+
+export default AiStretching;

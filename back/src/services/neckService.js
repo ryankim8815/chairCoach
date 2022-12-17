@@ -38,7 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var Neck_1 = __importDefault(require("../db/models/Neck"));
+var Neck_model_1 = __importDefault(require("../models/Neck.model"));
+// import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
 var uuid_1 = require("uuid");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 moment_timezone_1.default.tz.setDefault("Asia/Seoul");
@@ -48,27 +49,19 @@ var neckService = /** @class */ (function () {
     //// 모든 거북목 테스트 결과 조회
     neckService.getAllNecks = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var allNecks, allNecksString, allNecksObject, i, countNecks, countNecksString, countNecksObject, result_success;
+            var allNecks, countNecks, result_success;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Neck_1.default.findAll()];
+                    case 0: return [4 /*yield*/, Neck_model_1.default.findAll()];
                     case 1:
                         allNecks = _a.sent();
-                        allNecksString = JSON.stringify(allNecks);
-                        allNecksObject = JSON.parse(allNecksString);
-                        for (i = 0; i < allNecksObject.length; i++) {
-                            delete allNecksObject[i].user_id;
-                        }
-                        return [4 /*yield*/, Neck_1.default.countAll()];
+                        return [4 /*yield*/, Neck_model_1.default.countAll()];
                     case 2:
                         countNecks = _a.sent();
-                        countNecksString = JSON.stringify(countNecks);
-                        countNecksObject = JSON.parse(countNecksString);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uBAA8\uB4E0 \uAC70\uBD81\uBAA9 \uACB0\uACFC \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { count: countNecksObject[0].cnt, list: allNecksObject });
+                        }, { count: countNecks[0].cnt, list: allNecks });
                         return [2 /*return*/, result_success];
                 }
             });
@@ -78,27 +71,19 @@ var neckService = /** @class */ (function () {
     neckService.getNecks = function (_a) {
         var user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var Necks, NecksString, NecksObject, i, countNecks, countNecksString, countNecksObject, result_success;
+            var Necks, countNecks, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, Neck_1.default.findByUserId({ user_id: user_id })];
+                    case 0: return [4 /*yield*/, Neck_model_1.default.findByUserId({ user_id: user_id })];
                     case 1:
                         Necks = _b.sent();
-                        NecksString = JSON.stringify(Necks);
-                        NecksObject = JSON.parse(NecksString);
-                        for (i = 0; i < NecksObject.length; i++) {
-                            delete NecksObject[i].user_id;
-                        }
-                        return [4 /*yield*/, Neck_1.default.countByUserId({ user_id: user_id })];
+                        return [4 /*yield*/, Neck_model_1.default.countByUserId({ user_id: user_id })];
                     case 2:
                         countNecks = _b.sent();
-                        countNecksString = JSON.stringify(countNecks);
-                        countNecksObject = JSON.parse(countNecksString);
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uD574\uB2F9 \uC720\uC800\uC758 \uAC70\uBD81\uBAA9 \uACB0\uACFC \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                        }, { count: countNecksObject[0].cnt, list: NecksObject });
+                        }, { count: countNecks[0].cnt, list: Necks });
                         return [2 /*return*/, result_success];
                 }
             });
@@ -108,31 +93,43 @@ var neckService = /** @class */ (function () {
     neckService.addNeck = function (_a) {
         var user_id = _a.user_id, result = _a.result, score = _a.score, filename = _a.filename;
         return __awaiter(this, void 0, void 0, function () {
-            var neck_id, created_at, newNeck, newNeckString, newNeckObject, i, result_success;
+            var neck_id, newNeck, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         neck_id = (0, uuid_1.v4)();
-                        created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
-                        return [4 /*yield*/, Neck_1.default.create({
+                        return [4 /*yield*/, Neck_model_1.default.create({
                                 neck_id: neck_id,
                                 user_id: user_id,
                                 result: result,
                                 score: score,
                                 filename: filename,
-                                created_at: created_at,
                             })];
                     case 1:
                         newNeck = _b.sent();
-                        newNeckString = JSON.stringify(newNeck);
-                        newNeckObject = JSON.parse(newNeckString);
-                        for (i = 0; i < newNeckObject.length; i++) {
-                            delete newNeckObject[i].user_id;
-                        }
                         result_success = Object.assign({
                             result: true,
-                            cause: "success",
                             message: "\uAC70\uBD81\uBAA9 \uACB0\uACFC \uAE30\uB85D\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                        });
+                        return [2 /*return*/, result_success];
+                }
+            });
+        });
+    };
+    //// 특정 유저의 거북목 기록 조회 - year
+    neckService.getNecksByYear = function (_a) {
+        var user_id = _a.user_id, year = _a.year;
+        return __awaiter(this, void 0, void 0, function () {
+            var Necks, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, Neck_model_1.default.findByUserIdYear({ user_id: user_id, year: year })];
+                    case 1:
+                        Necks = _b.sent();
+                        result_success = Object.assign({
+                            result: true,
+                            message: "\uD574\uB2F9 \uC720\uC800\uC758 \uAC70\uBD81\uBAA9 \uAE30\uB85D \uC870\uD68C\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                            list: Necks,
                         });
                         return [2 /*return*/, result_success];
                 }
