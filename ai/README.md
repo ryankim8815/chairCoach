@@ -53,9 +53,9 @@
 </br>
 
 1.0 이미지 전처리 과정
-- [동영상 프레임별 자르기](.\model\utils\video_cap.py)
-- [이미지 이름 정렬](.\model\utils\sort_files.py)
-- [resizing (option)](.\model\utils\resizer.py)   
+- [동영상 프레임별 자르기](./model/utils/video_cap.py)
+- [이미지 이름 정렬](./model/utils/sort_files.py)
+- [resizing (option)](./model/utils/resizer.py)   
 - [좌표 normalization](./model/Scripts/kpts_normalization.ipynb)
 
 </br>
