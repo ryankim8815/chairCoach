@@ -2,7 +2,6 @@ from typing import Any
 from fastapi import FastAPI
 import uvicorn
 import socketio
-import numpy as np
 from load_model import ChairCouchModel
 
 sio: Any = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")

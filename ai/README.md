@@ -44,10 +44,32 @@
 </br>
 
 **학습 과정**  
+
+1.0 이미지 전처리 과정  
 1.1 Movenet을 이용한 keypoint 좌표 추출   
 1.2 XGBoost를 하여 포즈에 대한 좌표 학습
 
-1.2 XGBoost (xgboost 논문) https://arxiv.org/pdf/1603.02754.pdf
+---
+</br>
+
+1.0 이미지 전처리 과정
+- [동영상 프레임별 자르기](.\model\utils\video_cap.py)
+- [이미지 이름 정렬](.\model\utils\sort_files.py)
+- [resizing (option)](.\model\utils\resizer.py)   
+</br>
+
+
+1.1 Movenet을 이용한 keypoint 좌표 추출  
+[Movenet human pose tutorial](https://www.tensorflow.org/hub/tutorials/movenet)  
+
+1.2 XGBoost  
+Decision Tree를 조합해서 사요하는 앙상블 알고리즘  
+XGBoost는 회귀 분석뿐만 아니라 분류 모델에도 뛰어난 성능을 갖고있기에 XGBoost Classifier 선택하였다.  
+</br>
+
+![XGBoost](./xgboost%20model.png)
+
+[XGBoost 논문](https://arxiv.org/pdf/1603.02754.pdf)
 
 
 </br>
