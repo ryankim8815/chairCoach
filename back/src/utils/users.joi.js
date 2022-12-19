@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.code = exports.timer = exports.alert = exports.nickname = exports.password = exports.email = exports.user_id = void 0;
+exports.code = exports.timer = exports.alert = exports.provider = exports.nickname = exports.password = exports.email = exports.user_id = void 0;
 var joi_1 = __importDefault(require("joi"));
 var regexp = __importStar(require("./regularExpression"));
 var user_id = joi_1.default.string();
@@ -42,6 +42,8 @@ var password = joi_1.default.string().pattern(new RegExp(regexp.password)); // �
 exports.password = password;
 var nickname = joi_1.default.string().pattern(new RegExp(regexp.nickname)); // 한글+숫자 2~8 | 영어+숫자 2~12 - FE에서 보여지는 길이 기준
 exports.nickname = nickname;
+var provider = joi_1.default.string();
+exports.provider = provider;
 var alert = joi_1.default.boolean();
 exports.alert = alert;
 var timer = joi_1.default.number().integer();

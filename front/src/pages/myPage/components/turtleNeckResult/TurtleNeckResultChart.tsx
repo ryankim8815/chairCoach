@@ -97,24 +97,22 @@ const month = [
   "12월",
 ];
 
-const chartData = {
-  labels: month,
-  datasets: [
-    {
-      label: "평균 점수",
-      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      backgroundColor: "#835DFE",
-      borderColor: "#835DFE",
-      borderWidth: 1,
-    },
-  ],
-};
-
 function TurtleNeckResultChart({ data }: TurtleNeckResultProps) {
-  chartData.datasets[0].data = data!;
+  let chartData = {
+    labels: month,
+    datasets: [
+      {
+        label: "평균 점수",
+        data: data,
+        backgroundColor: "#835DFE",
+        borderColor: "#835DFE",
+        borderWidth: 1,
+      },
+    ],
+  };
   return (
     <Container>
-      <Line options={options} data={chartData} />
+      {chartData && <Line options={options} data={chartData} />}
     </Container>
   );
 }

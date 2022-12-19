@@ -64,7 +64,14 @@ class User {
       }
     );
 
-  static create = ({ user_id, email, password, nickname, provider }) =>
+  static create = ({
+    user_id,
+    email,
+    password,
+    nickname,
+    provider,
+    transaction,
+  }) =>
     db.sequelize.query(
       `
         INSERT INTO users (user_id, email, password, nickname, provider) VALUES (?, ?, ?, ?, ?)
@@ -72,6 +79,7 @@ class User {
       {
         type: db.QueryTypes.INSERT,
         replacements: [user_id, email, password, nickname, provider],
+        transaction: transaction,
       }
     );
 
@@ -84,6 +92,18 @@ class User {
       {
         type: db.QueryTypes.UPDATE,
         replacements: [password, nickname, user_id],
+      }
+    );
+
+  static updateNickname = ({ user_id, provider, nickname }) =>
+    db.sequelize.query(
+      `
+        UPDATE users SET nickname = ?
+        WHERE user_id = ? AND provider = ?
+              `,
+      {
+        type: db.QueryTypes.UPDATE,
+        replacements: [nickname, user_id, provider],
       }
     );
 

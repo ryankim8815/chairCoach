@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
 import userState from "./../../atoms/user";
-import * as Api from "../../api/api";
-import * as S from "./HeaderStyle";
+import ResignMembership from "./ResignMembership";
 
+import * as S from "./HeaderStyle";
 import { AiFillCaretDown } from "react-icons/ai";
 import { AiFillCaretUp } from "react-icons/ai";
 
 const LoginMenu = () => {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+
+  const [isResignMembership, setIsResignMembership] = useState(false);
 
   const menuRef = useRef<HTMLButtonElement>(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -41,33 +43,10 @@ const LoginMenu = () => {
 
   const handlerlogoutClick = () => {
     setUser(null);
-    sessionStorage.removeItem("userToken");
+    sessionStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setIsMenuVisible(!isMenuVisible);
     navigate("/");
-  };
-
-  // 회원탈퇴
-  const handlerResignMembershipClick = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-
-    const resignMembership = window.confirm("정말로 탈퇴하시겠습니까?");
-
-    if (resignMembership) {
-      if (!user) return;
-
-      const res = await Api.delete(`users/${user.id}`); // 모달창 만들고 다시 수정하기
-      console.log(res);
-
-      if (res.data.result) {
-        setUser(null);
-        sessionStorage.removeItem("userToken");
-        navigate("/");
-      }
-    }
-
-    setIsMenuVisible(!isMenuVisible);
   };
 
   return (
@@ -85,9 +64,18 @@ const LoginMenu = () => {
             <button onClick={handlerlogoutClick}>로그아웃</button>
           </li>
           <li>
-            <button onClick={handlerResignMembershipClick}>회원 탈퇴</button>
+            <button onClick={() => setIsResignMembership(true)}>
+              회원 탈퇴
+            </button>
           </li>
         </ul>
+      )}
+
+      {isResignMembership && (
+        <ResignMembership
+          isResignMembership={isResignMembership}
+          setIsResignMembership={setIsResignMembership}
+        />
       )}
     </S.LoginMenuContent>
   );

@@ -2,15 +2,15 @@ module.exports = function (sequelize, db) {
     var Body = sequelize.define("body", {
         body_id: {
             type: db.DataTypes.UUID,
-            defaultValue: db.DataTypes.UUIDV4,
-            unique: true,
+            // defaultValue: db.DataTypes.UUIDV4, // auto generator
+            // unique: true,
             primaryKey: true,
             allowNull: false,
         },
         user_id: {
             type: db.DataTypes.UUID,
-            defaultValue: db.DataTypes.UUIDV4,
-            unique: true,
+            // defaultValue: db.DataTypes.UUIDV4, // auto generator
+            // unique: true,
             //   primaryKey: true,
             allowNull: false,
             references: {

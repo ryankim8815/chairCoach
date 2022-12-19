@@ -13,8 +13,6 @@ axios.interceptors.response.use(
     return res.data;
   },
   (err) => {
-    // console.log(err);
-    // throw new Error("(!) axios error");
     throw new Error(`(!) axios error: ${err}`);
   }
 );
@@ -46,6 +44,8 @@ class socialLoginController {
           method: "POST",
           headers: {
             "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://kauth.kakao.com/oauth/token",
           data: makeFormData({
@@ -69,9 +69,11 @@ class socialLoginController {
       );
       // 로그인 & 회원가입
       const email = resultAccount.email;
+      const ipAddress = req.body.requestClientIp;
       const kakao = await socialLoginService.kakao({
         email,
         access_token,
+        ipAddress,
       });
 
       logger.info(kakao);
@@ -96,8 +98,6 @@ class socialLoginController {
     const redirectURI = process.env.NAVER_REDIRECT_URL;
     const encoded = encodeURIComponent(redirectURI);
     const url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${encoded}&code=${code}&state=${state}`;
-    // const FE_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${client_id}&redirect_uri=${encoded}&state=${state}`;
-    // console.log("FE_url: ", FE_url);
     try {
       const resultToken = nullPrototypeHandler(
         await axios({
@@ -112,6 +112,8 @@ class socialLoginController {
           method: "GET",
           headers: {
             Authorization: `bearer ${access_token}`,
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
           },
           url: "https://openapi.naver.com/v1/nid/me",
         })
@@ -119,10 +121,12 @@ class socialLoginController {
       // 로그인 & 회원가입
       const naverUserResult = resultAccount.response;
       const email = naverUserResult.email;
+      const ipAddress = req.body.requestClientIp;
       const naver = nullPrototypeHandler(
         await socialLoginService.naver({
           email,
           access_token,
+          ipAddress,
         })
       );
 
@@ -150,10 +154,6 @@ class socialLoginController {
     const redirectURI = process.env.GOOGLE_REDIRECT_URL;
     const hd = process.env.GOOGLE_HD;
     const encoded = encodeURIComponent(redirectURI);
-    // const FE_url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${client_id}&scope=openid%20email&redirect_uri=${encoded}&state=${state}&login_hint=${login_hint}&nonce=${nonce}&hd=${hd}`;
-    // console.log("url: ", FE_url);
-    // const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${client_id}&scope=openid%20email&redirect_uri=${encoded}&state=${state}&login_hint=${login_hint}&nonce=${nonce}&hd=${hd}`;
-
     try {
       const data = {
         code: code,
@@ -165,7 +165,11 @@ class socialLoginController {
       const resultToken = nullPrototypeHandler(
         await axios({
           method: "POST",
-          headers: { "content-type": "application/x-www-form-urlencoded" },
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            Accept: "application/json",
+            "Accept-Encoding": "identity",
+          },
           data: qs.stringify(data),
           url: "https://oauth2.googleapis.com/token",
         })
@@ -174,10 +178,12 @@ class socialLoginController {
       const jwtDecoded = nullPrototypeHandler(jwt.decode(resultToken.id_token));
       const email = jwtDecoded.email;
       const refresh_token = resultToken.refresh_token;
+      const ipAddress = req.body.requestClientIp;
       // 로그인 & 회원가입
       const google = await socialLoginService.google({
         email,
         refresh_token,
+        ipAddress,
       });
 
       logger.info(google);

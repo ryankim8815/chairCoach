@@ -14,6 +14,7 @@ class userController {
       const { count, list } = await userService.getAllUsers();
       const getAllUsers = {
         result: true,
+        message: `모든 사용자 조회가 성공적으로 이뤄졌습니다.`,
         count,
         list,
       };
@@ -57,7 +58,13 @@ class userController {
       const email = req.body.email;
       const password = req.body.password;
       const nickname = req.body.nickname;
-      const addUser = await userService.addUser({ email, password, nickname });
+      const ipAddress = req.body.requestClientIp;
+      const addUser = await userService.addUser({
+        email,
+        password,
+        nickname,
+        ipAddress,
+      });
 
       logger.info(addUser);
       return res.status(200).json(addUser);
@@ -76,7 +83,8 @@ class userController {
     try {
       const email = req.body.email;
       const password = req.body.password;
-      const getUser = await userService.getUser({ email, password });
+      const ipAddress = req.body.requestClientIp;
+      const getUser = await userService.getUser({ email, password, ipAddress });
 
       logger.info(getUser);
       return res.status(200).json(getUser);
@@ -129,6 +137,39 @@ class userController {
       const updateUser = await userService.updateUser({
         user_id,
         password,
+        nickname,
+      });
+
+      logger.info(updateUser);
+      return res.status(200).json(updateUser);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  // PUT: 회원정보 수정 - 간편로그인 회원용
+  static async socialLoginUserUpdate(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const user_id = req.body.user_id;
+      if (user_id !== req.params.user_id) {
+        throw ClientError.unauthorized(
+          "정상적으로 로그인된 사용자의 요청이 아닙니다."
+        );
+      }
+      const provider = req.params.provider;
+      if (provider == "chairCoach") {
+        throw ClientError.unauthorized(
+          "정상적으로 접근된 사용자의 요청이 아닙니다."
+        );
+      }
+      const nickname = req.body.nickname;
+      const updateUser = await userService.updateSocialLoginUser({
+        user_id,
+        provider,
         nickname,
       });
 

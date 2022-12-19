@@ -26,45 +26,45 @@ const imgContents = [
   Img.survey10,
 ];
 
-export const Data= [
-    {
-        questions: questions[0],
-        img: imgContents[0]
-    },
-    {
-        questions: questions[1],
-        img: imgContents[1]
-    },
-    {
-        questions: questions[2],
-        img: imgContents[2]
-    },
-    {
-        questions: questions[3],
-        img: imgContents[3]
-    },
-    {
-        questions: questions[4],
-        img: imgContents[4]
-    },
-    {
-        questions: questions[5],
-        img: imgContents[5]
-    },
-    {
-        questions: questions[6],
-        img: imgContents[6]
-    },
-    {
-        questions: questions[7],
-        img: imgContents[7]
-    },
-    {
-        questions: questions[8],
-        img: imgContents[8]
-    },
-    {
-        questions: questions[9],
-        img: imgContents[9]
-    },
-]
+export const Data = [
+  {
+    questions: questions[0],
+    img: imgContents[0],
+  },
+  {
+    questions: questions[1],
+    img: imgContents[1],
+  },
+  {
+    questions: questions[2],
+    img: imgContents[2],
+  },
+  {
+    questions: questions[3],
+    img: imgContents[3],
+  },
+  {
+    questions: questions[4],
+    img: imgContents[4],
+  },
+  {
+    questions: questions[5],
+    img: imgContents[5],
+  },
+  {
+    questions: questions[6],
+    img: imgContents[6],
+  },
+  {
+    questions: questions[7],
+    img: imgContents[7],
+  },
+  {
+    questions: questions[8],
+    img: imgContents[8],
+  },
+  {
+    questions: questions[9],
+    img: imgContents[9],
+  },
+];

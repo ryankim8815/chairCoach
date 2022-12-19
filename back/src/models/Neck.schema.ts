@@ -1,4 +1,4 @@
-module.exports = (sequelize, db) => {
+module.exports = (sequelize: any, db: any) => {
   const Neck = sequelize.define(
     "neck",
     {
@@ -11,8 +11,8 @@ module.exports = (sequelize, db) => {
       },
       user_id: {
         type: db.DataTypes.UUID,
-        defaultValue: db.DataTypes.UUIDV4, // auto generator
-        unique: true,
+        // defaultValue: db.DataTypes.UUIDV4, // auto generator
+        // unique: true,
         //   primaryKey: true,
         allowNull: false,
         references: {

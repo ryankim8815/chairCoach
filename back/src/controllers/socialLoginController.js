@@ -49,8 +49,6 @@ var logger = require("../config/logger");
 axios_1.default.interceptors.response.use(function (res) {
     return res.data;
 }, function (err) {
-    // console.log(err);
-    // throw new Error("(!) axios error");
     throw new Error("(!) axios error: ".concat(err));
 });
 // formdata 포멧으로 만들어 줌
@@ -70,7 +68,7 @@ var socialLoginController = /** @class */ (function () {
     // POST: kakao api 회원가입 & 로그인
     socialLoginController.kakaoOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, REST_API_KEY, REDIRECT_URI, resultToken, _a, access_token, resultAccount, _b, email, kakao, e_1;
+            var code, REST_API_KEY, REDIRECT_URI, resultToken, _a, access_token, resultAccount, _b, email, ipAddress, kakao, e_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -85,6 +83,8 @@ var socialLoginController = /** @class */ (function () {
                                 method: "POST",
                                 headers: {
                                     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
                                 },
                                 url: "https://kauth.kakao.com/oauth/token",
                                 data: makeFormData({
@@ -108,9 +108,11 @@ var socialLoginController = /** @class */ (function () {
                     case 3:
                         resultAccount = _b.apply(void 0, [_c.sent()]);
                         email = resultAccount.email;
+                        ipAddress = req.body.requestClientIp;
                         return [4 /*yield*/, socialLoginService_1.default.kakao({
                                 email: email,
                                 access_token: access_token,
+                                ipAddress: ipAddress,
                             })];
                     case 4:
                         kakao = _c.sent();
@@ -130,7 +132,7 @@ var socialLoginController = /** @class */ (function () {
     ////////////////////////////////////////
     socialLoginController.naverOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, state, client_id, client_secret, redirectURI, encoded, url, resultToken, _a, access_token, resultAccount, _b, naverUserResult, email, naver, _c, e_2;
+            var code, state, client_id, client_secret, redirectURI, encoded, url, resultToken, _a, access_token, resultAccount, _b, naverUserResult, email, ipAddress, naver, _c, e_2;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -157,6 +159,8 @@ var socialLoginController = /** @class */ (function () {
                                 method: "GET",
                                 headers: {
                                     Authorization: "bearer ".concat(access_token),
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
                                 },
                                 url: "https://openapi.naver.com/v1/nid/me",
                             })];
@@ -164,10 +168,12 @@ var socialLoginController = /** @class */ (function () {
                         resultAccount = _b.apply(void 0, [_d.sent()]);
                         naverUserResult = resultAccount.response;
                         email = naverUserResult.email;
+                        ipAddress = req.body.requestClientIp;
                         _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, socialLoginService_1.default.naver({
                                 email: email,
                                 access_token: access_token,
+                                ipAddress: ipAddress,
                             })];
                     case 4:
                         naver = _c.apply(void 0, [_d.sent()]);
@@ -187,7 +193,7 @@ var socialLoginController = /** @class */ (function () {
     ////////////////////////////////////////
     socialLoginController.googleOauth = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, data, resultToken, _a, jwtDecoded, email, refresh_token, google, e_3;
+            var code, login_hint, nonce, state, client_id, client_secret, redirectURI, hd, encoded, data, resultToken, _a, jwtDecoded, email, refresh_token, ipAddress, google, e_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -213,7 +219,11 @@ var socialLoginController = /** @class */ (function () {
                         _a = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, (0, axios_1.default)({
                                 method: "POST",
-                                headers: { "content-type": "application/x-www-form-urlencoded" },
+                                headers: {
+                                    "content-type": "application/x-www-form-urlencoded",
+                                    Accept: "application/json",
+                                    "Accept-Encoding": "identity",
+                                },
                                 data: qs_1.default.stringify(data),
                                 url: "https://oauth2.googleapis.com/token",
                             })];
@@ -222,9 +232,11 @@ var socialLoginController = /** @class */ (function () {
                         jwtDecoded = (0, nullPrototypeHandler_1.nullPrototypeHandler)(jsonwebtoken_1.default.decode(resultToken.id_token));
                         email = jwtDecoded.email;
                         refresh_token = resultToken.refresh_token;
+                        ipAddress = req.body.requestClientIp;
                         return [4 /*yield*/, socialLoginService_1.default.google({
                                 email: email,
                                 refresh_token: refresh_token,
+                                ipAddress: ipAddress,
                             })];
                     case 3:
                         google = _b.sent();

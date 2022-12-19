@@ -2,18 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = void 0;
 var errorResponse_1 = require("../responses/errorResponse");
-// import { nullPrototypeHandler } from "../utils/nullPrototypeHandler";
 var logger = require("../config/logger");
+var index_1 = require("../discord/index");
 function errorHandler(error, // 적절한 타입 찾기
 req, res, next) {
+    var status = error.status || 400;
+    var message = error.message;
+    var method = req.method;
+    var originalUrl = req.originalUrl;
+    var requestClientIp = req.body.requestClientIp;
+    var requestStartTime = req.body.requestStartTime;
+    var errorMessage = "".concat(method, " ").concat(originalUrl, " \n  [").concat(status, "]: ").concat(message, "\n  [IP]: ").concat(requestClientIp, "\n  ");
+    (0, index_1.discordForWinston)(error, req);
     if (error.status) {
-        // console.log("error: ", error);
-        // console.log("error.aaa: ", error.aaa);
-        // const m = nullPrototypeHandler(error.aaa);
-        logger.error(error);
+        logger.error(errorMessage);
         return res.status(error.status).json(error);
     }
-    logger.error("common:", error);
+    logger.error(errorMessage);
     return res.status(400).json(errorResponse_1.common);
 }
 exports.errorHandler = errorHandler;

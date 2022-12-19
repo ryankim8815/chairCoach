@@ -37,10 +37,11 @@ var User = /** @class */ (function () {
         });
     };
     User.create = function (_a) {
-        var user_id = _a.user_id, email = _a.email, password = _a.password, nickname = _a.nickname, provider = _a.provider;
+        var user_id = _a.user_id, email = _a.email, password = _a.password, nickname = _a.nickname, provider = _a.provider, transaction = _a.transaction;
         return _1.db.sequelize.query("\n        INSERT INTO users (user_id, email, password, nickname, provider) VALUES (?, ?, ?, ?, ?)\n              ", {
             type: _1.db.QueryTypes.INSERT,
             replacements: [user_id, email, password, nickname, provider],
+            transaction: transaction,
         });
     };
     User.update = function (_a) {
@@ -48,6 +49,13 @@ var User = /** @class */ (function () {
         return _1.db.sequelize.query("\n        UPDATE users SET password = ?, nickname = ?\n        WHERE user_id = ?\n              ", {
             type: _1.db.QueryTypes.UPDATE,
             replacements: [password, nickname, user_id],
+        });
+    };
+    User.updateNickname = function (_a) {
+        var user_id = _a.user_id, provider = _a.provider, nickname = _a.nickname;
+        return _1.db.sequelize.query("\n        UPDATE users SET nickname = ?\n        WHERE user_id = ? AND provider = ?\n              ", {
+            type: _1.db.QueryTypes.UPDATE,
+            replacements: [nickname, user_id, provider],
         });
     };
     User.updateAlert = function (_a) {

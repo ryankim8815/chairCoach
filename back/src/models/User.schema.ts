@@ -6,7 +6,7 @@ module.exports = (sequelize, db) => {
         // type: DataTypes.CHAR(36),   // mysql for UUID
         type: db.DataTypes.UUID,
         defaultValue: db.DataTypes.UUIDV4, // auto generator
-        unique: true,
+        // unique: true,
         primaryKey: true,
         allowNull: false,
       },
@@ -20,7 +20,7 @@ module.exports = (sequelize, db) => {
         allowNull: false,
       },
       nickname: {
-        type: db.DataTypes.STRING(12), // 한글+숫자 2~8 | 영어+숫자 2~12
+        type: db.DataTypes.STRING(255), // 한글+숫자 2~8 | 영어+숫자 2~12
         unique: true,
         allowNull: false,
       },

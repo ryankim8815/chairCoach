@@ -6,15 +6,13 @@ import * as B from "../../styles/BtnStyle";
 import * as S from "./NeckInspectionStyle";
 import neckguideImg from "../../assets/img/neck_guide_img.jpg";
 import completionIcon from "../../assets/img/completion_icon.png";
+import guideLine from "../../assets/img/guide_line.svg";
 
 const NeckInspection = () => {
   const navigate = useNavigate();
   const [time, setTime] = useState(5);
   const [step, setStep] = useState(0);
   const playInspection = useRef(false);
-
-  console.log(step);
-
   const startTimer = () => {
     setStep((prev) => prev + 1);
     let timer = setInterval(() => {
@@ -52,16 +50,14 @@ const NeckInspection = () => {
               유사한 각도를 유지해주세요!
             </p>
           )}
-
-          {/* {step === 2 && <p>사진촬영이 정상적으로 완료되었습니다!</p>} */}
         </S.GuideTextWrap>
 
         <S.MiddleContent>
           {step !== 2 && (
-            <S.ImgCont>
+            <S.ImgContent>
               <img src={`${neckguideImg}`} alt="가이드 이미지" />
               <span>가이드 이미지</span>
-            </S.ImgCont>
+            </S.ImgContent>
           )}
 
           <div>
@@ -72,6 +68,13 @@ const NeckInspection = () => {
               playInspection={playInspection}
             />
           </div>
+
+          {step === 0 && (
+            <S.ReadyGuide>
+              <img src={`${guideLine}`} alt="가이드라인" />
+              <p>웹캠에 상반신 반 정도 보이게 해야 진단 정확도가 높아집니다.</p>
+            </S.ReadyGuide>
+          )}
 
           {step === 1 && <S.TimeText>{time}</S.TimeText>}
         </S.MiddleContent>

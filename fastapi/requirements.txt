@@ -1,6 +1,0 @@
-fastapi
-fastapi-socketio
-uvicorn[standard]
-pydantic
-xgboost
-scikit-learn

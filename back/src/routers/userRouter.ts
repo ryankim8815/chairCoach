@@ -1,5 +1,5 @@
 import * as express from "express";
-import authMiddleware from "../middlewares/authMiddleware";
+import { authMiddleware } from "../middlewares/authMiddleware";
 import nodemailerMiddleware from "../middlewares/nodemailerMiddleware";
 import * as Validation from "../middlewares/validationMiddleware";
 import * as Schemas from "../utils/schemas.joi";
@@ -46,6 +46,15 @@ userRouter.put(
   ),
   userController.userUpdate
 ); // 유저 정보 업데이트(pw & nickname)
+userRouter.put(
+  "/users/:user_id/provider/:provider",
+  authMiddleware,
+  Validation.validateBodyParams(
+    Schemas.socialLoginUserUpdateSchema,
+    Schemas.socialLoginUserUpdateSchemaParams
+  ),
+  userController.socialLoginUserUpdate
+); // 유저 정보 업데이트(nickname) - 간편로그인 회원용
 userRouter.delete(
   "/users/:user_id",
   authMiddleware,
@@ -325,6 +334,51 @@ export = userRouter;
  *               password:
  *                 type: string
  *                 example: new_password
+ *               nickname:
+ *                 type: string
+ *                 example: new_nickname
+ *     responses:
+ *       200:
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: 회원정보 수정이 성공적으로 이뤄졌습니다.
+ */
+
+/**
+ * @swagger
+ * /users/{user_id}/provider/{provider}:
+ *   put:
+ *     summary: 회원정보 수정 - 간편로그인 회원용
+ *     description: nickname만 수정됩니다.
+ *     tags: ["userRouter"]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *       - in: path
+ *         name: provider
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
  *               nickname:
  *                 type: string
  *                 example: new_nickname

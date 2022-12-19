@@ -61,22 +61,64 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.refreshToken = exports.authMiddleware = void 0;
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var ClientError = __importStar(require("../responses/clientErrorResponse"));
+var Token_model_1 = __importDefault(require("../models/Token.model"));
 var authMiddleware = function (req, res, next) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var userToken, secretKey, jwtDecoded, user_id;
+        var userToken, checkToken, isSameIpAdress, secretKey, jwtDecoded, user_id, e_1;
         return __generator(this, function (_c) {
-            userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
-            if (userToken === "null") {
-                throw ClientError.unauthorized("로그인한 유저만 사용할 수 있는 서비스입니다.");
+            switch (_c.label) {
+                case 0:
+                    _c.trys.push([0, 2, , 3]);
+                    userToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
+                    if (userToken === "null") {
+                        throw ClientError.unauthorized("로그인한 유저만 사용할 수 있는 서비스입니다.");
+                    }
+                    return [4 /*yield*/, Token_model_1.default.findByAccessToken({
+                            userToken: userToken,
+                        })];
+                case 1:
+                    checkToken = _c.sent();
+                    if (checkToken.length !== 1)
+                        throw ClientError.unauthorized("유효한 토큰이 아닙니다.");
+                    isSameIpAdress = checkToken[0].ip_address == req.body.requestClientIp;
+                    if (!isSameIpAdress)
+                        throw ClientError.unauthorized("[토큰탈취의심] 토큰을 발급받은 위치가 아닌 곳에서 토큰을 활용한 요청이 들어왔습니다.");
+                    secretKey = process.env.JWT_SECRET_KEY;
+                    jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
+                    user_id = jwtDecoded.user_id;
+                    req.body.user_id = user_id;
+                    next();
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_1 = _c.sent();
+                    next(e_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+};
+exports.authMiddleware = authMiddleware;
+var refreshToken = function (req, res, next) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function () {
+        var refreshToken, secretKey, jwtDecoded, user_id;
+        return __generator(this, function (_c) {
+            refreshToken = (_b = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) !== null && _b !== void 0 ? _b : "null";
+            if (refreshToken === "null") {
+                return [2 /*return*/, ClientError.unauthorized("유효한 토큰이 아닙니다.")];
             }
             try {
                 secretKey = process.env.JWT_SECRET_KEY;
-                jwtDecoded = jsonwebtoken_1.default.verify(userToken, secretKey);
+                jwtDecoded = jsonwebtoken_1.default.verify(refreshToken, secretKey);
                 user_id = jwtDecoded.user_id;
                 req.body.user_id = user_id;
+                req.body.refreshToken = refreshToken;
                 next();
             }
             catch (e) {
@@ -86,4 +128,4 @@ var authMiddleware = function (req, res, next) {
         });
     });
 };
-module.exports = authMiddleware;
+exports.refreshToken = refreshToken;

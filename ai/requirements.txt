@@ -1,0 +1,16 @@
+# train model
+tensorflow>=2.4.1
+scikit-learn
+xgboost
+imblearn
+pandas
+opencv-python
+Pillow
+
+# server
+fastapi
+fastapi-socketio
+uvicorn[standard]
+pydantic
+xgboost
+scikit-learn

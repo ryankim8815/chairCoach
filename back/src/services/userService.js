@@ -72,6 +72,8 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var uuid_1 = require("uuid");
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
+var Token_model_1 = __importDefault(require("../models/Token.model"));
+var models_1 = require("../models");
 moment_timezone_1.default.tz.setDefault("Asia/Seoul");
 var userService = /** @class */ (function () {
     function userService() {
@@ -104,10 +106,10 @@ var userService = /** @class */ (function () {
                     case 1:
                         currentUser = _b.sent();
                         if (currentUser.length === 0) {
-                            throw ClientError.notFound("정상적으로 로그인된 사용자의 요청이 아닙니다.");
+                            return [2 /*return*/, ClientError.notFound("정상적으로 로그인된 사용자의 요청이 아닙니다.")];
                         }
                         if (currentUser.length > 1) {
-                            throw ServerError.internalServerError("[확인요망]: 해당 user_id로 조회된 계정이 DB상 두개 이상입니다. 확인해 주세요.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망]: 해당 user_id로 조회된 계정이 DB상 두개 이상입니다. 확인해 주세요.")];
                         }
                         thisUser = currentUser[0];
                         delete thisUser.password;
@@ -122,16 +124,16 @@ var userService = /** @class */ (function () {
     };
     //// 로그인용 사용자 조회
     userService.getUser = function (_a) {
-        var email = _a.email, password = _a.password;
+        var email = _a.email, password = _a.password, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id, withdrawnUser, secretKey, token, result_success;
+            var user, thisUser, hashedCorrectPassword, isPasswordCorrect, user_id_1, withdrawnUser, secretKey, accessToken, refreshToken, status, created_at, user_id, tokenUpdate, result_success;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, User_model_1.default.findByEmail({ email: email })];
                     case 1:
                         user = _b.sent();
                         if (user.length === 0) {
-                            throw ClientError.unauthorized("입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("입력하신 email로 가입된 사용자가 없습니다. 다시 한 번 확인해 주세요.")];
                         }
                         thisUser = user[0];
                         hashedCorrectPassword = thisUser.password;
@@ -139,15 +141,15 @@ var userService = /** @class */ (function () {
                     case 2:
                         isPasswordCorrect = _b.sent();
                         if (!isPasswordCorrect) {
-                            throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.")];
                         }
                         if (!(user[0].status == "pending")) return [3 /*break*/, 4];
-                        user_id = thisUser.user_id;
-                        return [4 /*yield*/, User_model_1.default.undoWithdraw({ user_id: user_id })];
+                        user_id_1 = thisUser.user_id;
+                        return [4 /*yield*/, User_model_1.default.undoWithdraw({ user_id: user_id_1 })];
                     case 3:
                         withdrawnUser = _b.sent();
                         if (withdrawnUser[1] === 0) {
-                            throw ServerError.internalServerError("[확인요망] 탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망] 탈퇴한 사용자 계정 복구 과정에서 오류가 발생했습니다.")];
                         }
                         else {
                             thisUser.status = null;
@@ -156,14 +158,39 @@ var userService = /** @class */ (function () {
                         _b.label = 4;
                     case 4:
                         secretKey = process.env.JWT_SECRET_KEY;
-                        token = jsonwebtoken_1.default.sign({ user_id: thisUser.user_id }, secretKey);
-                        delete thisUser.password;
-                        result_success = Object.assign({
-                            result: true,
-                            message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                            token: token,
-                        }, thisUser);
-                        return [2 /*return*/, result_success];
+                        accessToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+                            user_id: thisUser.user_id,
+                        }, secretKey);
+                        refreshToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+                            user_id: thisUser.user_id,
+                        }, secretKey);
+                        status = "valid";
+                        created_at = (0, moment_timezone_1.default)().format("YYYY-MM-DD HH:mm:ss");
+                        user_id = thisUser.user_id;
+                        return [4 /*yield*/, Token_model_1.default.update({
+                                user_id: user_id,
+                                refreshToken: refreshToken,
+                                accessToken: accessToken,
+                                ipAddress: ipAddress,
+                                status: status,
+                                created_at: created_at,
+                            })];
+                    case 5:
+                        tokenUpdate = _b.sent();
+                        if (tokenUpdate[1]) {
+                            delete thisUser.password;
+                            result_success = Object.assign({
+                                result: true,
+                                message: "\uB85C\uADF8\uC778\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                                // token: token,
+                                accessToken: accessToken,
+                                refreshToken: refreshToken,
+                            }, thisUser);
+                            return [2 /*return*/, result_success];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
@@ -210,14 +237,14 @@ var userService = /** @class */ (function () {
                     case 1:
                         checkCode = _b.sent();
                         if (checkCode.length == 0) {
-                            throw ClientError.unauthorized("해당 이메일에 발급된 코드가 만료되었습니다.");
+                            return [2 /*return*/, ClientError.unauthorized("해당 이메일에 발급된 코드가 만료되었습니다.")];
                         }
                         if (checkCode.length > 1) {
-                            throw ServerError.internalServerError("[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다.")];
                         }
                         isCorrectCode = code == checkCode[0].code;
                         if (!isCorrectCode)
-                            throw ClientError.unauthorized("email 인증에 실패했습니다.");
+                            return [2 /*return*/, ClientError.unauthorized("email 인증에 실패했습니다.")];
                         if (!isCorrectCode) return [3 /*break*/, 3];
                         return [4 /*yield*/, Code_model_1.default.delete({
                                 email: email,
@@ -245,7 +272,7 @@ var userService = /** @class */ (function () {
                     case 1:
                         checkNickname = _b.sent();
                         if (checkNickname.length !== 0) {
-                            throw ClientError.conflict("입력하신 nickname은 이미 사용중입니다.");
+                            return [2 /*return*/, ClientError.conflict("입력하신 nickname은 이미 사용중입니다.")];
                         }
                         result_success = {
                             result: true,
@@ -258,15 +285,20 @@ var userService = /** @class */ (function () {
     };
     //// 자체 회원가입
     userService.addUser = function (_a) {
-        var email = _a.email, password = _a.password, nickname = _a.nickname;
+        var email = _a.email, password = _a.password, nickname = _a.nickname, ipAddress = _a.ipAddress;
         return __awaiter(this, void 0, void 0, function () {
-            var user_id, provider, newUser, result_success;
+            var transaction, user_id, provider, newUser, secretKey, accessToken, refreshToken, tokenCreate, result_success, e_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, models_1.db.sequelize.transaction()];
+                    case 1:
+                        transaction = _b.sent();
+                        _b.label = 2;
+                    case 2:
+                        _b.trys.push([2, 8, , 10]);
                         user_id = (0, uuid_1.v4)();
                         return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
-                    case 1:
+                    case 3:
                         password = _b.sent();
                         provider = "chairCoach";
                         return [4 /*yield*/, User_model_1.default.create({
@@ -275,17 +307,47 @@ var userService = /** @class */ (function () {
                                 password: password,
                                 nickname: nickname,
                                 provider: provider,
+                                transaction: transaction,
                             })];
-                    case 2:
+                    case 4:
                         newUser = _b.sent();
-                        if (newUser) {
-                            result_success = {
-                                result: true,
-                                message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
-                            };
-                            return [2 /*return*/, result_success];
-                        }
-                        return [2 /*return*/];
+                        secretKey = process.env.JWT_SECRET_KEY;
+                        accessToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+                            user_id: user_id,
+                        }, secretKey);
+                        refreshToken = jsonwebtoken_1.default.sign({
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+                            user_id: user_id,
+                        }, secretKey);
+                        return [4 /*yield*/, Token_model_1.default.create({
+                                user_id: user_id,
+                                refreshToken: refreshToken,
+                                accessToken: accessToken,
+                                ipAddress: ipAddress,
+                                transaction: transaction,
+                            })];
+                    case 5:
+                        tokenCreate = _b.sent();
+                        if (!(newUser[1] && tokenCreate[1])) return [3 /*break*/, 7];
+                        result_success = {
+                            result: true,
+                            message: "\uD68C\uC6D0\uAC00\uC785\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                            accessToken: accessToken,
+                            refreshToken: refreshToken,
+                        };
+                        return [4 /*yield*/, transaction.commit()];
+                    case 6:
+                        _b.sent();
+                        return [2 /*return*/, result_success];
+                    case 7: throw ServerError.internalServerError("[확인요망]: DB확인이 필요합니다.");
+                    case 8:
+                        e_1 = _b.sent();
+                        return [4 /*yield*/, transaction.rollback()];
+                    case 9:
+                        _b.sent();
+                        throw ServerError.internalServerError("[\uD655\uC778\uC694\uB9DD]: transaction - ".concat(e_1));
+                    case 10: return [2 /*return*/];
                 }
             });
         });
@@ -305,7 +367,7 @@ var userService = /** @class */ (function () {
                     case 1:
                         checkPassword = _b.sent();
                         if (checkPassword.length == 0) {
-                            throw ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.")];
                         }
                         thisUser = checkPassword[0];
                         hashedCorrectPassword = thisUser.password;
@@ -313,7 +375,7 @@ var userService = /** @class */ (function () {
                     case 2:
                         isPasswordCorrect = _b.sent();
                         if (!isPasswordCorrect) {
-                            throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.")];
                         }
                         result_success = {
                             result: true,
@@ -342,7 +404,32 @@ var userService = /** @class */ (function () {
                     case 2:
                         updatedUser = _b.sent();
                         if (updatedUser[1] !== 1)
-                            throw ServerError.internalServerError("[확인요망] 이메일 인증 코드 확인 과정에서 오류가 발견되었습니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망] 업데이트 과정트서 오류가 발견되었습니다.")];
+                        result_success = {
+                            result: true,
+                            message: "\uD68C\uC6D0\uC815\uBCF4 \uC218\uC815\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
+                        };
+                        return [2 /*return*/, result_success];
+                }
+            });
+        });
+    };
+    //// 회원 정보 수정 - 간편로그인 회원용
+    userService.updateSocialLoginUser = function (_a) {
+        var user_id = _a.user_id, provider = _a.provider, nickname = _a.nickname;
+        return __awaiter(this, void 0, void 0, function () {
+            var updatedUser, result_success;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User_model_1.default.updateNickname({
+                            user_id: user_id,
+                            provider: provider,
+                            nickname: nickname,
+                        })];
+                    case 1:
+                        updatedUser = _b.sent();
+                        if (updatedUser[1] !== 1)
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망] 업데이트 과정트서 오류가 발견되었습니다.")];
                         result_success = {
                             result: true,
                             message: "\uD68C\uC6D0\uC815\uBCF4 \uC218\uC815\uC774 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",
@@ -365,7 +452,7 @@ var userService = /** @class */ (function () {
                     case 1:
                         checkUserId = _b.apply(void 0, [_d.sent()]);
                         if (checkUserId.length === 0) {
-                            throw ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("요청하신 정보로 가입된 내역이 없습니다. 다시 한 번 확인해 주세요.")];
                         }
                         thisUser = checkUserId[0];
                         hashedCorrectPassword = thisUser.password;
@@ -373,7 +460,7 @@ var userService = /** @class */ (function () {
                     case 2:
                         isPasswordCorrect = _d.sent();
                         if (!isPasswordCorrect) {
-                            throw ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.");
+                            return [2 /*return*/, ClientError.unauthorized("입력하신 password가 일치하지 않습니다. 다시 한 번 확인해 주세요.")];
                         }
                         _c = nullPrototypeHandler_1.nullPrototypeHandler;
                         return [4 /*yield*/, User_model_1.default.withdraw({
@@ -382,7 +469,7 @@ var userService = /** @class */ (function () {
                     case 3:
                         updatedUser = _c.apply(void 0, [_d.sent()]);
                         if (updatedUser[1] !== 1)
-                            throw ServerError.internalServerError("[확인요망] 탈퇴 과정에서 오류가 발견되었습니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망] 탈퇴 과정에서 오류가 발견되었습니다.")];
                         result_success = {
                             result: true,
                             message: "\uD0C8\uD1F4\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4. 30\uC77C \uD6C4 \uD68C\uC6D0 \uC815\uBCF4\uAC00 \uC0AD\uC81C\uB429\uB2C8\uB2E4.",
@@ -403,7 +490,7 @@ var userService = /** @class */ (function () {
                     case 1:
                         setAlert = _b.sent();
                         if (setAlert[1] !== 1)
-                            throw ServerError.internalServerError("[확인요망] 기존값과 동일한 요청이거나 서버 오류입니다.");
+                            return [2 /*return*/, ServerError.internalServerError("[확인요망] 기존값과 동일한 요청이거나 서버 오류입니다.")];
                         result_success = {
                             result: true,
                             message: "Alert \uC5C5\uB370\uC774\uD2B8\uAC00 \uC131\uACF5\uC801\uC73C\uB85C \uC774\uB904\uC84C\uC2B5\uB2C8\uB2E4.",

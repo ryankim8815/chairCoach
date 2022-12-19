@@ -4,7 +4,6 @@ import IntroduceLayout from "./IntroduceLayout";
 import ImportantText from "./ImportantText";
 import ExplainLayout from "./ExplainLayout";
 import SelectLayout from "./SelectLayout";
-import { useRecoilValue } from "recoil";
 import userState from "./../../atoms/user";
 import { notifyMe } from "../../components/alarm/Alarm";
 import * as S from "./MainStyle";
@@ -15,35 +14,31 @@ const Main = () => {
   const [user, setUser] = useRecoilState(userState);
   const [alarmTiming, setAlarmTiming] = useState(0);
   const minutes = 60 * 1000;
+  const accessToken = sessionStorage.getItem("accessToken");
+  //이 상태는, 성공상태. 렌더링이 된 이후 access token이 변했을때 통신을 시도.
+  useEffect(() => {
+    if (user !== null && accessToken !== null) {
+      Api.get(`users/${user?.id}`).then((res) => {
+        res.data.alert === 0 || res.data.alert === null
+          ? setAlarmTiming(0)
+          : setAlarmTiming(res.data.timer);
+      });
+    }
+  }, [accessToken]);
 
-  Api.get(`users/${user?.id}`).then((res) => {
-    res.data.alert === 0 || res.data.alert === null
-      ? setAlarmTiming(0)
-      : setAlarmTiming(res.data.timer);
-  });
-  console.log(alarmTiming);
   useEffect(() => {
     if (alarmTiming !== 0 && alarmTiming !== null) {
-      console.log("알람이 시작됩니다");
       setInterval(() => {
         notifyMe();
       }, alarmTiming * minutes);
     }
   }, [alarmTiming]);
+
   const rootRef = useRef(null);
   const bannerRef = useRef(null);
   const introduceRef = useRef(null);
   const explainRefs = useRef([]);
   const selectRef = useRef(null);
-  const handleLogin = () => {
-    let jwtToken = sessionStorage.getItem("userToken");
-    if (!jwtToken) {
-      setUser(null);
-    }
-  };
-  useEffect(() => {
-    handleLogin();
-  }, []);
   useEffect(() => {
     const options = {
       root: rootRef.current,

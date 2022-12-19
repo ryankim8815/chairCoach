@@ -4,7 +4,7 @@ module.exports = function (sequelize, db) {
             // type: DataTypes.CHAR(36),   // mysql for UUID
             type: db.DataTypes.UUID,
             defaultValue: db.DataTypes.UUIDV4,
-            unique: true,
+            // unique: true,
             primaryKey: true,
             allowNull: false,
         },
@@ -18,7 +18,7 @@ module.exports = function (sequelize, db) {
             allowNull: false,
         },
         nickname: {
-            type: db.DataTypes.STRING(12),
+            type: db.DataTypes.STRING(255),
             unique: true,
             allowNull: false,
         },
