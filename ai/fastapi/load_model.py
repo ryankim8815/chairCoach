@@ -13,6 +13,7 @@ def load_model():
     model.load_model('./weights/xgb_mv3_nor.json')
     return model
 
+# extract coordinate depending on a confidense score
 def extract_coord(kpts, steps):
     num_kpts = len(kpts) // steps
     temp = []
@@ -27,11 +28,12 @@ def extract_coord(kpts, steps):
             temp.extend([x_coord, y_coord])
 
     return temp
-    
+
+# keypoints normalization
 def kpts_change(kpts, img_size_w, img_size_h):
     kpts = [round(float(x), 2) for x in kpts]
     kpts = np.array(kpts)
-    kpts[0::2] /= img_size_w
+    kpts[::2] /= img_size_w
     kpts[1::2] /= img_size_h
     return kpts
 

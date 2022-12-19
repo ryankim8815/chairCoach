@@ -4,6 +4,8 @@ scikit-learn
 xgboost
 imblearn
 pandas
+opencv-python
+Pillow
 
 # server
 fastapi

@@ -1,14 +1,14 @@
 from imblearn.over_sampling import SMOTE
 import numpy as np
-from xgboost import XGBClassifier, DMatrix, cv
+from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split, KFold, cross_val_score
 
 
 # load csv
-X_train = np.loadtxt('./data/csvs/csv_3/train_data_mv3_22.csv', delimiter=",", skiprows=1) 
+X_train = np.loadtxt('./data/csvs/csv_3/train_x_mv3_22.csv', delimiter=",", skiprows=1) 
 y_train = np.loadtxt('./data/csvs/csv_3/train_y_mv3_22.csv', delimiter=",", skiprows=1)
-X_test = np.loadtxt('./data/csvs/csv_3/test_data_mv3_22.csv', delimiter=",", skiprows=1)
+X_test = np.loadtxt('./data/csvs/csv_3/test_x_mv3_22.csv', delimiter=",", skiprows=1)
 y_test = np.loadtxt('./data/csvs/csv_3/test_y_mv3_22.csv', delimiter=",", skiprows=1)
 
 # over sampling using SMOTE
@@ -36,13 +36,12 @@ print("평균 검증 정확도: ", (np.round(np.mean(scores), 4)*100))
 expected_y = y_test
 predicted_y = xgb_model.predict(X_test)
 
-# class report
+# class report (Precision, Recall, F1 score)
 print(classification_report(expected_y, predicted_y))
 
 # accuracy score
 accuracy = accuracy_score(expected_y, predicted_y)
 print("Accuracy: %.2f%%" % (accuracy * 100))
-
 
 # save model
 xgb_model.save_model('xgb_mv3_params.json')
